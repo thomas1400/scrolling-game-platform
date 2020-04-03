@@ -1,9 +1,7 @@
 # DESIGN_PLAN.md
 
-*Write your planned design in a single file, DESIGN_PLAN.md, as described below. Note, this file can link to external image files (such as UML diagrams, CRC cards, scans of hand drawn diagrams, example game screens, etc.).*
 
 ## Introduction
-*This section describes the problem your team is trying to solve by writing this program, the primary design goals of the project (i.e., where is it most flexible), and the primary  architecture of the design (i.e., what is closed and what is open). Discuss the design at a   high-level (i.e., without referencing specific classes, data Structures, or code).*
 
 In this project, we intend to create a scrolling game (similar to Mario), where a player moves to progress through a level defeating enemies and gaining power ups/penalties as they go. The goal of this project is to make our code as flexible as possible, so that extensions and new features can be added very easily. For example, a few of the flexible features that we want our project to have is to be able to easily add new levels, new characters, new enemies, new features that any character can have, and different interactions between characters. At a high level, our project is broken down in a model (back-end), control, and view (front-end). 
 
@@ -14,9 +12,6 @@ The back-end will be responsible for the keeping track of the features for each 
 The design will be closed in that the front end will not be able to access or changes objects in the back-end. The design will be open so that there can be communication regarding information like how many lives the character has if a level has been won. 
 
 ## Overview
-
-To represent your design at a reasonably high level, break it into modules rather than simply describing all the classes you can think of. Conceptually a module represents related classes (or interfaces) that you expect to be used by other modules in the program. One way to think of it is the classes within a package that you want to be public (intentionally usable by any other class in the program). The classes in a module may be part of one or more conceptual APIs in your high-level design of the project.
-*This section serves as a map of your design for other programmers to gain a general understanding of how and why the program was divided up, and how the individual parts work together to provide the desired functionality. Describe specific modules you intend to create, their purpose with regards to the program's functionality, and how they collaborate with each other, focusing specifically on each one's API. Include a picture of how the modules are   related (these pictures can be hand drawn and scanned in, created with a standard drawing program, or screen shots from a UML design program). Discuss specific classes, methods, and data structures, but not individual lines of code.*
 
 ![](https://i.imgur.com/enflXpf.jpg)
 
@@ -79,7 +74,6 @@ Game Engine (Level Loop):
 * Begins Loop Again
 
 ## Design Details
-*This section describes each module introduced in the Overview in detail (as well as any other sub-modules that may be needed but are not significant to include in a high-level description of the program). Describe how each module's API handles specific features given in the assignment specification, what resources it might use, how it collaborates with other modules, and how each could be extended to include additional requirements (from the assignment specification or discussed by your team). Finally, justify the decision to create each module with respect to the design's key goals, principles, and abstractions.*
 
 ### View:
 The View module is fairly simple: it contains the Screens to be displayed by the Application. Each Screen extends the `Screen` class, which implements the `Displayable` interface. All Displayable objects contain a method `getDisplay` that returns a JavaFX Group.
@@ -274,8 +268,6 @@ The `Physics` class is broken down into `LandPhysics` and `WaterPhysics` sub-cla
       
       
 ## Example games
-*Describe three example games that differ significantly in detail. Clearly identify how the functional differences in these games is supported by your design. Use these examples to help clarify the abstractions in your design.*
-
 ### Example 1
 When the program is run the user will select a user that has already been created. The information associated with this use (the number of points, lives, and the levels completed) will be stored within a file. Then the user will not change characters and will move to select a level. They will play a level that has already been created. This level will be the most basic level, the character will be able to walk on land, destory bricks, and gain power ups. The user will use the arrow keys to move, and the space bar to jump. The user will collide with an enemy on the side, causing it to to die. When the user dies, a life will be lost. When the user runs out of lives, the user will be able to restart the level or to return to the main screen. Our design will definitiely support this, as described in design details as this is the most basic implementation of our game.  
 ### Example 2 
@@ -286,8 +278,6 @@ When the program is run the user will choose to use a user that has already been
   
   
 ## Design Considerations
-*This section describes any issues which need to be addressed or resolved before attempting to devise a complete design solution. Include any design decisions discussed at length (include pros and cons from all sides of the Discussion) as well as any ambiguities, assumptions, or   dependencies regarding the program that impact the overall design.*
-
 1. A design decision that our team discussed was if the Entity should extend ImageView or if there should be seperate classes for the back-end Entity and the front-end Entity. The pro of having the Entity extend ImageView is that then the Entity itself has the ability to contain a coordinate position then can be easily set. The con of having entity extend ImageView and the pro of having tow seperate objects is that if the entity extends ImageView the model is not completly seperated from the view. After discussing with Professor Duvall and a TA (via Piazza) our team decided that in this case, it is okay for the model to not be completely seperated from the view, since it improves the overall code quality and readability. Therefore, we have decided to have the entity extend ImageView. 
 
 2. A design decision that was directly related to the one stated above was where Collision Detection should take place. We debated if the CollionManager be looking for collisions between the images themselves or for collisions between hit boxes that can be created. The downside of having the collisions be checked between the ImageView objects is that all ImageView objects are rectangles, so a collision may be detected even if visually two objects due not intersect. As a result, we decided to detect for Collisions between a hitbox. 
