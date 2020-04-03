@@ -1,0 +1,19 @@
+PlayerProjectile:die
+
+Enemy {
+top:nothing
+side:turnAround
+bottom:nothing
+}
+
+Player {
+top:die
+side:nothing
+bottom:nothing
+}
+
+Terrain {
+top:stopVertical
+side:turnAround
+bottom:stopVertical
+}
