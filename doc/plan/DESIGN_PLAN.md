@@ -208,7 +208,7 @@ Whenever two Entities collide, a CollisionEvent instance is created, which conta
 
 Each Entity unpacks the CollisionEvent to find the type of the other Entity involved. Then, the Entity searches its CollisionBehaviorBundle for a behavior that matches the other Entity's type. It does so by first checking if the other Entity has a "Collision Behavior Override" tag -- a tag stored as an instance variable which indicates an override of typical collision behavior, such as when a Player becomes 'invulnerable' or a Koopa is 'stunned'. The Entity searches its CollisionBehaviorBundle for a behavior that matches this override tag. If no behavior is found, the Entity moves on, and searches its CollisionBehaviorBundle for a behavior that matches the other Entity's class name. If this behavior is not found, the Entity moves on, and searches its CollisionBehaviorBundle for a behavior that matches the other Entity's superclass' name, and so on, moving up the hierarchy of inheritance shown below.
 
-![](https://i.imgur.com/F0Y3DPw.jpg)
+![](https://i.imgur.com/enflXpf.jpg)
 
 
 For example, if a Player and a Koopa marked as 'StunnedKoopa' collide, the Player searches for a behavior for a 'StunnedKoopa'. If no behavior is found, it searches for a behavior for a Koopa. If that behavior is not found, it searches for a behavior for an Enemy, and if that isn't found, it searches for the behavior for an Character.
