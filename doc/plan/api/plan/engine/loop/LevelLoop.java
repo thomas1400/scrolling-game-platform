@@ -13,7 +13,6 @@ public class LevelLoop {
   private EntityManager myEntityManager;
   private CameraManager myCameraManager;
   private InputManager myInputManager;
-  private CollisionManager myCollisionManager;
 
   private EntityList myEntities;
   private Level myLevel;
@@ -22,6 +21,6 @@ public class LevelLoop {
   public LevelLoop() {}
 
   private void processInput() {}
-  
+
 
 }

@@ -5,6 +5,8 @@ import ooga.model.entity.EntityList;
 import ooga.utility.observer.Observable;
 import ooga.utility.observer.Observer;
 
+
+
 public class CollisionManager implements Observable {
 
   private List<Observer> observers;
@@ -20,4 +22,8 @@ public class CollisionManager implements Observable {
   public void notifyObservers() {
 
   }
+  
+  private void detectCollisions(){};
+
+  private void sendCollisions(){};
 }
