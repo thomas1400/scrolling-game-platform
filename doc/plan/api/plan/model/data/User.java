@@ -1,15 +1,28 @@
-package plan.model.data;
+package plan.controller;
 
 public class User {
 
-  private int score;
-  private int lives;
   private int levelUnlocked;
+  private int livesRemaining;
+  private int totalPoints;
 
-  public User loadUser() {
-    return null;
+  public User(){
+
   }
 
-  public void saveUser() { }
+  public User(String userFile){
+
+  }
+
+  public User(int level, int lives, int points){
+
+  }
+
+  public void saveUser(){};
+
+  public void saveAsUser(String fileName){
+
+  }
+
 
 }
