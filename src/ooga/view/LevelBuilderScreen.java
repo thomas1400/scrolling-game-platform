@@ -1,5 +1,5 @@
 package ooga.view;
 
-public class LevelBuilderScreen {
+public class LevelBuilderScreen extends Screen {
 
 }

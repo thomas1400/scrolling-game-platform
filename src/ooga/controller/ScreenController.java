@@ -1,8 +1,9 @@
 package ooga.controller;
 
+import javafx.scene.layout.Pane;
 import ooga.view.Screen;
 
-public class ScreenController {
+public class ScreenController{
 
   private Screen myGameScreen;
   private Screen myUserSelectorScreen;
@@ -11,7 +12,7 @@ public class ScreenController {
   private Screen myLevelBuilderScreen;
   private Screen myHomeScreen;
 
-  public ScreenController(OogaController controller){
+  public ScreenController(Pane mainPane){
 
   }
 
