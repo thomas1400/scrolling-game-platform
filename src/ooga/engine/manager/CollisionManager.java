@@ -1,11 +1,9 @@
-package plan.engine.manager;
+package ooga.engine.manager;
 
 import java.util.List;
-import plan.model.entity.EntityList;
-import plan.utility.observer.Observable;
-import plan.utility.observer.Observer;
-import plan.utility.observer.Observable;
-import plan.utility.observer.Observer;
+import ooga.model.entity.EntityList;
+import ooga.utility.observer.Observable;
+import ooga.utility.observer.Observer;
 
 
 public class CollisionManager implements Observable {
