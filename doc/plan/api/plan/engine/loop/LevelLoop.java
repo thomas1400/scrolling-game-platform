@@ -1,10 +1,9 @@
 package plan.engine.loop;
 
+import ooga.model.data.User;
 import plan.model.data.Level;
-import plan.model.data.User;
 import plan.model.entity.EntityList;
 import plan.engine.manager.CameraManager;
-import plan.engine.manager.CollisionManager;
 import plan.engine.manager.EntityManager;
 import plan.engine.manager.InputManager;
 

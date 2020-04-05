@@ -4,8 +4,8 @@ import ooga.engine.manager.CameraManager;
 import ooga.engine.manager.EntityManager;
 import ooga.engine.manager.InputManager;
 import ooga.model.data.Level;
+import ooga.model.data.User;
 import ooga.model.entity.EntityList;
-import plan.model.data.User;
 
 public class LevelLoop {
 
