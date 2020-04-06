@@ -1,23 +1,42 @@
 package ooga.engine.manager;
 
 import ooga.controller.Communicable;
+import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 
 public class EntityManager implements Communicable {
+  Entity entityReceived;
+  EntityList myEntityList;
 
   private CollisionManager myCollisionManager;
 
   public EntityManager() { }
 
-  public void manageEntities(EntityList entities) { }
+  protected void manageEntities(EntityList entities) {
 
-  @Override
-  public void addEntity() {
+
+    boolean hasEntity = false;
+    for (Entity entity: entities){
+      if (entity.isDead()) {
+        removeEntity(entity);
+      }
+      if (entity == entityReceived) {
+        hasEntity = true;
+      }
+    }
+    if (!hasEntity) {
+      addEntity(entityReceived);
+    }
+  }
+}
 
   }
 
-  @Override
+  public void addEntity() {
+  }
+
   public void removeEntity() {
 
   }
+
 }
