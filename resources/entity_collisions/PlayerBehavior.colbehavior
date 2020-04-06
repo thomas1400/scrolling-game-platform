@@ -1,0 +1,16 @@
+EnemyProjectile:damage
+Projectile:nothing
+
+Enemy {
+top:bounce
+bottom:damage
+side:damage
+}
+
+StunnedEnemy:nothing
+
+Terrain {
+top:stopVertical
+side:stopSide
+bottom:stopVertical
+}
