@@ -78,4 +78,10 @@ public class EntityList implements Iterable<Entity>, Collection<Entity>, Observe
   public void handleNotification(Event e) {
 
   }
+
+  public void removeEntity(Entity entity) {
+  }
+
+  public void addEntity(Entity entityReceived) {
+  }
 }
