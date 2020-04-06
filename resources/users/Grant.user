@@ -1,0 +1,5 @@
+#hello
+#Mon Apr 06 00:19:15 EDT 2020
+db.user=mkyong
+db.password=password
+db.url=localhost 009
