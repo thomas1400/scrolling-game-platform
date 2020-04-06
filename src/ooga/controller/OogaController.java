@@ -20,6 +20,7 @@ public class OogaController {
     ScreenController myScreenController = new ScreenController(mainPane);
 
     Scene myHomeScene = new Scene(mainPane, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
+    myHomeScene.getStylesheets().add("stylesheet.css");
 
     primaryStage.setScene(myHomeScene);
     primaryStage.show();
