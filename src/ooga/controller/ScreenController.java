@@ -1,6 +1,10 @@
 package ooga.controller;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.List;
 import javafx.scene.layout.Pane;
+import ooga.model.data.User;
 import ooga.view.Screen;
 
 public class ScreenController{
@@ -13,7 +17,7 @@ public class ScreenController{
   private Screen myHomeScreen;
 
   public ScreenController(Pane mainPane){
-
+    
   }
 
   private void initializeScreens(){};
@@ -23,4 +27,7 @@ public class ScreenController{
   }
 
   public void switchToScreen(Screen screen){};
+
+  public void setUsers(List<User> myUsers) {
+  }
 }
