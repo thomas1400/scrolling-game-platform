@@ -32,6 +32,7 @@ public class Health extends Ability {
     return myLives == 0;
   }
 
+  @Override
   /**
    * Decreases the number of lives by one if the object is not dead
    */
