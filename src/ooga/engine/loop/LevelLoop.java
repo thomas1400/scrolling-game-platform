@@ -41,7 +41,6 @@ public class LevelLoop implements Loopable {
     manageCollisions();
     updateEntities();
     updateCamera();
-
   }
 
   private void processInput() {}
