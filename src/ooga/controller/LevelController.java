@@ -1,6 +1,7 @@
 package ooga.controller;
 
 import javafx.scene.Group;
+import ooga.engine.loop.LevelLoop;
 import ooga.model.data.Level;
 import ooga.model.data.User;
 import ooga.model.entity.Entity;
