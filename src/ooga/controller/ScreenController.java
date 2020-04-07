@@ -26,8 +26,9 @@ public class ScreenController{
 
   }
 
-  public void switchToScreen(Screen screen){};
+  public void switchToScreen(String screenName){};
 
   public void setUsers(List<User> myUsers) {
+
   }
 }
