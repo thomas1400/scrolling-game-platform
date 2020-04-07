@@ -1,5 +1,5 @@
 package ooga.model.ability;
 
-public class Ability {
-
+abstract public class Ability{
+  abstract public void hit();
 }
