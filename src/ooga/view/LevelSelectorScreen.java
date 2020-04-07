@@ -30,7 +30,7 @@ public class LevelSelectorScreen extends Screen {
 
   public LevelSelectorScreen(ScreenController controller) {
     this.controller = controller;
-    initializeScreen();
+    setWorkingDimensions(3, 1);
     initializeLayout();
   }
 
@@ -40,10 +40,11 @@ public class LevelSelectorScreen extends Screen {
 
     Label user = new Label("User X");
     user.setFont(Font.font(FONT_FAMILY, 20));
-    user.setPrefHeight(50);
+    user.setPrefHeight(workingHeight * 0.1);
     layout.getChildren().add(user);
 
-    LevelSelectorTool lst = new LevelSelectorTool(790,400, "", 0);
+    LevelSelectorTool lst = new LevelSelectorTool(790, 400, "", 0);
+    lst.setPrefHeight(workingHeight * 0.8);
     VBox.setMargin(lst, new Insets(5));
     layout.getChildren().add(lst);
 
@@ -51,25 +52,27 @@ public class LevelSelectorScreen extends Screen {
     menu.setAlignment(Pos.CENTER);
     menu.setPadding(new Insets(5));
     menu.setSpacing(5);
+    menu.setPrefHeight(workingHeight * 0.1);
+
     Button back = new Button("Back");
     back.setOnAction(e->controller.handleButtonPress());
-    HBox.setHgrow(back, Priority.ALWAYS);
+    back.setPrefSize(100, menu.getPrefHeight());
     menu.getChildren().add(back);
 
     Label progress = new Label("Progress");
     progress.setFont(Font.font(FONT_FAMILY, 20));
-    HBox.setHgrow(progress, Priority.ALWAYS);
     menu.getChildren().add(progress);
 
-    LevelProgressBar lpb = new LevelProgressBar(200, 40, 1, 3);
+    LevelProgressBar lpb = new LevelProgressBar(200, menu.getPrefHeight(), 1, 3);
+    lpb.setFillWidth(true);
     menu.getChildren().add(lpb);
 
-    Button start = new Button("Start");
+    Button start = new Button("Begin");
     start.setOnAction(e-> {
       controller.handleButtonPress(); // with lst.getSelected();
       System.out.println(lst.getSelected());
     });
-    HBox.setHgrow(start, Priority.ALWAYS);
+    start.setPrefSize(100, menu.getPrefHeight());
     menu.getChildren().add(start);
 
     layout.getChildren().add(menu);
@@ -112,19 +115,39 @@ public class LevelSelectorScreen extends Screen {
     private final Color background = Color.WHITE;
     private final Color fill = Color.DARKGREY;
     private final Color border = Color.BLACK;
+    private double levelProgressFraction;
 
-    LevelProgressBar(int width, int height, int levelProgress, int totalLevels) {
+    LevelProgressBar(double width, double height, int levelProgress, int totalLevels) {
       this.setPrefSize(width, height);
+      this.setMaxSize(width, height);
+      levelProgressFraction = (float) levelProgress / totalLevels;
 
       this.setBackground(new Background(new BackgroundFill(background, null, null)));
-      Rectangle bar = new Rectangle(width * (float) levelProgress / totalLevels - 1, height - 1);
+
+
+      this.setBorder(new Border(new BorderStroke(border,
+          BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+    }
+
+    private void initializeBar(double width, double height) {
+      Rectangle bar = new Rectangle(width * (float) levelProgressFraction - 2, height - 2);
       bar.setFill(fill);
       bar.setX(1);
       bar.setY(1);
       this.getChildren().add(bar);
+    }
 
-      this.setBorder(new Border(new BorderStroke(border,
-          BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+    void setFillWidth(boolean value) {
+      if (value) {
+        this.setMaxWidth(Double.MAX_VALUE);
+      }
+    }
+
+    @Override
+    public void resize(double width, double height) {
+      super.resize(width, height);
+      this.getChildren().clear();
+      initializeBar(width, height);
     }
 
   }

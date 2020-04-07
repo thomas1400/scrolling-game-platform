@@ -23,7 +23,6 @@ public class HomeScreen extends Screen {
 
   public HomeScreen(ScreenController controller) {
     this.controller = controller;
-    initializeScreen();
     initializeLayout();
   }
 

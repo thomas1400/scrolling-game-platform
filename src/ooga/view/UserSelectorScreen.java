@@ -1,5 +1,7 @@
 package ooga.view;
 
+import java.util.Iterator;
+import java.util.Set;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -31,7 +33,7 @@ public class UserSelectorScreen extends Screen {
   }
 
 
-  private class UserSelector extends Pane {
+  private class UserSelector extends Pane { // add a new user
 
     private static final double PADDING = 5;
     private final int NUM_USERS = 3;
