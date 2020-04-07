@@ -22,4 +22,8 @@ public class Level {
     return myName;
   }
 
+  public EntityList getEntities(){
+    return null;
+  }
+
 }
