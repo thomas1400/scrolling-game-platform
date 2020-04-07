@@ -13,23 +13,18 @@ public class EntityManager implements Communicable {
   public EntityManager() { }
 
   protected void manageEntities(EntityList entities) {
-
-
     boolean hasEntity = false;
-    for (Entity entity: entities){
-      if (entity.isDead()) {
+    /*for (Entity entity: entities){
+      *//*if (entity.isDead()) {
         removeEntity(entity);
-      }
+      }*//*
       if (entity == entityReceived) {
         hasEntity = true;
       }
-    }
+    }*/
     if (!hasEntity) {
-      addEntity(entityReceived);
+      //addEntity(entityReceived);
     }
-  }
-}
-
   }
 
   public void addEntity() {
@@ -38,5 +33,4 @@ public class EntityManager implements Communicable {
   public void removeEntity() {
 
   }
-
 }
