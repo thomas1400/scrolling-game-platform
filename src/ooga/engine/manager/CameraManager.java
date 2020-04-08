@@ -11,41 +11,51 @@ public class CameraManager {
   int screenHeight;
   EntityList activatedEntities;
   EntityList deactivatedEntities;
+  EntityList onScreenEntities;
 
   public CameraManager(Entity character){
-    character = mainCharacter;
+    mainCharacter = character;
   }
 
-  protected void manageCamera(EntityList entities){
+  public void updateCamera(EntityList entities){
     if(mainCharacter.getX()!=xCenter | mainCharacter.getY()!=yCenter){
       double xChange = mainCharacter.getX()-xCenter;
       double yChange = mainCharacter.getY()-yCenter;
       mainCharacter.setX(xCenter);
       mainCharacter.setY(yCenter);
-      /*for(Entity entity : entities){
-        if (entity!=mainCharacter){
-          entity.setX(entity.getX()- xChange);
-          entity.setY(entity.getY()- yChange);
-        }
-      }*/
-      
+      entities.changeAllCoordinates(xChange, yChange);
+      determineEntitiesOnScreen(entities);
     }
-
   }
 
-  private void updateCoordinates(){
-
+  public void initializeActivationStorage() {
+    activatedEntities = new EntityList();
+    deactivatedEntities = new EntityList();
   }
 
-  public void activateEntities(EntityList entities){
-    /*for (Entity entity : entities){
-      if(entity.getX()<screenWidth && entity.getY()<screenHeight){
-        //entity.activate();
+  public EntityList activateEntities(EntityList entities) {
+    for (Entity entity : entities) {
+      if (entity.getX() < screenWidth && entity.getY() < screenHeight) {
+        activatedEntities.addEntity(entity);
+        onScreenEntities.addEntity(entity);
       }
-      else if (){)
     }
+    return activatedEntities;
+  }
 
-    }*/
+  private void determineEntitiesOnScreen(EntityList entities) {
+    initializeActivationStorage();
+    for (Entity entity : entities) {
+      if (entity.getX() < screenWidth && entity.getY() < screenHeight && !onScreenEntities
+          .contains(entity)) {
+        activatedEntities.addEntity(entity);
+        onScreenEntities.addEntity(entity);
+      } else if ((entity.getX() > screenWidth || entity.getY() > screenHeight) && onScreenEntities
+          .contains(entity)) {
+        onScreenEntities.removeEntity(entity);
+        deactivatedEntities.addEntity(entity);
+      }
+    }
   }
 
   public EntityList getActivatedEntities(){
@@ -54,7 +64,5 @@ public class CameraManager {
   public EntityList getDeactivatedEntities(){
     return deactivatedEntities;
   }
-  public void resetActivationStorage(){}
-
 
 }

@@ -1,5 +1,6 @@
 package ooga.engine.loop;
 
+import java.awt.event.KeyListener;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -13,8 +14,12 @@ import ooga.model.data.Level;
 import ooga.model.data.User;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
 
-public class LevelLoop implements Loopable {
+public class LevelLoop implements Loopable, KeyListener {
 
   private Communicable myLevelController;
   private EntityManager myEntityManager;
@@ -36,8 +41,11 @@ public class LevelLoop implements Loopable {
     myCameraManager = new CameraManager(myEntities.getMainCharacter());
     myInputManager = new InputManager();
     myCollisionManager = new CollisionManager();
-    myCameraManager.activateEntities(myEntities);
-    //set initial entities
+    myVisibleEntities = myCameraManager.activateEntities(myEntities);
+    createTimeline();
+  }
+
+  private void createTimeline() {
     KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> {
       loop();
     });
@@ -55,37 +63,31 @@ public class LevelLoop implements Loopable {
   }
 
   private void processInput() {
+
   }
 
   private void manageCollisions() {
   }
 
   private void updateEntities() {
+    //myEntityManager.
   }
 
   private void updateCamera() {
+    myCameraManager.updateCamera(myEntities);
     EntityList activatedEntities = myCameraManager.getActivatedEntities();
     EntityList deactivatedEntities = myCameraManager.getDeactivatedEntities();
     sendEntitiesToController(activatedEntities, deactivatedEntities);
-
   }
 
   private void sendEntitiesToController(EntityList activatedEntities, EntityList deactivedEntities) {
-    /*for(Entity entity: activatedEntities){
-      sendrEntityToController(entity);
+    for(Entity entity: activatedEntities){
+      myLevelController.addEntity(entity);
   }
     for(Entity entity: deactivedEntities){
-      removeEntityFromController(entity);
-    }*/
+      myLevelController.removeEntity(entity);
+    }
   }
-
-  private void sendEntityToController(){
-  }
-
-  private void removeEntityFromController(){
-  }
-
-
   public void begin() {
     myTimeline.play();
   }
@@ -103,12 +105,24 @@ public class LevelLoop implements Loopable {
   }
 
   public void exit() {
-
+    myTimeline.stop();
   }
 
-  public EntityList getIniitalVisibleEntityList() {
+  public EntityList getInitialVisibleEntityList() {
   return myVisibleEntities;
   }
 
+  public void keyTyped(KeyEvent e) {
 
+  }
+
+  public void keyPressed(KeyEvent e) {
+    System.out.println("hi");
+
+  }
+
+  public void keyReleased(KeyEvent e) {
+    System.out.println("bye");
+
+  }
 }
