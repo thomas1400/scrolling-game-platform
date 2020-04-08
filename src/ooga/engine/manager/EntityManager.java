@@ -26,11 +26,13 @@ public class EntityManager implements Communicable {
       //addEntity(entityReceived);
     }
   }
+  @Override
+  public void addEntity(Entity entity) {
 
-  public void addEntity() {
   }
 
-  public void removeEntity() {
+  @Override
+  public void removeEntity(Entity entity) {
 
   }
 }
