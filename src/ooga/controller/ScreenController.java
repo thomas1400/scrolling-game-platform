@@ -27,9 +27,8 @@ public class ScreenController{
 
   private Map<String, Screen> myScreens = new HashMap<>();
 
-  public ScreenController(Pane mainPane, User mainUser){
+  public ScreenController(Pane mainPane){
     myMainPane = mainPane;
-    myUser = mainUser;
     myScreens.put("game", myGameScreen);
   }
 

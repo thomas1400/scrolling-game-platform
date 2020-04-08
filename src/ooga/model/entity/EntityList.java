@@ -31,9 +31,13 @@ public class EntityList implements Observer {
   public void addEntity(Entity entityReceived) {
   }
 
-  public Entity getMainCharacter() {
+  public Entity getMainEntity() {
 
     return myMainCharacter;
+  }
+
+  public void addMainEntity(Entity mainEntity) {
+    myMainCharacter = mainEntity;
   }
 
   public List<Entity> getAsList(){
