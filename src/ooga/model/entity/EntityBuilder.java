@@ -8,28 +8,7 @@ import ooga.model.ability.Ability;
 public class EntityBuilder {
 
   private static final String ABILITY_PACKAGE = "ooga.model.ability.";
-
-  private ResourceParser parser;
-  private Entity entity;
-
-  //TODO: check that the path is valid
-  /**
-   * Constructor to make an entity consisting of different abilities
-   * Must be passed in the proper strings following the format of an
-   * ability building file, where keys are valid ability classes
-   * and values are valid ability types
-   * @param statsPackageName where to find the file in the file hierarchy
-   * @param statsFilename file name for the entity stat resource file
-   */
-  public EntityBuilder(String statsPackageName, String statsFilename){
-    parser = new ResourceParser(statsPackageName, statsFilename);
-    entity = new Entity();
-    for(String s : parser.getKeys()){
-      //reflection!
-      Ability a = makeAbility(s, parser.getSymbol(s));
-      entity.addAbility(a);
-    }
-  }
+  private static final String STATS_PACKAGE_NAME = "resources.entities.";
 
   //TODO take out throwing runtime exceptions, throw actual ones
   /**
@@ -38,12 +17,11 @@ public class EntityBuilder {
    * @param stats String containing the specific type of the sub Ability
    * @return created Ability
    */
-  private Ability makeAbility(String abilityType, String stats){
+  private static Ability makeAbility(String abilityType, String stats){
     try{
       Class abilityClass = Class.forName(ABILITY_PACKAGE + abilityType);
-      Constructor abilityClassConstructor = abilityClass.getConstructor(Integer.class);
-      Integer param = Integer.parseInt(stats);
-      return (Ability) abilityClassConstructor.newInstance(param);
+      Constructor abilityClassConstructor = abilityClass.getConstructor(String.class);
+      return (Ability) abilityClassConstructor.newInstance(stats);
     } catch (ClassNotFoundException e){
       System.out.println("ClassNotFoundException");
       throw new RuntimeException(e);
@@ -62,11 +40,24 @@ public class EntityBuilder {
     }
   }
 
+  //TODO check that file path is valid
   /**
    * Getter for created entity
+   * Must be passed in the proper strings following the format of an
+   * ability building file, where keys are valid ability classes
+   * and values are valid ability types
+   * @param statsFilename file name for the entity stat resource file
    * @return created entity
    */
-  public Entity getEntity(){
+  public static Entity getEntity(String statsFilename){
+    Entity entity = new Entity();
+    ResourceParser parser = new ResourceParser(STATS_PACKAGE_NAME, statsFilename);
+    entity = new Entity();
+    for(String s : parser.getKeys()){
+      //reflection!
+      Ability a = makeAbility(s, parser.getSymbol(s));
+      entity.addAbility(a);
+    }
     return entity;
   }
 
