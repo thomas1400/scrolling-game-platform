@@ -8,6 +8,7 @@ import ooga.model.ability.Ability;
 public class EntityBuilder {
 
   private static final String ABILITY_PACKAGE = "ooga.model.ability.";
+  private static final String STATS_PACKAGE_NAME = "resources.entities.";
 
   //TODO take out throwing runtime exceptions, throw actual ones
   /**
@@ -45,13 +46,12 @@ public class EntityBuilder {
    * Must be passed in the proper strings following the format of an
    * ability building file, where keys are valid ability classes
    * and values are valid ability types
-   * @param statsPackageName where to find the file in the file hierarchy
    * @param statsFilename file name for the entity stat resource file
    * @return created entity
    */
-  public static Entity getEntity(String statsPackageName, String statsFilename){
+  public static Entity getEntity(String statsFilename){
     Entity entity = new Entity();
-    ResourceParser parser = new ResourceParser(statsPackageName, statsFilename);
+    ResourceParser parser = new ResourceParser(STATS_PACKAGE_NAME, statsFilename);
     entity = new Entity();
     for(String s : parser.getKeys()){
       //reflection!
