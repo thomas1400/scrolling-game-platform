@@ -18,7 +18,6 @@ public class GameScreen extends Screen {
   private ScreenController screenController;
 
   public GameScreen(ScreenController controller) {
-    levelController = new LevelController(this);
     this.screenController = controller;
     initializeScreen();
     initializeLayout();
@@ -66,6 +65,10 @@ public class GameScreen extends Screen {
     layout.getChildren().add(menuBar);
 
     this.getChildren().add(layout);
+  }
+
+  public void giveLevelController(LevelController lc) {
+    this.levelController = lc;
   }
 
 }
