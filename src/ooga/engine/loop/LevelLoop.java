@@ -4,14 +4,12 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 import ooga.controller.Communicable;
-import ooga.controller.LevelController;
 import ooga.engine.manager.CameraManager;
 import ooga.engine.manager.CollisionManager;
 import ooga.engine.manager.EntityManager;
 import ooga.engine.manager.InputManager;
 import ooga.model.data.Level;
 import ooga.model.data.User;
-import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 
 public class LevelLoop implements Loopable {
@@ -33,7 +31,7 @@ public class LevelLoop implements Loopable {
     myEntities = EntityList;
     myLevelController = levelController;
     myEntityManager = new EntityManager();
-    myCameraManager = new CameraManager(myEntities.getMainCharacter());
+    myCameraManager = new CameraManager(myEntities.getMainEntity());
     myInputManager = new InputManager();
     myCollisionManager = new CollisionManager();
     myCameraManager.activateEntities(myEntities);

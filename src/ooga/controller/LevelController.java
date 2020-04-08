@@ -1,7 +1,9 @@
 package ooga.controller;
 
+import java.io.FileNotFoundException;
 import javafx.scene.Group;
 import ooga.engine.loop.LevelLoop;
+import ooga.exceptions.ExceptionFeedback;
 import ooga.model.data.Level;
 import ooga.model.data.User;
 import ooga.model.entity.Entity;
@@ -15,7 +17,13 @@ public class LevelController implements Communicable{
 
   public LevelController(GameScreen gs, User user, String levelName) {
     myUser = user;
-    Level level = LevelBuilder.buildLevel(levelName);
+    try {
+      Level level = LevelBuilder.buildLevel(levelName);
+    } catch (ExceptionFeedback exceptionFeedback) {
+      exceptionFeedback.printStackTrace();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
     //LevelLoop myLevelLoop = new LevelLoop(this, level.getEntities());
     //Entity List visibleEntityList = myLevelLoop.getInitialVisibleEntityList()
     //myVisualGroup.getChildren().addAll(visibleEntityList.asList());
