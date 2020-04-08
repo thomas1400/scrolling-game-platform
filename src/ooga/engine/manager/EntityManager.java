@@ -35,14 +35,4 @@ public class EntityManager implements Communicable {
   public void removeEntity(Entity entity) {
 
   }
-
-  @Override
-  public void addEntity(Entity entity) {
-
-  }
-
-  @Override
-  public void removeEntity(Entity entity) {
-
-  }
 }
