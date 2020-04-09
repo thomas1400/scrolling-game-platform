@@ -1,9 +1,10 @@
 package ooga.view;
 
+import java.util.List;
+import java.util.Map;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
@@ -16,36 +17,32 @@ import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javax.swing.BorderFactory;
 import ooga.controller.ScreenController;
+import ooga.view.factory.ControlFactory;
 
 public class LevelSelectorScreen extends Screen {
 
-  private ScreenController controller;
-
   public LevelSelectorScreen(ScreenController controller) {
-    this.controller = controller;
+    super(controller);
     setWorkingDimensions(3, 1);
     initializeLayout();
   }
 
   public void initializeLayout() {
+    ControlFactory cf = new ControlFactory(PADDING);
     VBox layout = new VBox();
     layout.setAlignment(Pos.TOP_CENTER);
 
-    Label user = new Label("User X");
-    user.setFont(Font.font(FONT_FAMILY, 20));
+    Label user = cf.label("User X", BUTTON_FONT_SIZE);
     user.setPrefHeight(workingHeight * 0.1);
     layout.getChildren().add(user);
 
-    LevelSelectorTool lst = new LevelSelectorTool(790, 400, "", 0);
-    lst.setPrefHeight(workingHeight * 0.8);
-    VBox.setMargin(lst, new Insets(5));
+    LevelSelectorTool lst = new LevelSelectorTool(workingWidth, workingHeight*0.8, "", 0);
+    cf.setMargin(lst);
     layout.getChildren().add(lst);
 
     HBox menu = new HBox();
@@ -54,25 +51,18 @@ public class LevelSelectorScreen extends Screen {
     menu.setSpacing(5);
     menu.setPrefHeight(workingHeight * 0.1);
 
-    Button back = new Button("Back");
-    back.setOnAction(e->controller.handleButtonPress());
-    back.setPrefSize(100, menu.getPrefHeight());
+    Button back = cf.button(resources.getString("back"), BUTTON_FONT_SIZE,
+        e->handleButtonPress("back") , 100, menu.getPrefHeight());
     menu.getChildren().add(back);
 
-    Label progress = new Label("Progress");
-    progress.setFont(Font.font(FONT_FAMILY, 20));
+    Label progress = cf.label(resources.getString("progress"), BUTTON_FONT_SIZE);
     menu.getChildren().add(progress);
 
     LevelProgressBar lpb = new LevelProgressBar(200, menu.getPrefHeight(), 1, 3);
-    lpb.setFillWidth(true);
     menu.getChildren().add(lpb);
 
-    Button start = new Button("Begin");
-    start.setOnAction(e-> {
-      controller.handleButtonPress(); // with lst.getSelected();
-      System.out.println(lst.getSelected());
-    });
-    start.setPrefSize(100, menu.getPrefHeight());
+    Button start = cf.button(resources.getString("begin"), BUTTON_FONT_SIZE,
+        e-> handleButtonPress("begin"), 100, menu.getPrefHeight());
     menu.getChildren().add(start);
 
     layout.getChildren().add(menu);
@@ -84,8 +74,9 @@ public class LevelSelectorScreen extends Screen {
 
     private ToggleGroup levels;
     private final int NUM_LEVELS = 3;
+    private Map<Integer, List<Integer>> connections;
 
-    LevelSelectorTool(int width, int height, String levelMapFilePath, int levelProgress) {
+    LevelSelectorTool(double width, double height, String levelMapFilePath, int levelProgress) {
 
       this.setPrefSize(width, height);
       this.setMinSize(width, height);

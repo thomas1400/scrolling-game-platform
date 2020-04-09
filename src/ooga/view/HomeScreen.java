@@ -11,22 +11,21 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import ooga.controller.ScreenController;
+import ooga.view.factory.ControlFactory;
 
 public class HomeScreen extends Screen {
 
-  private static final String FONT_FAMILY = "Cambria";
-  private static final List<String> BUTTON_TEXTS = List.of(
-    "Start", "Statistics", "Help", "Change User"
+  private static final List<String> BUTTON_TAGS = List.of(
+    "start", "statistics", "help", "user-select"
   );
 
-  private ScreenController controller;
-
   public HomeScreen(ScreenController controller) {
-    this.controller = controller;
+    super(controller);
     initializeLayout();
   }
 
   private void initializeLayout() {
+    ControlFactory cf = new ControlFactory(PADDING);
     VBox layout = new VBox();
     layout.setAlignment(Pos.TOP_CENTER);
 
@@ -43,11 +42,8 @@ public class HomeScreen extends Screen {
     menu.setAlignment(Pos.TOP_CENTER);
     menu.setPadding(new Insets(5));
     menu.setSpacing(5);
-    for (String text : BUTTON_TEXTS) {
-      Button button = new Button();
-      button.setText(text);
-      button.setOnAction(e-> controller.handleButtonPress());
-      button.setPrefSize(100, 80);
+    for (String tag : BUTTON_TAGS) {
+      Button button = cf.button(resources.getString(tag), BUTTON_FONT_SIZE, e->handleButtonPress(tag), 100, 80);
       menu.getChildren().add(button);
     }
     layout.getChildren().add(menu);

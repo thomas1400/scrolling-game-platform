@@ -7,7 +7,6 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import ooga.controller.LevelController;
 import ooga.controller.ScreenController;
@@ -15,11 +14,9 @@ import ooga.controller.ScreenController;
 public class GameScreen extends Screen {
 
   private LevelController levelController;
-  private ScreenController screenController;
 
   public GameScreen(ScreenController controller) {
-    this.screenController = controller;
-    initializeScreen();
+    super(controller);
     initializeLayout();
   }
 
