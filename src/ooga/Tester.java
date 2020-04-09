@@ -12,6 +12,6 @@ import ooga.view.GameScreen;
 public class Tester {
 
   public static void main(String[] args) throws FileNotFoundException, ExceptionFeedback {
-    LevelBuilder.buildLevel("myExampleLevel");
+    LevelBuilder.buildLevel("0-1");
   }
 }

@@ -1,6 +1,7 @@
 package ooga.view;
 
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -67,8 +68,12 @@ public class GameScreen extends Screen {
     this.getChildren().add(layout);
   }
 
-  public void giveLevelController(LevelController lc) {
+  public void setLevelController(LevelController lc) {
     this.levelController = lc;
+  }
+
+  public void setVisibleGroup(Group visibleGroup){
+
   }
 
 }
