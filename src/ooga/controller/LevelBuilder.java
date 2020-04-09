@@ -9,7 +9,6 @@ import java.util.Scanner;
 import ooga.exceptions.ExceptionFeedback;
 import ooga.model.data.Level;
 import ooga.model.entity.Entity;
-import ooga.model.entity.EntityBuilder;
 import ooga.model.entity.EntityList;
 
 public final class LevelBuilder {

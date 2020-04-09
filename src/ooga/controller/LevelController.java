@@ -44,6 +44,11 @@ public class LevelController implements Communicable{
   public void begin() {
   }
 
+  public void handleUserInput(){
+
+
+  }
+
   //TODO: Add ability for LevelLoop to pass up events that could effect the user (ex: extra life
   // or addition of coins etc).
 }
