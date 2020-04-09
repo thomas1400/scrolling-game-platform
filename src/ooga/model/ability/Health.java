@@ -12,6 +12,7 @@ public class Health extends Ability {
   private static final String HEALTH_FILE = "Health.properties";
 
   private int myLives;
+  private boolean immortal;
 
   /**
    * Health constructor
@@ -22,21 +23,27 @@ public class Health extends Ability {
     ResourceParser parser = new ResourceParser(RESOURCE_PACKAGE, HEALTH_FILE);
     //look in the health properties file, and get the number of lives associated with that vitality
     myLives = Integer.parseInt(parser.getSymbol(vitality));
+    immortal = false;
+  }
+
+  public Health(){
+    immortal = true;
+    //todo if isDead breaks than add myLives = 1;
   }
 
   /**
    * Checks to see if the health is 'empty'
-   * @return if myLives is equal to zero
+   * @return if the entity is immortal or myLives is equal to zero
    */
   public boolean isDead(){
-    return myLives == 0;
+    return (immortal || myLives == 0);
   }
 
   /**
    * Decreases the number of lives by one if the object is not dead
    */
   public void hit(){
-    if(!this.isDead()) {
+    if(!immortal && !this.isDead()) {
       myLives -= 1;
     }
   }

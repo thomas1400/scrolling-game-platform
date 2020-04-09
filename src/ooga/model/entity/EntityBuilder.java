@@ -2,6 +2,7 @@ package ooga.model.entity;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import javafx.scene.image.Image;
 import ooga.model.ResourceParser;
 import ooga.model.ability.Ability;
 
@@ -50,13 +51,15 @@ public class EntityBuilder {
    * @return created entity
    */
   public static Entity getEntity(String statsFilename){
-    Entity entity = new Entity();
     ResourceParser parser = new ResourceParser(STATS_PACKAGE_NAME, statsFilename);
-    entity = new Entity();
+    Entity entity = new Entity(new Image("resources.images.entityimages."+parser.getSymbol("Image")));
     for(String s : parser.getKeys()){
-      //reflection!
-      Ability a = makeAbility(s, parser.getSymbol(s));
-      entity.addAbility(a);
+      //todo remove this if?
+      if(!s.equals("Image")) {
+        //reflection!
+        Ability a = makeAbility(s, parser.getSymbol(s));
+        entity.addAbility(s, a);
+      }
     }
     return entity;
   }
