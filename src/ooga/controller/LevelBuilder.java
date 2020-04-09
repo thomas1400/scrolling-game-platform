@@ -24,7 +24,7 @@ public final class LevelBuilder {
   private static final String MAIN_ENTITY_SYMBOL = "X";
   public static final String EMPTY_SPACE_SYMBOL = ".";
   public static final String WIDTH_SPECIFIER = "levelWidth";
-  public static final String HEIGHT_SPECIFIER = "levelWidth";
+  public static final String HEIGHT_SPECIFIER = "levelHeight";
   public static final int KEY_INDEX = 0;
   public static final int VALUE_INDEX = 1;
 
@@ -42,7 +42,7 @@ public final class LevelBuilder {
 
     EntityList levelEntities = buildEntities(levelFile, entityInfo, levelHeight, levelWidth);
 
-    Level level = new Level(levelName, levelEntities);
+    //Level level = new Level(levelName, levelEntities);
 
     return null;
   }
@@ -54,7 +54,7 @@ public final class LevelBuilder {
 
     assert listOfFiles != null;
     for (File levelFile : listOfFiles){
-      if (levelFile.getName().equals(levelName)) {
+      if (levelFile.getName().equals(levelName+LEVEL_FILE_EXTENSION)) {
         //TODO: remove print statement
         System.out.println(levelFile.getName() + " file was found. Proceeding to Parse Level");
         return levelFile;
@@ -69,23 +69,24 @@ public final class LevelBuilder {
     Map<String, String> sectionMap = new HashMap<>();
 
     Scanner sc = new Scanner(levelFile);
-    String nextLine = sc.nextLine();
-    nextLine = moveToSection(sectionTag, sc, nextLine);
+    sc = moveToSection(sectionTag, sc);
 
-    addDataToMap(sectionMap, sc, nextLine);
+    addDataToMap(sectionMap, sc);
 
     return sectionMap;
   }
 
-  private static String moveToSection(String sectionTag, Scanner sc, String nextLine) {
+  private static Scanner moveToSection(String sectionTag, Scanner sc) {
+    String nextLine = sc.nextLine();
     while (!nextLine.contains(sectionTag)){
       nextLine = sc.nextLine();
     }
-    return nextLine;
+    return sc;
   }
 
-  private static void addDataToMap(Map<String, String> sectionMap, Scanner sc, String nextLine)
+  private static void addDataToMap(Map<String, String> sectionMap, Scanner sc)
       throws ExceptionFeedback {
+    String nextLine = sc.nextLine();
     while (!nextLine.contains(TAG_DELIMITER)){
       String[] sectionLine = nextLine.split(KEY_VAL_SEPARATOR);
       if (sectionLine.length == 2){
@@ -100,14 +101,14 @@ public final class LevelBuilder {
   }
 
   private static EntityList buildEntities(File levelFile, Map<String, String> entityInfo,
-      int height, int width)
+      int levelHeight, int width)
       throws FileNotFoundException {
     EntityList myEntities = new EntityList();
 
     Scanner sc = new Scanner(levelFile);
-    moveToSection(LEVEL_TAG, sc, sc.nextLine());
+    moveToSection(LEVEL_TAG, sc);
 
-    for (int j = 0; j < height; j++){
+    for (int j = 0; j < levelHeight; j++){
       String[] levelLine = sc.nextLine().split(LEVEL_OBJ_SEPARATOR);
       for (int i = 0; i < width; i++){
         String symbol = levelLine[i];
@@ -116,10 +117,13 @@ public final class LevelBuilder {
           //EntityBuilder myEntityBuilder = new EntityBuilder(entityFile);
           //Entity myEntity = myEntityBuilder.getEntity();
           //myEntity.setX(getRelativeX(i));
-          //myEntity.setY(getRelativeY(j,height));
+          //double imageHeight = myEntity.getBoundsInLocal().getHeight();
+          //myEntity.setY(getRelativeY(j,levelHeight,imageHeight));
           if (symbol.equals(MAIN_ENTITY_SYMBOL)){
+            System.out.println("Building Main Entity: " + entityFile);
             //myEntities.addMainEntity(myEntity);
           } else{
+            System.out.println("Building Entity: " + entityFile);
             //myEntities.addEntity(myEntity);
           }
         }
@@ -129,8 +133,8 @@ public final class LevelBuilder {
     return myEntities;
   }
 
-  private static double getRelativeY(int j, int height) {
-    return (height-HEIGHT_ADJUST-j)*PIXEL_BLOCK_RATIO;
+  private static double getRelativeY(int j, int lvlHeight, double imgHeight) {
+    return (lvlHeight-HEIGHT_ADJUST-j)*PIXEL_BLOCK_RATIO + imgHeight;
   }
 
   private static double getRelativeX(int i) {
