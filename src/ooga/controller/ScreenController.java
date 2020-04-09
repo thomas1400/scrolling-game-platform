@@ -1,8 +1,12 @@
 package ooga.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import ooga.model.data.User;
@@ -34,10 +38,14 @@ public class ScreenController{
 
   public ScreenController(Stage primaryStage){
     myStage = primaryStage;
+    try {
+      Image icon = new Image(new FileInputStream("artwork/goomba.png"));
+      myStage.getIcons().add(icon);
+    } catch (Exception ignored) { }
 
     initializeScreens();
 
-    switchToScreen("LevelSelectorScreen");
+    switchToScreen("UserSelectorScreen");
   }
 
   private void initializeScreens(){
@@ -51,8 +59,8 @@ public class ScreenController{
   public void switchToScreen(String screenName){
     Screen nextScreen = myScreens.get(screenName);
     Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
-    //File file = new File("resources/stylesheet.css");
-    //nextScene.getStylesheets().add(file.toURI().toString());
+    File file = new File("resources/stylesheet.css");
+    nextScene.getStylesheets().add(file.toURI().toString());
     Scene lastScene = myStage.getScene();
     myStage.setScene(nextScene);
     // TODO : look at alternatives to this bugfix, added by Thomas
