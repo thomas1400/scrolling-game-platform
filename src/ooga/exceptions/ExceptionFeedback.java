@@ -2,6 +2,9 @@ package ooga.exceptions;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 
 public class ExceptionFeedback {
@@ -15,7 +18,7 @@ public class ExceptionFeedback {
    * @param message message to include
    */
   public static void throwException(Exception e, String message) {
-    Alert alert = createAlert(e.toString(), message);
+    Alert alert = createAlert(e.getClass().getSimpleName(), message);
 
     alert.showAndWait();
     e.printStackTrace();
@@ -23,7 +26,8 @@ public class ExceptionFeedback {
   }
 
   private static Alert createAlert(String header, String message) {
-    Alert alert = new Alert(AlertType.ERROR);
+    ButtonType quit = new ButtonType("QUIT", ButtonData.OK_DONE);
+    Alert alert = new Alert(AlertType.ERROR, "", quit);
     alert.setHeaderText(header);
 
     StringBuilder sb = new StringBuilder(message);
