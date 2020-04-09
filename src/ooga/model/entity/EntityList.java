@@ -16,7 +16,6 @@ public class EntityList implements Iterable<Entity>, Observer {
 
   public EntityList(){
     myEntities = new ArrayList<>();
-
   }
 
   public void addEntity(Entity entityReceived) {
@@ -25,6 +24,14 @@ public class EntityList implements Iterable<Entity>, Observer {
 
   public void removeEntity(Entity entity) {
     myEntities.remove(entity);
+  }
+
+  public void addAllEntities(EntityList entities){
+    myEntities.addAll(entities.getAsList());
+  }
+
+  public void removeAllEntities(EntityList entities){
+    myEntities.removeAll(entities.getAsList());
   }
 
   public boolean contains(Entity entity) {

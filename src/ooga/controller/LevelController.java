@@ -7,6 +7,7 @@ import ooga.exceptions.ExceptionFeedback;
 import ooga.model.data.Level;
 import ooga.model.data.User;
 import ooga.model.entity.Entity;
+import ooga.model.entity.EntityList;
 import ooga.view.GameScreen;
 
 public class LevelController implements Communicable{
@@ -38,6 +39,16 @@ public class LevelController implements Communicable{
   @Override
   public void removeEntity(Entity entity) {
     myVisualGroup.getChildren().remove(entity);
+  }
+
+  @Override
+  public void addAllEntities(EntityList entities) {
+
+  }
+
+  @Override
+  public void removeAllEntities(EntityList entities) {
+
   }
 
   //TODO: Add ability for LevelLoop to pass up events that could effect the user (ex: extra life

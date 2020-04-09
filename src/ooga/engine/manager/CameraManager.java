@@ -8,14 +8,16 @@ public class CameraManager {
   Entity mainEntity;
   int xCenter;
   int yCenter;
-  int screenWidth;
-  int screenHeight;
+  double screenHeight;
+  double screenWidth;
   EntityList activatedEntities;
   EntityList deactivatedEntities;
   EntityList onScreenEntities;
 
-  public CameraManager(Entity character) {
+  public CameraManager(Entity character, double height, double width) {
     mainEntity = character;
+    screenHeight = height;
+    screenWidth = width;
   }
 
   public void updateCamera(EntityList entities) {
@@ -39,6 +41,8 @@ public class CameraManager {
   }
 
   public EntityList initializeActiveEntities(EntityList entities) {
+    initializeActivationStorage();
+    onScreenEntities = new EntityList();
     for (Entity entity : entities) {
       if (entity.getX() < screenWidth && entity.getY() < screenHeight) {
         activatedEntities.addEntity(entity);
@@ -68,6 +72,9 @@ public class CameraManager {
   }
   public EntityList getDeactivatedEntities(){
     return deactivatedEntities;
+  }
+  public EntityList getOnScreenEntities(){
+    return onScreenEntities;
   }
 
 }

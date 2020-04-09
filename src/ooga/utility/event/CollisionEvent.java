@@ -2,25 +2,22 @@ package ooga.utility.event;
 
 import ooga.model.entity.Entity;
 
-public class CollisionEvent extends Event {
+public class CollisionEvent{
 
-  private Entity a, b;
-  private Side aSide, bSide;
+  private String typeOfCollision;
+  private String whoCollidedWith;
 
-  public enum Side {
-    TOP,
-    BOTTOM,
-    SIDE
+
+  public CollisionEvent(String whereCollisionOccurred, String whoCollisionOccurredWith){
+    typeOfCollision = whereCollisionOccurred;
+    whoCollidedWith = whoCollisionOccurredWith;
   }
 
-  public CollisionEvent(Entity a, Side aSide, Entity b, Side bSide) { }
-
-  public Entity getOther(Entity one) {
-    if (a == one) {
-      return b;
-    } else {
-      return a;
-    }
+  public String getTypeOfCollision(){
+    return typeOfCollision;
   }
 
+  public String getWhoCollidedWith(){
+    return whoCollidedWith;
+  }
 }
