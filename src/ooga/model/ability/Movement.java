@@ -4,7 +4,6 @@ import ooga.model.physics.Physics;
 
 public class Movement extends Ability {
 
-<<<<<<< HEAD
   private static final String PHYSICS_PACKAGE = "ooga.model.physics.";
   private static final String PHYSICS = "Physics";
   private Physics phys;
