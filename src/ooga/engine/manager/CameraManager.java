@@ -4,7 +4,8 @@ import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 
 public class CameraManager {
-  Entity mainCharacter;
+
+  Entity mainEntity;
   int xCenter;
   int yCenter;
   int screenWidth;
@@ -13,19 +14,23 @@ public class CameraManager {
   EntityList deactivatedEntities;
   EntityList onScreenEntities;
 
-  public CameraManager(Entity character){
-    mainCharacter = character;
+  public CameraManager(Entity character) {
+    mainEntity = character;
   }
 
-  public void updateCamera(EntityList entities){
-    if(mainCharacter.getX()!=xCenter | mainCharacter.getY()!=yCenter){
-      double xChange = mainCharacter.getX()-xCenter;
-      double yChange = mainCharacter.getY()-yCenter;
-      mainCharacter.setX(xCenter);
-      mainCharacter.setY(yCenter);
+  public void updateCamera(EntityList entities) {
+    if (mainEntity.getX() != xCenter | mainEntity.getY() != yCenter) {
+      double xChange = mainEntity.getX() - xCenter;
+      double yChange = mainEntity.getY() - yCenter;
+      resetMainEntityToCenter();
       entities.changeAllCoordinates(xChange, yChange);
       determineEntitiesOnScreen(entities);
     }
+  }
+
+  private void resetMainEntityToCenter() {
+    mainEntity.setX(xCenter);
+    mainEntity.setY(yCenter);
   }
 
   public void initializeActivationStorage() {
@@ -33,7 +38,7 @@ public class CameraManager {
     deactivatedEntities = new EntityList();
   }
 
-  public EntityList activateEntities(EntityList entities) {
+  public EntityList initializeActiveEntities(EntityList entities) {
     for (Entity entity : entities) {
       if (entity.getX() < screenWidth && entity.getY() < screenHeight) {
         activatedEntities.addEntity(entity);

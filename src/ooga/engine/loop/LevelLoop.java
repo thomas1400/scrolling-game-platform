@@ -3,6 +3,7 @@ package ooga.engine.loop;
 import java.awt.event.KeyListener;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 import ooga.controller.Communicable;
 import ooga.engine.manager.CameraManager;
@@ -11,13 +12,14 @@ import ooga.engine.manager.EntityManager;
 import ooga.engine.manager.InputManager;
 import ooga.model.data.Level;
 import ooga.model.data.User;
+import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
-public class LevelLoop implements Loopable, KeyListener {
+public class LevelLoop implements Loopable {
 
   private Communicable myLevelController;
   private EntityManager myEntityManager;
@@ -39,7 +41,7 @@ public class LevelLoop implements Loopable, KeyListener {
     myCameraManager = new CameraManager(myEntities.getMainEntity());
     myInputManager = new InputManager();
     myCollisionManager = new CollisionManager();
-    myVisibleEntities = myCameraManager.activateEntities(myEntities);
+    myVisibleEntities = myCameraManager.initializeActiveEntities(myEntities);
     createTimeline();
   }
 
@@ -106,21 +108,6 @@ public class LevelLoop implements Loopable, KeyListener {
     myTimeline.stop();
   }
 
-  public EntityList getInitialVisibleEntityList() {
-  return myVisibleEntities;
-  }
+  public EntityList getInitialVisibleEntityList() { return myVisibleEntities; }
 
-  public void keyTyped(KeyEvent e) {
-
-  }
-
-  public void keyPressed(KeyEvent e) {
-    System.out.println("hi");
-
-  }
-
-  public void keyReleased(KeyEvent e) {
-    System.out.println("bye");
-
-  }
 }
