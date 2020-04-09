@@ -2,17 +2,15 @@ package ooga.controller;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.stage.Stage;
-import ooga.model.data.User;
+import ooga.model.data.UserList;
 
 public class OogaController {
 
   private static final String USER_FILE_EXTENSION = ".user";
   public static final String USERS_PATH_NAME = "resources/users";
 
-  private List<User> myUsers = new ArrayList<>();
+  private UserList myUsers = new UserList();
 
   private ScreenController myScreenController;
 
@@ -33,10 +31,10 @@ public class OogaController {
       for (File userFile : listOfFiles) {
         //FIXME: Remove print statement
         System.out.println("Loading User in File: " + userFile.getName());
-        myUsers.add(UserFactory.getUser(userFile));
+        myUsers.addUser(UserFactory.getUser(userFile));
       }
     } else {
-      myUsers.add(UserFactory.createDefaultUser());
+      myUsers.addUser(UserFactory.getDefaultUser());
     }
   }
 

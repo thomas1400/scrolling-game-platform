@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import ooga.model.data.User;
+import ooga.model.data.UserList;
 import ooga.view.GameScreen;
 import ooga.view.HomeScreen;
 import ooga.view.LevelBuilderScreen;
@@ -23,7 +24,9 @@ public class ScreenController{
   private static final int INITIAL_WINDOW_HEIGHT = 600;
 
   private Stage myStage;
-  private User myUser;
+
+  private UserList myUsers;
+  private User mySelectedUser;
 
   private Screen myHomeScreen = new HomeScreen(this);
   //private Screen mySplashScreen = new SplashScreen();
@@ -39,15 +42,15 @@ public class ScreenController{
 
     initializeScreens();
 
-    switchToScreen("levelSelector");
+    switchToScreen("LevelSelectorScreen");
   }
 
   private void initializeScreens(){
-    myScreens.put("home", myHomeScreen);
-    //myScreens.put("splash", mySplashScreen);
-    //myScreens.put("userSelector", myUserSelectorScreen);
-    myScreens.put("levelSelector", myLevelSelectorScreen);
-    //myScreens.put("levelBuilder", myLevelBuilderScreen);
+    myScreens.put("HomeScreen", myHomeScreen);
+    //myScreens.put("SplashScreen", mySplashScreen);
+    //myScreens.put("UserSelectorScreen", myUserSelectorScreen);
+    myScreens.put("LevelSelectorScreen", myLevelSelectorScreen);
+    //myScreens.put("LevelBuilderScreen", myLevelBuilderScreen);
   };
 
   public void switchToScreen(String screenName){
@@ -59,20 +62,21 @@ public class ScreenController{
     myStage.show();
   };
 
-  private void initializeNewLevel(String levelFile){
+  public void initializeNewLevel(int levelNumber){
     myGameScreen = new GameScreen(this);
-    myScreens.put("game", myGameScreen);
+    myScreens.put("GameScreen", myGameScreen);
 
     LevelController levelController =
-        new LevelController((GameScreen)myGameScreen, myUser, levelFile);
+        new LevelController((GameScreen)myGameScreen, mySelectedUser, levelNumber);
     ((GameScreen) myGameScreen).setLevelController(levelController);
 
-    switchToScreen("game");
+    switchToScreen("GameScreen");
     levelController.begin();
   }
 
-  public void setUsers(List<User> myUsers) {
-
+  public void setUsers(UserList users) {
+    myUsers = users;
+    mySelectedUser = users.getSelectedUser();
   }
 
   public void handleButtonPress(){

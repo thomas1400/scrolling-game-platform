@@ -33,8 +33,8 @@ public final class LevelBuilder {
   public static final double PIXEL_BLOCK_RATIO = 30.0;
   public static final int HEIGHT_ADJUST = 1;
 
-  public static Level buildLevel(String levelName) throws FileNotFoundException {
-    File levelFile = getLevelFile(levelName);
+  public static Level buildLevel(int levelNumber) throws FileNotFoundException {
+    File levelFile = getLevelFile(levelNumber);
 
     Map<String,String> headerInfo = getMapFromFile(levelFile, HEADER_TAG);
     Map<String,String> entityInfo = getMapFromFile(levelFile, ENTITIES_TAG);
@@ -44,19 +44,17 @@ public final class LevelBuilder {
 
     EntityList levelEntities = buildEntities(levelFile, entityInfo, levelHeight, levelWidth);
 
-    //Level level = new Level(levelName, levelEntities);
-
-    return null;
+    return new Level(levelNumber, headerInfo,  levelEntities);
   }
 
-  private static File getLevelFile(String levelName) {
+  private static File getLevelFile(int levelNumber) {
     FilenameFilter filter = (f, name) -> name.endsWith(LEVEL_FILE_EXTENSION);
     File folder = new File(USERS_PATH_NAME);
     File[] listOfFiles = folder.listFiles(filter);
 
     assert listOfFiles != null;
     for (File levelFile : listOfFiles){
-      if (levelFile.getName().equals(levelName+LEVEL_FILE_EXTENSION)) {
+      if (levelFile.getName().equals(levelNumber + LEVEL_FILE_EXTENSION)) {
         //TODO: remove print statement
         System.out.println(levelFile.getName() + " file was found. Proceeding to Parse Level");
         return levelFile;

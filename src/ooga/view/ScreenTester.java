@@ -11,7 +11,7 @@ public class ScreenTester extends Application {
   @Override
   public void start(Stage primaryStage) {
     ScreenController sc = new ScreenController(primaryStage);
-    //sc.initializeNewLevel("resources/levels/0-1.level");
+    sc.initializeNewLevel(1);
   }
 
   public static void main(String[] args) {
