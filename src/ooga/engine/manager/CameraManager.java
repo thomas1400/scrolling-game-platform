@@ -4,28 +4,35 @@ import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 
 public class CameraManager {
-  Entity mainCharacter;
+
+  Entity mainEntity;
   int xCenter;
   int yCenter;
-  int screenWidth;
-  int screenHeight;
+  double screenHeight;
+  double screenWidth;
   EntityList activatedEntities;
   EntityList deactivatedEntities;
   EntityList onScreenEntities;
 
-  public CameraManager(Entity character){
-    mainCharacter = character;
+  public CameraManager(Entity character, double height, double width) {
+    mainEntity = character;
+    screenHeight = height;
+    screenWidth = width;
   }
 
-  public void updateCamera(EntityList entities){
-    if(mainCharacter.getX()!=xCenter | mainCharacter.getY()!=yCenter){
-      double xChange = mainCharacter.getX()-xCenter;
-      double yChange = mainCharacter.getY()-yCenter;
-      mainCharacter.setX(xCenter);
-      mainCharacter.setY(yCenter);
+  public void updateCamera(EntityList entities) {
+    if (mainEntity.getX() != xCenter | mainEntity.getY() != yCenter) {
+      double xChange = mainEntity.getX() - xCenter;
+      double yChange = mainEntity.getY() - yCenter;
+      resetMainEntityToCenter();
       entities.changeAllCoordinates(xChange, yChange);
       determineEntitiesOnScreen(entities);
     }
+  }
+
+  private void resetMainEntityToCenter() {
+    mainEntity.setX(xCenter);
+    mainEntity.setY(yCenter);
   }
 
   public void initializeActivationStorage() {
@@ -33,7 +40,9 @@ public class CameraManager {
     deactivatedEntities = new EntityList();
   }
 
-  public EntityList activateEntities(EntityList entities) {
+  public EntityList initializeActiveEntities(EntityList entities) {
+    initializeActivationStorage();
+    onScreenEntities = new EntityList();
     for (Entity entity : entities) {
       if (entity.getX() < screenWidth && entity.getY() < screenHeight) {
         activatedEntities.addEntity(entity);
@@ -63,6 +72,9 @@ public class CameraManager {
   }
   public EntityList getDeactivatedEntities(){
     return deactivatedEntities;
+  }
+  public EntityList getOnScreenEntities(){
+    return onScreenEntities;
   }
 
 }
