@@ -1,5 +1,6 @@
 package ooga.model.data;
 
+import java.util.Map;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 
@@ -11,14 +12,20 @@ import ooga.model.entity.EntityList;
  */
 public class Level {
 
+  private int myLevelIndex;
   private String myName;
   private Entity myMainEntity;
   private EntityList myEntities;
 
-  public Level(String name, EntityList entities){
-    myName = name;
+  public Level(int index, Map<String,String> headerInfo, EntityList entities){
+    myLevelIndex = index;
+    myName = headerInfo.get("name");
     myMainEntity = entities.getMainEntity();
     myEntities = entities;
+  }
+
+  public int getLevelIndex() {
+    return myLevelIndex;
   }
 
   public String getName(){

@@ -16,11 +16,11 @@ public class LevelController implements Communicable{
 
   private Group myVisualGroup = new Group();
 
-  public LevelController(GameScreen gs, User user, String levelName) {
+  public LevelController(GameScreen gs, User user, int levelNumber) {
     myUser = user;
     Level level = null;
     try {
-      level = LevelBuilder.buildLevel(levelName);
+      level = LevelBuilder.buildLevel(levelNumber);
     } catch (FileNotFoundException e) {
       ExceptionFeedback.throwException(e, "File not found");
     }
