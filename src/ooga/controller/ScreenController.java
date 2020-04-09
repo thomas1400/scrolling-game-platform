@@ -19,7 +19,7 @@ public class ScreenController{
   private User myUser;
 
   private Screen myHomeScreen = new HomeScreen(this);
-  //private Screen mySplashScreen = new SplashScreen();
+  private Screen mySplashScreen = new SplashScreen();
   private Screen myUserSelectorScreen =  new UserSelectorScreen(this);
   private Screen myLevelSelectorScreen = new LevelSelectorScreen(this);
   private Screen myGameScreen = new GameScreen(this);
@@ -50,8 +50,8 @@ public class ScreenController{
     myGameScreen = new GameScreen(this);
     LevelController levelController =
         new LevelController((GameScreen)myGameScreen, myUser, levelFile);
-    //myGameScreen.setLevelController(levelController);
-    //levelController.begin();
+    ((GameScreen) myGameScreen).setLevelController(levelController);
+    levelController.begin();
   }
 
   public void setUsers(List<User> myUsers) {

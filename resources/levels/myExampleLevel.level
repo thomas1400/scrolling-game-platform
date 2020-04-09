@@ -6,7 +6,7 @@ physics:land
 levelWidth:50
 levelHeight:12
 #ENTITIES
-C:cloud.entity
+C:Cloud
 F:FlagPole
 1:Goomba
 ?:QuestionBrick

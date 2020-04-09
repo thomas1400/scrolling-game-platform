@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Scanner;
 import ooga.exceptions.ExceptionFeedback;
 import ooga.model.data.Level;
+import ooga.model.entity.Entity;
+import ooga.model.entity.EntityBuilder;
 import ooga.model.entity.EntityList;
 
 public final class LevelBuilder {
@@ -114,23 +116,33 @@ public final class LevelBuilder {
         String symbol = levelLine[i];
         if (!symbol.equals(EMPTY_SPACE_SYMBOL)){
           String entityFile = entityInfo.get(symbol);
-          //EntityBuilder myEntityBuilder = new EntityBuilder(entityFile);
-          //Entity myEntity = myEntityBuilder.getEntity();
-          //myEntity.setX(getRelativeX(i));
-          //double imageHeight = myEntity.getBoundsInLocal().getHeight();
-          //myEntity.setY(getRelativeY(j,levelHeight,imageHeight));
-          if (symbol.equals(MAIN_ENTITY_SYMBOL)){
-            System.out.println("Building Main Entity: " + entityFile);
-            //myEntities.addMainEntity(myEntity);
-          } else{
-            System.out.println("Building Entity: " + entityFile);
-            //myEntities.addEntity(myEntity);
-          }
+
+          Entity myEntity = new Entity();
+          //Entity myEntity = EntityBuilder.getEntity(entityFile);
+
+          setEntityCoordinates(levelHeight, j, i, myEntity);
+          addNewEntityToEntitiesList(myEntities, symbol, entityFile, myEntity);
         }
       }
     }
-
     return myEntities;
+  }
+
+  private static void addNewEntityToEntitiesList(EntityList myEntities, String symbol,
+      String entityFile, Entity myEntity) {
+    if (symbol.equals(MAIN_ENTITY_SYMBOL)){
+      System.out.println("Building Main Entity: " + entityFile);
+      myEntities.addMainEntity(myEntity);
+    } else{
+      System.out.println("Building Entity: " + entityFile);
+      myEntities.addEntity(myEntity);
+    }
+  }
+
+  private static void setEntityCoordinates(int levelHeight, int j, int i, Entity myEntity) {
+    myEntity.setX(getRelativeX(i));
+    double imageHeight = myEntity.getBoundsInLocal().getHeight();
+    myEntity.setY(getRelativeY(j,levelHeight,imageHeight));
   }
 
   private static double getRelativeY(int j, int lvlHeight, double imgHeight) {
