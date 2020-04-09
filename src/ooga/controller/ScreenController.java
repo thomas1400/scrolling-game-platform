@@ -1,6 +1,7 @@
 package ooga.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +42,10 @@ public class ScreenController{
 
   public ScreenController(Stage primaryStage){
     myStage = primaryStage;
-    //myStage.getIcons().add();
+    try {
+      Image icon = new Image(new FileInputStream("artwork/goomba.png"));
+      myStage.getIcons().add(icon);
+    } catch (Exception ignored) { }
 
     initializeScreens();
 
