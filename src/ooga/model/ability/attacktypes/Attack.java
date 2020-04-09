@@ -1,13 +1,20 @@
 package ooga.model.ability.attacktypes;
 
-import ooga.model.ability.Ability;
+public enum Attack {
 
-abstract public class Attack extends Ability {
+  HARMLESS("nothing"),
+  DAMAGE("damage"),
+  STUN("stun"),
+  BOUNCE("bounce");
 
-  public Attack(){
+  private String attackType;
 
+  Attack(String type){
+    attackType = type;
   }
 
-
-
+  @Override
+  public String toString(){
+    return attackType;
+  }
 }
