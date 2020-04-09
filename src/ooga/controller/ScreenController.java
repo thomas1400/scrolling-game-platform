@@ -1,11 +1,7 @@
 package ooga.controller;
 
-import java.io.File;
-import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -13,10 +9,8 @@ import ooga.model.data.User;
 import ooga.model.data.UserList;
 import ooga.view.GameScreen;
 import ooga.view.HomeScreen;
-import ooga.view.LevelBuilderScreen;
 import ooga.view.LevelSelectorScreen;
 import ooga.view.Screen;
-import ooga.view.SplashScreen;
 import ooga.view.UserSelectorScreen;
 
 public class ScreenController{

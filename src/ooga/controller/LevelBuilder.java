@@ -129,7 +129,7 @@ public final class LevelBuilder {
       String entityFile, Entity myEntity) {
     if (symbol.equals(MAIN_ENTITY_SYMBOL)){
       System.out.println("Building Main Entity: " + entityFile);
-      myEntities.addMainEntity(myEntity);
+      myEntities.setMainEntity(myEntity);
     } else{
       System.out.println("Building Entity: " + entityFile);
       myEntities.addEntity(myEntity);
