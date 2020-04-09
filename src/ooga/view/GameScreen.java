@@ -15,9 +15,11 @@ import ooga.controller.ScreenController;
 public class GameScreen extends Screen {
 
   private LevelController levelController;
+  private Group gameGroup;
 
   public GameScreen(ScreenController controller) {
     super(controller);
+    gameGroup = new Group();
     initializeLayout();
   }
 
@@ -56,6 +58,8 @@ public class GameScreen extends Screen {
     filler.setPrefWidth(Double.MAX_VALUE);
     layout.getChildren().add(filler);
 
+    layout.getChildren().add(gameGroup);
+
     HBox menuBar = new HBox();
     menuBar.setPrefHeight(50);
     menuBar.setMinHeight(50);
@@ -66,11 +70,12 @@ public class GameScreen extends Screen {
   }
 
   public void setLevelController(LevelController lc) {
-    this.levelController = lc;
+    levelController = lc;
   }
 
   public void setVisibleGroup(Group visibleGroup){
-
+    gameGroup.getChildren().clear();
+    gameGroup.getChildren().addAll(visibleGroup);
   }
 
 }
