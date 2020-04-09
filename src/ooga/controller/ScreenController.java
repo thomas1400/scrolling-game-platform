@@ -37,14 +37,20 @@ public class ScreenController{
 
   public ScreenController(Stage primaryStage){
     myStage = primaryStage;
-    try {
-      Image icon = new Image(new FileInputStream("artwork/goomba.png"));
-      myStage.getIcons().add(icon);
-    } catch (Exception ignored) { }
+    addApplicationIcon();
 
     initializeScreens();
 
-    switchToScreen("UserSelectorScreen");
+    switchToScreen("HomeScreen");
+  }
+
+  private void addApplicationIcon() {
+    try {
+      Image icon = new Image(new FileInputStream("artwork/goomba.png"));
+      myStage.getIcons().add(icon);
+    } catch (Exception ignored) {
+      //TODO: add actual catch
+    }
   }
 
   private void initializeScreens(){
