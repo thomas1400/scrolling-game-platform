@@ -1,5 +1,7 @@
 package ooga.controller;
 
+import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +53,8 @@ public class ScreenController{
   public void switchToScreen(String screenName){
     Screen nextScreen = myScreens.get(screenName);
     Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
-    nextScene.getStylesheets().add("stylesheet.css");
+    //File file = new File("resources/stylesheet.css");
+    //nextScene.getStylesheets().add(file.toURI().toString());
     myStage.setScene(nextScene);
     myStage.show();
   };

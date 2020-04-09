@@ -28,6 +28,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import ooga.controller.ScreenController;
+import ooga.exceptions.ExceptionFeedback;
 import ooga.view.factory.ControlFactory;
 
 public class LevelSelectorScreen extends Screen {
@@ -145,8 +146,7 @@ public class LevelSelectorScreen extends Screen {
 
         s.close();
       } catch (FileNotFoundException e) {
-        // FIXME : remove printStackTrace()
-        e.printStackTrace();
+        ExceptionFeedback.throwException(e, "Level graph not found.");
       }
     }
 
@@ -154,7 +154,13 @@ public class LevelSelectorScreen extends Screen {
       try {
         Scanner s = new Scanner(new File(file));
 
-        int numLevels = Integer.parseInt(s.nextLine());
+        //skip the header
+        String firstLine = s.nextLine();
+        while (firstLine.charAt(0) == '#') {
+          firstLine = s.nextLine();
+        }
+
+        int numLevels = Integer.parseInt(firstLine);
         locations = new double[numLevels][];
 
         while (s.hasNextLine()) {
@@ -165,8 +171,7 @@ public class LevelSelectorScreen extends Screen {
 
         s.close();
       } catch (FileNotFoundException e) {
-        // FIXME : remove printStackTrace()
-        e.printStackTrace();
+        ExceptionFeedback.throwException(e, "Level map not found.");
       }
     }
 
