@@ -1,10 +1,13 @@
 package ooga.controller;
 
+import java.io.FileNotFoundException;
 import javafx.scene.Group;
 import ooga.engine.loop.LevelLoop;
+import ooga.exceptions.ExceptionFeedback;
 import ooga.model.data.Level;
 import ooga.model.data.User;
 import ooga.model.entity.Entity;
+import ooga.model.entity.EntityList;
 import ooga.view.GameScreen;
 
 public class LevelController implements Communicable{
@@ -13,13 +16,19 @@ public class LevelController implements Communicable{
 
   private Group myVisualGroup = new Group();
 
-  public LevelController(GameScreen gs, User user, String levelName) {
+  public LevelController(GameScreen gs, User user, int levelNumber) {
     myUser = user;
-    Level level = LevelBuilder.buildLevel(levelName);
-    //LevelLoop myLevelLoop = new LevelLoop(this, level.getEntities());
-    //Entity List visibleEntityList = myLevelLoop.getInitialVisibleEntityList()
-    //myVisualGroup.getChildren().addAll(visibleEntityList.asList());
-    //gs.setVisibleGroup(myVisualGroup);
+    Level level = null;
+    try {
+      level = LevelBuilder.buildLevel(levelNumber);
+    } catch (FileNotFoundException e) {
+      ExceptionFeedback.throwException(e, "File not found");
+    }
+    assert level != null;
+    LevelLoop myLevelLoop = new LevelLoop(this, level.getEntities());
+    EntityList visibleEntityList = myLevelLoop.getInitialVisibleEntityList();
+    myVisualGroup.getChildren().addAll(visibleEntityList.getAsList());
+    gs.setVisibleGroup(myVisualGroup);
   }
 
   @Override
@@ -30,6 +39,14 @@ public class LevelController implements Communicable{
   @Override
   public void removeEntity(Entity entity) {
     myVisualGroup.getChildren().remove(entity);
+  }
+
+  public void begin() {
+  }
+
+  public void handleUserInput(){
+
+
   }
 
   //TODO: Add ability for LevelLoop to pass up events that could effect the user (ex: extra life

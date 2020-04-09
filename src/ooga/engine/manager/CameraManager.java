@@ -4,48 +4,67 @@ import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 
 public class CameraManager {
-  Entity mainCharacter;
+
+  Entity mainEntity;
   int xCenter;
   int yCenter;
-  int screenWidth;
-  int screenHeight;
+  double screenHeight;
+  double screenWidth;
   EntityList activatedEntities;
   EntityList deactivatedEntities;
+  EntityList onScreenEntities;
 
-  public CameraManager(Entity character){
-    character = mainCharacter;
+  public CameraManager(Entity character, double height, double width) {
+    mainEntity = character;
+    screenHeight = height;
+    screenWidth = width;
   }
 
-  protected void manageCamera(EntityList entities){
-    if(mainCharacter.getX()!=xCenter | mainCharacter.getY()!=yCenter){
-      double xChange = mainCharacter.getX()-xCenter;
-      double yChange = mainCharacter.getY()-yCenter;
-      mainCharacter.setX(xCenter);
-      mainCharacter.setY(yCenter);
-      /*for(Entity entity : entities){
-        if (entity!=mainCharacter){
-          entity.setX(entity.getX()- xChange);
-          entity.setY(entity.getY()- yChange);
-        }
-      }*/
-      
+  public void updateCamera(EntityList entities) {
+    if (mainEntity.getX() != xCenter | mainEntity.getY() != yCenter) {
+      double xChange = mainEntity.getX() - xCenter;
+      double yChange = mainEntity.getY() - yCenter;
+      resetMainEntityToCenter();
+      entities.changeAllCoordinates(xChange, yChange);
+      determineEntitiesOnScreen(entities);
     }
-
   }
 
-  private void updateCoordinates(){
-
+  private void resetMainEntityToCenter() {
+    mainEntity.setX(xCenter);
+    mainEntity.setY(yCenter);
   }
 
-  public void activateEntities(EntityList entities){
-    /*for (Entity entity : entities){
-      if(entity.getX()<screenWidth && entity.getY()<screenHeight){
-        //entity.activate();
+  public void initializeActivationStorage() {
+    activatedEntities = new EntityList();
+    deactivatedEntities = new EntityList();
+  }
+
+  public EntityList initializeActiveEntities(EntityList entities) {
+    initializeActivationStorage();
+    onScreenEntities = new EntityList();
+    for (Entity entity : entities) {
+      if (entity.getX() < screenWidth && entity.getY() < screenHeight) {
+        activatedEntities.addEntity(entity);
+        onScreenEntities.addEntity(entity);
       }
-      else if (){)
     }
+    return activatedEntities;
+  }
 
-    }*/
+  private void determineEntitiesOnScreen(EntityList entities) {
+    initializeActivationStorage();
+    for (Entity entity : entities) {
+      if (entity.getX() < screenWidth && entity.getY() < screenHeight && !onScreenEntities
+          .contains(entity)) {
+        activatedEntities.addEntity(entity);
+        onScreenEntities.addEntity(entity);
+      } else if ((entity.getX() > screenWidth || entity.getY() > screenHeight) && onScreenEntities
+          .contains(entity)) {
+        onScreenEntities.removeEntity(entity);
+        deactivatedEntities.addEntity(entity);
+      }
+    }
   }
 
   public EntityList getActivatedEntities(){
@@ -54,7 +73,8 @@ public class CameraManager {
   public EntityList getDeactivatedEntities(){
     return deactivatedEntities;
   }
-  public void resetActivationStorage(){}
-
+  public EntityList getOnScreenEntities(){
+    return onScreenEntities;
+  }
 
 }

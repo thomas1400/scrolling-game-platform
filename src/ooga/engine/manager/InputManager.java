@@ -2,33 +2,20 @@ package ooga.engine.manager;
 
 import java.util.List;
 import java.util.Observer;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import ooga.model.entity.Entity;
 
 public class InputManager {
+  Entity myMainEntity;
 
   private List<Observer> observers;
 
-
-  protected void handleKeyInput(){
-
+  public InputManager(Entity mainEntity){
+    myMainEntity = mainEntity;
   }
 
-  private void handleLeftKey(){
-
+  public void handleKeyInput(KeyEvent keyEvent) {
+    //myMainEntity.receiveUserInput(keyEvent);
   }
-
-  private void handleRightKey(){
-
-  }
-
-  private void handleUpKey(){
-
-  }
-
-  private void handleDownKey(){
-
-  }
-
-  private void handleSpaceKey(){}
-
-
 }
