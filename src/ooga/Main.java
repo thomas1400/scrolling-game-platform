@@ -1,14 +1,22 @@
 package ooga;
 
+import javafx.application.Application;
+import javafx.stage.Stage;
 
-/**
- * Feel free to completely change this code or delete it entirely. 
- */
-public class Main {
+import ooga.controller.OogaController;
+
+public class Main extends Application {
+
     /**
-     * Start of the program.
+     * Runs the entire OOGA Program by creating the OogaController from which the entire rest of
+     * the game is initialized, and the main window is displayed
      */
     public static void main (String[] args) {
-        System.out.println("Hello world");
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        new OogaController(primaryStage);
     }
 }
