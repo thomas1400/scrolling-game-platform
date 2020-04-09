@@ -12,6 +12,9 @@ import ooga.view.GameScreen;
 
 public class LevelController implements Communicable{
 
+  private static final int INITIAL_WINDOW_WIDTH = 800;
+  private static final int INITIAL_WINDOW_HEIGHT = 600;
+
   private User myUser;
 
   private Group myVisualGroup = new Group();
@@ -25,7 +28,8 @@ public class LevelController implements Communicable{
       ExceptionFeedback.throwException(e, "File not found");
     }
     assert level != null;
-    LevelLoop myLevelLoop = new LevelLoop(this, level.getEntities());
+    LevelLoop myLevelLoop = new LevelLoop(
+        this, level.getEntities(), INITIAL_WINDOW_HEIGHT, INITIAL_WINDOW_WIDTH);
     EntityList visibleEntityList = myLevelLoop.getInitialVisibleEntityList();
     myVisualGroup.getChildren().addAll(visibleEntityList.getAsList());
     gs.setVisibleGroup(myVisualGroup);
@@ -39,6 +43,16 @@ public class LevelController implements Communicable{
   @Override
   public void removeEntity(Entity entity) {
     myVisualGroup.getChildren().remove(entity);
+  }
+
+  @Override
+  public void addAllEntities(EntityList entities) {
+
+  }
+
+  @Override
+  public void removeAllEntities(EntityList entities) {
+
   }
 
   public void begin() {
