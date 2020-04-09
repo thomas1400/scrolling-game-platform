@@ -1,19 +1,56 @@
 package ooga.model.physics;
 
-public class Physics {
+import ooga.model.entity.Entity;
 
-  private Vector2D position;
-  private Vector2D velocity;
-  private Vector2D acceleration;
+public abstract class Physics {
 
-  public void update() {}
+  private static final double dt = 1/60.0;
+  private static final double GRAVITY = 6.0;
+  private static final double INITIAL_JUMP_VELOCITY = -7.0;
+  private static final double RUN_VELOCITY = 2;
+  private static final double DAMPING = 1.0;
 
-  public void setPosition(Vector2D position) {}
-  public void setVelocity(Vector2D velocity) {}
-  public void setAcceleration(Vector2D acceleration) {}
+  private static final int X = 0;
+  private static final int Y = 1;
 
-  public void addPosition(Vector2D addition) {}
-  public void addVelocity(Vector2D addition) {}
-  public void addAcceleration(Vector2D addition) {}
+  private Entity myEntity;
+
+  private double[] myPosition;
+  private double[] myVelocity;
+  private double[] myAcceleration;
+
+  public Physics(Entity entity) {
+    myEntity = entity;
+    myPosition = new double[]{entity.getX(), entity.getY()};
+    myVelocity = new double[]{0, 0};
+    myAcceleration = new double[]{0, GRAVITY};
+  }
+
+  public void update() {
+    //Vertical Updates
+    myVelocity[Y] += myAcceleration[Y]*dt;
+    myPosition[Y] += myVelocity[Y]*dt;
+
+    //Horizontal Updates
+    myVelocity[X] += myAcceleration[X]*dt;
+    myPosition[X] += myVelocity[X]*dt;
+
+    //Update Image Position
+    myEntity.setX(myPosition[X]);
+    myEntity.setY(myPosition[Y]);
+  }
+
+  public void jump() {
+    myVelocity[Y] += INITIAL_JUMP_VELOCITY;
+  }
+  public void moveRight() {
+    myVelocity[X] = RUN_VELOCITY;
+  }
+  public void moveLeft() {
+    myVelocity[X] = -RUN_VELOCITY;
+  }
+  public void beginFall() {}
+  public void endFall() {}
+  public void reverseDirection() {}
 
 }

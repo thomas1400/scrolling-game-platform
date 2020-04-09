@@ -1,67 +1,77 @@
 package ooga.view;
 
-import java.util.Iterator;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import ooga.controller.ScreenController;
+import ooga.model.data.User;
+import ooga.view.factory.ControlFactory;
 
 public class UserSelectorScreen extends Screen {
 
-  private ScreenController controller;
-
   public UserSelectorScreen(ScreenController controller) {
-    this.controller = controller;
-    initializeScreen();
+    super(controller);
+    setWorkingDimensions(3, 1);
     initializeLayout();
   }
 
   private void initializeLayout() {
-    VBox layout = new VBox();
+    ControlFactory cf = new ControlFactory(PADDING);
+    VBox vbox = new VBox();
+    vbox.setAlignment(Pos.BOTTOM_CENTER);
 
-    layout.getChildren().add(new UserSelector(800, 600, ""));
+    Label title = cf.label(resources.getString("select-user"), TITLE_FONT_SIZE);
+    cf.setMargin(title);
+    vbox.getChildren().add(title);
 
-    HBox menu = new HBox();
+    List<User> users = new ArrayList<>();
+    UserSelector us = new UserSelector(workingWidth, workingHeight * 0.8, users);
+    cf.setMargin(us);
+    vbox.getChildren().add(us);
 
-    layout.getChildren().add(menu);
+    Button begin = cf.button(
+        resources.getString("begin"), BUTTON_FONT_SIZE,
+        e->handleButtonPress("begin"), 100, 0.1*workingHeight
+    );
+    vbox.getChildren().add(begin);
 
-    this.getChildren().add(layout);
+    this.getChildren().add(vbox);
   }
 
 
-  private class UserSelector extends Pane { // add a new user
+  // TODO : add capability to add a new user from the user selection screen
+  private class UserSelector extends Pane {
 
-    private static final double PADDING = 5;
-    private final int NUM_USERS = 3;
-    private ToggleGroup users;
+    private static final double PADDING = 10;
+    private final int MAX_USERS = 3;
+    private ToggleGroup userToggles;
 
-    UserSelector(double width, double height, String usersFilePath) {
+    UserSelector(double width, double height, List<User> users) {
 
       this.setPrefSize(width, height);
 
-      users = new ToggleGroup();
-      double buttonWidth = (width-(NUM_USERS+1)*PADDING) / NUM_USERS;
-      double buttonHeight = height / NUM_USERS;
-      for (int i = 0; i < NUM_USERS; i++) {
-        RadioButton button = new RadioButton("User " + i);
+      userToggles = new ToggleGroup();
+      double buttonWidth = (width-(MAX_USERS-1)*PADDING) / MAX_USERS;
+      double buttonHeight = height;
+      for (int i = 0; i < MAX_USERS; i++) {
+        ToggleButton button = new ToggleButton("User " + i);
+        button.setLayoutX(i * (buttonWidth + PADDING));
         button.setPrefSize(buttonWidth, buttonHeight);
-        button.setLayoutX(i * buttonWidth + PADDING);
-
-        button.setToggleGroup(users);
-        if (i == 0) {
-          button.setSelected(true);
-        }
-
+        button.setToggleGroup(userToggles);
         this.getChildren().add(button);
       }
     }
 
     String getSelected() {
-      String info = users.getSelectedToggle().toString();
+      String info = userToggles.getSelectedToggle().toString();
       return info.substring(info.indexOf('\'') + 1, info.lastIndexOf('\''));
     }
   }

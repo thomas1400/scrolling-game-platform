@@ -16,19 +16,19 @@ public class LevelController implements Communicable{
 
   private Group myVisualGroup = new Group();
 
-  public LevelController(GameScreen gs, User user, String levelName) {
+  public LevelController(GameScreen gs, User user, int levelNumber) {
     myUser = user;
+    Level level = null;
     try {
-      Level level = LevelBuilder.buildLevel(levelName);
-    } catch (ExceptionFeedback exceptionFeedback) {
-      exceptionFeedback.printStackTrace();
+      level = LevelBuilder.buildLevel(levelNumber);
     } catch (FileNotFoundException e) {
-      e.printStackTrace();
+      ExceptionFeedback.throwException(e, "File not found");
     }
-    //LevelLoop myLevelLoop = new LevelLoop(this, level.getEntities());
-    //Entity List visibleEntityList = myLevelLoop.getInitialVisibleEntityList()
-    //myVisualGroup.getChildren().addAll(visibleEntityList.asList());
-    //gs.setVisibleGroup(myVisualGroup);
+    assert level != null;
+    LevelLoop myLevelLoop = new LevelLoop(this, level.getEntities());
+    EntityList visibleEntityList = myLevelLoop.getInitialVisibleEntityList();
+    myVisualGroup.getChildren().addAll(visibleEntityList.getAsList());
+    gs.setVisibleGroup(myVisualGroup);
   }
 
   @Override
@@ -41,13 +41,11 @@ public class LevelController implements Communicable{
     myVisualGroup.getChildren().remove(entity);
   }
 
-  @Override
-  public void addAllEntities(EntityList entities) {
-
+  public void begin() {
   }
 
-  @Override
-  public void removeAllEntities(EntityList entities) {
+  public void handleUserInput(){
+
 
   }
 

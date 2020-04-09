@@ -1,13 +1,13 @@
 package ooga.view;
 
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import ooga.controller.LevelController;
 import ooga.controller.ScreenController;
@@ -15,12 +15,11 @@ import ooga.controller.ScreenController;
 public class GameScreen extends Screen {
 
   private LevelController levelController;
-  private ScreenController screenController;
+  private Group gameGroup;
 
   public GameScreen(ScreenController controller) {
-    //levelController = new LevelController(this);
-    this.screenController = controller;
-    initializeScreen();
+    super(controller);
+    gameGroup = new Group();
     initializeLayout();
   }
 
@@ -59,6 +58,8 @@ public class GameScreen extends Screen {
     filler.setPrefWidth(Double.MAX_VALUE);
     layout.getChildren().add(filler);
 
+    layout.getChildren().add(gameGroup);
+
     HBox menuBar = new HBox();
     menuBar.setPrefHeight(50);
     menuBar.setMinHeight(50);
@@ -66,6 +67,15 @@ public class GameScreen extends Screen {
     layout.getChildren().add(menuBar);
 
     this.getChildren().add(layout);
+  }
+
+  public void setLevelController(LevelController lc) {
+    levelController = lc;
+  }
+
+  public void setVisibleGroup(Group visibleGroup){
+    gameGroup.getChildren().clear();
+    gameGroup.getChildren().addAll(visibleGroup);
   }
 
 }
