@@ -12,6 +12,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -36,6 +38,8 @@ public class LevelSelectorScreen extends Screen {
   private static final String LEVEL_GRAPH_FILE = "resources/levels/LevelGraph.txt";
   private static final String LEVEL_MAP_FILE = "resources/levels/LevelMap.txt";
 
+  private LevelSelectorTool lst;
+
   public LevelSelectorScreen(ScreenController controller) {
     super(controller);
     setWorkingDimensions(3, 1);
@@ -51,7 +55,7 @@ public class LevelSelectorScreen extends Screen {
     user.setPrefHeight(workingHeight * 0.1);
     layout.getChildren().add(user);
 
-    LevelSelectorTool lst = new LevelSelectorTool(workingWidth, workingHeight*0.8,
+    lst = new LevelSelectorTool(workingWidth, workingHeight*0.8,
         LEVEL_GRAPH_FILE, LEVEL_MAP_FILE, 0);
     cf.setMargin(lst);
     layout.getChildren().add(lst);
@@ -79,6 +83,10 @@ public class LevelSelectorScreen extends Screen {
     layout.getChildren().add(menu);
 
     this.getChildren().add(layout);
+  }
+
+  public void loadLevel() {
+    controller.initializeNewLevel(lst.getSelected());
   }
 
   private class LevelSelectorTool extends Pane {
@@ -119,6 +127,7 @@ public class LevelSelectorScreen extends Screen {
         RadioButton button = new RadioButton("1-" + i);
         button.setFont(Font.font(FONT_FAMILY, DETAIL_FONT_SIZE));
         button.setToggleGroup(levels);
+        button.setId(Integer.toString(i+1));
         if (i == 0) {
           button.setSelected(true);
         }
@@ -175,10 +184,10 @@ public class LevelSelectorScreen extends Screen {
       }
     }
 
-    String getSelected() {
-      String info = levels.getSelectedToggle().toString();
-      return info.substring(info.indexOf('\'') + 1, info.lastIndexOf('\''));
+    int getSelected() {
+      return Integer.parseInt(((RadioButton) levels.getSelectedToggle()).getId());
     }
+
   }
 
   private class LevelProgressBar extends Pane {
