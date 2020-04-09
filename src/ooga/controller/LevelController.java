@@ -21,8 +21,8 @@ public class LevelController implements Communicable{
     Level level = null;
     try {
       level = LevelBuilder.buildLevel(levelName);
-    } catch (ExceptionFeedback | FileNotFoundException exceptionFeedback) {
-      exceptionFeedback.printStackTrace();
+    } catch (FileNotFoundException e) {
+      ExceptionFeedback.throwException(e, "File not found");
     }
     assert level != null;
     LevelLoop myLevelLoop = new LevelLoop(this, level.getEntities());

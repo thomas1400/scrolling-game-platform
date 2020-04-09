@@ -3,6 +3,7 @@ package ooga.controller;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
+import java.nio.charset.MalformedInputException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -32,7 +33,7 @@ public final class LevelBuilder {
   public static final double PIXEL_BLOCK_RATIO = 30.0;
   public static final int HEIGHT_ADJUST = 1;
 
-  public static Level buildLevel(String levelName) throws ExceptionFeedback, FileNotFoundException {
+  public static Level buildLevel(String levelName) throws FileNotFoundException {
     File levelFile = getLevelFile(levelName);
 
     Map<String,String> headerInfo = getMapFromFile(levelFile, HEADER_TAG);
@@ -48,7 +49,7 @@ public final class LevelBuilder {
     return null;
   }
 
-  private static File getLevelFile(String levelName) throws ExceptionFeedback {
+  private static File getLevelFile(String levelName) {
     FilenameFilter filter = (f, name) -> name.endsWith(LEVEL_FILE_EXTENSION);
     File folder = new File(USERS_PATH_NAME);
     File[] listOfFiles = folder.listFiles(filter);
@@ -61,11 +62,12 @@ public final class LevelBuilder {
         return levelFile;
       }
     }
-    throw new ExceptionFeedback();
+    ExceptionFeedback.throwException(new FileNotFoundException(), "File not found");
+    return null;
   }
 
   private static Map<String, String> getMapFromFile(File levelFile, String sectionTag)
-      throws FileNotFoundException, ExceptionFeedback {
+      throws FileNotFoundException {
 
     Map<String, String> sectionMap = new HashMap<>();
 
@@ -85,17 +87,15 @@ public final class LevelBuilder {
     return sc;
   }
 
-  private static void addDataToMap(Map<String, String> sectionMap, Scanner sc)
-      throws ExceptionFeedback {
+  private static void addDataToMap(Map<String, String> sectionMap, Scanner sc) {
     String nextLine = sc.nextLine();
     while (!nextLine.contains(TAG_DELIMITER)){
       String[] sectionLine = nextLine.split(KEY_VAL_SEPARATOR);
       if (sectionLine.length == 2){
         sectionMap.put(sectionLine[KEY_INDEX], sectionLine[VALUE_INDEX]);
       } else {
-        //TODO: remove print statement
-        System.out.println("Invalid Level File. Invalid info in section");
-        throw new ExceptionFeedback();
+        ExceptionFeedback.throwException(
+            new MalformedInputException(0), "Invalid Level File. Invalid info in section");
       }
       nextLine = sc.nextLine();
     }
