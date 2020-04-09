@@ -3,7 +3,9 @@ package ooga.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import ooga.model.data.User;
 import ooga.view.GameScreen;
 import ooga.view.HomeScreen;
@@ -15,46 +17,62 @@ import ooga.view.UserSelectorScreen;
 
 public class ScreenController{
 
-  private Pane myMainPane;
+  private static final int INITIAL_WINDOW_WIDTH = 900;
+  private static final int INITIAL_WINDOW_HEIGHT = 700;
+
+  private Stage myStage;
   private User myUser;
 
   private Screen myHomeScreen = new HomeScreen(this);
   //private Screen mySplashScreen = new SplashScreen();
-  private Screen myUserSelectorScreen =  new UserSelectorScreen(this);
+  //private Screen myUserSelectorScreen =  new UserSelectorScreen(this);
   private Screen myLevelSelectorScreen = new LevelSelectorScreen(this);
-  private Screen myGameScreen = new GameScreen(this);
-  private Screen myLevelBuilderScreen = new LevelBuilderScreen();
+  private Screen myGameScreen;
+  //private Screen myLevelBuilderScreen = new LevelBuilderScreen();
 
   private Map<String, Screen> myScreens = new HashMap<>();
 
-  public ScreenController(Pane mainPane){
-    myMainPane = mainPane;
-    myScreens.put("game", myGameScreen);
+  public ScreenController(Stage primaryStage){
+    myStage = primaryStage;
+
+    initializeScreens();
+
+    switchToScreen("levelSelector");
   }
 
-  private void initializeScreens(){};
-
-  public void handleButtonPress(){
-
-  }
+  private void initializeScreens(){
+    myScreens.put("home", myHomeScreen);
+    //myScreens.put("splash", mySplashScreen);
+    //myScreens.put("userSelector", myUserSelectorScreen);
+    myScreens.put("levelSelector", myLevelSelectorScreen);
+    //myScreens.put("levelBuilder", myLevelBuilderScreen);
+  };
 
   public void switchToScreen(String screenName){
     Screen nextScreen = myScreens.get(screenName);
-    myMainPane.getChildren().clear();
-    myMainPane.getChildren().add(nextScreen);
-    //TODO: check if there needs to be additional actions, for instance initializing the game
-    // **or simply use the initialize new level as public?
+    Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
+    nextScene.getStylesheets().add("stylesheet.css");
+    myStage.setScene(nextScene);
+    myStage.show();
   };
 
   private void initializeNewLevel(String levelFile){
     myGameScreen = new GameScreen(this);
+    myScreens.put("game", myGameScreen);
+
     LevelController levelController =
         new LevelController((GameScreen)myGameScreen, myUser, levelFile);
-    //myGameScreen.setLevelController(levelController);
-    //levelController.begin();
+    ((GameScreen) myGameScreen).setLevelController(levelController);
+
+    switchToScreen("game");
+    levelController.begin();
   }
 
   public void setUsers(List<User> myUsers) {
+
+  }
+
+  public void handleButtonPress(){
 
   }
 }

@@ -7,6 +7,7 @@ import ooga.exceptions.ExceptionFeedback;
 import ooga.model.data.Level;
 import ooga.model.data.User;
 import ooga.model.entity.Entity;
+import ooga.model.entity.EntityList;
 import ooga.view.GameScreen;
 
 public class LevelController implements Communicable{
@@ -17,17 +18,17 @@ public class LevelController implements Communicable{
 
   public LevelController(GameScreen gs, User user, String levelName) {
     myUser = user;
+    Level level = null;
     try {
-      Level level = LevelBuilder.buildLevel(levelName);
-    } catch (ExceptionFeedback exceptionFeedback) {
+      level = LevelBuilder.buildLevel(levelName);
+    } catch (ExceptionFeedback | FileNotFoundException exceptionFeedback) {
       exceptionFeedback.printStackTrace();
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
     }
-    //LevelLoop myLevelLoop = new LevelLoop(this, level.getEntities());
-    //Entity List visibleEntityList = myLevelLoop.getInitialVisibleEntityList()
-    //myVisualGroup.getChildren().addAll(visibleEntityList.asList());
-    //gs.setVisibleGroup(myVisualGroup);
+    assert level != null;
+    LevelLoop myLevelLoop = new LevelLoop(this, level.getEntities());
+    EntityList visibleEntityList = myLevelLoop.getInitialVisibleEntityList();
+    myVisualGroup.getChildren().addAll(visibleEntityList.getAsList());
+    gs.setVisibleGroup(myVisualGroup);
   }
 
   @Override
@@ -38,6 +39,14 @@ public class LevelController implements Communicable{
   @Override
   public void removeEntity(Entity entity) {
     myVisualGroup.getChildren().remove(entity);
+  }
+
+  public void begin() {
+  }
+
+  public void handleUserInput(){
+
+
   }
 
   //TODO: Add ability for LevelLoop to pass up events that could effect the user (ex: extra life

@@ -1,5 +1,5 @@
 package ooga.view;
 
-public class SplashScreen {
+public class SplashScreen extends Screen{
 
 }

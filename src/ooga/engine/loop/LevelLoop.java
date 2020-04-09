@@ -11,6 +11,7 @@ import ooga.engine.manager.EntityManager;
 import ooga.engine.manager.InputManager;
 import ooga.model.data.Level;
 import ooga.model.data.User;
+import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
