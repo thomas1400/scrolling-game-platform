@@ -1,7 +1,12 @@
 package ooga.view;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -19,12 +24,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import ooga.controller.ScreenController;
 import ooga.view.factory.ControlFactory;
 
 public class LevelSelectorScreen extends Screen {
+
+  private static final String LEVEL_GRAPH_FILE = "resources/levels/LevelGraph.txt";
+  private static final String LEVEL_MAP_FILE = "resources/levels/LevelMap.txt";
 
   public LevelSelectorScreen(ScreenController controller) {
     super(controller);
@@ -41,7 +50,8 @@ public class LevelSelectorScreen extends Screen {
     user.setPrefHeight(workingHeight * 0.1);
     layout.getChildren().add(user);
 
-    LevelSelectorTool lst = new LevelSelectorTool(workingWidth, workingHeight*0.8, "", 0);
+    LevelSelectorTool lst = new LevelSelectorTool(workingWidth, workingHeight*0.8,
+        LEVEL_GRAPH_FILE, LEVEL_MAP_FILE, 0);
     cf.setMargin(lst);
     layout.getChildren().add(lst);
 
@@ -72,26 +82,91 @@ public class LevelSelectorScreen extends Screen {
 
   private class LevelSelectorTool extends Pane {
 
-    private ToggleGroup levels;
-    private final int NUM_LEVELS = 3;
-    private Map<Integer, List<Integer>> connections;
+    private static final double STROKE_WIDTH = 5.0;
+    private static final double CENTER_OFFSET = 5.0;
 
-    LevelSelectorTool(double width, double height, String levelMapFilePath, int levelProgress) {
+    private ToggleGroup levels;
+    private boolean[][] adjacency;
+    double[][] locations;
+    private int numLevels;
+
+    LevelSelectorTool(double width, double height, String levelGraphFile, String levelMapFile, int levelProgress) {
+      parseGraph(levelGraphFile);
+      parseMap(levelMapFile);
 
       this.setPrefSize(width, height);
       this.setMinSize(width, height);
       this.setBackground(new Background(new BackgroundFill(Color.GREY, null, null)));
 
+      // draw connecting lines
+      for (int a = 0; a < numLevels; a++) {
+        double[] start = locations[a];
+        for (int b = 0; b < numLevels; b++) {
+          if (adjacency[a][b]) {
+            double[] end = locations[b];
+            Line connection = new Line(
+                start[0] + CENTER_OFFSET, start[1] + CENTER_OFFSET,
+                end[0] + CENTER_OFFSET, end[1] + CENTER_OFFSET);
+            connection.setStrokeWidth(STROKE_WIDTH);
+            this.getChildren().add(connection);
+          }
+        }
+      }
+
       levels = new ToggleGroup();
-      for (int i = 0; i < NUM_LEVELS; i++) {
+      for (int i = 0; i < numLevels; i++) {
         RadioButton button = new RadioButton("1-" + i);
+        button.setFont(Font.font(FONT_FAMILY, DETAIL_FONT_SIZE));
         button.setToggleGroup(levels);
         if (i == 0) {
           button.setSelected(true);
         }
-        button.setLayoutX(i*75 + 10);
-        button.setLayoutY(i*75 + 10);
+        button.setLayoutX(locations[i][0]);
+        button.setLayoutY(locations[i][1]);
         this.getChildren().add(button);
+      }
+    }
+
+    void parseGraph(String file) {
+      try {
+        Scanner s = new Scanner(new File(file));
+
+        int numLevels = Integer.parseInt(s.nextLine());
+        this.numLevels = numLevels;
+
+        adjacency = new boolean[numLevels][numLevels];
+
+        while (s.hasNextLine()) {
+          String[] edge = s.nextLine().split("\\s+");
+          int v0 = Integer.parseInt(edge[0]) - 1, v1 = Integer.parseInt(edge[1]) - 1;
+          adjacency[v0][v1] = true;
+          adjacency[v1][v0] = true;
+        }
+
+        s.close();
+      } catch (FileNotFoundException e) {
+        // FIXME : remove printStackTrace()
+        e.printStackTrace();
+      }
+    }
+
+    void parseMap(String file) {
+      try {
+        Scanner s = new Scanner(new File(file));
+
+        int numLevels = Integer.parseInt(s.nextLine());
+        locations = new double[numLevels][];
+
+        while (s.hasNextLine()) {
+          int levelNum = s.nextInt() - 1;
+          double[] location = new double[]{s.nextInt(), s.nextInt()};
+          locations[levelNum] = location;
+        }
+
+        s.close();
+      } catch (FileNotFoundException e) {
+        // FIXME : remove printStackTrace()
+        e.printStackTrace();
       }
     }
 
