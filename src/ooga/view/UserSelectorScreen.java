@@ -13,6 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import ooga.controller.ScreenController;
 import ooga.model.data.User;
+import ooga.model.data.UserList;
 import ooga.view.factory.ControlFactory;
 
 public class UserSelectorScreen extends Screen {
