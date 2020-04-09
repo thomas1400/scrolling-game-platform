@@ -14,7 +14,9 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
 
   private CollisionBehaviorBundle cbb;
   private Physics myPhysics;
+  private Ability health;
   private List<Ability> myAbilities;
+  private boolean visible;
 
   public Entity(){
     myAbilities = new ArrayList<Ability>();
@@ -22,7 +24,11 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
 
   public void addAbility(Ability a){
     //TODO add a check here for if an ability of that type is already here. depending on how we do attacks then we might want to only allow one of each 'type'
-    myAbilities.add(a);
+    if (a instanceof Health){
+      health = a;
+    } else {
+      myAbilities.add(a);
+    }
   }
 
   @Override
@@ -32,9 +38,24 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
 
   @Override
   public void handleCollision(CollisionEvent ce) {
+    /*
     for (Ability a : myAbilities){
       a.hit();
-    }
+    }*/
+
+
+    /**
+     * pseudo code time baby
+     */
+    /*
+     if (other) instanceof (damage)
+      health.damage
+     if (other) instanceof (stun)
+      this.stun
+     if (other) instance of (bounce)
+     moveable.bounce
+
+     */
   }
 
   @Override
