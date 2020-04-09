@@ -9,10 +9,8 @@ public class ScreenTester extends Application {
 
 
   @Override
-  public void start(Stage primaryStage) throws Exception {
-    ScreenController sc = new ScreenController(new MainDisplayPane());
-    primaryStage.setScene(new Scene(new LevelSelectorScreen(sc)));
-    primaryStage.show();
+  public void start(Stage primaryStage) {
+    new ScreenController(primaryStage);
   }
 
   public static void main(String[] args) {

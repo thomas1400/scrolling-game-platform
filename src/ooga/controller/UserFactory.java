@@ -10,7 +10,7 @@ import ooga.model.data.User;
 public final class UserFactory {
 
   public static User getUser(File userFile){
-    try (InputStream input = new FileInputStream("path/to/config.properties")) {
+    try (InputStream input = new FileInputStream(userFile)) {
 
       Properties prop = new Properties();
 
@@ -25,6 +25,10 @@ public final class UserFactory {
     } catch (IOException ex) {
       ex.printStackTrace();
     }
+    return null;
+  }
+
+  public static User createDefaultUser() {
     return null;
   }
 }
