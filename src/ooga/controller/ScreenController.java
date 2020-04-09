@@ -17,8 +17,8 @@ import ooga.view.UserSelectorScreen;
 
 public class ScreenController{
 
-  private static final int INITIAL_WINDOW_WIDTH = 900;
-  private static final int INITIAL_WINDOW_HEIGHT = 700;
+  private static final int INITIAL_WINDOW_WIDTH = 800;
+  private static final int INITIAL_WINDOW_HEIGHT = 600;
 
   private Stage myStage;
   private User myUser;
