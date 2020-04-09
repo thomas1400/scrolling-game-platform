@@ -29,7 +29,7 @@ public class HomeScreen extends Screen {
     VBox layout = new VBox();
     layout.setAlignment(Pos.TOP_CENTER);
 
-    Label title = new Label("Title");
+    Label title = new Label(resources.getString("title"));
     title.setFont(Font.font(FONT_FAMILY, 60));
     layout.getChildren().add(title);
 
@@ -43,7 +43,7 @@ public class HomeScreen extends Screen {
     menu.setPadding(new Insets(5));
     menu.setSpacing(5);
     for (String tag : BUTTON_TAGS) {
-      Button button = cf.button(resources.getString(tag), BUTTON_FONT_SIZE, e->handleButtonPress(tag), 100, 80);
+      Button button = cf.button(resources.getString(tag), BUTTON_FONT_SIZE, e->handleButtonPress(tag), 150, 80);
       menu.getChildren().add(button);
     }
     layout.getChildren().add(menu);

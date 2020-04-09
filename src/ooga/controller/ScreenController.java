@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -30,7 +31,7 @@ public class ScreenController{
 
   private Screen myHomeScreen = new HomeScreen(this);
   //private Screen mySplashScreen = new SplashScreen();
-  //private Screen myUserSelectorScreen =  new UserSelectorScreen(this);
+  private Screen myUserSelectorScreen =  new UserSelectorScreen(this);
   private Screen myLevelSelectorScreen = new LevelSelectorScreen(this);
   private Screen myGameScreen;
   //private Screen myLevelBuilderScreen = new LevelBuilderScreen();
@@ -48,7 +49,7 @@ public class ScreenController{
   private void initializeScreens(){
     myScreens.put("HomeScreen", myHomeScreen);
     //myScreens.put("SplashScreen", mySplashScreen);
-    //myScreens.put("UserSelectorScreen", myUserSelectorScreen);
+    myScreens.put("UserSelectorScreen", myUserSelectorScreen);
     myScreens.put("LevelSelectorScreen", myLevelSelectorScreen);
     //myScreens.put("LevelBuilderScreen", myLevelBuilderScreen);
   };
@@ -58,7 +59,12 @@ public class ScreenController{
     Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
     //File file = new File("resources/stylesheet.css");
     //nextScene.getStylesheets().add(file.toURI().toString());
+    Scene lastScene = myStage.getScene();
     myStage.setScene(nextScene);
+    // TODO : look at alternatives to this bugfix, added by Thomas
+    if (lastScene != null) {
+      lastScene.setRoot(new Pane());
+    }
     myStage.show();
   };
 
