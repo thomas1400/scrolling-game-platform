@@ -16,17 +16,6 @@ public class InputManager {
   }
 
   public void handleKeyInput(KeyEvent keyEvent) {
-    if (keyEvent.getCode() == KeyCode.RIGHT){
-      myMainEntity.setX(myMainEntity.getX()+10);
-      //myMainEntity.moveRight();
-    }
-    if (keyEvent.getCode() == KeyCode.LEFT){
-      myMainEntity.setY(myMainEntity.getY()-10);
-      //myMainEntity.moveLeft();
-    }
-    if (keyEvent.getCode() == KeyCode.UP){
-      //myMainEntity.jump();
-    }
-
+    //myMainEntity.receiveUserInput(keyEvent);
   }
 }

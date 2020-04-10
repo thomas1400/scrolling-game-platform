@@ -59,10 +59,9 @@ public class EntityBuilder {
     //ResourceParser parser = new ResourceParser(STATS_PACKAGE_NAME, statsFilename);
     //System.out.println("images/entityimages/"+parser.getSymbol("Image"));
     ResourceBundle resources = ResourceBundle.getBundle(STATS_PACKAGE_NAME + statsFilename);
-    //System.out.println("images/entityimages/" + resources.getString("Image")); //fixme remove
-    // print
+    System.out.println("images/entityimages/" + resources.getString("Image")); //fixme remove print
     Image image = new Image("images/entityimages/" + resources.getString("Image"));
-    Entity entity = new Entity(image, resources.getString("Image"));
+    Entity entity = new Entity(image);
 
     for (String s : Collections.list(resources.getKeys())) {
       //todo remove this if?
