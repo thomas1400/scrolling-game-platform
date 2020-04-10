@@ -26,7 +26,7 @@ public class EntityBuilder {
   private static Ability makeAbility(String abilityType, String stats){
     try{
       Class abilityClass = Class.forName(ABILITY_PACKAGE + abilityType);
-      Constructor abilityClassConstructor = abilityClass.getConstructor(String.class);
+       Constructor abilityClassConstructor = abilityClass.getConstructor(String.class);
       return (Ability) abilityClassConstructor.newInstance(stats);
     } catch (ClassNotFoundException e){
       System.out.println("ClassNotFoundException");
@@ -59,7 +59,7 @@ public class EntityBuilder {
     //ResourceParser parser = new ResourceParser(STATS_PACKAGE_NAME, statsFilename);
     //System.out.println("images/entityimages/"+parser.getSymbol("Image"));
     ResourceBundle resources = ResourceBundle.getBundle(STATS_PACKAGE_NAME + statsFilename);
-    System.out.println("images/entityimages/" + resources.getString("Image"));
+    System.out.println("images/entityimages/" + resources.getString("Image")); //fixme remove print
     Image image = new Image("images/entityimages/" + resources.getString("Image"));
     Entity entity = new Entity(image);
 

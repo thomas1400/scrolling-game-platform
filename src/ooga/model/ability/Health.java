@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
  */
 public class Health extends Ability {
 
-  private static final String RESOURCE_PACKAGE = "resources.abilitytypes.Health";
+  private static final String RESOURCE_PACKAGE = "abilitytypes/Health";
 
   private int myLives;
   private boolean immortal;
