@@ -40,6 +40,7 @@ public class LevelLoop implements Loopable {
     myInputManager = new InputManager(myEntities.getMainEntity());
     myCollisionManager = new CollisionManager();
     myVisibleEntities = myCameraManager.initializeActiveEntities(myEntities);
+    myEntityManager.initializeEntityLists();
     createTimeline();
   }
 
@@ -53,11 +54,19 @@ public class LevelLoop implements Loopable {
   }
 
   private void loop() {
+    reinitializeEntities();
     manageCollisions();
+    //System.out.println(myEntityManager.getAddedEntities());
     updateEntities();
     // tell the entities to update gravity and stuff
     updateCamera();
-    sendUpdatedEntities();
+    sendEntities();
+  }
+
+  public void reinitializeEntities(){
+    myEntityManager.initializeEntityLists();
+    myCameraManager.initializeActivationStorage();
+
   }
 
   public void processInput(KeyEvent e) {
@@ -76,22 +85,23 @@ public class LevelLoop implements Loopable {
 
   private void updateCamera() {
     myCameraManager.updateCamera(myEntityManager.getEntities());
-    if(myCameraManager.getActivatedEntities()!=null) {
+    if(myCameraManager.getActivatedEntities().size()!=0) {
       myEntityManager.addAllEntities(myCameraManager.getActivatedEntities());
     }
-    if(myCameraManager.getDeactivatedEntities()!=null) {
+    if(myCameraManager.getDeactivatedEntities().size()!=0) {
       myEntityManager.removeAllEntities(myCameraManager.getDeactivatedEntities());
     }
   }
 
-  private void sendUpdatedEntities(){
-    if(myEntityManager.getAddedEntities()!=null) {
+  private void sendEntities(){
+    if(myEntityManager.getAddedEntities().size()!=0) {
       myLevelController.addAllEntities(myEntityManager.getAddedEntities());
     }
-    if(myEntityManager.getRemovedEntities()!=null){
+    if(myEntityManager.getRemovedEntities().size()!=0){
       myLevelController.removeAllEntities(myEntityManager.getRemovedEntities());
     }
   }
+
 
   /*private void sendEntitiesToController(EntityList activatedEntities, EntityList deactivedEntities) {
     myLevelController.addAllEntities(activatedEntities);
