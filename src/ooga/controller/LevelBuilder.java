@@ -16,25 +16,22 @@ import ooga.model.entity.EntityList;
 public final class LevelBuilder {
 
   private static final String LEVEL_FILE_EXTENSION = ".level";
-  public static final String USERS_PATH_NAME = "resources/levels";
+  private static final String USERS_PATH_NAME = "resources/levels";
 
-  public static final String HEADER_TAG = "#HEADER";
-  public static final String ENTITIES_TAG = "#ENTITIES";
-  public static final String LEVEL_TAG = "#LEVEL";
+  private static final String HEADER_TAG = "#HEADER";
+  private static final String ENTITIES_TAG = "#ENTITIES";
+  private static final String LEVEL_TAG = "#LEVEL";
   private static final String TAG_DELIMITER = "#";
-  public static final String KEY_VAL_SEPARATOR = ":";
-  public static final String LEVEL_OBJ_SEPARATOR = " ";
+  private static final String KEY_VAL_SEPARATOR = ":";
+  private static final String LEVEL_OBJ_SEPARATOR = " ";
   private static final String MAIN_ENTITY_SYMBOL = "X";
-  public static final String EMPTY_SPACE_SYMBOL = ".";
-  public static final String WIDTH_SPECIFIER = "levelWidth";
-  public static final String HEIGHT_SPECIFIER = "levelHeight";
-  public static final int KEY_INDEX = 0;
-  public static final int VALUE_INDEX = 1;
+  private static final String EMPTY_SPACE_SYMBOL = ".";
+  private static final String WIDTH_SPECIFIER = "levelWidth";
+  private static final String HEIGHT_SPECIFIER = "levelHeight";
+  private static final int KEY_INDEX = 0;
+  private static final int VALUE_INDEX = 1;
 
-  public static final double PIXEL_BLOCK_RATIO = 30.0;
-  public static final int HEIGHT_ADJUST = 1;
-
-  public static Level buildLevel(int levelNumber) throws FileNotFoundException {
+  public static Level buildLevel(int levelNumber, double gameWindowHeight) throws FileNotFoundException {
     File levelFile = getLevelFile(levelNumber);
 
     Map<String,String> headerInfo = getMapFromFile(levelFile, HEADER_TAG);
@@ -43,7 +40,7 @@ public final class LevelBuilder {
     int levelHeight = Integer.parseInt(headerInfo.get(HEIGHT_SPECIFIER));
     int levelWidth = Integer.parseInt(headerInfo.get(WIDTH_SPECIFIER));
 
-    EntityList levelEntities = buildEntities(levelFile, entityInfo, levelHeight, levelWidth);
+    EntityList levelEntities = buildEntities(levelFile, entityInfo, levelHeight, levelWidth, gameWindowHeight);
 
     return new Level(levelNumber, headerInfo,  levelEntities);
   }
@@ -101,7 +98,7 @@ public final class LevelBuilder {
   }
 
   private static EntityList buildEntities(File levelFile, Map<String, String> entityInfo,
-      int levelHeight, int width)
+      int levelHeight, int width, double gameWindowHeight)
       throws FileNotFoundException {
     EntityList myEntities = new EntityList();
 
@@ -115,44 +112,42 @@ public final class LevelBuilder {
         if (!symbol.equals(EMPTY_SPACE_SYMBOL)){
           String entityFile = entityInfo.get(symbol);
           Entity myEntity = EntityBuilder.getEntity(entityFile);
-          setEntitySize(myEntity);
-          setEntityCoordinates(levelHeight, j, i, myEntity);
-          addNewEntityToEntitiesList(myEntities, symbol, entityFile, myEntity);
+          double scaleFactor = gameWindowHeight/levelHeight;
+          setEntitySize(myEntity, scaleFactor);
+          setEntityCoordinates(levelHeight, j, i, myEntity, scaleFactor);
+          addNewEntityToEntitiesList(myEntities, symbol, myEntity);
         }
       }
     }
     return myEntities;
   }
 
-  private static void setEntitySize(Entity myEntity) {
-    double scalingFactor = myEntity.getBoundsInLocal().getWidth()/PIXEL_BLOCK_RATIO;
+  private static void setEntitySize(Entity myEntity, double scaleFactor) {
+    double scalingFactor = myEntity.getBoundsInLocal().getWidth()/scaleFactor;
     myEntity.setFitWidth(myEntity.getBoundsInLocal().getWidth()/scalingFactor);
     myEntity.setFitHeight(myEntity.getBoundsInLocal().getHeight()/scalingFactor);
   }
 
-  private static void addNewEntityToEntitiesList(EntityList myEntities, String symbol,
-      String entityFile, Entity myEntity) {
-    if (symbol.equals(MAIN_ENTITY_SYMBOL)){
-      //System.out.println("Building Main Entity: " + entityFile);
+  private static void addNewEntityToEntitiesList(EntityList myEntities, String symbol, Entity myEntity) {
+    if (symbol.equals(MAIN_ENTITY_SYMBOL)) {
       myEntities.setMainEntity(myEntity);
-    } else{
-      //System.out.println("Building Entity: " + entityFile);
-      myEntities.addEntity(myEntity);
     }
+    myEntities.addEntity(myEntity);
   }
 
-  private static void setEntityCoordinates(int levelHeight, int j, int i, Entity myEntity) {
-    myEntity.setX(getRelativeX(i));
+  private static void setEntityCoordinates(int levelHeight, int j, int i, Entity myEntity,
+      double scaleFactor) {
+    myEntity.setX(getRelativeX(i, scaleFactor));
     double imageHeight = myEntity.getBoundsInLocal().getHeight();
-    myEntity.setY(getRelativeY(j,levelHeight,imageHeight));
+    myEntity.setY(getRelativeY(j, imageHeight, scaleFactor));
   }
 
-  private static double getRelativeY(int j, int lvlHeight, double imgHeight) {
-    return (j*PIXEL_BLOCK_RATIO) - imgHeight;
+  private static double getRelativeY(int j, double imageHeight, double scaleFactor) {
+    return (j*scaleFactor) - imageHeight;
   }
 
-  private static double getRelativeX(int i) {
-    return i*PIXEL_BLOCK_RATIO;
+  private static double getRelativeX(int i, double scaleFactor) {
+    return i*scaleFactor;
   }
 
 }
