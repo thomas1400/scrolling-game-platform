@@ -66,7 +66,7 @@ public class CameraManager {
       }
     }
     for(Entity entity: activatedEntities) {
-      System.out.println(entity);
+      //System.out.println(entity);
     }
     System.out.println("changeamount");
     System.out.println(change);
