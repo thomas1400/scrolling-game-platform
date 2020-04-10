@@ -53,8 +53,7 @@ public class GameScreen extends Screen {
 
     layout.getChildren().add(infoBar);
 
-    gameBackground = new Rectangle(workingWidth, 0.8*workingHeight);
-    VBox.setMargin(gameBackground, new Insets(0, 10, 0, 10));
+    gameBackground = new Rectangle(workingWidth+2*PADDING, 0.8*workingHeight);
     gameBackground.setFill(Color.WHITE);
     layout.getChildren().add(gameBackground);
 
@@ -67,8 +66,10 @@ public class GameScreen extends Screen {
     Button pause, resume;
     pause = cf.button(resources.getString("pause"), BUTTON_FONT_SIZE,
         e-> {}, 100, menuBar.getPrefHeight());
+    pause.setFocusTraversable(false);
     resume = cf.button(resources.getString("resume"), BUTTON_FONT_SIZE,
         e-> {}, 100, menuBar.getPrefHeight());
+    resume.setFocusTraversable(false);
     resume.setDisable(true);
 
     pause.setOnAction(e-> {
@@ -86,11 +87,12 @@ public class GameScreen extends Screen {
 
     Button quit = cf.button(resources.getString("quit"), BUTTON_FONT_SIZE,
         e->handleButtonPress("quit"), 100, menuBar.getPrefHeight());
+    quit.setFocusTraversable(false);
     menuBar.getChildren().add(quit);
 
     this.getChildren().add(layout);
 
-    gameGroup.setTranslateX(PADDING);
+    gameGroup.setTranslateX(0);
     gameGroup.setTranslateY(0.1*workingHeight + 4*PADDING);
     this.getChildren().add(gameGroup);
   }
