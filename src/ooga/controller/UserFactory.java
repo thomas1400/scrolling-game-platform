@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import javafx.scene.image.Image;
 import ooga.model.data.User;
 
 public final class UserFactory {
@@ -29,6 +30,9 @@ public final class UserFactory {
           Integer.parseInt(prop.getProperty("lives"))
       );
 
+      createdUser.setPower(prop.getProperty("power"));
+      createdUser.setSize(prop.getProperty("size"));
+      createdUser.addPoints(Integer.parseInt(prop.getProperty("points")));
 
       return createdUser;
 
