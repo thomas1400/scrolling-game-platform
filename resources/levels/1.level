@@ -8,7 +8,7 @@ levelHeight:12
 #ENTITIES
 F:Flag
 1:Goomba
-?:Brick
+?:QuestionBrick
 B:Brick
 0:Koopa
 T:Brick

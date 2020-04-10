@@ -6,8 +6,7 @@ import ooga.model.entity.EntityList;
 public class CameraManager {
 
   Entity mainEntity;
-  int xCenter;
-  int yCenter;
+  double xCenter;
   double screenHeight;
   double screenWidth;
   EntityList activatedEntities;
@@ -18,21 +17,20 @@ public class CameraManager {
     mainEntity = character;
     screenHeight = height;
     screenWidth = width;
+    xCenter = screenWidth/2- mainEntity.getBoundsInLocal().getWidth()/2;
   }
 
   public void updateCamera(EntityList entities) {
-    if (mainEntity.getX() != xCenter | mainEntity.getY() != yCenter) {
+    if (mainEntity.getX()>xCenter) {
       double xChange = mainEntity.getX() - xCenter;
-      double yChange = mainEntity.getY() - yCenter;
       resetMainEntityToCenter();
-      entities.changeAllCoordinates(xChange, yChange);
+      entities.changeAllXCoordinates(xChange);
       determineEntitiesOnScreen(entities);
     }
   }
 
   private void resetMainEntityToCenter() {
     mainEntity.setX(xCenter);
-    mainEntity.setY(yCenter);
   }
 
   public void initializeActivationStorage() {
