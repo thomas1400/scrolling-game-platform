@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import javafx.scene.image.Image;
 import ooga.model.data.User;
 
 public final class UserFactory {
@@ -30,9 +29,6 @@ public final class UserFactory {
           Integer.parseInt(prop.getProperty("lives"))
       );
 
-      createdUser.setPower(prop.getProperty("power"));
-      createdUser.setSize(prop.getProperty("size"));
-      createdUser.addPoints(Integer.parseInt(prop.getProperty("points")));
 
       return createdUser;
 
@@ -45,7 +41,7 @@ public final class UserFactory {
   public static User getDefaultUser() {
     //TODO: eventually just have this call getUser(new File("Default.user"));
     List<Integer> defaultLevelsUnlocked = new ArrayList<>();
-    defaultLevelsUnlocked.add(0);
+    defaultLevelsUnlocked.add(1);
     return new User("Default User", "Mario.png", defaultLevelsUnlocked, 3);
   }
 }

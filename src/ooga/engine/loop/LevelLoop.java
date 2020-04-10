@@ -28,7 +28,7 @@ public class LevelLoop implements Loopable {
   private CollisionManager myCollisionManager;
   //private EntityList myEntities;
   private EntityList myVisibleEntities;
-  private static final int FRAMES_PER_SECOND = 600;
+  private static final int FRAMES_PER_SECOND = 60;
   private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
   private Timeline myTimeline;
   private Object KeyEvent;
@@ -39,13 +39,7 @@ public class LevelLoop implements Loopable {
     myCameraManager = new CameraManager(myEntities.getMainEntity(), screenHeight, screenWidth);
     myInputManager = new InputManager(myEntities.getMainEntity());
     myCollisionManager = new CollisionManager();
-    EntityList entitiesOnScreen = myCameraManager.initializeActiveEntities(myEntities);
-    myVisibleEntities =  entitiesOnScreen;
-    for (Entity entity: myEntityManager.getEntities()){
-      System.out.println(entity);
-    }
-    //myEntityManager.addAllEntities(entitiesOnScreen);
-    myEntityManager.initializeEntityLists();
+    myVisibleEntities = myCameraManager.initializeActiveEntities(myEntities);
     createTimeline();
   }
 
@@ -59,19 +53,11 @@ public class LevelLoop implements Loopable {
   }
 
   private void loop() {
-    reinitializeEntities();
     manageCollisions();
-    //System.out.println(myEntityManager.getAddedEntities());
     updateEntities();
     // tell the entities to update gravity and stuff
     updateCamera();
-    sendEntities();
-  }
-
-  public void reinitializeEntities(){
-    myEntityManager.initializeEntityLists();
-    myCameraManager.initializeActivationStorage();
-
+    sendUpdatedEntities();
   }
 
   public void processInput(KeyEvent e) {
@@ -92,23 +78,17 @@ public class LevelLoop implements Loopable {
 
   private void updateCamera() {
     myCameraManager.updateCamera(myEntityManager.getEntities());
-    if(myCameraManager.getActivatedEntities().size()!=0) {
-      myEntityManager.addNewEntities(myCameraManager.getActivatedEntities());
-    }
-    if(myCameraManager.getDeactivatedEntities().size()!=0) {
-      myEntityManager.removeOldEntities(myCameraManager.getDeactivatedEntities());
-    }
+    myEntityManager.addAllEntities(myCameraManager.getActivatedEntities());
+    myEntityManager.removeAllEntities(myCameraManager.getDeactivatedEntities());
+    //EntityList activatedEntities = myCameraManager.getActivatedEntities();
+    //EntityList deactivatedEntities = myCameraManager.getDeactivatedEntities();
+    //sendEntitiesToController(activatedEntities, deactivatedEntities);
   }
 
-  private void sendEntities(){
-    if(myEntityManager.getAddedEntities().size()!=0) {
-      myLevelController.addAllEntities(myEntityManager.getAddedEntities());
-    }
-    if(myEntityManager.getRemovedEntities().size()!=0){
-      myLevelController.removeAllEntities(myEntityManager.getRemovedEntities());
-    }
+  private void sendUpdatedEntities(){
+    myLevelController.addAllEntities(myEntityManager.getAddedEntities());
+    myLevelController.removeAllEntities(myEntityManager.getRemovedEntities());
   }
-
 
   /*private void sendEntitiesToController(EntityList activatedEntities, EntityList deactivedEntities) {
     myLevelController.addAllEntities(activatedEntities);

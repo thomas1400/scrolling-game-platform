@@ -22,26 +22,23 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   private Physics myPhysics;
   private Health health;
   private Movement movement;
-  private Stunnable stunType;
+  private Ability stun;
   private Attack side, top, bottom;
   private List<Ability> myAbilities;
-  private String debuggingName;
   private boolean dead;
 
   /**
    * Create default health and attacks, which can be overwritten later
    * using the addAbility method
    */
-  public Entity(Image image, String name){
+  public Entity(Image image){
     super(image);
-    debuggingName = name;
     myAbilities = new ArrayList<Ability>();
     health = new Health();
     side = Attack.HARMLESS;
     top = Attack.HARMLESS;
     bottom = Attack.HARMLESS;
-    stunType = new Stunnable();
-    myPhysics = new Physics(this);
+    stun = new Stunnable();
   }
 
   public void updateAttack(String location, String attackType) {
@@ -82,27 +79,22 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     }
   }
 
-  //used for reflection DO NOT DELETE
   private void addHealth(Ability h){
     health = (Health) h;
   }
 
-  //used for reflection DO NOT DELETE
   private void addStunnable(Ability s){
-    stunType = (Stunnable) s;
+    stun = (Stunnable) s;
   }
 
-  //used for reflection DO NOT DELETE
   private void addSideAttack(Attack a){
     side = a;
   }
 
-  //used for reflection DO NOT DELETE
   private void addTopAttack(Attack a){
     top = a;
   }
 
-  //used for reflection DO NOT DELETE
   private void addBottomAttack(Attack a){
     bottom = a;
   }
@@ -114,13 +106,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
 
   public boolean isDead(){
     return dead;
-  }
-
-  public String debug(){
-    if(debuggingName.equals("Mario.png")){
-     // System.out.println("Side: "+side.toString()+" Bottom: "+bottom.toString()+" top: "+top.toString());
-    }
-    return debuggingName;
   }
 
   /**
@@ -141,7 +126,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     }
   }
 
-  //used for reflection DO NOT DELETE
+  //used for reflection
   private Attack getSideAttack(){
     /*if(stun.isStunned()){
       side = Attack.DAMAGE;
@@ -149,56 +134,57 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     return side;
   }
 
-  //used for reflection DO NOT DELETE
+  //used for reflection
   private Attack getTopAttack(){
     return top;
   }
 
-  //used for reflection DO NOT DELETE
+  //used for reflection
   private Attack getBottomAttack(){
     return bottom;
   }
 
   @Override
-  public Entity handleCollision(CollisionEvent ce) {
-    String location = ce.getCollisionLocation();
-    Attack otherAttack = ce.getAttackType();
-    Attack myAttack = this.getAttack(location);
-    if(!myAttack.equals(otherAttack)) {
-      try {
-        Method method = Entity.class.getDeclaredMethod(otherAttack.toString(), Attack.class);
-        method.invoke(Entity.this, myAttack);
-      } catch (NoSuchMethodException e) {
-        throw new RuntimeException(e);
-      } catch (IllegalAccessException e) {
-        throw new RuntimeException(e);
-      } catch (InvocationTargetException e) {
-        throw new RuntimeException(e);
-      }
-    }
-    return this;
+  public void handleCollision(CollisionEvent ce) {
+    /*
+    for (Ability a : myAbilities){
+      a.hit();
+    }*/
+
+
+    /**
+     * pseudo code time baby
+     */
+    /*
+     if (other) instanceof (damage)
+      health.damage
+     if (other) instanceof (stun)
+      this.stun
+     if (other) instance of (bounce)
+     moveable.bounce
+
+     */
   }
 
-  //used for reflection DO NOT DELETE
-  private void damage(Attack myAttack){
+  //used for reflection
+  private void damage(){
     health.hit();
-    dead = health.isDead();
   }
 
-
-  //used for reflection DO NOT DELETE
-  private void stun(Attack myAttack){
+  /*
+  //used for reflection
+  private void stun(){
     if(stunType.isStunnable()) {
       stunType.setStunned(true);
       side = Attack.HARMLESS;
       top = Attack.BOUNCE;
     } else {
-      damage(myAttack);
+      damage();
     }
-  }
+  }*/
 
-  //used for reflection DO NOT DELETE
-  private void bounce(Attack myAttack){
+  //used for reflection
+  private void bounce(){
     //if it's on the bottom
     movement.jump();
     //if it's side
@@ -207,26 +193,21 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     }*/
   }
 
-  //used for reflection DO NOT DELETE
-  private void nothing(Attack myAttack){
+  //used for reflection
+  private void nothing(){
     //do nothing
   }
 
   @Override
   public void updateVisualization() {
-    //myPhysics.update();
+    //todo this is the moving thing?
   }
 
-  public void moveRight(){
-    myPhysics.moveRight();
+  public Renderable getRenderable() {
+    return null;
   }
 
-  public void moveLeft(){
-    myPhysics.moveLeft();
+  public Manageable getManageable() {
+    return null;
   }
-
-  public void jump(){
-    myPhysics.jump();
-  }
-
 }

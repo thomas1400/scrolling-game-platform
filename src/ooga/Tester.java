@@ -17,6 +17,6 @@ import ooga.view.GameScreen;
 public class Tester {
 
   public static void main(String[] args) throws FileNotFoundException {
-    System.out.println(UserFactory.getUser(new File("resources/users/Cayla.user")));
+    System.out.println(UserFactory.getUser(new File("resources/users/SuperCay.user")));
   }
 }
