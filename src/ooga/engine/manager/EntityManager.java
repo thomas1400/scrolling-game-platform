@@ -47,6 +47,16 @@ public class EntityManager implements Communicable {
     return removedEntities;
   }
 
+  public void addNewEntities(EntityList entities) {
+    addedEntities.addAllEntities(entities);
+    //needs to be reset somewhere
+  }
+
+  public void removeOldEntities(EntityList entities) {
+    removedEntities.addAllEntities(entities);
+    //needs to be reset somewhere
+  }
+
 
 
 
