@@ -114,10 +114,7 @@ public final class LevelBuilder {
         String symbol = levelLine[i];
         if (!symbol.equals(EMPTY_SPACE_SYMBOL)){
           String entityFile = entityInfo.get(symbol);
-
-          //Entity myEntity = new Entity();
           Entity myEntity = EntityBuilder.getEntity(entityFile);
-
           setEntityCoordinates(levelHeight, j, i, myEntity);
           addNewEntityToEntitiesList(myEntities, symbol, entityFile, myEntity);
         }
