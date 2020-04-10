@@ -39,6 +39,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     top = Attack.HARMLESS;
     bottom = Attack.HARMLESS;
     stun = new Stunnable();
+    myPhysics = new Physics(this);
   }
 
   public void updateAttack(String location, String attackType) {
@@ -200,14 +201,19 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
 
   @Override
   public void updateVisualization() {
-    //todo this is the moving thing?
+    //myPhysics.update();
   }
 
-  public Renderable getRenderable() {
-    return null;
+  public void moveRight(){
+    myPhysics.moveRight();
   }
 
-  public Manageable getManageable() {
-    return null;
+  public void moveLeft(){
+    myPhysics.moveLeft();
   }
+
+  public void jump(){
+    myPhysics.jump();
+  }
+
 }
