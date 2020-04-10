@@ -62,7 +62,7 @@ public class EntityBuilder {
     //System.out.println("images/entityimages/" + resources.getString("Image")); //fixme remove
     // print
     Image image = new Image("images/entityimages/" + resources.getString("Image"));
-    Entity entity = new Entity(image);
+    Entity entity = new Entity(image, resources.getString("Image"));
 
     for (String s : Collections.list(resources.getKeys())) {
       //todo remove this if?

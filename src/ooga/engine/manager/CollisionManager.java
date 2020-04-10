@@ -41,7 +41,7 @@ public class CollisionManager implements Observable {
 
   private void createAndSendCollision(String typeOfCollision, Attack attack, Entity entity){
     //receive an entity object from the entity
-    //entitiesReceived.addEntity(entity.receiveCollision(new CollisionEvent(typeOfCollision, attack);
+    a.addEntity(entity.handleCollision(new CollisionEvent(typeOfCollision, attack)));
   }
 
   public EntityList getEntitiesReceived(){
