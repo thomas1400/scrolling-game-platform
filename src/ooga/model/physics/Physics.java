@@ -5,16 +5,21 @@ import ooga.model.entity.Entity;
 public class Physics {
 
   private static final double dt = 1/60.0;
-  private static final double sizeScale = 35.0;
+  private static final double sizeScale = 50.0;
 
-  private static final double GRAVITY = 6.0 * 20;
-  private static final double INITIAL_JUMP_VELOCITY = -7.0 * sizeScale;
-  private static final double MAX_VERT_VELOCITY = 7.0 * sizeScale;
-  private static final double MAX_HORIZ_VELOCITY = 2 * sizeScale;
+  private static final double JUMP_HEIGHT = 3.75 * sizeScale;
+  private static final double TIME_TO_APEX = 4.0;
+  private static final double GRAVITY = (2*JUMP_HEIGHT)/Math.pow(TIME_TO_APEX,2);
+  private static final double INITIAL_JUMP_VELOCITY = -1 * Math.sqrt(2*GRAVITY*JUMP_HEIGHT);
+
+  private static final double MAX_VERT_VELOCITY = -1 * INITIAL_JUMP_VELOCITY;
+  private static final double MAX_HORIZ_VELOCITY = 1.5 * sizeScale;
   private static final double RUN_ACCELERATION = 2 * sizeScale;
+  private static final double FRICTION_DAMPING = 1.2;
 
   private static final int X = 0;
   private static final int Y = 1;
+  private static final double REACTIVITY_PERCENT = 3.5;
 
   private double[] myPosition;
   private double[] myVelocity;
@@ -30,37 +35,52 @@ public class Physics {
     //Get on screen position
     myPosition[X] = myEntity.getX();
     myPosition[Y] = myEntity.getY();
+    myPosition[Y] = tempCheckLandJump();
 
     //Velocity Updates
     myVelocity[X] += myAcceleration[X]*dt;
     myVelocity[Y] += myAcceleration[Y]*dt;
-
-    //Velocity Checks
-    myVelocity[X] = getLimitedVelocity(myVelocity[X], MAX_HORIZ_VELOCITY);
-    myVelocity[Y] = getLimitedVelocity(myVelocity[Y], MAX_VERT_VELOCITY);
+    limitVelocities();
+    adjustForFriction();
 
     //Position Updates
     myPosition[X] += myVelocity[X]*dt;
     //myPosition[Y] += myVelocity[Y]*dt;
-    myPosition[Y] = tempCheckLandJump();
+    //myPosition[Y] = tempCheckLandJump();
 
     //Update Image Position
     myEntity.setX(myPosition[X]);
     myEntity.setY(myPosition[Y]);
+
+    //Re-take initial Accel[Y] Value
+    myAcceleration[Y] = GRAVITY;
+  }
+
+  private void limitVelocities() {
+    myVelocity[X] = getLimitedVelocity(myVelocity[X], MAX_HORIZ_VELOCITY);
+    myVelocity[Y] = getLimitedVelocity(myVelocity[Y], MAX_VERT_VELOCITY);
+  }
+
+  private void adjustForFriction() {
+    //Horz Velocity Damping b/c of Friction if not in air
+    if (myAcceleration[Y] == 0) {
+      myVelocity[X] = myVelocity[X] / (1 + FRICTION_DAMPING * dt);
+    }
   }
 
   private double tempCheckLandJump() {
-    if (myPosition[Y] < 307) {
+    double groundHeight = 306.5;
+    if (myPosition[Y] < groundHeight) {
       myPosition[Y] += myVelocity[Y]*dt;
     } else {
       stopVerticalMotion();
-      myPosition[Y] -= 1;
+      myPosition[Y] -= 0.1;
     }
     return myPosition[Y];
   }
 
   private double getLimitedVelocity(double velocity, double maxVelocity) {
-    if (velocity >= 0){
+    if (velocity > 0){
       return Math.min(velocity, maxVelocity);
     } else {
       return Math.max(velocity, -1 * maxVelocity);
@@ -72,6 +92,8 @@ public class Physics {
     myVelocity[Y] += INITIAL_JUMP_VELOCITY;
   }
   public void stopHorizMotion() {
+    //TODO: Trigger this when an object collides with the side of an object that should stop its
+    // motion
     myAcceleration[X] = 0;
     myVelocity[X] = 0;
   }
@@ -80,14 +102,18 @@ public class Physics {
     myVelocity[Y] = 0;
   }
   public void moveLeft() {
-    myVelocity[X] = myVelocity[X] - RUN_ACCELERATION * dt;
+    if (myVelocity[X] < 0) {
+      myVelocity[X] = myVelocity[X] - RUN_ACCELERATION * dt;
+    } else {
+      myVelocity[X] = myVelocity[X] - (RUN_ACCELERATION * REACTIVITY_PERCENT) * dt;
+    }
   }
   public void moveRight() {
-    myVelocity[X] = myVelocity[X] + RUN_ACCELERATION * dt;
+    if (myVelocity[X] > 0) {
+      myVelocity[X] = myVelocity[X] + RUN_ACCELERATION * dt;
+    } else {
+      myVelocity[X] = myVelocity[X] + (RUN_ACCELERATION * REACTIVITY_PERCENT) * dt;
+    }
   }
-  public void resumeFall() {
-    myAcceleration[Y] = GRAVITY;
-  }
-  public void endFall() { stopVerticalMotion();}
 
 }
