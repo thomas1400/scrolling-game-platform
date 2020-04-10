@@ -124,8 +124,8 @@ public final class LevelBuilder {
 
   private static void setEntitySize(Entity myEntity, double scaleFactor) {
     double scalingFactor = myEntity.getBoundsInLocal().getWidth()/scaleFactor;
-    myEntity.setFitWidth(myEntity.getBoundsInLocal().getWidth()/scalingFactor);
-    myEntity.setFitHeight(myEntity.getBoundsInLocal().getHeight()/scalingFactor);
+    myEntity.setFitWidth(myEntity.getBoundsInLocal().getWidth()/scalingFactor-0.01);
+    myEntity.setFitHeight(myEntity.getBoundsInLocal().getHeight()/scalingFactor-0.01);
   }
 
   private static void addNewEntityToEntitiesList(EntityList myEntities, String symbol, Entity myEntity) {
