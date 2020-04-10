@@ -148,7 +148,7 @@ public final class LevelBuilder {
   }
 
   private static double getRelativeY(int j, int lvlHeight, double imgHeight) {
-    return (lvlHeight-HEIGHT_ADJUST-j)*PIXEL_BLOCK_RATIO + imgHeight;
+    return (j*PIXEL_BLOCK_RATIO) - imgHeight;
   }
 
   private static double getRelativeX(int i) {
