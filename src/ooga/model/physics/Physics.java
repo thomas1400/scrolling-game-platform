@@ -43,14 +43,16 @@ public abstract class Physics {
   public void jump() {
     myVelocity[Y] += INITIAL_JUMP_VELOCITY;
   }
-  public void moveRight() {
+  public void moveForward() {
     myVelocity[X] = RUN_VELOCITY;
   }
-  public void moveLeft() {
-    myVelocity[X] = -RUN_VELOCITY;
+  public void stopForwardMotion() {myVelocity[X] = 0;}
+  public void reverseDirection() { myVelocity[X] *= -1; }
+  public void beginFall() {
+    myAcceleration[Y] = GRAVITY;
   }
-  public void beginFall() {}
-  public void endFall() {}
-  public void reverseDirection() {}
+  public void endFall() {} {
+    myAcceleration[Y] = 0.0;
+  }
 
 }

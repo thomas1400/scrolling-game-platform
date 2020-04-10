@@ -6,14 +6,19 @@ import ooga.model.entity.EntityList;
 
 public class EntityManager implements Communicable {
   //Entity entityReceived;
-  EntityList myEntityList;
-  EntityList addedEntities;
-  EntityList removedEntities;
-
+  private EntityList myEntityList;
+  private EntityList addedEntities;
+  private EntityList removedEntities;
   private CollisionManager myCollisionManager;
 
   public EntityManager(EntityList entities) {
     myEntityList = entities;
+    initializeEntityLists();
+  }
+
+  public void initializeEntityLists(){
+    addedEntities = new EntityList();
+    removedEntities = new EntityList();
   }
 
   protected void manageEntities(Entity entityReceived) {
