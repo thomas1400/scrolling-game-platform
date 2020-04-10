@@ -7,8 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import javafx.animation.FadeTransition;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -31,10 +29,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.util.Duration;
 import ooga.controller.ScreenController;
 import ooga.exceptions.ExceptionFeedback;
-import ooga.model.data.User;
 import ooga.view.factory.ControlFactory;
 
 public class LevelSelectorScreen extends Screen {
@@ -55,19 +51,12 @@ public class LevelSelectorScreen extends Screen {
     VBox layout = new VBox();
     layout.setAlignment(Pos.TOP_CENTER);
 
-    if (controller.getUsers() == null) {
-      return;
-    }
-
-    User user = controller.getUsers().getSelectedUser();
-
-    Label username = cf
-        .label("User: " + controller.getUsers().getSelectedUser().getName(), BUTTON_FONT_SIZE);
-    username.setPrefHeight(workingHeight * 0.1);
-    layout.getChildren().add(username);
+    Label user = cf.label("User X", BUTTON_FONT_SIZE);
+    user.setPrefHeight(workingHeight * 0.1);
+    layout.getChildren().add(user);
 
     lst = new LevelSelectorTool(workingWidth, workingHeight*0.8,
-        LEVEL_GRAPH_FILE, LEVEL_MAP_FILE, user.getLevelsUnlocked());
+        LEVEL_GRAPH_FILE, LEVEL_MAP_FILE, 0);
     cf.setMargin(lst);
     layout.getChildren().add(lst);
 
@@ -97,34 +86,20 @@ public class LevelSelectorScreen extends Screen {
   }
 
   public void loadLevel() {
-
-    Pane loadingPane = new LoadingPane(this);
-    this.getChildren().add(loadingPane);
-
-    FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), loadingPane);
-    fadeIn.setFromValue(0);
-    fadeIn.setToValue(1);
-    fadeIn.setCycleCount(1);
-
-    fadeIn.play();
-
-    fadeIn.setOnFinished((e) -> {
-      controller.initializeNewLevel(lst.getSelected());
-      this.getChildren().remove(loadingPane);
-    });
+    controller.initializeNewLevel(lst.getSelected());
   }
 
   private class LevelSelectorTool extends Pane {
 
     private static final double STROKE_WIDTH = 5.0;
-    private static final double CENTER_OFFSET = 10.0;
+    private static final double CENTER_OFFSET = 5.0;
 
     private ToggleGroup levels;
     private boolean[][] adjacency;
     double[][] locations;
     private int numLevels;
 
-    LevelSelectorTool(double width, double height, String levelGraphFile, String levelMapFile, List<Integer> levelProgress) {
+    LevelSelectorTool(double width, double height, String levelGraphFile, String levelMapFile, int levelProgress) {
       parseGraph(levelGraphFile);
       parseMap(levelMapFile);
 
@@ -149,12 +124,11 @@ public class LevelSelectorScreen extends Screen {
 
       levels = new ToggleGroup();
       for (int i = 0; i < numLevels; i++) {
-        RadioButton button = new RadioButton(""+(i+1));
-        button.setFont(Font.font(FONT_FAMILY, BUTTON_FONT_SIZE));
-        button.setTextFill(Color.WHITE);
+        RadioButton button = new RadioButton("1-" + i);
+        button.setFont(Font.font(FONT_FAMILY, DETAIL_FONT_SIZE));
         button.setToggleGroup(levels);
         button.setId(Integer.toString(i+1));
-        if (i == levelProgress.get(levelProgress.size()-1)) {
+        if (i == 0) {
           button.setSelected(true);
         }
         button.setLayoutX(locations[i][0]);
