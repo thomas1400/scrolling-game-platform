@@ -24,8 +24,8 @@ public class CollisionManager implements Observable {
       for (Entity entity2 : entities) {
         if (!entity.equals(entity2)) {
           if (entity.getBoundsInLocal().intersects(entity2.getBoundsInLocal())) {
-            if (entity.getBoundsInLocal().getMaxX() >= entity2.getBoundsInLocal().getMinX()
-                || entity2.getBoundsInLocal().getMaxX() >= entity.getBoundsInLocal().getMinX()) {
+            if (entity.getBoundsInLocal().getMaxX() > entity2.getBoundsInLocal().getMinX()
+                || entity2.getBoundsInLocal().getMaxX() > entity.getBoundsInLocal().getMinX()) {
               createAndSendCollision(SIDE, entity2.getAttack(SIDE), entity);
               createAndSendCollision(SIDE, entity.getAttack(SIDE), entity2);
             } else if (entity.getBoundsInLocal().getMaxY() <= entity2.getBoundsInLocal()
