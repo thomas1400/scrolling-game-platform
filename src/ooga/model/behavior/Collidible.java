@@ -1,11 +1,12 @@
 package ooga.model.behavior;
 
+import ooga.model.entity.Entity;
 import ooga.utility.event.CollisionEvent;
 
 public interface Collidible {
 
   String[] getTags();
 
-  void handleCollision(CollisionEvent ce);
+  Entity handleCollision(CollisionEvent ce);
 
 }

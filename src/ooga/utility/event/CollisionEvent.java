@@ -1,23 +1,24 @@
 package ooga.utility.event;
 
+import ooga.model.ability.attacktypes.Attack;
 import ooga.model.entity.Entity;
 
 public class CollisionEvent{
 
   private String typeOfCollision;
-  private String whoCollidedWith;
+  private Attack attackType;
 
 
-  public CollisionEvent(String whereCollisionOccurred, String whoCollisionOccurredWith){
+  public CollisionEvent(String whereCollisionOccurred, Attack attack){
     typeOfCollision = whereCollisionOccurred;
-    whoCollidedWith = whoCollisionOccurredWith;
+    attackType = attack;
   }
 
-  public String getTypeOfCollision(){
+  public String getCollisionLocation(){
     return typeOfCollision;
   }
 
-  public String getWhoCollidedWith(){
-    return whoCollidedWith;
+  public Attack getAttackType(){
+    return attackType;
   }
 }
