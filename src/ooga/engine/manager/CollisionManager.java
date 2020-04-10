@@ -15,8 +15,10 @@ public class CollisionManager implements Observable {
 
 
   private List<Observer> observers;
+  private EntityList entitiesReceived;
 
   public void manageCollisions(EntityList entities) {
+    entitiesReceived = new EntityList();
     for(Entity entity:entities){
       for(Entity entity2:entities){
         if(entity.getBoundsInLocal().intersects(entity2.getBoundsInLocal())) {
@@ -37,10 +39,12 @@ public class CollisionManager implements Observable {
   }
 
   private void createAndSendCollision(String typeOfCollision, String entityCollidedWith, Entity entity){
-    //entity.receiveCollision(new CollisionEvent(typeOfCollision, entityCollidedWith));
+    //entitiesReceived.addEntity(entity.receiveCollision(new CollisionEvent(typeOfCollision, entityCollidedWith);
   }
 
-
+  public EntityList getEntitiesReceived(){
+    return entitiesReceived;
+  }
 
 
   //NOT SURE IF THESE WILL BE IMPLEMENTED LATER

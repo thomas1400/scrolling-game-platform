@@ -26,9 +26,9 @@ public class EntityManager implements Communicable {
       addEntity(entityReceived);
     }
     for (Entity entity : myEntityList) {
-      /*if (entity.isDead()) {
+      if (entity.isDead()) {
         removeEntity(entity);
-      }*/
+      }
     }
   }
 
