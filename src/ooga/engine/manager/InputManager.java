@@ -27,6 +27,5 @@ public class InputManager {
     if (keyEvent.getCode() == KeyCode.UP){
       myMainEntity.jump();
     }
-
   }
 }
