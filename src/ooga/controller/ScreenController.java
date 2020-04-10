@@ -26,10 +26,10 @@ public class ScreenController{
   private UserList myUsers;
   private User mySelectedUser;
 
-  private Screen myHomeScreen = new HomeScreen(this);
+  private Screen myHomeScreen;
   //private Screen mySplashScreen = new SplashScreen();
-  private Screen myUserSelectorScreen =  new UserSelectorScreen(this);
-  private Screen myLevelSelectorScreen = new LevelSelectorScreen(this);
+  private Screen myUserSelectorScreen;
+  private Screen myLevelSelectorScreen;
   private Screen myGameScreen;
   //private Screen myLevelBuilderScreen = new LevelBuilderScreen();
 
@@ -38,7 +38,6 @@ public class ScreenController{
   public ScreenController(Stage primaryStage){
     myStage = primaryStage;
     addApplicationIcon();
-
     initializeScreens();
 
     switchToScreen("HomeScreen");
@@ -54,6 +53,10 @@ public class ScreenController{
   }
 
   private void initializeScreens(){
+    myLevelSelectorScreen = new LevelSelectorScreen(this);
+    myUserSelectorScreen =  new UserSelectorScreen(this);
+    myHomeScreen = new HomeScreen(this);
+
     myScreens.put("HomeScreen", myHomeScreen);
     //myScreens.put("SplashScreen", mySplashScreen);
     myScreens.put("UserSelectorScreen", myUserSelectorScreen);
@@ -62,10 +65,11 @@ public class ScreenController{
   };
 
   public void switchToScreen(String screenName){
-    Screen nextScreen = myScreens.get(screenName);
-    Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
-    File file = new File("resources/stylesheet.css");
-    nextScene.getStylesheets().add(file.toURI().toString());
+    Scene nextScene = getScene(screenName);
+    showScene(nextScene);
+  }
+
+  private void showScene(Scene nextScene) {
     Scene lastScene = myStage.getScene();
     myStage.setScene(nextScene);
     // TODO : look at alternatives to this bugfix, added by Thomas
@@ -73,7 +77,17 @@ public class ScreenController{
       lastScene.setRoot(new Pane());
     }
     myStage.show();
-  };
+  }
+
+  private Scene getScene(String screenName) {
+    Screen nextScreen = myScreens.get(screenName);
+    Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
+    File file = new File("resources/stylesheet.css");
+    nextScene.getStylesheets().add(file.toURI().toString());
+    return nextScene;
+  }
+
+  ;
 
   public void initializeNewLevel(int levelNumber){
     myGameScreen = new GameScreen(this);
@@ -83,13 +97,32 @@ public class ScreenController{
         new LevelController((GameScreen)myGameScreen, mySelectedUser, levelNumber);
     ((GameScreen) myGameScreen).setLevelController(levelController);
 
-    switchToScreen("GameScreen");
-    levelController.begin();
+    Screen nextScreen = myScreens.get("GameScreen");
+    Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
+    File file = new File("resources/stylesheet.css");
+    nextScene.getStylesheets().add(file.toURI().toString());
+    //nextScene.setOnKeyPressed(event -> levelController.handleUserInput(event));
+    nextScene.setOnKeyPressed(levelController::handleUserInput);
+
+    showScene(nextScene);
+
+    levelController.beginLevel();
   }
 
   public void setUsers(UserList users) {
     myUsers = users;
     mySelectedUser = users.getSelectedUser();
+    initializeScreens();
+  }
+
+  public UserList getUsers() {
+    return myUsers;
+  }
+
+  public void setSelectedUser(User user){
+    mySelectedUser = user;
+    myUsers.setSelectedUser(user);
+    initializeScreens();
   }
 
   public void handleButtonPress(){

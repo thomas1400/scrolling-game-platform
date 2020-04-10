@@ -5,25 +5,33 @@ import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 
 public class EntityManager implements Communicable {
-  //Entity entityReceived;
-  EntityList myEntityList;
-  EntityList addedEntities;
-  EntityList removedEntities;
 
+  //Entity entityReceived;
+  private EntityList myEntityList;
+  private EntityList addedEntities;
+  private EntityList removedEntities;
   private CollisionManager myCollisionManager;
 
   public EntityManager(EntityList entities) {
     myEntityList = entities;
+    initializeEntityLists();
   }
 
-  protected void manageEntities(Entity entityReceived) {
-    if (!myEntityList.contains(entityReceived)) {
-      addEntity(entityReceived);
+  public void initializeEntityLists() {
+    addedEntities = new EntityList();
+    removedEntities = new EntityList();
+  }
+
+  public void manageEntities(EntityList entitiesReceived) {
+    for (Entity entity : entitiesReceived) {
+      if (!myEntityList.contains(entity)) {
+        addEntity(entity);
+      }
     }
     for (Entity entity : myEntityList) {
-      /*if (entity.isDead()) {
+      if (entity.isDead()) {
         removeEntity(entity);
-      }*/
+      }
     }
   }
 
@@ -37,6 +45,16 @@ public class EntityManager implements Communicable {
 
   public EntityList getRemovedEntities() {
     return removedEntities;
+  }
+
+  public void addNewEntities(EntityList entities) {
+    addedEntities.addAllEntities(entities);
+    //needs to be reset somewhere
+  }
+
+  public void removeOldEntities(EntityList entities) {
+    removedEntities.addAllEntities(entities);
+    //needs to be reset somewhere
   }
 
 

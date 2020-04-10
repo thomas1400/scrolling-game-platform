@@ -6,10 +6,10 @@ import ooga.model.entity.EntityList;
 public class CameraManager {
 
   Entity mainEntity;
-  int xCenter;
-  int yCenter;
+  double xCenter;
   double screenHeight;
   double screenWidth;
+  double change;
   EntityList activatedEntities;
   EntityList deactivatedEntities;
   EntityList onScreenEntities;
@@ -17,22 +17,22 @@ public class CameraManager {
   public CameraManager(Entity character, double height, double width) {
     mainEntity = character;
     screenHeight = height;
-    screenWidth = width;
+    screenWidth = width +10;
+    xCenter = screenWidth/2- mainEntity.getBoundsInLocal().getWidth()/2;
   }
 
   public void updateCamera(EntityList entities) {
-    if (mainEntity.getX() != xCenter | mainEntity.getY() != yCenter) {
-      double xChange = mainEntity.getX() - xCenter;
-      double yChange = mainEntity.getY() - yCenter;
+    if (mainEntity.getX()>xCenter) {
+      double xChange = mainEntity.getX()- xCenter;
+      change = xChange;
       resetMainEntityToCenter();
-      entities.changeAllCoordinates(xChange, yChange);
+      entities.changeAllXCoordinates(xChange);
       determineEntitiesOnScreen(entities);
     }
   }
 
   private void resetMainEntityToCenter() {
     mainEntity.setX(xCenter);
-    mainEntity.setY(yCenter);
   }
 
   public void initializeActivationStorage() {
@@ -44,7 +44,7 @@ public class CameraManager {
     initializeActivationStorage();
     onScreenEntities = new EntityList();
     for (Entity entity : entities) {
-      if (entity.getX() < screenWidth && entity.getY() < screenHeight) {
+      if (entity.getX()> 10 && entity.getBoundsInLocal().getMinX()< screenWidth && entity.getY() < screenHeight) {
         activatedEntities.addEntity(entity);
         onScreenEntities.addEntity(entity);
       }
@@ -55,16 +55,22 @@ public class CameraManager {
   private void determineEntitiesOnScreen(EntityList entities) {
     initializeActivationStorage();
     for (Entity entity : entities) {
-      if (entity.getX() < screenWidth && entity.getY() < screenHeight && !onScreenEntities
+      if (entity.getX()> 10 && entity.getBoundsInLocal().getMinX() < screenWidth && entity.getY() < screenHeight && !onScreenEntities
           .contains(entity)) {
         activatedEntities.addEntity(entity);
         onScreenEntities.addEntity(entity);
-      } else if ((entity.getX() > screenWidth || entity.getY() > screenHeight) && onScreenEntities
+      } else if ((entity.getBoundsInLocal().getMinX() > screenWidth || entity.getX()< 10 || entity.getY() > screenHeight) && onScreenEntities
           .contains(entity)) {
         onScreenEntities.removeEntity(entity);
         deactivatedEntities.addEntity(entity);
       }
     }
+    for(Entity entity: activatedEntities) {
+      System.out.println(entity);
+    }
+    System.out.println("changeamount");
+    System.out.println(change);
+    activatedEntities.changeAllXCoordinates(change);
   }
 
   public EntityList getActivatedEntities(){
