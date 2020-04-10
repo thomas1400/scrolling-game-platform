@@ -28,7 +28,7 @@ public class LevelLoop implements Loopable {
   private CollisionManager myCollisionManager;
   //private EntityList myEntities;
   private EntityList myVisibleEntities;
-  private static final int FRAMES_PER_SECOND = 60;
+  private static final int FRAMES_PER_SECOND = 600;
   private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
   private Timeline myTimeline;
   private Object KeyEvent;
