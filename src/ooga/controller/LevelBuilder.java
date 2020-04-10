@@ -133,10 +133,10 @@ public final class LevelBuilder {
   private static void addNewEntityToEntitiesList(EntityList myEntities, String symbol,
       String entityFile, Entity myEntity) {
     if (symbol.equals(MAIN_ENTITY_SYMBOL)){
-      System.out.println("Building Main Entity: " + entityFile);
+      //System.out.println("Building Main Entity: " + entityFile);
       myEntities.setMainEntity(myEntity);
     } else{
-      System.out.println("Building Entity: " + entityFile);
+      //System.out.println("Building Entity: " + entityFile);
       myEntities.addEntity(myEntity);
     }
   }
