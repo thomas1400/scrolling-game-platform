@@ -1,9 +1,7 @@
 package ooga.engine.loop;
 
-import java.awt.event.KeyListener;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import ooga.controller.Communicable;
@@ -11,13 +9,8 @@ import ooga.engine.manager.CameraManager;
 import ooga.engine.manager.CollisionManager;
 import ooga.engine.manager.EntityManager;
 import ooga.engine.manager.InputManager;
-import ooga.model.data.Level;
-import ooga.model.data.User;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
-import java.awt.event.KeyAdapter;
-import javax.swing.JFrame;
-import javax.swing.JTextField;
 
 public class LevelLoop implements Loopable {
 
@@ -74,8 +67,10 @@ public class LevelLoop implements Loopable {
 
   }
 
-  public void processInput(KeyEvent e) {
-    myInputManager.handleKeyInput(e);
+  public void processKeyPress(KeyEvent keyEvent) {
+    myInputManager.handleKeyPress(keyEvent);
+  }
+  public void processKeyRelease(KeyEvent keyEvent) { myInputManager.handleKeyRelease(keyEvent);
   }
 
   private void manageCollisions() {
@@ -136,5 +131,4 @@ public class LevelLoop implements Loopable {
   }
 
   public EntityList getInitialVisibleEntityList() { return myVisibleEntities; }
-
 }

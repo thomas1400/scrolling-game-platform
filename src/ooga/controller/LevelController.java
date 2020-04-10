@@ -9,7 +9,6 @@ import ooga.model.data.Level;
 import ooga.model.data.User;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
-import ooga.utility.event.Event;
 import ooga.view.GameScreen;
 
 public class LevelController implements Communicable{
@@ -76,8 +75,11 @@ public class LevelController implements Communicable{
   }
 
 
-  public void handleUserInput(KeyEvent event){
-    myLevelLoop.processInput(event);
+  public void handleKeyPressed(KeyEvent keyEvent){
+    myLevelLoop.processKeyPress(keyEvent);
+  }
+
+  public void handleKeyReleased(KeyEvent keyEvent) { myLevelLoop.processKeyRelease(keyEvent);
   }
 
   //TODO: Add ability for LevelLoop to pass up events that could effect the user (ex: extra life
