@@ -74,6 +74,8 @@ public class LevelLoop implements Loopable {
   }
 
   private void manageCollisions() {
+    myCollisionManager.manageCollisions(myCameraManager.getOnScreenEntities());
+    myEntityManager.addAllEntities(myCollisionManager.getEntitiesReceived());
   }
 
   private void updateEntities() {

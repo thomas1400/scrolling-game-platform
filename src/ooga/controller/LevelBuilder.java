@@ -114,10 +114,8 @@ public final class LevelBuilder {
         String symbol = levelLine[i];
         if (!symbol.equals(EMPTY_SPACE_SYMBOL)){
           String entityFile = entityInfo.get(symbol);
-
-          //Entity myEntity = new Entity();
           Entity myEntity = EntityBuilder.getEntity(entityFile);
-
+          setEntitySize(myEntity);
           setEntityCoordinates(levelHeight, j, i, myEntity);
           addNewEntityToEntitiesList(myEntities, symbol, entityFile, myEntity);
         }
@@ -126,13 +124,19 @@ public final class LevelBuilder {
     return myEntities;
   }
 
+  private static void setEntitySize(Entity myEntity) {
+    double scalingFactor = myEntity.getBoundsInLocal().getWidth()/PIXEL_BLOCK_RATIO;
+    myEntity.setFitWidth(myEntity.getBoundsInLocal().getWidth()/scalingFactor);
+    myEntity.setFitHeight(myEntity.getBoundsInLocal().getHeight()/scalingFactor);
+  }
+
   private static void addNewEntityToEntitiesList(EntityList myEntities, String symbol,
       String entityFile, Entity myEntity) {
     if (symbol.equals(MAIN_ENTITY_SYMBOL)){
-      System.out.println("Building Main Entity: " + entityFile);
+      //System.out.println("Building Main Entity: " + entityFile);
       myEntities.setMainEntity(myEntity);
     } else{
-      System.out.println("Building Entity: " + entityFile);
+      //System.out.println("Building Entity: " + entityFile);
       myEntities.addEntity(myEntity);
     }
   }
@@ -144,7 +148,7 @@ public final class LevelBuilder {
   }
 
   private static double getRelativeY(int j, int lvlHeight, double imgHeight) {
-    return (lvlHeight-HEIGHT_ADJUST-j)*PIXEL_BLOCK_RATIO + imgHeight;
+    return (j*PIXEL_BLOCK_RATIO) - imgHeight;
   }
 
   private static double getRelativeX(int i) {
