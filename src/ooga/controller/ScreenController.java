@@ -110,6 +110,14 @@ public class ScreenController{
     mySelectedUser = users.getSelectedUser();
   }
 
+  public UserList getUsers() {
+    return myUsers;
+  }
+
+  public void setSelectedUser(User user){
+    mySelectedUser = user;
+  }
+
   public void handleButtonPress(){
 
   }
