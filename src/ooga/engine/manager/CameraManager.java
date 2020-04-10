@@ -23,9 +23,9 @@ public class CameraManager {
   public void updateCamera(EntityList entities) {
     if (mainEntity.getX() != xCenter | mainEntity.getY() != yCenter) {
       double xChange = mainEntity.getX() - xCenter;
-      double yChange = mainEntity.getY() - yCenter;
+      //double yChange = mainEntity.getY() - yCenter;
       resetMainEntityToCenter();
-      entities.changeAllCoordinates(xChange, yChange);
+      entities.changeAllXCoordinates(xChange);
       determineEntitiesOnScreen(entities);
     }
   }
