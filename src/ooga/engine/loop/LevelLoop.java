@@ -42,7 +42,7 @@ public class LevelLoop implements Loopable {
     EntityList entitiesOnScreen = myCameraManager.initializeActiveEntities(myEntities);
     myVisibleEntities =  entitiesOnScreen;
     for (Entity entity: myEntityManager.getEntities()){
-      System.out.println(entity);
+      //System.out.println(entity);
     }
     //myEntityManager.addAllEntities(entitiesOnScreen);
     myEntityManager.initializeEntityLists();
@@ -80,7 +80,7 @@ public class LevelLoop implements Loopable {
 
   private void manageCollisions() {
     myCollisionManager.manageCollisions(myCameraManager.getOnScreenEntities());
-    myEntityManager.manageEntities(myCollisionManager.getEntitiesReceived());
+    //myEntityManager.manageEntities(myCollisionManager.getEntitiesReceived());
   }
 
   private void updateEntities() {
