@@ -9,6 +9,7 @@ public class CameraManager {
   double xCenter;
   double screenHeight;
   double screenWidth;
+  double change;
   EntityList activatedEntities;
   EntityList deactivatedEntities;
   EntityList onScreenEntities;
@@ -23,6 +24,7 @@ public class CameraManager {
   public void updateCamera(EntityList entities) {
     if (mainEntity.getX()>xCenter) {
       double xChange = mainEntity.getX()- xCenter;
+      change = xChange;
       resetMainEntityToCenter();
       entities.changeAllXCoordinates(xChange);
       determineEntitiesOnScreen(entities);
@@ -63,6 +65,12 @@ public class CameraManager {
         deactivatedEntities.addEntity(entity);
       }
     }
+    for(Entity entity: activatedEntities) {
+      System.out.println(entity);
+    }
+    System.out.println("changeamount");
+    System.out.println(change);
+    activatedEntities.changeAllXCoordinates(change);
   }
 
   public EntityList getActivatedEntities(){
