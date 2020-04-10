@@ -1,15 +1,13 @@
 package ooga.model.ability;
 
-import ooga.model.ResourceParser;
+import java.util.ResourceBundle;
 
 /**
  * Exists to keep track of the lives of an Entity. Handles being hit, and dying.
  */
 public class Health extends Ability {
 
-  private static final int DEFAULT_LIVES = 1;
-  private static final String RESOURCE_PACKAGE = "resources.abilitytypes.";
-  private static final String HEALTH_FILE = "Health.properties";
+  private static final String RESOURCE_PACKAGE = "resources.abilitytypes.Health";
 
   private int myLives;
   private boolean immortal;
@@ -20,9 +18,9 @@ public class Health extends Ability {
    * @param vitality type of health
    */
   public Health(String vitality){
-    ResourceParser parser = new ResourceParser(RESOURCE_PACKAGE, HEALTH_FILE);
+    ResourceBundle resources = ResourceBundle.getBundle(RESOURCE_PACKAGE);
     //look in the health properties file, and get the number of lives associated with that vitality
-    myLives = Integer.parseInt(parser.getSymbol(vitality));
+    myLives = Integer.parseInt(resources.getString(vitality));
     immortal = false;
   }
 

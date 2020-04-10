@@ -36,17 +36,40 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     myAbilities = new ArrayList<Ability>();
     health = new Health();
     side = Attack.HARMLESS;
-    top = Attack.BOUNCE;
-    bottom = Attack.DAMAGE;
+    top = Attack.HARMLESS;
+    bottom = Attack.HARMLESS;
     stun = new Stunnable();
   }
 
-  public void addAbility(String abilityType, Ability a){
+  public void updateAttack(String location, String attackType) {
+    Attack attack = Attack.HARMLESS;
+    if (attackType.equals("BOUNCE")){
+      attack = Attack.BOUNCE;
+    } else if (attackType.equals("STUN")){
+      attack = Attack.STUN;
+    } else if (attackType.equals("DAMAGE")){
+      attack = Attack.DAMAGE;
+    }
+    //todo learn how to make enums with reflection and change the above to that
+
+    try {
+      Method method = Entity.class.getDeclaredMethod("add"+location, Attack.class);
+      method.invoke(Entity.this, attack);
+    } catch (NoSuchMethodException e) {
+      throw new RuntimeException(e);
+    } catch (IllegalAccessException e) {
+      throw new RuntimeException(e);
+    } catch (InvocationTargetException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public void addAbility(String abilityType, Ability ability){
     //myAbilities.add(a);
     //makeMethod("add"+abilityType);
     try {
-      Method method = Entity.class.getDeclaredMethod("add"+abilityType);
-      method.invoke(Entity.this);
+      Method method = Entity.class.getDeclaredMethod("add"+abilityType, Ability.class);
+      method.invoke(Entity.this, ability);
     } catch (NoSuchMethodException e) {
       throw new RuntimeException(e);
     } catch (IllegalAccessException e) {
