@@ -10,6 +10,7 @@ import java.util.Scanner;
 import ooga.exceptions.ExceptionFeedback;
 import ooga.model.data.Level;
 import ooga.model.entity.Entity;
+import ooga.model.entity.EntityBuilder;
 import ooga.model.entity.EntityList;
 
 public final class LevelBuilder {
@@ -114,8 +115,8 @@ public final class LevelBuilder {
         if (!symbol.equals(EMPTY_SPACE_SYMBOL)){
           String entityFile = entityInfo.get(symbol);
 
-          Entity myEntity = new Entity();
-          //Entity myEntity = EntityBuilder.getEntity(entityFile);
+          //Entity myEntity = new Entity();
+          Entity myEntity = EntityBuilder.getEntity(entityFile);
 
           setEntityCoordinates(levelHeight, j, i, myEntity);
           addNewEntityToEntitiesList(myEntities, symbol, entityFile, myEntity);

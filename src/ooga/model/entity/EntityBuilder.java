@@ -2,13 +2,19 @@ package ooga.model.entity;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import ooga.model.ResourceParser;
+import java.util.Collections;
+import java.util.ResourceBundle;
+import javafx.scene.image.Image;
 import ooga.model.ability.Ability;
 
 public class EntityBuilder {
 
   private static final String ABILITY_PACKAGE = "ooga.model.ability.";
-  private static final String STATS_PACKAGE_NAME = "resources.entities.";
+  private static final String STATS_PACKAGE_NAME = "entities/";
+
+  //private ResourceBundle resources;
+  //private Entity entity;
+
 
   //TODO take out throwing runtime exceptions, throw actual ones
   /**
@@ -20,7 +26,7 @@ public class EntityBuilder {
   private static Ability makeAbility(String abilityType, String stats){
     try{
       Class abilityClass = Class.forName(ABILITY_PACKAGE + abilityType);
-      Constructor abilityClassConstructor = abilityClass.getConstructor(String.class);
+       Constructor abilityClassConstructor = abilityClass.getConstructor(String.class);
       return (Ability) abilityClassConstructor.newInstance(stats);
     } catch (ClassNotFoundException e){
       System.out.println("ClassNotFoundException");
@@ -49,16 +55,31 @@ public class EntityBuilder {
    * @param statsFilename file name for the entity stat resource file
    * @return created entity
    */
-  public static Entity getEntity(String statsFilename){
-    Entity entity = new Entity();
-    ResourceParser parser = new ResourceParser(STATS_PACKAGE_NAME, statsFilename);
-    entity = new Entity();
-    for(String s : parser.getKeys()){
-      //reflection!
-      Ability a = makeAbility(s, parser.getSymbol(s));
-      entity.addAbility(a);
+  public static Entity getEntity(String statsFilename) {
+    //ResourceParser parser = new ResourceParser(STATS_PACKAGE_NAME, statsFilename);
+    //System.out.println("images/entityimages/"+parser.getSymbol("Image"));
+    ResourceBundle resources = ResourceBundle.getBundle(STATS_PACKAGE_NAME + statsFilename);
+    System.out.println("images/entityimages/" + resources.getString("Image")); //fixme remove print
+    Image image = new Image("images/entityimages/" + resources.getString("Image"));
+    Entity entity = new Entity(image);
+
+    for (String s : Collections.list(resources.getKeys())) {
+      //todo remove this if?
+      if (!s.equals("Image")) {
+        //reflection!
+        if (s.contains("Attack")) {
+          entity.updateAttack(s, resources.getString(s));
+        } else {
+          Ability a = makeAbility(s, resources.getString(s));
+          entity.addAbility(s, a);
+        }
+      }
     }
     return entity;
   }
 
+  public static void main(String[] args) {
+    EntityBuilder eb = new EntityBuilder();
+    eb.getEntity("Player");
+  }
 }
