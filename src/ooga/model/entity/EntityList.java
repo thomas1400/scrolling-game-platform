@@ -38,10 +38,6 @@ public class EntityList implements Iterable<Entity>, Observer {
     return myEntities.contains(entity);
   }
 
-  public int size(){
-    return myEntities.size();
-  }
-
   public Iterator<Entity> iterator() {
       return myEntities.iterator();
   }
@@ -63,13 +59,12 @@ public class EntityList implements Iterable<Entity>, Observer {
     return myEntities;
   }
 
-  public void changeAllXCoordinates(double xChange){
-    for(Entity entity : myEntities) {
+  public void changeAllCoordinates(double xChange, double yChange){
+    for(Entity entity : this) {
       if (entity != myMainEntity) {
         entity.setX(entity.getX() - xChange);
-
+        entity.setY(entity.getY() - yChange);
       }
     }
-    System.out.println("change");//fixme
   }
 }
