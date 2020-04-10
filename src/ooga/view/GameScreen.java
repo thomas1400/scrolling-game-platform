@@ -16,6 +16,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import ooga.controller.LevelController;
 import ooga.controller.ScreenController;
+import ooga.model.data.User;
 import ooga.view.factory.ControlFactory;
 
 public class GameScreen extends Screen {
@@ -23,10 +24,12 @@ public class GameScreen extends Screen {
   private LevelController levelController;
   private Group gameGroup;
   private Rectangle gameBackground;
+  private User user;
 
   public GameScreen(ScreenController controller) {
     super(controller);
     gameGroup = new Group();
+    user = controller.getUsers().getSelectedUser();
     setWorkingDimensions(3, 1);
     initializeLayout();
   }
@@ -41,14 +44,13 @@ public class GameScreen extends Screen {
     HBox infoBar = new HBox();
     infoBar.setAlignment(Pos.CENTER);
     infoBar.setPrefHeight(0.1*workingHeight);
-    infoBar.setPrefWidth(workingWidth);
 
-    Label lives = cf.label(resources.getString("lives"), BUTTON_FONT_SIZE);
-    lives.setPrefSize(0.4*workingWidth, infoBar.getPrefHeight());
+    Label lives = cf.label(resources.getString("lives") + ": " + user.getLives(), BUTTON_FONT_SIZE);
+    lives.setPrefHeight(infoBar.getPrefHeight());
     infoBar.getChildren().add(lives);
 
-    Label score = cf.label(resources.getString("score"), BUTTON_FONT_SIZE);
-    score.setPrefSize(0.4*workingWidth, infoBar.getPrefHeight());
+    Label score = cf.label(resources.getString("score") + ": " + user.getPoints(), BUTTON_FONT_SIZE);
+    score.setPrefHeight(infoBar.getPrefHeight());
     infoBar.getChildren().add(score);
 
     layout.getChildren().add(infoBar);
