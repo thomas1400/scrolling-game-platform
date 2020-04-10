@@ -26,7 +26,7 @@ public class EntityBuilder {
   private static Ability makeAbility(String abilityType, String stats){
     try{
       Class abilityClass = Class.forName(ABILITY_PACKAGE + abilityType);
-      Constructor abilityClassConstructor = abilityClass.getConstructor(String.class);
+       Constructor abilityClassConstructor = abilityClass.getConstructor(String.class);
       return (Ability) abilityClassConstructor.newInstance(stats);
     } catch (ClassNotFoundException e){
       System.out.println("ClassNotFoundException");

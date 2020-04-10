@@ -79,8 +79,12 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     }
   }
 
-  private void addHealth(Health h){
-    health = h;
+  private void addHealth(Ability h){
+    health = (Health) h;
+  }
+
+  private void addStunnable(Ability s){
+    stun = (Stunnable) s;
   }
 
   private void addSideAttack(Attack a){
