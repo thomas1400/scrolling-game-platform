@@ -16,6 +16,7 @@ public class InputManager {
   }
 
   public void handleKeyInput(KeyEvent keyEvent) {
+    myMainEntity.setX(myMainEntity.getX()+10);
     //myMainEntity.receiveUserInput(keyEvent);
   }
 }

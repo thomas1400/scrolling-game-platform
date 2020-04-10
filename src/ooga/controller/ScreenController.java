@@ -26,10 +26,10 @@ public class ScreenController{
   private UserList myUsers;
   private User mySelectedUser;
 
-  private Screen myHomeScreen = new HomeScreen(this);
+  private Screen myHomeScreen;
   //private Screen mySplashScreen = new SplashScreen();
-  private Screen myUserSelectorScreen =  new UserSelectorScreen(this);
-  private Screen myLevelSelectorScreen = new LevelSelectorScreen(this);
+  private Screen myUserSelectorScreen;
+  private Screen myLevelSelectorScreen;
   private Screen myGameScreen;
   //private Screen myLevelBuilderScreen = new LevelBuilderScreen();
 
@@ -53,6 +53,10 @@ public class ScreenController{
   }
 
   private void initializeScreens(){
+    myLevelSelectorScreen = new LevelSelectorScreen(this);
+    myUserSelectorScreen =  new UserSelectorScreen(this);
+    myHomeScreen = new HomeScreen(this);
+
     myScreens.put("HomeScreen", myHomeScreen);
     //myScreens.put("SplashScreen", mySplashScreen);
     myScreens.put("UserSelectorScreen", myUserSelectorScreen);
@@ -108,6 +112,7 @@ public class ScreenController{
   public void setUsers(UserList users) {
     myUsers = users;
     mySelectedUser = users.getSelectedUser();
+    initializeScreens();
   }
 
   public UserList getUsers() {
@@ -116,6 +121,8 @@ public class ScreenController{
 
   public void setSelectedUser(User user){
     mySelectedUser = user;
+    myUsers.setSelectedUser(user);
+    initializeScreens();
   }
 
   public void handleButtonPress(){

@@ -16,6 +16,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import ooga.controller.LevelController;
 import ooga.controller.ScreenController;
+import ooga.model.data.User;
 import ooga.view.factory.ControlFactory;
 
 public class GameScreen extends Screen {
@@ -23,10 +24,12 @@ public class GameScreen extends Screen {
   private LevelController levelController;
   private Group gameGroup;
   private Rectangle gameBackground;
+  private User user;
 
   public GameScreen(ScreenController controller) {
     super(controller);
     gameGroup = new Group();
+    user = controller.getUsers().getSelectedUser();
     setWorkingDimensions(3, 1);
     initializeLayout();
   }
@@ -39,22 +42,21 @@ public class GameScreen extends Screen {
     this.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, null, null)));
 
     HBox infoBar = new HBox();
+    infoBar.setSpacing(0.25*workingWidth);
     infoBar.setAlignment(Pos.CENTER);
     infoBar.setPrefHeight(0.1*workingHeight);
-    infoBar.setPrefWidth(workingWidth);
 
-    Label lives = cf.label(resources.getString("lives"), BUTTON_FONT_SIZE);
-    lives.setPrefSize(0.4*workingWidth, infoBar.getPrefHeight());
+    Label lives = cf.label(resources.getString("lives") + ": " + user.getLives(), BUTTON_FONT_SIZE);
+    lives.setPrefHeight(infoBar.getPrefHeight());
     infoBar.getChildren().add(lives);
 
-    Label score = cf.label(resources.getString("score"), BUTTON_FONT_SIZE);
-    score.setPrefSize(0.4*workingWidth, infoBar.getPrefHeight());
+    Label score = cf.label(resources.getString("score") + ": " + user.getPoints(), BUTTON_FONT_SIZE);
+    score.setPrefHeight(infoBar.getPrefHeight());
     infoBar.getChildren().add(score);
 
     layout.getChildren().add(infoBar);
 
-    gameBackground = new Rectangle(workingWidth, 0.8*workingHeight);
-    VBox.setMargin(gameBackground, new Insets(0, 10, 0, 10));
+    gameBackground = new Rectangle(workingWidth+2*PADDING, 0.8*workingHeight);
     gameBackground.setFill(Color.WHITE);
     layout.getChildren().add(gameBackground);
 
@@ -67,8 +69,10 @@ public class GameScreen extends Screen {
     Button pause, resume;
     pause = cf.button(resources.getString("pause"), BUTTON_FONT_SIZE,
         e-> {}, 100, menuBar.getPrefHeight());
+    pause.setFocusTraversable(false);
     resume = cf.button(resources.getString("resume"), BUTTON_FONT_SIZE,
         e-> {}, 100, menuBar.getPrefHeight());
+    resume.setFocusTraversable(false);
     resume.setDisable(true);
 
     pause.setOnAction(e-> {
@@ -86,11 +90,12 @@ public class GameScreen extends Screen {
 
     Button quit = cf.button(resources.getString("quit"), BUTTON_FONT_SIZE,
         e->handleButtonPress("quit"), 100, menuBar.getPrefHeight());
+    quit.setFocusTraversable(false);
     menuBar.getChildren().add(quit);
 
     this.getChildren().add(layout);
 
-    gameGroup.setTranslateX(PADDING);
+    gameGroup.setTranslateX(0);
     gameGroup.setTranslateY(0.1*workingHeight + 4*PADDING);
     this.getChildren().add(gameGroup);
   }
