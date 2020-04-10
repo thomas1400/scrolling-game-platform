@@ -5,14 +5,16 @@ import ooga.model.entity.Entity;
 public class Physics {
 
   private static final double dt = 1/60.0;
-  private static final double GRAVITY = 6.0*30;
-  private static final double INITIAL_JUMP_VELOCITY = -7.0*30;
-  private static final double RUN_VELOCITY = 2*30;
-  private static final double DAMPING = 1.0;
+  private static final double sizeScale = 35.0;
+
+  private static final double GRAVITY = 6.0 * 20;
+  private static final double INITIAL_JUMP_VELOCITY = -7.0 * sizeScale;
+  private static final double MAX_VERT_VELOCITY = 7.0 * sizeScale;
+  private static final double MAX_HORIZ_VELOCITY = 2 * sizeScale;
+  private static final double RUN_ACCELERATION = 2 * sizeScale;
 
   private static final int X = 0;
   private static final int Y = 1;
-
 
   private double[] myPosition;
   private double[] myVelocity;
@@ -21,43 +23,53 @@ public class Physics {
   public Physics() {
     myPosition = new double[]{0, 0};
     myVelocity = new double[]{0, 0};
-    myAcceleration = new double[]{0, GRAVITY};
+    myAcceleration = new double[]{0, 0};
   }
 
   public void update(Entity myEntity) {
+    //Get on screen position
     myPosition[X] = myEntity.getX();
     myPosition[Y] = myEntity.getY();
 
-    //Vertical Updates
-    myVelocity[Y] += myAcceleration[Y]*dt;
-    myPosition[Y] += myVelocity[Y]*dt;
-
-    //Horizontal Updates
+    //Velocity Updates
     myVelocity[X] += myAcceleration[X]*dt;
+    myVelocity[Y] += myAcceleration[Y]*dt;
+
+    //Velocity Checks
+    myVelocity[X] = getLimitedVelocity(myVelocity[X], MAX_HORIZ_VELOCITY);
+    myVelocity[Y] = getLimitedVelocity(myVelocity[Y], MAX_VERT_VELOCITY);
+
+    //Position Updates
     myPosition[X] += myVelocity[X]*dt;
+    myPosition[Y] += myVelocity[Y]*dt;
 
     //Update Image Position
     myEntity.setX(myPosition[X]);
     myEntity.setY(myPosition[Y]);
   }
 
+  private double getLimitedVelocity(double velocity, double maxVelocity) {
+    if (velocity >= 0){
+      return Math.min(velocity, maxVelocity);
+    } else {
+      return Math.max(velocity, -1 * maxVelocity);
+    }
+  }
+
   public void jump() {
+    myAcceleration[Y] = GRAVITY;
     System.out.println("jump");
     myVelocity[Y] += INITIAL_JUMP_VELOCITY;
   }
   public void moveLeft() {
-    myVelocity[X] = -1*RUN_VELOCITY;
+    myVelocity[X] = myVelocity[X] - RUN_ACCELERATION * dt;
   }
   public void moveRight() {
-    myVelocity[X] = RUN_VELOCITY;
+    myVelocity[X] = myVelocity[X] + RUN_ACCELERATION * dt;
   }
-  public void stopForwardMotion() {myVelocity[X] = 0;}
-  public void reverseDirection() { myVelocity[X] *= -1; }
-  public void beginFall() {
+  public void resumeFall() {
     myAcceleration[Y] = GRAVITY;
   }
-  public void endFall() {} {
-    //myAcceleration[Y] = 0.0;
-  }
+  public void endFall() { myAcceleration[Y] = 0;}
 
 }
