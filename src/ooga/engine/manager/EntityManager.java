@@ -14,6 +14,12 @@ public class EntityManager implements Communicable {
 
   public EntityManager(EntityList entities) {
     myEntityList = entities;
+    initializeEntityList();
+  }
+
+  public void initializeEntityList(){
+    addedEntities = new EntityList();
+    removedEntities = new EntityList();
   }
 
   protected void manageEntities(Entity entityReceived) {
