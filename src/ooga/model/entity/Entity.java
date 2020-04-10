@@ -115,6 +115,13 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     return dead;
   }
 
+  public String debug(){
+    if(debuggingName.equals("Mario.png")){
+     // System.out.println("Side: "+side.toString()+" Bottom: "+bottom.toString()+" top: "+top.toString());
+    }
+    return debuggingName;
+  }
+
   /**
    * Get the attack of the specific side
    * @param location
@@ -155,10 +162,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   public Entity handleCollision(CollisionEvent ce) {
     String location = ce.getCollisionLocation();
     Attack otherAttack = ce.getAttackType();
-
-    if(debuggingName.equals("Mario.png")){
-      System.out.println("Collision on "+location+"! other has attack type: "+otherAttack.toString());
-    }
     Attack myAttack = this.getAttack(location);
     if(!myAttack.equals(otherAttack)) {
       try {
