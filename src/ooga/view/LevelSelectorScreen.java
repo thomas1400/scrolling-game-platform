@@ -108,10 +108,9 @@ public class LevelSelectorScreen extends Screen {
 
     fadeIn.play();
 
-    System.out.println("beginning fadein");
     fadeIn.setOnFinished((e) -> {
-      System.out.println("loading level");
       controller.initializeNewLevel(lst.getSelected());
+      this.getChildren().remove(loadingPane);
     });
   }
 
