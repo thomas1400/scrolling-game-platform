@@ -38,7 +38,6 @@ public class ScreenController{
   public ScreenController(Stage primaryStage){
     myStage = primaryStage;
     addApplicationIcon();
-
     initializeScreens();
 
     switchToScreen("HomeScreen");
@@ -62,10 +61,11 @@ public class ScreenController{
   };
 
   public void switchToScreen(String screenName){
-    Screen nextScreen = myScreens.get(screenName);
-    Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
-    File file = new File("resources/stylesheet.css");
-    nextScene.getStylesheets().add(file.toURI().toString());
+    Scene nextScene = getScene(screenName);
+    showScene(nextScene);
+  }
+
+  private void showScene(Scene nextScene) {
     Scene lastScene = myStage.getScene();
     myStage.setScene(nextScene);
     // TODO : look at alternatives to this bugfix, added by Thomas
@@ -73,7 +73,17 @@ public class ScreenController{
       lastScene.setRoot(new Pane());
     }
     myStage.show();
-  };
+  }
+
+  private Scene getScene(String screenName) {
+    Screen nextScreen = myScreens.get(screenName);
+    Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
+    File file = new File("resources/stylesheet.css");
+    nextScene.getStylesheets().add(file.toURI().toString());
+    return nextScene;
+  }
+
+  ;
 
   public void initializeNewLevel(int levelNumber){
     myGameScreen = new GameScreen(this);
@@ -83,8 +93,16 @@ public class ScreenController{
         new LevelController((GameScreen)myGameScreen, mySelectedUser, levelNumber);
     ((GameScreen) myGameScreen).setLevelController(levelController);
 
-    switchToScreen("GameScreen");
-    levelController.begin();
+    Screen nextScreen = myScreens.get("GameScreen");
+    Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
+    File file = new File("resources/stylesheet.css");
+    nextScene.getStylesheets().add(file.toURI().toString());
+    //nextScene.setOnKeyPressed(event -> levelController.handleUserInput(event));
+    nextScene.setOnKeyPressed(levelController::handleUserInput);
+
+    showScene(nextScene);
+
+    levelController.beginLevel();
   }
 
   public void setUsers(UserList users) {
