@@ -26,11 +26,12 @@ public class LevelController implements Communicable{
     myUser = user;
     Level level = null;
     try {
-      level = LevelBuilder.buildLevel(levelNumber);
+      level = LevelBuilder.buildLevel(levelNumber, gs.getGameHeight());
     } catch (FileNotFoundException e) {
       ExceptionFeedback.throwException(e, "File not found");
     }
     assert level != null;
+    //FIXME: The 80% and 20px are derived from GameScreen Code and should be gotten elsewhere
     myLevelLoop = new LevelLoop(
         this, level.getEntities(), gs.getGameHeight(), gs.getGameWidth());
     EntityList visibleEntityList = myLevelLoop.getInitialVisibleEntityList();
