@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -29,6 +31,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 import ooga.controller.ScreenController;
 import ooga.exceptions.ExceptionFeedback;
 import ooga.model.data.User;
@@ -94,7 +97,22 @@ public class LevelSelectorScreen extends Screen {
   }
 
   public void loadLevel() {
-    controller.initializeNewLevel(lst.getSelected());
+
+    Pane loadingPane = new LoadingPane(this);
+    this.getChildren().add(loadingPane);
+
+    FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), loadingPane);
+    fadeIn.setFromValue(0);
+    fadeIn.setToValue(1);
+    fadeIn.setCycleCount(1);
+
+    fadeIn.play();
+
+    System.out.println("beginning fadein");
+    fadeIn.setOnFinished((e) -> {
+      System.out.println("loading level");
+      controller.initializeNewLevel(lst.getSelected());
+    });
   }
 
   private class LevelSelectorTool extends Pane {
