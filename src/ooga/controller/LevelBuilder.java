@@ -30,6 +30,7 @@ public final class LevelBuilder {
   private static final String HEIGHT_SPECIFIER = "levelHeight";
   private static final int KEY_INDEX = 0;
   private static final int VALUE_INDEX = 1;
+  private static final double PADDING = 0.01;
 
   public static Level buildLevel(int levelNumber, double gameWindowHeight) throws FileNotFoundException {
     File levelFile = getLevelFile(levelNumber);
@@ -124,8 +125,8 @@ public final class LevelBuilder {
 
   private static void setEntitySize(Entity myEntity, double scaleFactor) {
     double scalingFactor = myEntity.getBoundsInLocal().getWidth()/scaleFactor;
-    myEntity.setFitWidth(myEntity.getBoundsInLocal().getWidth()/scalingFactor);
-    myEntity.setFitHeight(myEntity.getBoundsInLocal().getHeight()/scalingFactor);
+    myEntity.setFitWidth(myEntity.getBoundsInLocal().getWidth()/scalingFactor - PADDING);
+    myEntity.setFitHeight(myEntity.getBoundsInLocal().getHeight()/scalingFactor - PADDING);
   }
 
   private static void addNewEntityToEntitiesList(EntityList myEntities, String symbol, Entity myEntity) {
