@@ -1,6 +1,7 @@
 package ooga.engine.manager;
 
 import java.util.List;
+import ooga.model.ability.attacktypes.Attack;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 import ooga.utility.event.CollisionEvent;
@@ -24,22 +25,23 @@ public class CollisionManager implements Observable {
         if(entity.getBoundsInLocal().intersects(entity2.getBoundsInLocal())) {
           if (entity.getBoundsInLocal().getMaxX() == entity2.getBoundsInLocal().getMinX()
               || entity2.getBoundsInLocal().getMaxX() == entity.getBoundsInLocal().getMinX()) {
-            //createAndSendCollision(SIDE, entity2,getName(), entity);
-            //createAndSendCollision(SIDE, entity,getName(), entity2);
+            createAndSendCollision(SIDE, entity2.getAttack(SIDE), entity);
+            createAndSendCollision(SIDE, entity.getAttack(SIDE), entity2);
           } else if (entity.getBoundsInLocal().getMaxY() == entity2.getBoundsInLocal().getMinY()) {
-            //createAndSendCollision(TOP, entity2,getName(), entity);
-            //createAndSendCollision(BOTTOM, entity,getName(), entity2);
+            createAndSendCollision(TOP, entity2.getAttack(TOP), entity);
+            createAndSendCollision(BOTTOM, entity.getAttack(BOTTOM), entity2);
           } else {
-            //createAndSendCollision(BOTTOM, entity2,getName(), entity);
-            //createAndSendCollision(TOP, entity,getName(), entity2);
+            createAndSendCollision(BOTTOM, entity2.getAttack(BOTTOM), entity);
+            createAndSendCollision(TOP, entity.getAttack(TOP), entity2);
           }
         }
       }
     }
   }
 
-  private void createAndSendCollision(String typeOfCollision, String entityCollidedWith, Entity entity){
-    //entitiesReceived.addEntity(entity.receiveCollision(new CollisionEvent(typeOfCollision, entityCollidedWith);
+  private void createAndSendCollision(String typeOfCollision, Attack attack, Entity entity){
+    //receive an entity object from the entity
+    //entitiesReceived.addEntity(entity.receiveCollision(new CollisionEvent(typeOfCollision, attack);
   }
 
   public EntityList getEntitiesReceived(){
