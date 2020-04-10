@@ -76,16 +76,21 @@ public class LevelLoop implements Loopable {
 
   private void updateCamera() {
     myCameraManager.updateCamera(myEntityManager.getEntities());
-    myEntityManager.addAllEntities(myCameraManager.getActivatedEntities());
-    myEntityManager.removeAllEntities(myCameraManager.getDeactivatedEntities());
-    //EntityList activatedEntities = myCameraManager.getActivatedEntities();
-    //EntityList deactivatedEntities = myCameraManager.getDeactivatedEntities();
-    //sendEntitiesToController(activatedEntities, deactivatedEntities);
+    if(myCameraManager.getActivatedEntities()!=null) {
+      myEntityManager.addAllEntities(myCameraManager.getActivatedEntities());
+    }
+    if(myCameraManager.getDeactivatedEntities()!=null) {
+      myEntityManager.removeAllEntities(myCameraManager.getDeactivatedEntities());
+    }
   }
 
   private void sendUpdatedEntities(){
-    myLevelController.addAllEntities(myEntityManager.getAddedEntities());
-    myLevelController.removeAllEntities(myEntityManager.getRemovedEntities());
+    if(myEntityManager.getAddedEntities()!=null) {
+      myLevelController.addAllEntities(myEntityManager.getAddedEntities());
+    }
+    if(myEntityManager.getRemovedEntities()!=null){
+      myLevelController.removeAllEntities(myEntityManager.getRemovedEntities());
+    }
   }
 
   /*private void sendEntitiesToController(EntityList activatedEntities, EntityList deactivedEntities) {
