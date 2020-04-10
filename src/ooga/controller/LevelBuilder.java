@@ -115,12 +115,19 @@ public final class LevelBuilder {
         if (!symbol.equals(EMPTY_SPACE_SYMBOL)){
           String entityFile = entityInfo.get(symbol);
           Entity myEntity = EntityBuilder.getEntity(entityFile);
+          setEntitySize(myEntity);
           setEntityCoordinates(levelHeight, j, i, myEntity);
           addNewEntityToEntitiesList(myEntities, symbol, entityFile, myEntity);
         }
       }
     }
     return myEntities;
+  }
+
+  private static void setEntitySize(Entity myEntity) {
+    double scalingFactor = myEntity.getBoundsInLocal().getWidth()/PIXEL_BLOCK_RATIO;
+    myEntity.setFitWidth(myEntity.getBoundsInLocal().getWidth()/scalingFactor);
+    myEntity.setFitHeight(myEntity.getBoundsInLocal().getHeight()/scalingFactor);
   }
 
   private static void addNewEntityToEntitiesList(EntityList myEntities, String symbol,
