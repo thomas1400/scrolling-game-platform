@@ -38,6 +38,10 @@ public class EntityList implements Iterable<Entity>, Observer {
     return myEntities.contains(entity);
   }
 
+  public int size(){
+    return myEntities.size();
+  }
+
   public Iterator<Entity> iterator() {
       return myEntities.iterator();
   }
