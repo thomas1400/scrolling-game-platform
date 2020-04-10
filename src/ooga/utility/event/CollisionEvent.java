@@ -14,7 +14,7 @@ public class CollisionEvent{
     attackType = attack;
   }
 
-  public String getTypeOfCollision(){
+  public String getCollisionLocation(){
     return typeOfCollision;
   }
 
