@@ -13,20 +13,18 @@ public class Physics {
   private static final int X = 0;
   private static final int Y = 1;
 
-  private Entity myEntity;
 
   private double[] myPosition;
   private double[] myVelocity;
   private double[] myAcceleration;
 
-  public Physics(Entity entity) {
-    myEntity = entity;
-    myPosition = new double[]{entity.getX(), entity.getY()};
+  public Physics() {
+    myPosition = new double[]{0, 0};
     myVelocity = new double[]{0, 0};
     myAcceleration = new double[]{0, GRAVITY};
   }
 
-  public void update() {
+  public void update(Entity myEntity) {
     myPosition[X] = myEntity.getX();
     myPosition[Y] = myEntity.getY();
 

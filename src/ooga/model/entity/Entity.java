@@ -26,7 +26,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   private Attack side, top, bottom;
   private List<Ability> myAbilities;
   private String debuggingName;
-  private boolean dead;
+  private boolean dead, haveMovement;
 
   /**
    * Create default health and attacks, which can be overwritten later
@@ -41,7 +41,8 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     top = Attack.HARMLESS;
     bottom = Attack.HARMLESS;
     stunType = new Stunnable();
-    myPhysics = new Physics(this);
+    myPhysics = new Physics();
+    haveMovement = false;
   }
 
   public void updateAttack(String location, String attackType) {
@@ -90,6 +91,11 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   //used for reflection DO NOT DELETE
   private void addStunnable(Ability s){
     stunType = (Stunnable) s;
+  }
+
+  private void addMovement(Ability m){
+    movement = (Movement) m;
+    haveMovement = true;
   }
 
   //used for reflection DO NOT DELETE
@@ -214,19 +220,21 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
 
   @Override
   public void updateVisualization() {
-    //myPhysics.update();
+    if(haveMovement) {
+      movement.update(this);
+    }
   }
 
   public void moveRight(){
-    myPhysics.moveRight();
+    movement.right();
   }
 
   public void moveLeft(){
-    myPhysics.moveLeft();
+    movement.left();
   }
 
   public void jump(){
-    myPhysics.jump();
+    movement.jump();
   }
 
 }
