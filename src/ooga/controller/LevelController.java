@@ -50,12 +50,7 @@ public class LevelController implements Communicable{
 
   @Override
   public void addAllEntities(EntityList entities) {
-    for (Entity e : entities.getAsList()) {
-      if (!myVisualGroup.getChildren().contains(e)) {
-        myVisualGroup.getChildren().add(e);
-      }
-    }
-    //myVisualGroup.getChildren().addAll(entities.getAsList());
+    myVisualGroup.getChildren().addAll(entities.getAsList());
   }
 
   @Override
