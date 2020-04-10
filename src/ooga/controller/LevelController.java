@@ -59,7 +59,7 @@ public class LevelController implements Communicable{
   }
 
   public void beginLevel() {
-    //myLevelLoop.begin();
+    myLevelLoop.begin();
   }
 
   public void endLevel() {
