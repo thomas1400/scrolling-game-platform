@@ -42,6 +42,7 @@ public class GameScreen extends Screen {
     this.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, null, null)));
 
     HBox infoBar = new HBox();
+    infoBar.setSpacing(0.25*workingWidth);
     infoBar.setAlignment(Pos.CENTER);
     infoBar.setPrefHeight(0.1*workingHeight);
 
