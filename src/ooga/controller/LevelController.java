@@ -32,7 +32,7 @@ public class LevelController implements Communicable{
     }
     assert level != null;
     myLevelLoop = new LevelLoop(
-        this, level.getEntities(), INITIAL_WINDOW_HEIGHT, INITIAL_WINDOW_WIDTH);
+        this, level.getEntities(), gs.getGameHeight(), gs.getGameWidth());
     EntityList visibleEntityList = myLevelLoop.getInitialVisibleEntityList();
     myVisualGroup.getChildren().addAll(visibleEntityList.getAsList());
     gs.setVisibleGroup(myVisualGroup);
@@ -50,7 +50,12 @@ public class LevelController implements Communicable{
 
   @Override
   public void addAllEntities(EntityList entities) {
-    myVisualGroup.getChildren().addAll(entities.getAsList());
+    for (Entity e : entities.getAsList()) {
+      if (!myVisualGroup.getChildren().contains(e)) {
+        myVisualGroup.getChildren().add(e);
+      }
+    }
+    //myVisualGroup.getChildren().addAll(entities.getAsList());
   }
 
   @Override

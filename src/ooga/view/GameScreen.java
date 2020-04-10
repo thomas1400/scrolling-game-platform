@@ -3,8 +3,10 @@ package ooga.view;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
@@ -20,6 +22,7 @@ public class GameScreen extends Screen {
 
   private LevelController levelController;
   private Group gameGroup;
+  private Rectangle gameBackground;
 
   public GameScreen(ScreenController controller) {
     super(controller);
@@ -31,9 +34,12 @@ public class GameScreen extends Screen {
   private void initializeLayout() {
     ControlFactory cf = new ControlFactory(PADDING);
     VBox layout = new VBox();
+    layout.setAlignment(Pos.CENTER);
+    layout.setSpacing(PADDING);
     this.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, null, null)));
 
     HBox infoBar = new HBox();
+    infoBar.setAlignment(Pos.CENTER);
     infoBar.setPrefHeight(0.1*workingHeight);
     infoBar.setPrefWidth(workingWidth);
 
@@ -47,15 +53,14 @@ public class GameScreen extends Screen {
 
     layout.getChildren().add(infoBar);
 
-    Rectangle gameBackground = new Rectangle(workingWidth, 0.8*workingHeight);
-    VBox.setMargin(gameBackground, new Insets(10));
+    gameBackground = new Rectangle(workingWidth, 0.8*workingHeight);
+    VBox.setMargin(gameBackground, new Insets(0, 10, 0, 10));
     gameBackground.setFill(Color.WHITE);
     layout.getChildren().add(gameBackground);
 
     HBox menuBar = new HBox();
-    VBox.setMargin(menuBar, new Insets(PADDING));
+    menuBar.setAlignment(Pos.CENTER);
     menuBar.setPrefHeight(0.1*workingHeight);
-    menuBar.setPrefWidth(Double.MAX_VALUE);
     menuBar.setSpacing(PADDING);
     layout.getChildren().add(menuBar);
 
@@ -79,7 +84,14 @@ public class GameScreen extends Screen {
     menuBar.getChildren().add(pause);
     menuBar.getChildren().add(resume);
 
+    Button quit = cf.button(resources.getString("quit"), BUTTON_FONT_SIZE,
+        e->handleButtonPress("quit"), 100, menuBar.getPrefHeight());
+    menuBar.getChildren().add(quit);
+
     this.getChildren().add(layout);
+
+    gameGroup.setTranslateX(PADDING);
+    gameGroup.setTranslateY(0.1*workingHeight + 4*PADDING);
     this.getChildren().add(gameGroup);
   }
 
@@ -98,6 +110,14 @@ public class GameScreen extends Screen {
 
   public void resume() {
     levelController.resumeLevel();
+  }
+
+  public double getGameWidth() {
+    return gameBackground.getWidth();
+  }
+
+  public double getGameHeight() {
+    return gameBackground.getHeight();
   }
 
 }
