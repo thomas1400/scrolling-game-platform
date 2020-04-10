@@ -5,6 +5,7 @@ import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 
 public class EntityManager implements Communicable {
+
   //Entity entityReceived;
   private EntityList myEntityList;
   private EntityList addedEntities;
@@ -16,14 +17,16 @@ public class EntityManager implements Communicable {
     initializeEntityLists();
   }
 
-  public void initializeEntityLists(){
+  public void initializeEntityLists() {
     addedEntities = new EntityList();
     removedEntities = new EntityList();
   }
 
-  protected void manageEntities(Entity entityReceived) {
-    if (!myEntityList.contains(entityReceived)) {
-      addEntity(entityReceived);
+  public void manageEntities(EntityList entitiesReceived) {
+    for (Entity entity : entitiesReceived) {
+      if (!myEntityList.contains(entity)) {
+        addEntity(entity);
+      }
     }
     for (Entity entity : myEntityList) {
       if (entity.isDead()) {
