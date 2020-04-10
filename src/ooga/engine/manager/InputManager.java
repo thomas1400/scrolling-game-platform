@@ -21,7 +21,7 @@ public class InputManager {
       //myMainEntity.moveRight();
     }
     if (keyEvent.getCode() == KeyCode.LEFT){
-      myMainEntity.setX(myMainEntity.getX()-10);
+      myMainEntity.setY(myMainEntity.getY()-10);
       //myMainEntity.moveLeft();
     }
     if (keyEvent.getCode() == KeyCode.UP){
