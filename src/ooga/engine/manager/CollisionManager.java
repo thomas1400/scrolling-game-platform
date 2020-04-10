@@ -59,7 +59,6 @@ public class CollisionManager implements Observable {
     return entitiesReceived;
   }
 
-
   //NOT SURE IF THESE WILL BE IMPLEMENTED LATER
   @Override
   public void addObserver(Observer o) {

@@ -45,7 +45,7 @@ public final class UserFactory {
   public static User getDefaultUser() {
     //TODO: eventually just have this call getUser(new File("Default.user"));
     List<Integer> defaultLevelsUnlocked = new ArrayList<>();
-    defaultLevelsUnlocked.add(1);
+    defaultLevelsUnlocked.add(0);
     return new User("Default User", "Mario.png", defaultLevelsUnlocked, 3);
   }
 }

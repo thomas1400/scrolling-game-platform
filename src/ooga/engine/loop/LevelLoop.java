@@ -41,7 +41,10 @@ public class LevelLoop implements Loopable {
     myCollisionManager = new CollisionManager();
     EntityList entitiesOnScreen = myCameraManager.initializeActiveEntities(myEntities);
     myVisibleEntities =  entitiesOnScreen;
-    myEntityManager.addAllEntities(entitiesOnScreen);
+    for (Entity entity: myEntityManager.getEntities()){
+      System.out.println(entity);
+    }
+    //myEntityManager.addAllEntities(entitiesOnScreen);
     myEntityManager.initializeEntityLists();
     createTimeline();
   }
@@ -77,7 +80,7 @@ public class LevelLoop implements Loopable {
 
   private void manageCollisions() {
     myCollisionManager.manageCollisions(myCameraManager.getOnScreenEntities());
-    myEntityManager.addAllEntities(myCollisionManager.getEntitiesReceived());
+    myEntityManager.manageEntities(myCollisionManager.getEntitiesReceived());
   }
 
   private void updateEntities() {
@@ -90,10 +93,10 @@ public class LevelLoop implements Loopable {
   private void updateCamera() {
     myCameraManager.updateCamera(myEntityManager.getEntities());
     if(myCameraManager.getActivatedEntities().size()!=0) {
-      myEntityManager.addAllEntities(myCameraManager.getActivatedEntities());
+      myEntityManager.addNewEntities(myCameraManager.getActivatedEntities());
     }
     if(myCameraManager.getDeactivatedEntities().size()!=0) {
-      myEntityManager.removeAllEntities(myCameraManager.getDeactivatedEntities());
+      myEntityManager.removeOldEntities(myCameraManager.getDeactivatedEntities());
     }
   }
 
