@@ -122,10 +122,14 @@ public final class LevelBuilder {
     return myEntities;
   }
 
-  private static void addNewEntityToEntitiesList(EntityList myEntities, String symbol,
-      String entityFile, Entity myEntity) {
-    if (symbol.equals(MAIN_ENTITY_SYMBOL)){
-      System.out.println("Building Main Entity: " + entityFile);
+  private static void setEntitySize(Entity myEntity, double scaleFactor) {
+    double scalingFactor = myEntity.getBoundsInLocal().getWidth()/scaleFactor;
+    myEntity.setFitWidth(myEntity.getBoundsInLocal().getWidth()/scalingFactor);
+    myEntity.setFitHeight(myEntity.getBoundsInLocal().getHeight()/scalingFactor);
+  }
+
+  private static void addNewEntityToEntitiesList(EntityList myEntities, String symbol, Entity myEntity) {
+    if (symbol.equals(MAIN_ENTITY_SYMBOL)) {
       myEntities.setMainEntity(myEntity);
     }
     myEntities.addEntity(myEntity);
