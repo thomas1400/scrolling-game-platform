@@ -17,11 +17,11 @@ public class CameraManager {
     mainEntity = character;
     screenHeight = height;
     screenWidth = width;
-    xCenter = screenWidth/2;
+    xCenter = screenWidth/2- mainEntity.getBoundsInLocal().getWidth()/2;
   }
 
   public void updateCamera(EntityList entities) {
-    if (mainEntity.getX() != xCenter) {
+    if (mainEntity.getX()>xCenter) {
       double xChange = mainEntity.getX() - xCenter;
       resetMainEntityToCenter();
       entities.changeAllXCoordinates(xChange);
