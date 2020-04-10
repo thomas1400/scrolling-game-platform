@@ -51,6 +51,7 @@ public class LevelController implements Communicable{
   @Override
   public void addAllEntities(EntityList entities) {
     myVisualGroup.getChildren().addAll(entities.getAsList());
+    myLevelLoop.pause();
   }
 
   @Override
