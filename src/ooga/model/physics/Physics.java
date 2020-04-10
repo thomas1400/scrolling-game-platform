@@ -41,11 +41,22 @@ public class Physics {
 
     //Position Updates
     myPosition[X] += myVelocity[X]*dt;
-    myPosition[Y] += myVelocity[Y]*dt;
+    //myPosition[Y] += myVelocity[Y]*dt;
+    myPosition[Y] = tempCheckLandJump();
 
     //Update Image Position
     myEntity.setX(myPosition[X]);
     myEntity.setY(myPosition[Y]);
+  }
+
+  private double tempCheckLandJump() {
+    if (myPosition[Y] < 307) {
+      myPosition[Y] += myVelocity[Y]*dt;
+    } else {
+      stopVerticalMotion();
+      myPosition[Y] -= 1;
+    }
+    return myPosition[Y];
   }
 
   private double getLimitedVelocity(double velocity, double maxVelocity) {
@@ -58,8 +69,15 @@ public class Physics {
 
   public void jump() {
     myAcceleration[Y] = GRAVITY;
-    System.out.println("jump");
     myVelocity[Y] += INITIAL_JUMP_VELOCITY;
+  }
+  public void stopHorizMotion() {
+    myAcceleration[X] = 0;
+    myVelocity[X] = 0;
+  }
+  public void stopVerticalMotion() {
+    myAcceleration[Y] = 0;
+    myVelocity[Y] = 0;
   }
   public void moveLeft() {
     myVelocity[X] = myVelocity[X] - RUN_ACCELERATION * dt;
@@ -70,6 +88,6 @@ public class Physics {
   public void resumeFall() {
     myAcceleration[Y] = GRAVITY;
   }
-  public void endFall() { myAcceleration[Y] = 0;}
+  public void endFall() { stopVerticalMotion();}
 
 }
