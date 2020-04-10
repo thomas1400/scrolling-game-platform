@@ -34,6 +34,10 @@ public class UserList implements Iterable<User>{
     return mySelectedUser;
   }
 
+  public void setSelectedUser(User user) {
+    mySelectedUser = user;
+  }
+
   @Override
   public Iterator<User> iterator() {
     return myUsers.iterator();

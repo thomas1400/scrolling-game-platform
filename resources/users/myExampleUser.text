@@ -1,8 +1,0 @@
-name: "Mario"
-imageFile: "/images/users/Mario.png"
-levelUnlocked: "4-3"
-lives: 12
-points: 78
-powerUp: "fire"
-size: "normal"
-achievements: "fireEater","savedPeach","escapedDeath"
