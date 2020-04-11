@@ -40,6 +40,11 @@ public class LoadingPane extends Pane {
     loading.setPrefSize(this.getPrefWidth(), this.getPrefHeight());
     loading.setAlignment(Pos.CENTER);
 
+    Label level = cf.label(resources.getString("level"), FONT_SIZE);
+    loading.setTextFill(TEXT_COLOR);
+    loading.setPrefSize(this.getPrefWidth(), this.getPrefHeight());
+    loading.setAlignment(Pos.CENTER);
+
     this.getChildren().add(loading);
   }
 
