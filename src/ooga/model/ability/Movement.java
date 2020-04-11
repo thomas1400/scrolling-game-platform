@@ -31,6 +31,20 @@ public class Movement extends Ability {
     phys.moveLeft();
   }
 
+  public void stand(){
+    phys.stopVerticalMotion();
+    //fixme change so it doesn't stop in air if it hits a brick
+  }
+
+  public void bounceY(){
+    phys.changeYAcceleration();
+  }
+
+  public void bounceX(){
+    System.out.println("bounce x");
+    phys.changeXAcceleration();
+  }
+
   public void update(Entity entity){
     phys.update(entity);
   }

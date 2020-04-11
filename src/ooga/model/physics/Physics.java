@@ -14,8 +14,9 @@ public class Physics {
 
   private static final double MAX_VERT_VELOCITY = -1 * INITIAL_JUMP_VELOCITY;
   private static final double MAX_HORIZ_VELOCITY = 1.5 * sizeScale;
-  private static final double RUN_ACCELERATION = 2 * sizeScale;
+  private static final double RUN_ACCELERATION = 4 * sizeScale;
   private static final double FRICTION_DAMPING = 1.2;
+  private static final int SIGN_CHANGE = -1;
 
   private static final int X = 0;
   private static final int Y = 1;
@@ -35,7 +36,7 @@ public class Physics {
     //Get on screen position
     myPosition[X] = myEntity.getX();
     myPosition[Y] = myEntity.getY();
-    myPosition[Y] = tempCheckLandJump();
+    //yPosition[Y] = tempCheckLandJump();
 
     //Velocity Updates
     myVelocity[X] += myAcceleration[X]*dt;
@@ -100,6 +101,12 @@ public class Physics {
   public void stopVerticalMotion() {
     myAcceleration[Y] = 0;
     myVelocity[Y] = 0;
+  }
+  public void changeXAcceleration(){
+    myAcceleration[X]*=SIGN_CHANGE;
+  }
+  public void changeYAcceleration(){
+    myAcceleration[Y]*=SIGN_CHANGE;
   }
   public void moveLeft() {
     if (myVelocity[X] < 0) {

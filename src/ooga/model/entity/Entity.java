@@ -53,6 +53,8 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
       attack = Attack.STUN;
     } else if (attackType.equals("DAMAGE")){
       attack = Attack.DAMAGE;
+    } else if (attackType.equals("SUPPORT")){
+      attack = Attack.SUPPORT;
     }
     //todo learn how to make enums with reflection and change the above to that
 
@@ -191,6 +193,10 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     dead = health.isDead();
   }
 
+  //used for reflection DO NOT DELETE
+  private void support(Attack myAttack){
+    movement.stand();
+  }
 
   //used for reflection DO NOT DELETE
   private void stun(Attack myAttack){
@@ -199,14 +205,15 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
       side = Attack.HARMLESS;
       top = Attack.BOUNCE;
     } else {
-      damage(myAttack);
+      //damage(myAttack);
     }
   }
 
   //used for reflection DO NOT DELETE
   private void bounce(Attack myAttack){
     //if it's on the bottom
-    movement.jump();
+    System.out.println(debuggingName);
+    movement.bounceX();
     //if it's side
     /*if(stun.isStunned()){
       side
@@ -223,6 +230,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     if(haveMovement) {
       movement.update(this);
     }
+    dead = health.isDead();
   }
 
   public void moveRight(){

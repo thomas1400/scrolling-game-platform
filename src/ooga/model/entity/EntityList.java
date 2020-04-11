@@ -70,6 +70,6 @@ public class EntityList implements Iterable<Entity>, Observer {
 
       }
     }
-    System.out.println("change");//fixme
+    //System.out.println("change");//fixme
   }
 }
