@@ -44,7 +44,7 @@ public class CameraManager {
     initializeActivationStorage();
     onScreenEntities = new EntityList();
     for (Entity entity : entities) {
-      if (entity.getX()> 10 && entity.getBoundsInLocal().getMinX()< screenWidth && entity.getY() < screenHeight) {
+      if (entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX()< screenWidth && entity.getY() < screenHeight) {
         activatedEntities.addEntity(entity);
         onScreenEntities.addEntity(entity);
       }
@@ -55,11 +55,11 @@ public class CameraManager {
   private void determineEntitiesOnScreen(EntityList entities) {
     initializeActivationStorage();
     for (Entity entity : entities) {
-      if (entity.getX()> 10 && entity.getBoundsInLocal().getMinX() < screenWidth && entity.getY() < screenHeight && !onScreenEntities
+      if (entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX() < screenWidth && entity.getY() < screenHeight && !onScreenEntities
           .contains(entity)) {
         activatedEntities.addEntity(entity);
         onScreenEntities.addEntity(entity);
-      } else if ((entity.getBoundsInLocal().getMinX() > screenWidth || entity.getX()< 10 || entity.getY() > screenHeight) && onScreenEntities
+      } else if ((entity.getBoundsInLocal().getMinX() > screenWidth || entity.getBoundsInLocal().getMaxX()< 0 || entity.getY() > screenHeight) && onScreenEntities
           .contains(entity)) {
         onScreenEntities.removeEntity(entity);
         deactivatedEntities.addEntity(entity);
