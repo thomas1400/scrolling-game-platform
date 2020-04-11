@@ -101,8 +101,9 @@ public class ScreenController{
     Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
     File file = new File("resources/stylesheet.css");
     nextScene.getStylesheets().add(file.toURI().toString());
-    //nextScene.setOnKeyPressed(event -> levelController.handleUserInput(event));
-    nextScene.setOnKeyPressed(levelController::handleUserInput);
+    //nextScene.setOnKeyPressed(event -> levelController.handleKeyPressed(event));
+    nextScene.setOnKeyPressed(levelController::handleKeyPressed);
+    nextScene.setOnKeyReleased(levelController::handleKeyReleased);
 
     showScene(nextScene);
 
