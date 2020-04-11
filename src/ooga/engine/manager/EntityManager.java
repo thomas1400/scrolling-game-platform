@@ -28,11 +28,17 @@ public class EntityManager implements Communicable {
         addEntity(entity);
       }
     }
+    checkForDeadEntities();
+  }
+
+  private void checkForDeadEntities() {
+    EntityList entitiesToRemove = new EntityList();
     for (Entity entity : myEntityList) {
       if (entity.isDead()) {
-        removeEntity(entity);
+        entitiesToRemove.addEntity(entity);
       }
     }
+    removeAllEntities(entitiesToRemove);
   }
 
   public EntityList getEntities(){
