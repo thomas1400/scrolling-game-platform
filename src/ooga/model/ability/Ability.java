@@ -2,16 +2,17 @@ package ooga.model.ability;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import ooga.model.entity.Entity;
 
 abstract public class Ability{
 
   //assumes that classPackageName ends in a '.'
   //TODO fix variable names they suck
-  protected Object reflect(String classPackageName, String className, String type){
+  protected Object reflect(String classPackageName, String className){
     try{
       Class reflectedClass = Class.forName(classPackageName + className);
-      Constructor classConstructor = reflectedClass.getConstructor(String.class);
-      return classConstructor.newInstance(type);
+      Constructor classConstructor = reflectedClass.getConstructor();
+      return classConstructor.newInstance();
     } catch (ClassNotFoundException e){
       System.out.println("ClassNotFoundException");
       throw new RuntimeException(e);
