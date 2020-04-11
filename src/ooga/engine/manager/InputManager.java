@@ -15,7 +15,7 @@ public class InputManager {
     myMainEntity = mainEntity;
   }
 
-  public void handleKeyInput(KeyEvent keyEvent) {
+  public void handleKeyPress(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.RIGHT){
       //myMainEntity.setX(myMainEntity.getX()+10);
       myMainEntity.moveRight();
@@ -27,5 +27,9 @@ public class InputManager {
     if (keyEvent.getCode() == KeyCode.UP){
       myMainEntity.jump();
     }
+  }
+
+  public void handleKeyRelease(KeyEvent keyEvent) {
+    //Do appropriate things to main Entity
   }
 }
