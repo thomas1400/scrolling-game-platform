@@ -68,8 +68,8 @@ public class CameraManager {
     for(Entity entity: activatedEntities) {
       //System.out.println(entity);
     }
-    System.out.println("changeamount");
-    System.out.println(change);
+    //System.out.println("changeamount");
+    //System.out.println(change);
     activatedEntities.changeAllXCoordinates(change);
   }
 
