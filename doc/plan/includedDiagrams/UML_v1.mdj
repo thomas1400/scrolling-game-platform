@@ -9568,7 +9568,7 @@
 											"top": 432,
 											"width": 134.03076171875,
 											"height": 13,
-											"text": "+int startLevel(int level)",
+											"text": "+int startLevel(int basicLevel)",
 											"horizontalAlignment": 0
 										}
 									],
@@ -20861,7 +20861,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFxNsqLJVCFffU="
 									},
-									"name": "int level",
+									"name": "int basicLevel",
 									"type": ""
 								}
 							]

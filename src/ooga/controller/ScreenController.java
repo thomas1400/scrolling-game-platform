@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import ooga.model.data.BasicLevel;
 import ooga.model.data.User;
 import ooga.model.data.UserList;
 import ooga.view.GameScreen;
@@ -89,12 +90,12 @@ public class ScreenController{
 
   ;
 
-  public void initializeNewLevel(int levelNumber){
+  public void initializeNewLevel(BasicLevel basicLevel){
     myGameScreen = new GameScreen(this);
     myScreens.put("GameScreen", myGameScreen);
 
     LevelController levelController =
-        new LevelController((GameScreen)myGameScreen, mySelectedUser, levelNumber);
+        new LevelController((GameScreen)myGameScreen, mySelectedUser, basicLevel);
     ((GameScreen) myGameScreen).setLevelController(levelController);
 
     Screen nextScreen = myScreens.get("GameScreen");

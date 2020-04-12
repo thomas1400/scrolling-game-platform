@@ -36,6 +36,6 @@
      - re: above
 
 ## Extensions
- - Level Builder (customize the level)
+ - Level Builder (customize the basicLevel)
  - Different Image/Resource Packs (for any game)
  - Variety of Games
