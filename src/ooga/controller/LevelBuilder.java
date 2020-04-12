@@ -32,7 +32,8 @@ public final class LevelBuilder {
   private static final int VALUE_INDEX = 1;
   private static final double PADDING = 0.01;
 
-  public static Level buildLevel(int levelNumber, double gameWindowHeight) throws FileNotFoundException {
+  public static Level buildLevel(int levelNumber, double gameWindowHeight, double gameWindowWidth)
+      throws FileNotFoundException {
     File levelFile = getLevelFile(levelNumber);
 
     Map<String,String> headerInfo = getMapFromFile(levelFile, HEADER_TAG);
@@ -41,7 +42,8 @@ public final class LevelBuilder {
     int levelHeight = Integer.parseInt(headerInfo.get(HEIGHT_SPECIFIER));
     int levelWidth = Integer.parseInt(headerInfo.get(WIDTH_SPECIFIER));
 
-    EntityList levelEntities = buildEntities(levelFile, entityInfo, levelHeight, levelWidth, gameWindowHeight);
+    EntityList levelEntities = buildEntities(levelFile, entityInfo, levelHeight, levelWidth,
+        gameWindowHeight, gameWindowWidth);
 
     return new Level(levelNumber, headerInfo,  levelEntities);
   }
@@ -99,21 +101,22 @@ public final class LevelBuilder {
   }
 
   private static EntityList buildEntities(File levelFile, Map<String, String> entityInfo,
-      int levelHeight, int width, double gameWindowHeight)
+      int levelHeight, int levelWidth, double gameWindowHeight, double gameWindowWidth)
       throws FileNotFoundException {
     EntityList myEntities = new EntityList();
 
     Scanner sc = new Scanner(levelFile);
     moveToSection(LEVEL_TAG, sc);
 
+    double scaleFactor = getScaleFactor(levelHeight, levelWidth, gameWindowHeight, gameWindowWidth);
+
     for (int j = 0; j < levelHeight; j++){
       String[] levelLine = sc.nextLine().split(LEVEL_OBJ_SEPARATOR);
-      for (int i = 0; i < width; i++){
+      for (int i = 0; i < levelWidth; i++){
         String symbol = levelLine[i];
         if (!symbol.equals(EMPTY_SPACE_SYMBOL)){
           String entityFile = entityInfo.get(symbol);
           Entity myEntity = EntityBuilder.getEntity(entityFile);
-          double scaleFactor = gameWindowHeight/levelHeight;
           setEntitySize(myEntity, scaleFactor);
           setEntityCoordinates(levelHeight, j, i, myEntity, scaleFactor);
           addNewEntityToEntitiesList(myEntities, symbol, myEntity);
@@ -121,6 +124,11 @@ public final class LevelBuilder {
       }
     }
     return myEntities;
+  }
+
+  private static double getScaleFactor(int levelHeight, int levelWidth, double gameWindowHeight,
+      double gameWindowWidth) {
+    return Math.max(gameWindowHeight/levelHeight, gameWindowWidth/levelWidth);
   }
 
   private static void setEntitySize(Entity myEntity, double scaleFactor) {

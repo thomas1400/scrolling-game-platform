@@ -25,7 +25,7 @@ public class LevelController implements Communicable{
     myUser = user;
     Level level = null;
     try {
-      level = LevelBuilder.buildLevel(levelNumber, gs.getGameHeight());
+      level = LevelBuilder.buildLevel(levelNumber, gs.getGameHeight(), gs.getGameWidth());
     } catch (FileNotFoundException e) {
       ExceptionFeedback.throwException(e, "File not found");
     }
