@@ -31,3 +31,4 @@ public class UpwardsCameraManager extends CameraManager {
     mainEntity.setY(yCenter);
   }
 }
+//
