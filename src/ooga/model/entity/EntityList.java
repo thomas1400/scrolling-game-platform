@@ -68,7 +68,6 @@ public class EntityList implements Iterable<Entity>, Observer {
       if (entity != myMainEntity) {
         entity.setX(entity.getX() - xChange);
         entity.setY(entity.getY()- yChange);
-
       }
     }
   }
