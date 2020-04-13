@@ -34,7 +34,7 @@ public final class UserFactory {
   private static void addAdditionalProperties(Properties prop, User createdUser) {
     createdUser.setPower(prop.getProperty("power"));
     createdUser.setSize(prop.getProperty("size"));
-    createdUser.addPoints(Integer.parseInt(prop.getProperty("points")));
+    createdUser.adjustPoints(Integer.parseInt(prop.getProperty("points")));
   }
 
   private static User createBaseUser(Properties prop, ArrayList<Integer> levelsUnlocked) {

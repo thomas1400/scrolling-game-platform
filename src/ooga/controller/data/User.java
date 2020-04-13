@@ -7,6 +7,7 @@ import ooga.model.entity.Entity;
 
 public class User {
 
+  private static final int POINTS_TO_LIFE_RATIO = 100;
   private String myName;
   private String myImageFileName;
   private List<Integer> myLevelsUnlocked;
@@ -72,7 +73,7 @@ public class User {
     myLives += 1;
   }
 
-  public void addLives(int lives) {
+  public void adjustLives(int lives) {
     myLives += lives;
   }
 
@@ -84,7 +85,7 @@ public class User {
     myPoints += 1;
   }
 
-  public void addPoints(int points) {
+  public void adjustPoints(int points) {
     myPoints += points;
   }
 
@@ -102,5 +103,14 @@ public class User {
 
   public void setSize(String size) {
     mySize = size;
+  }
+
+  public boolean checkPointsToLife() {
+    if (myPoints > POINTS_TO_LIFE_RATIO){
+      addLife();
+      adjustPoints(-1 * POINTS_TO_LIFE_RATIO);
+      return true;
+    }
+    return false;
   }
 }
