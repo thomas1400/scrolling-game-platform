@@ -36,7 +36,7 @@ The EntityManager detcts that an entity has died. The EntityManager removes the 
 
 
 ### USE CASE 4 - Game Engine
-The user selects the pause button while playing a level. The ScreenController creates a screen the displays that the game is paused and has the options to resume or exit the game. The timeline within LevelLoop is temporarily stopped. 
+The user selects the pause button while playing a basicLevel. The ScreenController creates a screen the displays that the game is paused and has the options to resume or exit the game. The timeline within LevelLoop is temporarily stopped. 
 
 ### USE CASE 5 - Game Engine
 A collision causes an Entity to die and a new entity to be created in place of that Entity. The EntityManager receives an Entity from the CollisionManager. This Entity is not currently in the EntityList. The Entity is added to the EntityList. The EntityManager then checks to see if any of the current Entities have died. The EntityManager sees that one of the Entities has died, and removes this Entity from the List. 
@@ -58,7 +58,7 @@ The user selects a user profile in the UserSelect screen. Their selection is com
 The user exits the game. As they do, their progress, lives remaining, and score are saved to a user file, saved automatically to be loaded the next time the user opens the game.
 
 ### USE CASE 3 - View
-The user selects a level in the LevelSelect screen and presses "Begin". A loading screen (SplashScreen) displays, showing the level to be loaded and the user's remaining lives. The level loads, and the user is shown the GameScreen. They press the left and right arrow keys to see their character move back and forth. Then, they press 'Quit', and are taken back to the main menu, without their progress in the level being saved.
+The user selects a basicLevel in the LevelSelect screen and presses "Begin". A loading screen (SplashScreen) displays, showing the basicLevel to be loaded and the user's remaining lives. The basicLevel loads, and the user is shown the GameScreen. They press the left and right arrow keys to see their character move back and forth. Then, they press 'Quit', and are taken back to the main menu, without their progress in the basicLevel being saved.
 
 ### USE CASE 4 - View
 The user opens the game and tries to select a user profile, but the user's data file was corrupted, and can't be loaded. An error message pops up informing the user of the problem and suggesting steps to fix it, like deleting the user file. When the user clicks "Okay", dismissing the error message, the application closes.
@@ -67,35 +67,35 @@ The user opens the game and tries to select a user profile, but the user's data 
 The user selects their user profile in the UserSelect screen, then presses "BEGIN" to move to the main menu. They click "Help", and navigate to the Help screen, where the game's controls and helpful tips are displayed.
 
 ### USE CASE 6 - View
-The user completes a level, and the level progress bar beneath the LevelSelect page updates to reflect the progress, moving one bar closer to the end.
+The user completes a basicLevel, and the basicLevel progress bar beneath the LevelSelect page updates to reflect the progress, moving one bar closer to the end.
 
 ### USE CASE 7 - View
-The user dies while playing the game, and a death screen fades in, displaying an animation that shows the user losing a life and displaying their remaining lives. The death screen fades out, and the level loading screen fades in. The level restarts.
+The user dies while playing the game, and a death screen fades in, displaying an animation that shows the user losing a life and displaying their remaining lives. The death screen fades out, and the basicLevel loading screen fades in. The basicLevel restarts.
 
 ### USE CASE 8 - View
-The user successfully completes a level, and the level completion screen fades in, showing a victory animation and the unlocking of the next level. The user is taken back to the LevelSelect page, with the new level unlocked for selection.
+The user successfully completes a basicLevel, and the basicLevel completion screen fades in, showing a victory animation and the unlocking of the next basicLevel. The user is taken back to the LevelSelect page, with the new basicLevel unlocked for selection.
 
 ## Game Controller Use Cases
 ### USE CASE 1 - Game Controller
 The application is launched and the screen controller launches the visualizer. A welcome screen is displayed.
 
 ### USE CASE 2 - Game Controller
-A level is read in, and a list of entities is created with the correct attributes and level relative position.
+A basicLevel is read in, and a list of entities is created with the correct attributes and basicLevel relative position.
 
 ### USE CASE 3 - Game Controller
-If the user pauses the game through the visualizer, the game controller pauses the level loop. It remains paused until the user resumes the game, in which the game controller turns on the level loop.
+If the user pauses the game through the visualizer, the game controller pauses the basicLevel loop. It remains paused until the user resumes the game, in which the game controller turns on the basicLevel loop.
 
 ### USE CASE 4 - Game Controller
-The user selects a new level to load. The level is read from the selected XML file, and a new level loop is created with the new list of entities. 
+The user selects a new basicLevel to load. The basicLevel is read from the selected XML file, and a new basicLevel loop is created with the new list of entities. 
 
 ### USE CASE 5 - Game Controller
 The user adds a second player. The new player has a different set of movement keys (which will be loaded from a properties file), and the new player is added to the list of entities in the game engine.
 
 ### USE CASE 6 - Game Controller
-An invalid level file is selected. The game controller displays an error message that the level cannot be played, and prompts for the user to selected a different level.
+An invalid basicLevel file is selected. The game controller displays an error message that the basicLevel cannot be played, and prompts for the user to selected a different basicLevel.
 
 ### USE CASE 7 - Game Controller
-The user reaches the end of a level, and the level loop finishes, and tells the game controller that the level is over. The game controller determines the next from from the game XML file, and then loads the next level and passes the list of entities to the new level loop.
+The user reaches the end of a basicLevel, and the basicLevel loop finishes, and tells the game controller that the basicLevel is over. The game controller determines the next from from the game XML file, and then loads the next basicLevel and passes the list of entities to the new basicLevel loop.
 
 ### USE CASE 8 - Game Controller
-The player looses a life. The number of lives decreases by one, and the screen controller changes the visualizer to show the 'death' screen. If the user has remaining lives, the current level is reloaded from the beginning. If the user is out of lives, the screen controller changes the visualiser to a game over screen.
+The player looses a life. The number of lives decreases by one, and the screen controller changes the visualizer to show the 'death' screen. If the user has remaining lives, the current basicLevel is reloaded from the beginning. If the user is out of lives, the screen controller changes the visualiser to a game over screen.

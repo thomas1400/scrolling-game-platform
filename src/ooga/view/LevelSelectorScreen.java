@@ -2,20 +2,14 @@ package ooga.view;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 import javafx.animation.FadeTransition;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.Toggle;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -34,7 +28,9 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 import ooga.controller.ScreenController;
 import ooga.exceptions.ExceptionFeedback;
-import ooga.model.data.User;
+import ooga.controller.data.BasicLevel;
+import ooga.controller.data.BasicLevelList;
+import ooga.controller.data.User;
 import ooga.view.factory.ControlFactory;
 
 public class LevelSelectorScreen extends Screen {
@@ -42,10 +38,12 @@ public class LevelSelectorScreen extends Screen {
   private static final String LEVEL_GRAPH_FILE = "resources/levels/LevelGraph.txt";
   private static final String LEVEL_MAP_FILE = "resources/levels/LevelMap.txt";
 
+  private BasicLevelList myLevels;
   private LevelSelectorTool lst;
 
-  public LevelSelectorScreen(ScreenController controller) {
+  public LevelSelectorScreen(ScreenController controller, BasicLevelList levels) {
     super(controller);
+    myLevels = levels;
     setWorkingDimensions(3, 1);
     initializeLayout();
   }
@@ -210,8 +208,8 @@ public class LevelSelectorScreen extends Screen {
       }
     }
 
-    int getSelected() {
-      return Integer.parseInt(((RadioButton) levels.getSelectedToggle()).getId());
+    BasicLevel getSelected() {
+      return myLevels.getBasicLevel(Integer.parseInt(((RadioButton) levels.getSelectedToggle()).getId()));
     }
 
   }

@@ -1,8 +1,8 @@
 # PROJECT_PLAN.md
 ## SPRINT 1 - Basic 1
-We write the ScreenController, which lets you navigate between screens, home screen lets you go to the level selector, the basic level selector lets you pick a level, which opens the level. 
+We write the ScreenController, which lets you navigate between screens, home screen lets you go to the basicLevel selector, the basic basicLevel selector lets you pick a basicLevel, which opens the basicLevel. 
 
-We have basic functionality, including walking, jumping, losing a life when falling, and completing a level. Develop very basic collision functionality where all collisions stop the player.
+We have basic functionality, including walking, jumping, losing a life when falling, and completing a basicLevel. Develop very basic collision functionality where all collisions stop the player.
 
 Create basic key shortcuts (cheat codes) for testing.
 
@@ -19,7 +19,7 @@ Add in the ability to load and save different users, where different users have 
 
 ## SPRINT 3 - Complete
 
-Add the level builder and special levels (like boss fights or vertically scrolling levels).
+Add the basicLevel builder and special levels (like boss fights or vertically scrolling levels).
 
 Add more interesting enemies, like ghosts.
 
@@ -45,16 +45,16 @@ Different themes (attempt making an underwater mario scene with different physic
 * Game Controller
     * Create files that hold unique users
     * Create files that hold the levels
-        * Read the level files and pass a list of entities to the game engine
-    * Get level selected from view
+        * Read the basicLevel files and pass a list of entities to the game engine
+    * Get basicLevel selected from view
     * Manage launching of the game
         * Creating the view, game engine, and entities
     * Write basic 'land' physics class that governs the way objects move
     * Manage user stats, including lives and points earned
         * When a player loses a life
             * Remove a life from the User
-            * Tell the view to show "level over, x lives left (Game Over if applicable)"
-                * Restart the level (create a new level controller) if there are remaining lives
+            * Tell the view to show "basicLevel over, x lives left (Game Over if applicable)"
+                * Restart the basicLevel (create a new basicLevel controller) if there are remaining lives
                 * Return to Level Selector screen if no lives left
 * Physics Engine
     * 
@@ -76,17 +76,17 @@ Different themes (attempt making an underwater mario scene with different physic
 
 #### to57 (Thomas): View and Collision Files
 * Create properties files with the hierarchy of managing collisions
-* When a player loses a life, show 'death screen' for some time and then display the new level screen (MAYBE THIS GOES WITH GRANT?)
+* When a player loses a life, show 'death screen' for some time and then display the new basicLevel screen (MAYBE THIS GOES WITH GRANT?)
 * If a player runs out of lives, show game over screen
 * Start up screen with a button to go into selecting levels
-* Display a selected level
+* Display a selected basicLevel
 * Create all standard menu screens, as described in DESIGN_PLAN
 * Create error and message popups to tell the user of atypical execution.
 
 ### Secondary Responsibilies
 
 #### dmm107 (Dana)
-Assist other teammates that need help, particularly working on the physics engine, and using reflection in the reading in of level files to create entities and handling collisions.
+Assist other teammates that need help, particularly working on the physics engine, and using reflection in the reading in of basicLevel files to create entities and handling collisions.
 
 #### gjl13 (Grant)
 Assist other teammates that need help. Work with Cayla on the CameraManager.

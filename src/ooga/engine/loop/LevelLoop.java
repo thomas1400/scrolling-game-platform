@@ -1,23 +1,18 @@
 package ooga.engine.loop;
 
-import java.awt.event.KeyListener;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import ooga.controller.Communicable;
-import ooga.engine.manager.CameraManager;
+import ooga.engine.manager.CameraManagers.CameraManager;
+import ooga.engine.manager.CameraManagers.StandardCameraManager;
+import ooga.engine.manager.CameraManagers.UpwardsCameraManager;
 import ooga.engine.manager.CollisionManager;
 import ooga.engine.manager.EntityManager;
 import ooga.engine.manager.InputManager;
-import ooga.model.data.Level;
-import ooga.model.data.User;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
-import java.awt.event.KeyAdapter;
-import javax.swing.JFrame;
-import javax.swing.JTextField;
 
 public class LevelLoop implements Loopable {
 
@@ -36,7 +31,7 @@ public class LevelLoop implements Loopable {
   public LevelLoop(Communicable levelController, EntityList myEntities, double screenHeight, double screenWidth) {
     myLevelController = levelController;
     myEntityManager = new EntityManager(myEntities);
-    myCameraManager = new CameraManager(myEntities.getMainEntity(), screenHeight, screenWidth);
+    myCameraManager = new StandardCameraManager(myEntities.getMainEntity(), screenHeight, screenWidth);
     myInputManager = new InputManager(myEntities.getMainEntity());
     myCollisionManager = new CollisionManager();
     EntityList entitiesOnScreen = myCameraManager.initializeActiveEntities(myEntities);
@@ -64,6 +59,7 @@ public class LevelLoop implements Loopable {
     //System.out.println(myEntityManager.getAddedEntities());
     updateEntities();
     // tell the entities to update gravity and stuff
+    processInput();
     updateCamera();
     sendEntities();
   }
@@ -74,8 +70,14 @@ public class LevelLoop implements Loopable {
 
   }
 
-  public void processInput(KeyEvent e) {
-    myInputManager.handleKeyInput(e);
+  public void processKeyPress(KeyEvent keyEvent) {
+    myInputManager.handleKeyPress(keyEvent);
+  }
+  public void processKeyRelease(KeyEvent keyEvent) { myInputManager.handleKeyRelease(keyEvent);
+  }
+
+  public void processInput(){
+    myInputManager.invokeMethods();
   }
 
   private void manageCollisions() {
@@ -136,5 +138,4 @@ public class LevelLoop implements Loopable {
   }
 
   public EntityList getInitialVisibleEntityList() { return myVisibleEntities; }
-
 }

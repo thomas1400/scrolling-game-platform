@@ -1,6 +1,6 @@
 package plan.engine.loop;
 
-import ooga.model.data.User;
+import ooga.controller.data.User;
 import plan.model.data.Level;
 import plan.model.entity.EntityList;
 import plan.engine.manager.CameraManager;
