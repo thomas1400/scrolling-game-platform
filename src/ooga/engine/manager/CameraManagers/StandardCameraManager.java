@@ -31,4 +31,3 @@ public class StandardCameraManager extends CameraManager {
     mainEntity.setX(xCenter);
   }
 }
-//// 
