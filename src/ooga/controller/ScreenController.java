@@ -94,7 +94,7 @@ public class ScreenController{
   }
 
   public void initializeNewLevel(BasicLevel basicLevel){
-    myGameScreen = new GameScreen(this);
+    myGameScreen = new GameScreen(this, basicLevel);
     myScreens.put("GameScreen", myGameScreen);
 
     myLevelController =

@@ -7,6 +7,7 @@ import javafx.util.Duration;
 import ooga.controller.Communicable;
 import ooga.engine.manager.CameraManagers.CameraManager;
 import ooga.engine.manager.CameraManagers.StandardCameraManager;
+import ooga.engine.manager.CameraManagers.UpwardsCameraManager;
 import ooga.engine.manager.CollisionManager;
 import ooga.engine.manager.EntityManager;
 import ooga.engine.manager.InputManager;

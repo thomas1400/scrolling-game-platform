@@ -1,5 +1,6 @@
 package ooga.controller.data;
 
+import java.awt.Image;
 import java.io.File;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ public class BasicLevel {
   private File myLevelFile;
   private String myMainTitle;
   private String mySubTitle;
+  private String myBackgroundImage;
   private Map<String, String> myHeaderInfo;
 
   public BasicLevel(int index, File levelFile, Map<String,String> headerInfo){
@@ -23,6 +25,7 @@ public class BasicLevel {
     myHeaderInfo = headerInfo;
     myMainTitle = myHeaderInfo.get("mainTitle");
     mySubTitle = myHeaderInfo.get("subTitle");
+    myBackgroundImage = myHeaderInfo.get("backgroundImage");
   }
 
   public int getLevelIndex() {
@@ -35,6 +38,10 @@ public class BasicLevel {
 
   public String getSubTitle() {
     return mySubTitle;
+  }
+
+  public String getBackgroundImage() {
+    return myBackgroundImage;
   }
 
   public Map<String, String> getHeaderInfo() {

@@ -14,6 +14,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import ooga.controller.LevelController;
 import ooga.controller.ScreenController;
+import ooga.controller.data.BasicLevel;
 import ooga.controller.data.User;
 import ooga.view.factory.ControlFactory;
 
@@ -24,15 +25,15 @@ public class GameScreen extends Screen {
   private Rectangle gameBackground;
   private User user;
 
-  public GameScreen(ScreenController controller) {
+  public GameScreen(ScreenController controller, BasicLevel level) {
     super(controller);
     gameGroup = new Group();
     user = controller.getUsers().getSelectedUser();
     setWorkingDimensions(3, 1);
-    initializeLayout();
+    initializeLayout(level);
   }
 
-  private void initializeLayout() {
+  private void initializeLayout(BasicLevel level) {
     ControlFactory cf = new ControlFactory(PADDING);
     VBox layout = new VBox();
     layout.setAlignment(Pos.CENTER);
@@ -56,7 +57,7 @@ public class GameScreen extends Screen {
 
     gameBackground = new Rectangle(workingWidth+2*PADDING, 0.8*workingHeight);
     //gameBackground.setFill(Color.WHITE);
-    gameBackground.setFill(new ImagePattern(new Image("images/gameBackground.png")));
+    gameBackground.setFill(new ImagePattern(new Image(level.getBackgroundImage())));
     layout.getChildren().add(gameBackground);
 
     HBox menuBar = new HBox();
