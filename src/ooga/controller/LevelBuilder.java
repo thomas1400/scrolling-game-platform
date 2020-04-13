@@ -2,21 +2,18 @@ package ooga.controller;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
 import java.nio.charset.MalformedInputException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import ooga.exceptions.ExceptionFeedback;
-import ooga.model.data.Level;
+import ooga.model.data.BasicLevel;
+import ooga.model.data.CompleteLevel;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityBuilder;
 import ooga.model.entity.EntityList;
 
 public final class LevelBuilder {
-
-  private static final String LEVEL_FILE_EXTENSION = ".level";
-  private static final String USERS_PATH_NAME = "resources/levels";
 
   private static final String HEADER_TAG = "#HEADER";
   private static final String ENTITIES_TAG = "#ENTITIES";
@@ -26,43 +23,35 @@ public final class LevelBuilder {
   private static final String LEVEL_OBJ_SEPARATOR = " ";
   private static final String MAIN_ENTITY_SYMBOL = "X";
   private static final String EMPTY_SPACE_SYMBOL = ".";
-  private static final String WIDTH_SPECIFIER = "levelWidth";
-  private static final String HEIGHT_SPECIFIER = "levelHeight";
   private static final int KEY_INDEX = 0;
   private static final int VALUE_INDEX = 1;
   private static final double PADDING = 0.01;
+  private static final String LEVEL_HEIGHT_SPECIFIER = "levelHeight";
+  private static final String LEVEL_WIDTH_SPECIFIER = "levelWidth";
 
-  public static Level buildLevel(int levelNumber, double gameWindowHeight, double gameWindowWidth)
-      throws FileNotFoundException {
-    File levelFile = getLevelFile(levelNumber);
-
+  public static BasicLevel buildBasicLevel(File levelFile) throws FileNotFoundException {
     Map<String,String> headerInfo = getMapFromFile(levelFile, HEADER_TAG);
-    Map<String,String> entityInfo = getMapFromFile(levelFile, ENTITIES_TAG);
 
-    int levelHeight = Integer.parseInt(headerInfo.get(HEIGHT_SPECIFIER));
-    int levelWidth = Integer.parseInt(headerInfo.get(WIDTH_SPECIFIER));
+    //FIXME: Get the level number from a properties file based off of the level name, not the
+    // level file named the concrete number it's supposed to be
+    int levelNumber = Integer.parseInt(levelFile.getName().substring(0,1));
+    return new BasicLevel(levelNumber, levelFile, headerInfo);
+  }
+
+  public static CompleteLevel buildCompleteLevel(BasicLevel basicLevel, double gameWindowHeight,
+      double gameWindowWidth) throws FileNotFoundException {
+
+    File levelFile = basicLevel.getLevelFile();
+    Map<String, String> headerInfo = basicLevel.getHeaderInfo();
+    int levelHeight = Integer.parseInt(headerInfo.get(LEVEL_HEIGHT_SPECIFIER));
+    int levelWidth = Integer.parseInt(headerInfo.get(LEVEL_WIDTH_SPECIFIER));
+
+    Map<String,String> entityInfo = getMapFromFile(levelFile, ENTITIES_TAG);
 
     EntityList levelEntities = buildEntities(levelFile, entityInfo, levelHeight, levelWidth,
         gameWindowHeight, gameWindowWidth);
 
-    return new Level(levelNumber, headerInfo,  levelEntities);
-  }
-
-  private static File getLevelFile(int levelNumber) {
-    FilenameFilter filter = (f, name) -> name.endsWith(LEVEL_FILE_EXTENSION);
-    File folder = new File(USERS_PATH_NAME);
-    File[] listOfFiles = folder.listFiles(filter);
-
-    assert listOfFiles != null;
-    for (File levelFile : listOfFiles){
-      if (levelFile.getName().equals(levelNumber + LEVEL_FILE_EXTENSION)) {
-        //TODO: remove print statement
-        System.out.println(levelFile.getName() + " file was found. Proceeding to Parse Level");
-        return levelFile;
-      }
-    }
-    ExceptionFeedback.throwException(new FileNotFoundException(), "File not found");
-    return null;
+    return new CompleteLevel(basicLevel, levelEntities);
   }
 
   private static Map<String, String> getMapFromFile(File levelFile, String sectionTag)
@@ -71,19 +60,18 @@ public final class LevelBuilder {
     Map<String, String> sectionMap = new HashMap<>();
 
     Scanner sc = new Scanner(levelFile);
-    sc = moveToSection(sectionTag, sc);
+    moveToSection(sectionTag, sc);
 
     addDataToMap(sectionMap, sc);
 
     return sectionMap;
   }
 
-  private static Scanner moveToSection(String sectionTag, Scanner sc) {
+  private static void moveToSection(String sectionTag, Scanner sc) {
     String nextLine = sc.nextLine();
     while (!nextLine.contains(sectionTag)){
       nextLine = sc.nextLine();
     }
-    return sc;
   }
 
   private static void addDataToMap(Map<String, String> sectionMap, Scanner sc) {
@@ -118,7 +106,7 @@ public final class LevelBuilder {
           String entityFile = entityInfo.get(symbol);
           Entity myEntity = EntityBuilder.getEntity(entityFile);
           setEntitySize(myEntity, scaleFactor);
-          setEntityCoordinates(levelHeight, j, i, myEntity, scaleFactor);
+          setEntityCoordinates(j, i, myEntity, scaleFactor);
           addNewEntityToEntitiesList(myEntities, symbol, myEntity);
         }
       }
@@ -144,7 +132,7 @@ public final class LevelBuilder {
     myEntities.addEntity(myEntity);
   }
 
-  private static void setEntityCoordinates(int levelHeight, int j, int i, Entity myEntity,
+  private static void setEntityCoordinates(int j, int i, Entity myEntity,
       double scaleFactor) {
     myEntity.setX(getRelativeX(i, scaleFactor));
     double imageHeight = myEntity.getBoundsInLocal().getHeight();

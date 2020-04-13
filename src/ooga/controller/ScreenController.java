@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import ooga.model.data.BasicLevel;
+import ooga.model.data.BasicLevelList;
 import ooga.model.data.User;
 import ooga.model.data.UserList;
 import ooga.view.GameScreen;
@@ -22,21 +24,19 @@ public class ScreenController{
   private static final int INITIAL_WINDOW_HEIGHT = 600;
 
   private Stage myStage;
-
   private UserList myUsers;
   private User mySelectedUser;
-
-  private Screen myHomeScreen;
-  //private Screen mySplashScreen = new SplashScreen();
-  private Screen myUserSelectorScreen;
-  private Screen myLevelSelectorScreen;
-  private Screen myGameScreen;
-  //private Screen myLevelBuilderScreen = new LevelBuilderScreen();
+  private BasicLevelList myBasicLevels;
 
   private Map<String, Screen> myScreens = new HashMap<>();
 
-  public ScreenController(Stage primaryStage){
+  public ScreenController(Stage primaryStage, UserList users, BasicLevelList levels){
     myStage = primaryStage;
+
+    myUsers = users;
+    mySelectedUser = users.getSelectedUser();
+    myBasicLevels = levels;
+
     addApplicationIcon();
     initializeScreens();
 
@@ -53,15 +53,17 @@ public class ScreenController{
   }
 
   private void initializeScreens(){
-    myLevelSelectorScreen = new LevelSelectorScreen(this);
-    myUserSelectorScreen =  new UserSelectorScreen(this);
-    myHomeScreen = new HomeScreen(this);
+    Screen myLevelSelectorScreen = new LevelSelectorScreen(this, myBasicLevels);
+    //private Screen mySplashScreen = new SplashScreen();
+    Screen myUserSelectorScreen = new UserSelectorScreen(this, myUsers);
+    Screen myHomeScreen = new HomeScreen(this);
+    //private Screen mySplashScreen = new SplashScreen();
 
     myScreens.put("HomeScreen", myHomeScreen);
     //myScreens.put("SplashScreen", mySplashScreen);
     myScreens.put("UserSelectorScreen", myUserSelectorScreen);
     myScreens.put("LevelSelectorScreen", myLevelSelectorScreen);
-    //myScreens.put("LevelBuilderScreen", myLevelBuilderScreen);
+    //private Screen myLevelBuilderScreen = new LevelBuilderScreen();
   };
 
   public void switchToScreen(String screenName){
@@ -87,33 +89,24 @@ public class ScreenController{
     return nextScene;
   }
 
-  ;
-
-  public void initializeNewLevel(int levelNumber){
-    myGameScreen = new GameScreen(this);
+  public void initializeNewLevel(BasicLevel basicLevel){
+    Screen myGameScreen = new GameScreen(this);
     myScreens.put("GameScreen", myGameScreen);
 
     LevelController levelController =
-        new LevelController((GameScreen)myGameScreen, mySelectedUser, levelNumber);
+        new LevelController((GameScreen) myGameScreen, mySelectedUser, basicLevel);
     ((GameScreen) myGameScreen).setLevelController(levelController);
 
     Screen nextScreen = myScreens.get("GameScreen");
     Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
     File file = new File("resources/stylesheet.css");
     nextScene.getStylesheets().add(file.toURI().toString());
-    //nextScene.setOnKeyPressed(event -> levelController.handleKeyPressed(event));
     nextScene.setOnKeyPressed(levelController::handleKeyPressed);
     nextScene.setOnKeyReleased(levelController::handleKeyReleased);
 
     showScene(nextScene);
 
     levelController.beginLevel();
-  }
-
-  public void setUsers(UserList users) {
-    myUsers = users;
-    mySelectedUser = users.getSelectedUser();
-    initializeScreens();
   }
 
   public UserList getUsers() {
@@ -129,4 +122,5 @@ public class ScreenController{
   public void handleButtonPress(){
 
   }
+
 }

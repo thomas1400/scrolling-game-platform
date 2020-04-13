@@ -34,6 +34,8 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 import ooga.controller.ScreenController;
 import ooga.exceptions.ExceptionFeedback;
+import ooga.model.data.BasicLevel;
+import ooga.model.data.BasicLevelList;
 import ooga.model.data.User;
 import ooga.view.factory.ControlFactory;
 
@@ -42,10 +44,12 @@ public class LevelSelectorScreen extends Screen {
   private static final String LEVEL_GRAPH_FILE = "resources/levels/LevelGraph.txt";
   private static final String LEVEL_MAP_FILE = "resources/levels/LevelMap.txt";
 
+  private BasicLevelList myLevels;
   private LevelSelectorTool lst;
 
-  public LevelSelectorScreen(ScreenController controller) {
+  public LevelSelectorScreen(ScreenController controller, BasicLevelList levels) {
     super(controller);
+    myLevels = levels;
     setWorkingDimensions(3, 1);
     initializeLayout();
   }
@@ -210,8 +214,8 @@ public class LevelSelectorScreen extends Screen {
       }
     }
 
-    int getSelected() {
-      return Integer.parseInt(((RadioButton) levels.getSelectedToggle()).getId());
+    BasicLevel getSelected() {
+      return myLevels.getBasicLevel(Integer.parseInt(((RadioButton) levels.getSelectedToggle()).getId()));
     }
 
   }

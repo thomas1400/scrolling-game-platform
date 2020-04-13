@@ -2,17 +2,7 @@ package ooga;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
-import java.util.ArrayList;
-import java.util.List;
-import ooga.controller.LevelBuilder;
-import ooga.controller.LevelController;
 import ooga.controller.UserFactory;
-import ooga.controller.UserSaver;
-import ooga.exceptions.ExceptionFeedback;
-import ooga.model.data.Level;
-import ooga.model.data.User;
-import ooga.view.GameScreen;
 
 public class Tester {
 

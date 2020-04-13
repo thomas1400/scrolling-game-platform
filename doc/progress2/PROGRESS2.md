@@ -43,7 +43,7 @@ Make tests!!
         - Level Validation?
 - Levels have a "scroll type" property
 - Error Checking for Level and User Loading
-- User Saving at end of level and close screen
+- User Saving at end of basicLevel and close screen
 - Saving New Users
     - Default Values for new Users
 - More images for other "Textures"
@@ -68,14 +68,14 @@ Make tests!!
 - Add CSS styling and create a data-driven layout
 - Improve the user selector screen to allow the ability to create new user profiles through the user selector screen, as well as displaying more than the current max of 4 users
 - Add a help screen
-- Improve the level selector tool to only allow you to select levels you've unlocked, and to make new levels appear as they're unlocked
-- Improve the loading screen to show the level you're loading and your lives
-- Improve the game screen layout, including dynamically updating score/lives and ending the level on close
+- Improve the basicLevel selector tool to only allow you to select levels you've unlocked, and to make new levels appear as they're unlocked
+- Improve the loading screen to show the basicLevel you're loading and your lives
+- Improve the game screen layout, including dynamically updating score/lives and ending the basicLevel on close
 - Add the ability to change "texture packs", which restyle the GUI and game elements
 
 ### Cayla:
 - Implemented properties files and reflection to call methods when receiving input fromt he user
-- Implement abstract camera manager / sub classes to allow for different type of movement within a level
+- Implement abstract camera manager / sub classes to allow for different type of movement within a basicLevel
 - Looking into observers/ listeners for collisions or key detection
 - make sure that errors are being properly thrown
 - Implement a list into the inputmanager that holds when a key is pressed and removes when the key is released

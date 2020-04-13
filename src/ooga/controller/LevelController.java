@@ -5,7 +5,8 @@ import javafx.scene.Group;
 import javafx.scene.input.KeyEvent;
 import ooga.engine.loop.LevelLoop;
 import ooga.exceptions.ExceptionFeedback;
-import ooga.model.data.Level;
+import ooga.model.data.BasicLevel;
+import ooga.model.data.CompleteLevel;
 import ooga.model.data.User;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
@@ -13,26 +14,24 @@ import ooga.view.GameScreen;
 
 public class LevelController implements Communicable{
 
-  private static final int INITIAL_WINDOW_WIDTH = 800;
-  private static final int INITIAL_WINDOW_HEIGHT = 600;
-
   private User myUser;
   private LevelLoop myLevelLoop;
 
   private Group myVisualGroup = new Group();
 
-  public LevelController(GameScreen gs, User user, int levelNumber) {
+  public LevelController(GameScreen gs, User user, BasicLevel basicLevel) {
     myUser = user;
-    Level level = null;
+    CompleteLevel completeLevel = null;
     try {
-      level = LevelBuilder.buildLevel(levelNumber, gs.getGameHeight(), gs.getGameWidth());
+      completeLevel = LevelBuilder.buildCompleteLevel(basicLevel, gs.getGameHeight(),
+          gs.getGameWidth());
     } catch (FileNotFoundException e) {
       ExceptionFeedback.throwException(e, "File not found");
     }
-    assert level != null;
-    //FIXME: The 80% and 20px are derived from GameScreen Code and should be gotten elsewhere
+
+    assert completeLevel != null;
     myLevelLoop = new LevelLoop(
-        this, level.getEntities(), gs.getGameHeight(), gs.getGameWidth());
+        this, completeLevel.getEntities(), gs.getGameHeight(), gs.getGameWidth());
     EntityList visibleEntityList = myLevelLoop.getInitialVisibleEntityList();
     myVisualGroup.getChildren().addAll(visibleEntityList.getAsList());
     gs.setVisibleGroup(myVisualGroup);

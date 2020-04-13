@@ -5,7 +5,7 @@ subTitle: "Tutorial"
 physics: land
 levelWidth: 50
 levelHeight: 12
-#level
+#basicLevel
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . C C C C C . . . . . .
 . . . . . . . . . . . . . . . . . . C C C . . . . . . . . . . . . . . . . . . . C C C . . . . . . .
 . . . . . . . . . . . . . . . . . C C C C C . . . . . . . . . . . . . . . . . . . . . . . F . . . .
