@@ -4,6 +4,7 @@ mainTitle:Level 0-5
 subTitle:Check Your Fall
 physics:land
 scrollType:up
+deathsAllowed:1
 backgroundImage:images/TeamLogo.png
 levelWidth:20
 levelHeight:50

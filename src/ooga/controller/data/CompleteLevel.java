@@ -8,8 +8,13 @@ public class CompleteLevel {
 
   public static final String PHYSICS_IDENTIFIER = "physics";
   public static final String SCROLL_TYPE_IDENTIFIER = "scrollType";
+  public static final String DEATHS_ALLOWED_IDENTIFIER = "deathsAllowed";
+  public static final String LIFE_GAIN_IDENTIFIER = "lifeGain";
   private String myPhysicsType;
   private String myScrollType;
+  private int myDeathsAllowed;
+  private boolean lifeGainAllowed;
+
   private Entity myMainEntity;
   private EntityList myEntities;
 
@@ -18,6 +23,8 @@ public class CompleteLevel {
     Map<String, String> headerInfo = basicLevel.getHeaderInfo();
     myPhysicsType = headerInfo.get(PHYSICS_IDENTIFIER);
     myScrollType = headerInfo.get(SCROLL_TYPE_IDENTIFIER);
+    myDeathsAllowed = Integer.parseInt(headerInfo.get(DEATHS_ALLOWED_IDENTIFIER));
+    lifeGainAllowed = Boolean.parseBoolean(headerInfo.get(LIFE_GAIN_IDENTIFIER));
 
     myMainEntity = levelEntities.getMainEntity();
     myEntities = levelEntities;
@@ -39,4 +46,8 @@ public class CompleteLevel {
   public String getScrollType() {
     return myScrollType;
   }
+
+  public int getDeathsAllowed() { return myDeathsAllowed; }
+
+  public boolean getLifeGainAllowed() { return lifeGainAllowed;  }
 }
