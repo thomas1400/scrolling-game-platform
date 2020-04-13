@@ -23,9 +23,11 @@ public class User {
     myLives = lives;
   }
 
-  public void saveUser(){};
+  public void saveUser(){
+    UserSaver.saveUser(this);
+  };
 
-  public void saveAsUser(String fileName){
+  public void saveUserToFile(String fileName){
     UserSaver.saveUser(this);
   }
 
