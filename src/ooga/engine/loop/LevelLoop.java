@@ -5,6 +5,7 @@ import javafx.animation.Timeline;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import ooga.controller.Communicable;
+import ooga.engine.manager.CameraManagers.CameraManager;
 import ooga.engine.manager.CameraManagers.StandardCameraManager;
 import ooga.engine.manager.CollisionManager;
 import ooga.engine.manager.EntityManager;
