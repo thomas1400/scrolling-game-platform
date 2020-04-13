@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 import ooga.controller.OogaController;
-
+//OMG SO HAPPY MERGE IS FIXED!!
 public class Main extends Application {
 
     /**
