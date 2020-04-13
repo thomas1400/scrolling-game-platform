@@ -41,7 +41,7 @@ public abstract class CameraManager {
       }
       return activatedEntities;
     }
-//
+////
     protected void determineEntitiesOnScreen(EntityList entities) {
       initializeActivationStorage();
       for (Entity entity : entities) {
