@@ -43,7 +43,7 @@ public class EntityList implements Iterable<Entity>, Observer {
   }
 
   public Iterator<Entity> iterator() {
-      return myEntities.iterator();
+    return myEntities.iterator();
   }
 
   @Override
@@ -63,11 +63,11 @@ public class EntityList implements Iterable<Entity>, Observer {
     return myEntities;
   }
 
-  public void changeAllXCoordinates(double xChange){
+  public void changeAllCoordinates(double xChange, double yChange){
     for(Entity entity : myEntities) {
       if (entity != myMainEntity) {
         entity.setX(entity.getX() - xChange);
-
+        entity.setY(entity.getY()- yChange);
       }
     }
   }

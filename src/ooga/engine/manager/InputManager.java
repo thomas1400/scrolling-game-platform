@@ -22,7 +22,7 @@ public class InputManager {
   }
 
   public void handleKeyPress(KeyEvent keyEvent) {
-      keysCurrentlyPressed.add(keyEvent.getCode().toString());
+    keysCurrentlyPressed.add(keyEvent.getCode().toString());
   }
 
   public void handleKeyRelease(KeyEvent keyEvent) {
