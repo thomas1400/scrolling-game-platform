@@ -1,35 +1,52 @@
 package ooga.engine.manager;
 
-import java.util.List;
-import java.util.Observer;
-import javafx.scene.input.KeyCode;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.ResourceBundle;
+import java.util.Set;
 import javafx.scene.input.KeyEvent;
 import ooga.model.entity.Entity;
 
 public class InputManager {
+
   Entity myMainEntity;
+  private ResourceBundle myUserInputsResources;
+  private static final String UserInputResources = "userinput/userinput";
+  private Set<String> keysCurrentlyPressed;
 
-  private List<Observer> observers;
-
-  public InputManager(Entity mainEntity){
+  public InputManager(Entity mainEntity) {
     myMainEntity = mainEntity;
+    myUserInputsResources = ResourceBundle.getBundle(UserInputResources);
+    keysCurrentlyPressed = new HashSet<>();
   }
 
   public void handleKeyPress(KeyEvent keyEvent) {
-    if (keyEvent.getCode() == KeyCode.RIGHT){
-      //myMainEntity.setX(myMainEntity.getX()+10);
-      myMainEntity.moveRight();
-    }
-    if (keyEvent.getCode() == KeyCode.LEFT){
-      //myMainEntity.setY(myMainEntity.getY()-10);
-      myMainEntity.moveLeft();
-    }
-    if (keyEvent.getCode() == KeyCode.UP){
-      myMainEntity.jump();
-    }
+      keysCurrentlyPressed.add(keyEvent.getCode().toString());
   }
 
   public void handleKeyRelease(KeyEvent keyEvent) {
-    //Do appropriate things to main Entity
+    keysCurrentlyPressed.remove(keyEvent.getCode().toString());
   }
+
+  public void invokeMethods() {
+    for (String keyPressed : keysCurrentlyPressed) {
+      try {
+        String methodName = myUserInputsResources.getString(keyPressed);
+        try {
+          Method m = myMainEntity.getClass().getDeclaredMethod(methodName);
+          m.invoke(myMainEntity);
+        } catch (NoSuchMethodException e) {
+          e.printStackTrace();
+        } catch (IllegalAccessException e) {
+          e.printStackTrace();
+        } catch (InvocationTargetException e) {
+          e.printStackTrace();
+        }
+      } catch (SecurityException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
 }
