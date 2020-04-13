@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Properties;
-import ooga.model.data.User;
+import ooga.controller.data.User;
 
 public final class UserSaver {
 

@@ -8,10 +8,10 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import ooga.model.data.BasicLevel;
-import ooga.model.data.BasicLevelList;
-import ooga.model.data.User;
-import ooga.model.data.UserList;
+import ooga.controller.data.BasicLevel;
+import ooga.controller.data.BasicLevelList;
+import ooga.controller.data.User;
+import ooga.controller.data.UserList;
 import ooga.view.GameScreen;
 import ooga.view.HomeScreen;
 import ooga.view.LevelSelectorScreen;
@@ -22,6 +22,7 @@ public class ScreenController{
 
   private static final int INITIAL_WINDOW_WIDTH = 800;
   private static final int INITIAL_WINDOW_HEIGHT = 600;
+  public static final String ARTWORK_GOOMBA_PNG = "artwork/goomba.png";
 
   private Stage myStage;
   private UserList myUsers;
@@ -29,6 +30,9 @@ public class ScreenController{
   private BasicLevelList myBasicLevels;
 
   private Map<String, Screen> myScreens = new HashMap<>();
+
+  private GameScreen myGameScreen;
+  private LevelController myLevelController;
 
   public ScreenController(Stage primaryStage, UserList users, BasicLevelList levels){
     myStage = primaryStage;
@@ -45,7 +49,7 @@ public class ScreenController{
 
   private void addApplicationIcon() {
     try {
-      Image icon = new Image(new FileInputStream("artwork/goomba.png"));
+      Image icon = new Image(new FileInputStream(ARTWORK_GOOMBA_PNG));
       myStage.getIcons().add(icon);
     } catch (Exception ignored) {
       //TODO: add actual catch
@@ -90,23 +94,23 @@ public class ScreenController{
   }
 
   public void initializeNewLevel(BasicLevel basicLevel){
-    Screen myGameScreen = new GameScreen(this);
+    myGameScreen = new GameScreen(this);
     myScreens.put("GameScreen", myGameScreen);
 
-    LevelController levelController =
-        new LevelController((GameScreen) myGameScreen, mySelectedUser, basicLevel);
-    ((GameScreen) myGameScreen).setLevelController(levelController);
+    myLevelController =
+        new LevelController(myGameScreen, mySelectedUser, basicLevel);
+    myGameScreen.setLevelController(myLevelController);
 
     Screen nextScreen = myScreens.get("GameScreen");
     Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
     File file = new File("resources/stylesheet.css");
     nextScene.getStylesheets().add(file.toURI().toString());
-    nextScene.setOnKeyPressed(levelController::handleKeyPressed);
-    nextScene.setOnKeyReleased(levelController::handleKeyReleased);
+    nextScene.setOnKeyPressed(myLevelController::handleKeyPressed);
+    nextScene.setOnKeyReleased(myLevelController::handleKeyReleased);
 
     showScene(nextScene);
 
-    levelController.beginLevel();
+    myLevelController.beginLevel();
   }
 
   public UserList getUsers() {
@@ -119,7 +123,9 @@ public class ScreenController{
     initializeScreens();
   }
 
-  public void handleButtonPress(){
+  public void restartLevel(){
+    myLevelController.endLevel();
+    myScreens.remove("GameScreen");
 
   }
 

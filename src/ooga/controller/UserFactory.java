@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import ooga.model.data.User;
+import ooga.controller.data.User;
 
 public final class UserFactory {
 
@@ -40,6 +40,11 @@ public final class UserFactory {
       return null;
     }
   }
+
+  public User makeUser(){
+    return null;
+  }
+
 
   public static User getDefaultUser() {
     //TODO: eventually just have this call getUser(new File("Default.user"));

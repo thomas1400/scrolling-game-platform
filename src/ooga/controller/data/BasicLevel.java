@@ -1,4 +1,4 @@
-package ooga.model.data;
+package ooga.controller.data;
 
 import java.io.File;
 import java.util.Map;

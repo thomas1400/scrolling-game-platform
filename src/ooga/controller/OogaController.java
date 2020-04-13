@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import javafx.stage.Stage;
-import ooga.model.data.BasicLevelList;
-import ooga.model.data.UserList;
+import ooga.controller.data.BasicLevelList;
+import ooga.controller.data.UserList;
 
 public class OogaController {
 
