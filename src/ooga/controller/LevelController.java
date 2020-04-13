@@ -5,9 +5,9 @@ import javafx.scene.Group;
 import javafx.scene.input.KeyEvent;
 import ooga.engine.loop.LevelLoop;
 import ooga.exceptions.ExceptionFeedback;
-import ooga.model.data.BasicLevel;
-import ooga.model.data.CompleteLevel;
-import ooga.model.data.User;
+import ooga.controller.data.BasicLevel;
+import ooga.controller.data.CompleteLevel;
+import ooga.controller.data.User;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 import ooga.view.GameScreen;
@@ -73,7 +73,6 @@ public class LevelController implements Communicable{
   public void resumeLevel() {
     myLevelLoop.resume();
   }
-
 
   public void handleKeyPressed(KeyEvent keyEvent){
     myLevelLoop.processKeyPress(keyEvent);

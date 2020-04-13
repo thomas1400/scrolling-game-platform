@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import ooga.model.data.User;
+import ooga.controller.data.User;
 
 public final class UserFactory {
 
@@ -17,21 +17,11 @@ public final class UserFactory {
       Properties prop = new Properties();
       prop.load(input);
 
-      ArrayList<Integer> levelsUnlocked = new ArrayList<>();
-      for (String unlockedLevel : prop.getProperty("levelsUnlocked").split(",")){
-        levelsUnlocked.add(Integer.parseInt(unlockedLevel));
-      }
+      ArrayList<Integer> levelsUnlocked = getUnlockedLevelsArray(prop);
 
-      User createdUser = new User(
-          prop.getProperty("name"),
-          prop.getProperty("image"),
-          levelsUnlocked,
-          Integer.parseInt(prop.getProperty("lives"))
-      );
+      User createdUser = createBaseUser(prop, levelsUnlocked);
 
-      createdUser.setPower(prop.getProperty("power"));
-      createdUser.setSize(prop.getProperty("size"));
-      createdUser.addPoints(Integer.parseInt(prop.getProperty("points")));
+      addAdditionalProperties(prop, createdUser);
 
       return createdUser;
 
@@ -40,6 +30,34 @@ public final class UserFactory {
       return null;
     }
   }
+
+  private static void addAdditionalProperties(Properties prop, User createdUser) {
+    createdUser.setPower(prop.getProperty("power"));
+    createdUser.setSize(prop.getProperty("size"));
+    createdUser.addPoints(Integer.parseInt(prop.getProperty("points")));
+  }
+
+  private static User createBaseUser(Properties prop, ArrayList<Integer> levelsUnlocked) {
+    return new User(
+            prop.getProperty("name"),
+            prop.getProperty("image"),
+            levelsUnlocked,
+            Integer.parseInt(prop.getProperty("lives"))
+        );
+  }
+
+  private static ArrayList<Integer> getUnlockedLevelsArray(Properties prop) {
+    ArrayList<Integer> levelsUnlocked = new ArrayList<>();
+    for (String unlockedLevel : prop.getProperty("levelsUnlocked").split(",")){
+      levelsUnlocked.add(Integer.parseInt(unlockedLevel));
+    }
+    return levelsUnlocked;
+  }
+
+  public User makeUser(){
+    return null;
+  }
+
 
   public static User getDefaultUser() {
     //TODO: eventually just have this call getUser(new File("Default.user"));

@@ -1,4 +1,4 @@
-package ooga.model.data;
+package ooga.controller.data;
 
 import java.util.List;
 import javafx.scene.image.Image;
@@ -23,9 +23,11 @@ public class User {
     myLives = lives;
   }
 
-  public void saveUser(){};
+  public void saveUser(){
+    UserSaver.saveUser(this);
+  };
 
-  public void saveAsUser(String fileName){
+  public void saveUserToFile(String fileName){
     UserSaver.saveUser(this);
   }
 

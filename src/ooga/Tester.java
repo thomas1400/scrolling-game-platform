@@ -1,12 +1,15 @@
 package ooga;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import ooga.controller.UserFactory;
+import java.util.ArrayList;
+import ooga.controller.UserSaver;
+import ooga.controller.data.User;
 
 public class Tester {
 
   public static void main(String[] args) throws FileNotFoundException {
-    System.out.println(UserFactory.getUser(new File("resources/users/Cayla.user")));
+    ArrayList<Integer> unlocked = new ArrayList<>();
+    unlocked.add(7);
+    UserSaver.saveUser(new User("Thank You", "thankyou.png", unlocked, 56));
   }
 }

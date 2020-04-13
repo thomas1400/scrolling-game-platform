@@ -3,8 +3,8 @@ package ooga.view;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import ooga.controller.ScreenController;
-import ooga.model.data.BasicLevelList;
-import ooga.model.data.UserList;
+import ooga.controller.data.BasicLevelList;
+import ooga.controller.data.UserList;
 
 public class ScreenTester extends Application {
 

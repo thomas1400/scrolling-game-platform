@@ -1,4 +1,4 @@
-package ooga.model.data;
+package ooga.controller.data;
 
 import java.util.Map;
 import ooga.model.entity.Entity;
@@ -6,6 +6,8 @@ import ooga.model.entity.EntityList;
 
 public class CompleteLevel {
 
+  public static final String PHYSICS_IDENTIFIER = "physics";
+  public static final String SCROLL_TYPE_IDENTIFIER = "scrollType";
   private String myPhysicsType;
   private String myScrollType;
   private Entity myMainEntity;
@@ -14,8 +16,8 @@ public class CompleteLevel {
   public CompleteLevel(BasicLevel basicLevel, EntityList levelEntities) {
 
     Map<String, String> headerInfo = basicLevel.getHeaderInfo();
-    myPhysicsType = headerInfo.get("physics");
-    myScrollType = headerInfo.get("scrollType");
+    myPhysicsType = headerInfo.get(PHYSICS_IDENTIFIER);
+    myScrollType = headerInfo.get(SCROLL_TYPE_IDENTIFIER);
 
     myMainEntity = levelEntities.getMainEntity();
     myEntities = levelEntities;
