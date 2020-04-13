@@ -57,6 +57,7 @@ public class LevelLoop implements Loopable {
     //System.out.println(myEntityManager.getAddedEntities());
     updateEntities();
     // tell the entities to update gravity and stuff
+    processInput();
     updateCamera();
     sendEntities();
   }
@@ -71,6 +72,10 @@ public class LevelLoop implements Loopable {
     myInputManager.handleKeyPress(keyEvent);
   }
   public void processKeyRelease(KeyEvent keyEvent) { myInputManager.handleKeyRelease(keyEvent);
+  }
+
+  public void processInput(){
+    myInputManager.invokeMethods();
   }
 
   private void manageCollisions() {
