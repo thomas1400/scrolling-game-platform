@@ -1,6 +1,5 @@
 package ooga.engine.manager.CameraManagers;
 
-import ooga.engine.manager.CameraManagers.CameraManager;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 
