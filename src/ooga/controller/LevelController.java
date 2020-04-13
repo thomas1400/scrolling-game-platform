@@ -14,9 +14,6 @@ import ooga.view.GameScreen;
 
 public class LevelController implements Communicable{
 
-  private static final int INITIAL_WINDOW_WIDTH = 800;
-  private static final int INITIAL_WINDOW_HEIGHT = 600;
-
   private User myUser;
   private LevelLoop myLevelLoop;
 

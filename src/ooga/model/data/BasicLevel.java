@@ -2,8 +2,6 @@ package ooga.model.data;
 
 import java.io.File;
 import java.util.Map;
-import ooga.model.entity.Entity;
-import ooga.model.entity.EntityList;
 
 /**
  * Simply a package for all relevant Level data. Generated within the LevelBuilder class and

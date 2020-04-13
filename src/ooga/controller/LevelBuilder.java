@@ -2,7 +2,6 @@ package ooga.controller;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
 import java.nio.charset.MalformedInputException;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,9 +14,6 @@ import ooga.model.entity.EntityBuilder;
 import ooga.model.entity.EntityList;
 
 public final class LevelBuilder {
-
-  private static final String LEVEL_FILE_EXTENSION = ".level";
-  private static final String USERS_PATH_NAME = "resources/levels";
 
   private static final String HEADER_TAG = "#HEADER";
   private static final String ENTITIES_TAG = "#ENTITIES";
@@ -33,12 +29,12 @@ public final class LevelBuilder {
   private static final String LEVEL_HEIGHT_SPECIFIER = "levelHeight";
   private static final String LEVEL_WIDTH_SPECIFIER = "levelWidth";
 
-  public static BasicLevel buildBasicLevel(int levelNumber)
-      throws FileNotFoundException {
-    File levelFile = getLevelFile(levelNumber);
-
+  public static BasicLevel buildBasicLevel(File levelFile) throws FileNotFoundException {
     Map<String,String> headerInfo = getMapFromFile(levelFile, HEADER_TAG);
 
+    //FIXME: Get the level number from a properties file based off of the level name, not the
+    // level file named the concrete number it's supposed to be
+    int levelNumber = Integer.parseInt(levelFile.getName().substring(0,1));
     return new BasicLevel(levelNumber, levelFile, headerInfo);
   }
 
@@ -56,23 +52,6 @@ public final class LevelBuilder {
         gameWindowHeight, gameWindowWidth);
 
     return new CompleteLevel(basicLevel, levelEntities);
-  }
-
-  private static File getLevelFile(int levelNumber) {
-    FilenameFilter filter = (f, name) -> name.endsWith(LEVEL_FILE_EXTENSION);
-    File folder = new File(USERS_PATH_NAME);
-    File[] listOfFiles = folder.listFiles(filter);
-
-    assert listOfFiles != null;
-    for (File levelFile : listOfFiles){
-      if (levelFile.getName().equals(levelNumber + LEVEL_FILE_EXTENSION)) {
-        //TODO: remove print statement
-        System.out.println(levelFile.getName() + " file was found. Proceeding to Parse Level");
-        return levelFile;
-      }
-    }
-    ExceptionFeedback.throwException(new FileNotFoundException(), "File not found");
-    return null;
   }
 
   private static Map<String, String> getMapFromFile(File levelFile, String sectionTag)

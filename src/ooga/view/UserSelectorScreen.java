@@ -22,8 +22,11 @@ import ooga.view.factory.ControlFactory;
 
 public class UserSelectorScreen extends Screen {
 
-  public UserSelectorScreen(ScreenController controller) {
+  private UserList myUsers;
+
+  public UserSelectorScreen(ScreenController controller, UserList users) {
     super(controller);
+    myUsers = users;
     setWorkingDimensions(3, 1);
     initializeLayout();
   }

@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import javafx.scene.image.Image;
 import ooga.model.data.User;
 
 public final class UserFactory {
