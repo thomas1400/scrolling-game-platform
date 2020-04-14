@@ -28,7 +28,7 @@ public class LevelController implements Communicable{
     levelLifeGainAllowed = completeLevel.getLifeGainAllowed();
 
     myLevelLoop = new LevelLoop(
-        this, completeLevel.getEntities(), gs.getGameHeight(), gs.getGameWidth());
+        this, completeLevel, gs.getGameHeight(), gs.getGameWidth());
 
     EntityList visibleEntityList = myLevelLoop.getInitialVisibleEntityList();
     myVisualGroup.getChildren().addAll(visibleEntityList.getAsList());

@@ -7,6 +7,7 @@ import javafx.animation.Timeline;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import ooga.controller.Communicable;
+import ooga.controller.data.CompleteLevel;
 import ooga.engine.manager.CameraManagers.CameraManager;
 import ooga.engine.manager.CollisionManager;
 import ooga.engine.manager.EntityManager;
@@ -27,16 +28,13 @@ public class LevelLoop implements Loopable {
   private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
   private Timeline myTimeline;
   private Object KeyEvent;
-  private List<String> directions;
 
-  public LevelLoop(Communicable levelController, EntityList myEntities, double screenHeight, double screenWidth) {
+  public LevelLoop(Communicable levelController, CompleteLevel level, double screenHeight, double screenWidth) {
     myLevelController = levelController;
+    EntityList myEntities = level.getEntities();
     myEntityManager = new EntityManager(myEntities);
-    directions = new ArrayList<String>();
-    directions.add("right");
-    directions.add("up");
-    myCameraManager = new CameraManager(myEntities.getMainEntity(), screenHeight, screenWidth, directions);
-    myInputManager = new InputManager(myEntities.getMainEntity());
+    myCameraManager = new CameraManager(level.getMainEntity(), screenHeight, screenWidth, level.getScrollType(), myEntities);
+    myInputManager = new InputManager(level.getMainEntity());
     myCollisionManager = new CollisionManager();
     EntityList entitiesOnScreen = myCameraManager.initializeActiveEntities(myEntities);
     myVisibleEntities =  entitiesOnScreen;
@@ -63,7 +61,7 @@ public class LevelLoop implements Loopable {
     //System.out.println(myEntityManager.getAddedEntities());
     updateEntities();
     // tell the entities to update gravity and stuff
-    processInput();
+    //processInput();
     updateCamera();
     sendEntities();
   }

@@ -3,35 +3,31 @@ package ooga.engine.manager.CameraManagers;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 
-public class RightDirectionController extends DirectionController {
+public class LeftDirectionController extends DirectionController {
   private double xCenter;
 
-  public RightDirectionController() {
+  public LeftDirectionController() {
   }
 
   public void updateCameraPosition(EntityList entities, double screenHeight, double screenWidth, Entity mainEntity) {
-    if (mainEntity.getX() > xCenter) {
+    if (mainEntity.getX() < xCenter) {
       setToCenter(entities, screenHeight, screenWidth, mainEntity);
+
       //entities.changeAllCoordinates(change, 0);
       //determineEntitiesOnScreen(entities);
     }
-    else if (mainEntity.getX()<0){
-      mainEntity.setX(0);
+    else if (mainEntity.getX() > screenWidth- mainEntity.getBoundsInLocal().getWidth()){
+      mainEntity.setX(screenWidth-mainEntity.getBoundsInLocal().getWidth());
     }
   }
 
+  @Override
   public void setToCenter(EntityList entities, double screenHeight, double screenWidth, Entity mainEntity) {
-    xCenter = screenWidth / 2 - mainEntity.getBoundsInLocal().getWidth() / 2;
-    if (mainEntity.getX() > screenWidth) {
-      change = mainEntity.getX() - xCenter;
-      resetMainEntity(mainEntity);
-      updateCoordinates(entities, mainEntity);
-    }
-    else {
-      change = mainEntity.getX() - xCenter;
-      resetMainEntity(mainEntity);
-      updateCoordinates(entities, mainEntity);
-    }
+    xCenter = screenWidth/2- mainEntity.getBoundsInLocal().getWidth()/2;
+    change = mainEntity.getX() - xCenter;
+    resetMainEntity(mainEntity);
+    updateCoordinates(entities, mainEntity);
+
   }
 
 

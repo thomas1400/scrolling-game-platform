@@ -16,50 +16,34 @@ public class CameraManager {
   private EntityList activatedEntities;
   private EntityList deactivatedEntities;
   private EntityList onScreenEntities;
-  private DirectionController directionController;
-  private ResourceBundle myDirectionControllerResources;
   private static final String directionControllerResources = "directioncontrollers/directioncontrollers";
-  private List<DirectionController> directionControllers;
+  private DirectionController myDirectionController;
 
-  public CameraManager(Entity character, double height, double width, List<String> directions) {
+  public CameraManager(Entity character, double height, double width, String direction, EntityList entities) {
     mainEntity = character;
-    directionControllers = new ArrayList<>();
-    myDirectionControllerResources = ResourceBundle.getBundle(directionControllerResources);
+    ResourceBundle myDirectionControllerResources = ResourceBundle
+        .getBundle(directionControllerResources);
     screenHeight = height;
     screenWidth = width;
-    directionController = new RightDirectionController();
-    for(String direction: directions){
-      String directionType = myDirectionControllerResources.getString(direction);
-      try {
-        DirectionController dc = (DirectionController) Class.forName("ooga.engine.manager.CameraManagers." + directionType).newInstance();
-        directionControllers.add(dc);
-      } catch (InstantiationException e) {
-        e.printStackTrace();
-      } catch (IllegalAccessException e) {
-        e.printStackTrace();
-      } catch (ClassNotFoundException e) {
-        e.printStackTrace();
-      }
+    String directionType = myDirectionControllerResources.getString(direction);
+    try {
+      myDirectionController = (DirectionController) Class
+          .forName("ooga.engine.manager.CameraManagers." + directionType).newInstance();
+      //myDirectionController.setToCenter(entities, screenHeight, screenWidth, mainEntity);
+    } catch (InstantiationException e) {
+      e.printStackTrace();
+    } catch (IllegalAccessException e) {
+      e.printStackTrace();
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
     }
-    for (DirectionController d: directionControllers){
-      System.out.println(d);
-    }
-
-    //set direction controller
   }
 
   public void updateCamera(EntityList entities ){
-    for (DirectionController d: directionControllers){
-      d.updateCameraPosition(entities,screenHeight, screenWidth, mainEntity);
-    }
+    myDirectionController.updateCameraPosition(entities,screenHeight, screenWidth, mainEntity);
     determineEntitiesOnScreen(entities);
   }
 
-  public void updateCoordinates(EntityList entities){
-    for (DirectionController d: directionControllers){
-      d.updateCoordinates(entities);
-    }
-  }
 
   public void initializeActivationStorage() {
     activatedEntities = new EntityList();
@@ -92,6 +76,7 @@ public class CameraManager {
   }
 
   private boolean entityIsOnScreen(Entity entity){
+    //return entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX() < screenWidth && entity.getBoundsInLocal().getMinY() > 0 && entity.getBoundsInLocal().getMaxY()< screenHeight;
     return entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX() < screenWidth && entity.getBoundsInLocal().getMinY() > 0 && entity.getBoundsInLocal().getMaxY()< screenHeight;
   }
 

@@ -10,20 +10,27 @@ public class UpDirectionController extends DirectionController {
   }
 
   public void updateCameraPosition(EntityList entities, double screenHeight, double screenWidth, Entity mainEntity) {
-    yCenter = screenHeight/2- mainEntity.getBoundsInLocal().getHeight()/2;
     if (mainEntity.getY() < yCenter) {
-      change = mainEntity.getY() - yCenter;
-      resetMainEntity(mainEntity);
-      entities.changeAllCoordinates(0, change);
+      setToCenter(entities, screenHeight, screenWidth, mainEntity);
+      //entities.changeAllCoordinates(0, change);
       //determineEntitiesOnScreen(entities);
     }
   }
 
-  public void updateCoordinates(EntityList entities) {
-    entities.changeAllCoordinates(0, change);
+  @Override
+  public void setToCenter(EntityList entities, double screenHeight, double screenWidth, Entity mainEntity) {
+    yCenter = screenHeight/2- mainEntity.getBoundsInLocal().getHeight()/2;
+    change = mainEntity.getY() - yCenter;
+    resetMainEntity(mainEntity);
+    updateCoordinates(entities, mainEntity);
+
   }
 
-  public void resetMainEntity(Entity mainEntity) {
+  private void updateCoordinates(EntityList entities, Entity mainEntity) {
+    entities.changeAllCoordinates(0, change, mainEntity);
+  }
+
+  private void resetMainEntity(Entity mainEntity) {
     mainEntity.setY(yCenter);
   }
 }

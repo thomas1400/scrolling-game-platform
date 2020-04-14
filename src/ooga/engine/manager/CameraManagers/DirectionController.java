@@ -12,10 +12,6 @@ abstract public class DirectionController {
   public DirectionController (){
   }
 
-
-  abstract public void updateCoordinates(EntityList entities) ;
-
-  abstract public void resetMainEntity(Entity mainEntity);
-
   public abstract void updateCameraPosition(EntityList entities, double screenHeight, double screenWidth, Entity mainEntity);
+  public abstract void setToCenter(EntityList entities, double screenHeight, double screenWidth, Entity mainEntity);
 }

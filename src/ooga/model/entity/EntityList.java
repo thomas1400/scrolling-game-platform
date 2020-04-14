@@ -63,9 +63,9 @@ public class EntityList implements Iterable<Entity>, Observer {
     return myEntities;
   }
 
-  public void changeAllCoordinates(double xChange, double yChange){
+  public void changeAllCoordinates(double xChange, double yChange, Entity myEntity){
     for(Entity entity : myEntities) {
-      if (entity != myMainEntity) {
+      if (entity != myEntity) {
         entity.setX(entity.getX() - xChange);
         entity.setY(entity.getY()- yChange);
       }
