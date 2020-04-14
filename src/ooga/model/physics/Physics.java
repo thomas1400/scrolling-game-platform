@@ -47,7 +47,7 @@ public class Physics {
     //Position Updates
     myPosition[X] += myVelocity[X]*dt;
     //myPosition[Y] += myVelocity[Y]*dt;
-    //myPosition[Y] = tempCheckLandJump();
+    myPosition[Y] = tempCheckLandJump();
 
     //Update Image Position
     myEntity.setX(myPosition[X]);
@@ -70,7 +70,7 @@ public class Physics {
   }
 
   private double tempCheckLandJump() {
-    double groundHeight = 306.5;
+    double groundHeight = 300;
     if (myPosition[Y] < groundHeight) {
       myPosition[Y] += myVelocity[Y]*dt;
     } else {

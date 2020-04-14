@@ -37,12 +37,12 @@ public class Movement extends Ability {
   }
 
   public void bounceY(){
-    phys.changeYAcceleration();
+    phys.stopVerticalMotion();
   }
 
   public void bounceX(){
     System.out.println("bounce x");
-    phys.changeXAcceleration();
+    phys.stopHorizMotion();
   }
 
   public void update(Entity entity){
