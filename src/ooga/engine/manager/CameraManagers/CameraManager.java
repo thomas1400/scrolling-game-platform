@@ -1,9 +1,13 @@
 package ooga.engine.manager.CameraManagers;
 
+import java.nio.file.DirectoryIteratorException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 
-public abstract class CameraManager {
+public class CameraManager {
 
   protected Entity mainEntity;
   protected double screenHeight;
@@ -12,18 +16,50 @@ public abstract class CameraManager {
   private EntityList activatedEntities;
   private EntityList deactivatedEntities;
   private EntityList onScreenEntities;
+  private DirectionController directionController;
+  private ResourceBundle myDirectionControllerResources;
+  private static final String directionControllerResources = "directioncontrollers/directioncontrollers";
+  private List<DirectionController> directionControllers;
 
-  public CameraManager(Entity character, double height, double width) {
+  public CameraManager(Entity character, double height, double width, List<String> directions) {
     mainEntity = character;
+    directionControllers = new ArrayList<>();
+    myDirectionControllerResources = ResourceBundle.getBundle(directionControllerResources);
     screenHeight = height;
     screenWidth = width;
+    directionController = new RightDirectionController();
+    for(String direction: directions){
+      String directionType = myDirectionControllerResources.getString(direction);
+      try {
+        DirectionController dc = (DirectionController) Class.forName("ooga.engine.manager.CameraManagers." + directionType).newInstance();
+        directionControllers.add(dc);
+      } catch (InstantiationException e) {
+        e.printStackTrace();
+      } catch (IllegalAccessException e) {
+        e.printStackTrace();
+      } catch (ClassNotFoundException e) {
+        e.printStackTrace();
+      }
+    }
+    for (DirectionController d: directionControllers){
+      System.out.println(d);
+    }
+
+    //set direction controller
   }
 
-  abstract public void updateCamera(EntityList entities);
+  public void updateCamera(EntityList entities ){
+    for (DirectionController d: directionControllers){
+      d.updateCameraPosition(entities,screenHeight, screenWidth, mainEntity);
+    }
+    determineEntitiesOnScreen(entities);
+  }
 
-  abstract public void updateCoordinates(EntityList entities);
-
-  abstract public void resetMainEntityToCenter();
+  public void updateCoordinates(EntityList entities){
+    for (DirectionController d: directionControllers){
+      d.updateCoordinates(entities);
+    }
+  }
 
   public void initializeActivationStorage() {
     activatedEntities = new EntityList();
@@ -41,7 +77,7 @@ public abstract class CameraManager {
     }
     return activatedEntities;
   }
-  ////
+
   protected void determineEntitiesOnScreen(EntityList entities) {
     initializeActivationStorage();
     for (Entity entity : entities) {
