@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 public class Health extends Ability {
 
   private static final String RESOURCE_PACKAGE = "abilitytypes/Health";
+  private static final int DEATH = 0;
 
   private int myLives;
   private boolean immortal;
@@ -26,6 +27,7 @@ public class Health extends Ability {
 
   public Health(){
     immortal = true;
+    myLives = DEATH;
     //todo if isDead breaks than add myLives = 1;
   }
 
@@ -34,7 +36,7 @@ public class Health extends Ability {
    * @return if the entity is immortal or myLives is equal to zero
    */
   public boolean isDead(){
-    return (immortal || myLives == 0);
+    return (myLives == DEATH && !immortal);
   }
 
   /**
