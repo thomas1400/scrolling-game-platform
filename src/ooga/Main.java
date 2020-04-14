@@ -1,8 +1,8 @@
 package ooga;
 
+import java.io.FileNotFoundException;
 import javafx.application.Application;
 import javafx.stage.Stage;
-
 import ooga.controller.OogaController;
 
 public class Main extends Application {
@@ -16,7 +16,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws FileNotFoundException {
         new OogaController(primaryStage);
     }
 }

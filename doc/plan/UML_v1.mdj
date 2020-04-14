@@ -9117,7 +9117,7 @@
 											"top": 460,
 											"width": 206.3115234375,
 											"height": 13,
-											"text": "+void loadExistingLevel(Level level)",
+											"text": "+void loadExistingLevel(Level basicLevel)",
 											"horizontalAlignment": 0
 										}
 									],
@@ -9562,7 +9562,7 @@
 											"top": 445,
 											"width": 144.14892578125,
 											"height": 13,
-											"text": "+void startLevel(int level)",
+											"text": "+void startLevel(int basicLevel)",
 											"horizontalAlignment": 0
 										}
 									],
@@ -21439,7 +21439,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFxPeu+7pCFhs8="
 									},
-									"name": "Level level",
+									"name": "Level basicLevel",
 									"type": ""
 								}
 							]
@@ -21596,7 +21596,7 @@
 									"_parent": {
 										"$ref": "AAAAAAFxNsqLJVCFffU="
 									},
-									"name": "int level"
+									"name": "int basicLevel"
 								}
 							]
 						}

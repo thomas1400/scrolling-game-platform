@@ -26,18 +26,18 @@ public class CollisionManager implements Observable {
           if (entity.getBoundsInLocal().intersects(entity2.getBoundsInLocal())) {
             if (entity.getBoundsInLocal().getMaxX() > entity2.getBoundsInLocal().getMinX()
                 || entity2.getBoundsInLocal().getMaxX() > entity.getBoundsInLocal().getMinX()) {
-              //printDebug(SIDE, entity, entity2);
+              printDebug(SIDE, entity, entity2);
               createAndSendCollision(SIDE, entity2.getAttack(SIDE), entity);
               createAndSendCollision(SIDE, entity.getAttack(SIDE), entity2);
             } else if (entity.getBoundsInLocal().getMaxY() <= entity2.getBoundsInLocal()
                 .getMinY()) {
-              //printDebug(TOP, entity, entity2);
-              //printDebug(BOTTOM, entity2, entity);
+              printDebug(TOP, entity, entity2);
+              printDebug(BOTTOM, entity2, entity);
               createAndSendCollision(TOP, entity2.getAttack(TOP), entity);
               createAndSendCollision(BOTTOM, entity.getAttack(BOTTOM), entity2);
             } else {
-              //printDebug(BOTTOM, entity, entity2);
-              //printDebug(TOP, entity2, entity);
+              printDebug(BOTTOM, entity, entity2);
+              printDebug(TOP, entity2, entity);
               createAndSendCollision(BOTTOM, entity2.getAttack(BOTTOM), entity);
               createAndSendCollision(TOP, entity.getAttack(TOP), entity2);
             }
@@ -49,7 +49,7 @@ public class CollisionManager implements Observable {
 
   //fixme delete after debugging over
   private void printDebug(String loc, Entity a, Entity b){
-    if(a.debug().equals("Mario.png")||b.debug().equals("Mario.png")) {
+    if((a.debug().equals("Mario.png")||b.debug().equals("Mario.png")) && (!a.debug().contains("Ground")&&!b.debug().contains("Ground"))) {
       System.out.println(loc);
       System.out.println("Me: " + a.debug() + " && other:" + b.debug());
       System.out.println("ATTACK TYPES: me: " + a.getAttack(loc) + " other: " + b.getAttack(loc));

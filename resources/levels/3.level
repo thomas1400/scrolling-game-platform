@@ -3,6 +3,9 @@ id:0003
 mainTitle:Level 0-3
 subTitle:The Upper Pathway
 physics:land
+scrollType:right
+deathsAllowed:1
+backgroundImage:images/gameBackground.png
 levelWidth:50
 levelHeight:12
 #ENTITIES
@@ -14,17 +17,20 @@ B:Brick
 T:Brick
 X:Player
 G:Ground
+6:GroundCenter
+5:GroundFloating
+C:Coin
 #LEVEL
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 . . . . . . G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G . . . . . . .
-. . . . . . G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G . . . . . . .
-. . . . B B G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G . . . . . . .
+. . . . . . 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 . . . . . . .
+. . . . B B 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 . . . . . . .
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 B B . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 . . . . . 0 . . . . . 1 . . . . . 0 . . . . . 1 . . . . . 0 . . . . . 1 . . . . . . . . . . . . . .
 . . . . B B B . . . B B B . . . B B B . . . B B B . . . B B B . . . B B B . . . . . . . . . . . . .
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . F . . . . .
-. . X . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . B B B . . . .
+. . X . . . . C C C . . . . . . C C C . . . . . C C C . . . . . C C C . . . . . . . . B B B . . . .
 G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G
 #END

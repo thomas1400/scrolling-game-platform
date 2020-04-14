@@ -3,19 +3,19 @@
 
 ## Introduction
 
-In this project, we intend to create a scrolling game (similar to Mario), where a player moves to progress through a level defeating enemies and gaining power ups/penalties as they go. The goal of this project is to make our code as flexible as possible, so that extensions and new features can be added very easily. For example, a few of the flexible features that we want our project to have is to be able to easily add new levels, new characters, new enemies, new features that any character can have, and different interactions between characters. At a high level, our project is broken down in a model (back-end), control, and view (front-end). 
+In this project, we intend to create a scrolling game (similar to Mario), where a player moves to progress through a basicLevel defeating enemies and gaining power ups/penalties as they go. The goal of this project is to make our code as flexible as possible, so that extensions and new features can be added very easily. For example, a few of the flexible features that we want our project to have is to be able to easily add new levels, new characters, new enemies, new features that any character can have, and different interactions between characters. At a high basicLevel, our project is broken down in a model (back-end), control, and view (front-end). 
 
 The front-end will contain information regarding the set of different display screens, how the animation is displayed, and how the screen moves based upon the movements of a the user's character. The controller will be responsible for passing information between the model and the view, such as the number of lives the character has or if the character walks off of a cliff. 
 
 The back-end will be responsible for the keeping track of the features for each of back-end objects that having corresponding front images. For example, the back-end will store information regarding if an object has the ability to shoot fire-balls or how high the character can jump. The back-end will also contain information regarding how to handle collisions between objects. 
 
-The design will be closed in that the front end will not be able to access or changes objects in the back-end. The design will be open so that there can be communication regarding information like how many lives the character has if a level has been won. 
+The design will be closed in that the front end will not be able to access or changes objects in the back-end. The design will be open so that there can be communication regarding information like how many lives the character has if a basicLevel has been won. 
 
 ## Overview
 
 ![](https://i.imgur.com/enflXpf.jpg)
 
-We plan to divide the project into a model (orange circle), view (green circle), overall game controller (blue circle), and level specific game engine (red circle). The model will manage all of the properties of each 'entity' (such as an enemy or player), 
+We plan to divide the project into a model (orange circle), view (green circle), overall game controller (blue circle), and basicLevel specific game engine (red circle). The model will manage all of the properties of each 'entity' (such as an enemy or player), 
 
 ### Model:
 The model section will serve the purpose of managing game rules and physics governing the movement of objects. There will be five main types of objects that interact with each other: 
@@ -48,13 +48,13 @@ The model section will serve the purpose of managing game rules and physics gove
 * Input from the menus is communicated via the Screen Controller to the backend.
 
 ### Game Controller:
-* Launch the game, and connect the game engine to the view. This will keep track of how many lives the player has, the current level, and manage saving current games
+* Launch the game, and connect the game engine to the view. This will keep track of how many lives the player has, the current basicLevel, and manage saving current games
 
     #### High-Level Application Control
     * Organizes, creates, and saves `User` objects to be used in various screens and the game itself.
     * Acts as the Main Application window, controlling which screen is currently visible based on the user's interactions with the application
     #### Mid-Level Game Control
-    * Parses level files and creates new `Level` objects complete with all entities based off of information present in the specific `.level` file.
+    * Parses basicLevel files and creates new `Level` objects complete with all entities based off of information present in the specific `.basicLevel` file.
     * Passes Background Image and created `ImageView Entities` to Game Screen
     * Passes Initial `Level`, complete with `User` and initial `EntitiesList` objects into the Level Loop
     * Initializes and controlls starting and stopping of the `LevelLoop`
@@ -82,15 +82,15 @@ Each of the Screens contains several buttons, like a "Back" or "Start Game" butt
 
 The View contains 7 unique views, for Basic, and potentially an 8th, the Level Builder, in Complete:
 * User Select
-    * Select a user profile, which holds information related to level progress, lives, and score.
+    * Select a user profile, which holds information related to basicLevel progress, lives, and score.
 * Main Menu
-    * Navigate to the level select screen, the statistics screen, the help screen, and potentially, the Level Builder screen. Show an image of the game and the title.
+    * Navigate to the basicLevel select screen, the statistics screen, the help screen, and potentially, the Level Builder screen. Show an image of the game and the title.
 * Level Select
-    * Select a level, and press "Begin" to start the game. Potentially, click on items to start the level with a power-up. This screen has a button to go back to the main menu.
+    * Select a basicLevel, and press "Begin" to start the game. Potentially, click on items to start the basicLevel with a power-up. This screen has a button to go back to the main menu.
 * Game Screen
     * This screen receives game rendering data communicated through the GameController to the ScreenController in order to display the game. It has buttons to open the settings menu and quit, along with the ability to display remaining lives and score in a toolbar.
 * Splash Screen
-    * This splash screen shows upon loading a level, exiting a level, and death. It displays the user's remaining lives, and the level being loaded/exited.
+    * This splash screen shows upon loading a basicLevel, exiting a basicLevel, and death. It displays the user's remaining lives, and the basicLevel being loaded/exited.
 * Statistics Screen
     * This screen shows miscellaneous statistics, decided by the programmers, to inform the user of their progress in the game, with a button to go back to the main menu.
 * Help Screen
@@ -108,15 +108,15 @@ The Game Controller Module of this project is responsible for two seperate sub-m
         * It will be able to create and handle the `Screen Controller` instance as well
         * Organizes, creates, and saves `User` objects to be used in various screens and the game `Levels` themselves.
     * The `ScreenController` class first and foremost contains the main Window that the user is able to interact with. Its main job is to control which of the 5+ sub windows is being displayed at any given time.
-        * used methods such as `switchToLevel(Level level)` to make changes to its displayed level.
+        * used methods such as `switchToLevel(Level basicLevel)` to make changes to its displayed basicLevel.
         * Has access to `User` so that it can display the correct images on the initial screens, and pass user parameters back to the game.
 
 
 #### Mid-Level Game Control
-* Parses level files and creates new `Level` objects complete with all entities based off of information present in the specific `.level` file.
+* Parses basicLevel files and creates new `Level` objects complete with all entities based off of information present in the specific `.basicLevel` file.
     * The `LevelController` class is responsible for governing the actions between the Level Loop and the Game Screen classes. The following classes are helper classes that allow it to do this job of communication and translation.
     * The `Level` class is responsible for containing the `EntityList` and `User` information which is pertinent to the back-end game engine.
-    * The `LevelParser` class is responsible for creating entities with the correct properties based off of the `.level` files that it reads in. This will involve a realtively intense error checker that will for instance, determines whether a user is attempted to be created twice.
+    * The `LevelParser` class is responsible for creating entities with the correct properties based off of the `.basicLevel` files that it reads in. This will involve a realtively intense error checker that will for instance, determines whether a user is attempted to be created twice.
         * Passes Background Image and created `ImageView Entities` to Game Screen
         * Passes Initial `Level`, complete with `User` and initial `EntitiesList` objects into the Level Loop
         * Initializes and controlls starting and stopping of the `LevelLoop`
@@ -124,7 +124,7 @@ The Game Controller Module of this project is responsible for two seperate sub-m
 
 
 ### Game Engine:
-* Game Engine (Level Loop): The Purpose of the Game Engine is to launch a level, creating a LevelLoop class that manages the communication between the model and the view. The Game Engine will be responsible for handling user input from the keyboard, handling collisions, adding and removing entities that result from a change in the camera view or the death or creation of a character, and communicating with the specific entities and the level controller. The main class of this module is the LevelLoop class. The LevelLoop will create a Timeline that will constatly checks for UserInput, Collisions, updates the EntityList, and updates the position of the Camera. This class will contain the following instance variables:
+* Game Engine (Level Loop): The Purpose of the Game Engine is to launch a basicLevel, creating a LevelLoop class that manages the communication between the model and the view. The Game Engine will be responsible for handling user input from the keyboard, handling collisions, adding and removing entities that result from a change in the camera view or the death or creation of a character, and communicating with the specific entities and the basicLevel controller. The main class of this module is the LevelLoop class. The LevelLoop will create a Timeline that will constatly checks for UserInput, Collisions, updates the EntityList, and updates the position of the Camera. This class will contain the following instance variables:
     * `private EntityList myEntitiesList`
     * `private EntityManager myEntityManager`
     * `private CameraManager myCameraManager`
@@ -149,7 +149,7 @@ The Game Controller Module of this project is responsible for two seperate sub-m
     * `public void resume()`
     * `public void exit()`
 
-    These methods have the ability to be called by the LevelController to start, pause, resume, or exit a level.
+    These methods have the ability to be called by the LevelController to start, pause, resume, or exit a basicLevel.
 
     The EntityList class will serve the purpose of a custom data structure that are creating to store Entities. The EntityList class will have the following instance variable:
     * `private Entity[] entities`
@@ -269,12 +269,12 @@ The `Physics` class is broken down into `LandPhysics` and `WaterPhysics` sub-cla
       
 ## Example games
 ### Example 1
-When the program is run the user will select a user that has already been created. The information associated with this use (the number of points, lives, and the levels completed) will be stored within a file. Then the user will not change characters and will move to select a level. They will play a level that has already been created. This level will be the most basic level, the character will be able to walk on land, destory bricks, and gain power ups. The user will use the arrow keys to move, and the space bar to jump. The user will collide with an enemy on the side, causing it to to die. When the user dies, a life will be lost. When the user runs out of lives, the user will be able to restart the level or to return to the main screen. Our design will definitiely support this, as described in design details as this is the most basic implementation of our game.  
+When the program is run the user will select a user that has already been created. The information associated with this use (the number of points, lives, and the levels completed) will be stored within a file. Then the user will not change characters and will move to select a basicLevel. They will play a basicLevel that has already been created. This basicLevel will be the most basic basicLevel, the character will be able to walk on land, destory bricks, and gain power ups. The user will use the arrow keys to move, and the space bar to jump. The user will collide with an enemy on the side, causing it to to die. When the user dies, a life will be lost. When the user runs out of lives, the user will be able to restart the basicLevel or to return to the main screen. Our design will definitiely support this, as described in design details as this is the most basic implementation of our game.  
 ### Example 2 
-When the program is run the user will choose to create a new user. This user will choose to create a new user with a given name. This user will start with 0 points, the 3 lives, and no levels that have been beaten. Then the user will move on to select a character The user will choose to change their character to someone different than Mario. Next, the user will move to choose a level. The user will only have one option in choosing a level. The user will play this level. Half-way through this level, the user will decide that they have to do something, so they choose to pause the level. The user will press the pause button, which will temporarily stop the timeline. The user will then return and enter a pipe that takes them underwater. This will change the way in which the user is able to move, since they will float to the top. This is supported by our design because each character has a physics component that can be altered to contain physics for specific environments. A little later in the game, the user  will decide that they want to exit the game. The user will press the exit button, which will take the user back to the home screen. 
+When the program is run the user will choose to create a new user. This user will choose to create a new user with a given name. This user will start with 0 points, the 3 lives, and no levels that have been beaten. Then the user will move on to select a character The user will choose to change their character to someone different than Mario. Next, the user will move to choose a basicLevel. The user will only have one option in choosing a basicLevel. The user will play this basicLevel. Half-way through this basicLevel, the user will decide that they have to do something, so they choose to pause the basicLevel. The user will press the pause button, which will temporarily stop the timeline. The user will then return and enter a pipe that takes them underwater. This will change the way in which the user is able to move, since they will float to the top. This is supported by our design because each character has a physics component that can be altered to contain physics for specific environments. A little later in the game, the user  will decide that they want to exit the game. The user will press the exit button, which will take the user back to the home screen. 
 
 ### Example 3 
-When the program is run the user will choose to use a user that has already been created. The user will then move the main screen. The user will choose to create their own level. Using different colored squares, the user will place squares onto a grid that specify what will be located at the position on the level that will be created. This grid will then be read into a file to create a file that is similar to the files that can be pre-created to contain level information. Our design supports this concept, as levels would still be read in the same way once the file is written, so there would be no changes to the rest of the program. When the user plays this level, they will destroy bricks by hitting them with their head. The brick will release a powerup which will give the character a new feature, allowing it to have new features. For example, this feature allows the character to shoot fire balls. The character reaches the end of the level and completes the level. This returns the user to the level selector screen, where an animation will display the character walking towards the next level. The amount of coins and lives will be stored and the character will then be able to play the next level, or any level that has already been unlocked. 
+When the program is run the user will choose to use a user that has already been created. The user will then move the main screen. The user will choose to create their own basicLevel. Using different colored squares, the user will place squares onto a grid that specify what will be located at the position on the basicLevel that will be created. This grid will then be read into a file to create a file that is similar to the files that can be pre-created to contain basicLevel information. Our design supports this concept, as levels would still be read in the same way once the file is written, so there would be no changes to the rest of the program. When the user plays this basicLevel, they will destroy bricks by hitting them with their head. The brick will release a powerup which will give the character a new feature, allowing it to have new features. For example, this feature allows the character to shoot fire balls. The character reaches the end of the basicLevel and completes the basicLevel. This returns the user to the basicLevel selector screen, where an animation will display the character walking towards the next basicLevel. The amount of coins and lives will be stored and the character will then be able to play the next basicLevel, or any basicLevel that has already been unlocked. 
   
   
 ## Design Considerations

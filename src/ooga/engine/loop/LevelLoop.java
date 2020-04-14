@@ -5,7 +5,9 @@ import javafx.animation.Timeline;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import ooga.controller.Communicable;
-import ooga.engine.manager.CameraManager;
+import ooga.engine.manager.CameraManagers.CameraManager;
+import ooga.engine.manager.CameraManagers.StandardCameraManager;
+import ooga.engine.manager.CameraManagers.UpwardsCameraManager;
 import ooga.engine.manager.CollisionManager;
 import ooga.engine.manager.EntityManager;
 import ooga.engine.manager.InputManager;
@@ -29,7 +31,7 @@ public class LevelLoop implements Loopable {
   public LevelLoop(Communicable levelController, EntityList myEntities, double screenHeight, double screenWidth) {
     myLevelController = levelController;
     myEntityManager = new EntityManager(myEntities);
-    myCameraManager = new CameraManager(myEntities.getMainEntity(), screenHeight, screenWidth);
+    myCameraManager = new StandardCameraManager(myEntities.getMainEntity(), screenHeight, screenWidth);
     myInputManager = new InputManager(myEntities.getMainEntity());
     myCollisionManager = new CollisionManager();
     EntityList entitiesOnScreen = myCameraManager.initializeActiveEntities(myEntities);
@@ -57,6 +59,7 @@ public class LevelLoop implements Loopable {
     //System.out.println(myEntityManager.getAddedEntities());
     updateEntities();
     // tell the entities to update gravity and stuff
+    processInput();
     updateCamera();
     sendEntities();
   }
@@ -71,6 +74,10 @@ public class LevelLoop implements Loopable {
     myInputManager.handleKeyPress(keyEvent);
   }
   public void processKeyRelease(KeyEvent keyEvent) { myInputManager.handleKeyRelease(keyEvent);
+  }
+
+  public void processInput(){
+    myInputManager.invokeMethods();
   }
 
   private void manageCollisions() {
