@@ -71,4 +71,9 @@ public class EntityList implements Iterable<Entity>, Observer {
       }
     }
   }
+
+  //fixme delete when taken out of camera manager
+  public void changeAllXCoordinates(double change){
+    changeAllCoordinates(change,0);
+  }
 }

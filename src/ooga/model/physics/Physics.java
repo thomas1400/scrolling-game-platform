@@ -13,6 +13,7 @@ public class Physics {
   private static final double INITIAL_JUMP_VELOCITY = -1 * Math.sqrt(2*GRAVITY*JUMP_HEIGHT);
 
   private static final double MAX_VERT_VELOCITY = -1 * INITIAL_JUMP_VELOCITY;
+  private static final int SIGN_CHANGE = -1;
   private static final double MAX_HORIZ_VELOCITY = 2.5 * sizeScale;
   private static final double RUN_ACCELERATION = 2.5 * sizeScale;
   private static final double FRICTION_DAMPING = 2.0;
@@ -35,7 +36,7 @@ public class Physics {
     //Get on screen position
     myPosition[X] = myEntity.getX();
     myPosition[Y] = myEntity.getY();
-    myPosition[Y] = tempCheckLandJump();
+    //yPosition[Y] = tempCheckLandJump();
 
     //Velocity Updates
     myVelocity[X] += myAcceleration[X]*dt;
@@ -46,7 +47,7 @@ public class Physics {
     //Position Updates
     myPosition[X] += myVelocity[X]*dt;
     //myPosition[Y] += myVelocity[Y]*dt;
-    //myPosition[Y] = tempCheckLandJump();
+    myPosition[Y] = tempCheckLandJump();
 
     //Update Image Position
     myEntity.setX(myPosition[X]);
@@ -69,7 +70,7 @@ public class Physics {
   }
 
   private double tempCheckLandJump() {
-    double groundHeight = 306.5;
+    double groundHeight = 300;
     if (myPosition[Y] < groundHeight) {
       myPosition[Y] += myVelocity[Y]*dt;
     } else {
@@ -100,6 +101,12 @@ public class Physics {
   public void stopVerticalMotion() {
     myAcceleration[Y] = 0;
     myVelocity[Y] = 0;
+  }
+  public void changeXAcceleration(){
+    myAcceleration[X]*=SIGN_CHANGE;
+  }
+  public void changeYAcceleration(){
+    myAcceleration[Y]*=SIGN_CHANGE;
   }
   public void moveLeft() {
     if (myVelocity[X] < 0) {
