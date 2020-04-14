@@ -1,6 +1,18 @@
-### HomeScreen layout representation ###
-(root) {
-  (Pane);
-  (Pane height=1, attribute=value, attribute2=value1 value2 value3 value4);
+### Home Screen FXLR
+
+<package ooga.view>
+<package javafx.scene.control>
+<package javafx.scene.layout>
+<package javafx.scene.shape>
+
+(HomeScreen) {
+  (VBox alignment=TOP_CENTER) {
+    (Label text=Title, font=60)
+    (Rectangle width=780, height=400, fill=0xBBBBBB)
+    (HBox alignment=TOP_CENTER, spacing=5) {
+      (Button text=Start)
+      (Button text=Help)
+    }
+  }
 }
 

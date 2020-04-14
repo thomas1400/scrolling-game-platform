@@ -1,32 +1,34 @@
 package ooga.view.fxlr;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Control;
 import javafx.scene.layout.Pane;
+import ooga.view.Screen;
 
 class FXGraphBuilder {
 
-  private Node root;
+  private Screen root;
   private Node parent;
 
-  FXGraphBuilder(Node root) {
-    this.root = root;
-    parent = root;
-  }
+  FXGraphBuilder() { }
 
   void addChild(Node node) {
     try {
-      ObservableList<Node> children = (ObservableList<Node>) parent.getClass().getDeclaredMethod("getChildren").invoke(parent);
+      ObservableList<Node> children = (ObservableList<Node>) parent.getClass().getMethod("getChildren").invoke(parent);
       children.add(node);
-    } catch (Exception e) {
+    } catch (Throwable e) {
       e.printStackTrace();
     }
   }
 
-  void branch(Node node) {
+  void branchOn(Node node) {
     parent = node;
   }
 
@@ -34,8 +36,13 @@ class FXGraphBuilder {
     parent = parent.getParent();
   }
 
-  Node getRoot() {
+  Screen getRoot() {
     return root;
+  }
+
+  void setRoot(Screen root) {
+    this.root = root;
+    this.parent = root;
   }
 
 }

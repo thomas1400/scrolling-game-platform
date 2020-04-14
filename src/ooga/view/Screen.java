@@ -2,11 +2,12 @@ package ooga.view;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import ooga.controller.ScreenController;
 
-public abstract class Screen extends Pane implements Displayable {
+public class Screen extends Pane implements Displayable {
 
   private static final int PREF_WIDTH = 800, PREF_HEIGHT = 600;
   static final String FONT_FAMILY = "Cambria";
