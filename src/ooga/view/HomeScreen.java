@@ -33,10 +33,12 @@ public class HomeScreen extends Screen {
     title.setFont(Font.font(FONT_FAMILY, 60));
     layout.getChildren().add(title);
 
-    Rectangle filler = new Rectangle(780, 400);
-    VBox.setMargin(filler, new Insets(10));
-    filler.setFill(Color.GREY);
-    layout.getChildren().add(filler);
+    Rectangle splash = new Rectangle(780, 400);
+    VBox.setMargin(splash, new Insets(10));
+    splash.setFill(Color.GREY);
+    splash.getStyleClass().add("home-screen-splash");
+    layout.getChildren().add(splash);
+
 
     HBox menu = new HBox();
     menu.setAlignment(Pos.TOP_CENTER);
