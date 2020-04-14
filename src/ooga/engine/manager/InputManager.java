@@ -23,10 +23,12 @@ public class InputManager {
 
   public void handleKeyPress(KeyEvent keyEvent) {
     keysCurrentlyPressed.add(keyEvent.getCode().toString());
+    invokeMethods();
   }
 
   public void handleKeyRelease(KeyEvent keyEvent) {
     keysCurrentlyPressed.remove(keyEvent.getCode().toString());
+
   }
 
   public void invokeMethods() {
