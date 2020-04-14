@@ -43,7 +43,7 @@ public class EntityList implements Iterable<Entity>, Observer {
   }
 
   public Iterator<Entity> iterator() {
-      return myEntities.iterator();
+    return myEntities.iterator();
   }
 
   @Override
@@ -68,8 +68,12 @@ public class EntityList implements Iterable<Entity>, Observer {
       if (entity != myMainEntity) {
         entity.setX(entity.getX() - xChange);
         entity.setY(entity.getY()- yChange);
-
       }
     }
+  }
+
+  //fixme delete when taken out of camera manager
+  public void changeAllXCoordinates(double change){
+    changeAllCoordinates(change,0);
   }
 }

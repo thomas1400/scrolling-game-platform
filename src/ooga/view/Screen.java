@@ -12,7 +12,7 @@ public abstract class Screen extends Pane implements Displayable {
   static final String FONT_FAMILY = "Cambria";
   static final int TITLE_FONT_SIZE = 40;
   static final int BUTTON_FONT_SIZE = 20;
-  static final int DETAIL_FONT_SIZE = 12;
+  static final int DETAIL_FONT_SIZE = 14;
   static final double PADDING = 10.0;
 
   private static final String RESOURCES_PATH = "ooga.view.resources.";

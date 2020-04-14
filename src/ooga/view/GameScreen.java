@@ -1,22 +1,21 @@
 package ooga.view;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import ooga.controller.LevelController;
 import ooga.controller.ScreenController;
-import ooga.model.data.User;
+import ooga.controller.data.BasicLevel;
+import ooga.controller.data.User;
 import ooga.view.factory.ControlFactory;
 
 public class GameScreen extends Screen {
@@ -26,15 +25,15 @@ public class GameScreen extends Screen {
   private Rectangle gameBackground;
   private User user;
 
-  public GameScreen(ScreenController controller) {
+  public GameScreen(ScreenController controller, BasicLevel level) {
     super(controller);
     gameGroup = new Group();
     user = controller.getUsers().getSelectedUser();
     setWorkingDimensions(3, 1);
-    initializeLayout();
+    initializeLayout(level);
   }
 
-  private void initializeLayout() {
+  private void initializeLayout(BasicLevel level) {
     ControlFactory cf = new ControlFactory(PADDING);
     VBox layout = new VBox();
     layout.setAlignment(Pos.CENTER);
@@ -57,7 +56,8 @@ public class GameScreen extends Screen {
     layout.getChildren().add(infoBar);
 
     gameBackground = new Rectangle(workingWidth+2*PADDING, 0.8*workingHeight);
-    gameBackground.setFill(Color.WHITE);
+    //gameBackground.setFill(Color.WHITE);
+    gameBackground.setFill(new ImagePattern(new Image(level.getBackgroundImage())));
     layout.getChildren().add(gameBackground);
 
     HBox menuBar = new HBox();

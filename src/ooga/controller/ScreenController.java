@@ -8,8 +8,10 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import ooga.model.data.User;
-import ooga.model.data.UserList;
+import ooga.controller.data.BasicLevel;
+import ooga.controller.data.BasicLevelList;
+import ooga.controller.data.User;
+import ooga.controller.data.UserList;
 import ooga.view.GameScreen;
 import ooga.view.HomeScreen;
 import ooga.view.LevelSelectorScreen;
@@ -20,23 +22,25 @@ public class ScreenController{
 
   private static final int INITIAL_WINDOW_WIDTH = 800;
   private static final int INITIAL_WINDOW_HEIGHT = 600;
+  public static final String ARTWORK_GOOMBA_PNG = "artwork/goomba.png";
 
   private Stage myStage;
-
   private UserList myUsers;
   private User mySelectedUser;
-
-  private Screen myHomeScreen;
-  //private Screen mySplashScreen = new SplashScreen();
-  private Screen myUserSelectorScreen;
-  private Screen myLevelSelectorScreen;
-  private Screen myGameScreen;
-  //private Screen myLevelBuilderScreen = new LevelBuilderScreen();
+  private BasicLevelList myBasicLevels;
 
   private Map<String, Screen> myScreens = new HashMap<>();
 
-  public ScreenController(Stage primaryStage){
+  private GameScreen myGameScreen;
+  private LevelController myLevelController;
+
+  public ScreenController(Stage primaryStage, UserList users, BasicLevelList levels){
     myStage = primaryStage;
+
+    myUsers = users;
+    mySelectedUser = users.getSelectedUser();
+    myBasicLevels = levels;
+
     addApplicationIcon();
     initializeScreens();
 
@@ -45,7 +49,7 @@ public class ScreenController{
 
   private void addApplicationIcon() {
     try {
-      Image icon = new Image(new FileInputStream("artwork/goomba.png"));
+      Image icon = new Image(new FileInputStream(ARTWORK_GOOMBA_PNG));
       myStage.getIcons().add(icon);
     } catch (Exception ignored) {
       //TODO: add actual catch
@@ -53,15 +57,17 @@ public class ScreenController{
   }
 
   private void initializeScreens(){
-    myLevelSelectorScreen = new LevelSelectorScreen(this);
-    myUserSelectorScreen =  new UserSelectorScreen(this);
-    myHomeScreen = new HomeScreen(this);
+    Screen myLevelSelectorScreen = new LevelSelectorScreen(this, myBasicLevels);
+    //private Screen mySplashScreen = new SplashScreen();
+    Screen myUserSelectorScreen = new UserSelectorScreen(this, myUsers);
+    Screen myHomeScreen = new HomeScreen(this);
+    //private Screen mySplashScreen = new SplashScreen();
 
     myScreens.put("HomeScreen", myHomeScreen);
     //myScreens.put("SplashScreen", mySplashScreen);
     myScreens.put("UserSelectorScreen", myUserSelectorScreen);
     myScreens.put("LevelSelectorScreen", myLevelSelectorScreen);
-    //myScreens.put("LevelBuilderScreen", myLevelBuilderScreen);
+    //private Screen myLevelBuilderScreen = new LevelBuilderScreen();
   };
 
   public void switchToScreen(String screenName){
@@ -87,33 +93,24 @@ public class ScreenController{
     return nextScene;
   }
 
-  ;
-
-  public void initializeNewLevel(int levelNumber){
-    myGameScreen = new GameScreen(this);
+  public void initializeNewLevel(BasicLevel basicLevel){
+    myGameScreen = new GameScreen(this, basicLevel);
     myScreens.put("GameScreen", myGameScreen);
 
-    LevelController levelController =
-        new LevelController((GameScreen)myGameScreen, mySelectedUser, levelNumber);
-    ((GameScreen) myGameScreen).setLevelController(levelController);
+    myLevelController =
+        new LevelController(myGameScreen, mySelectedUser, basicLevel);
+    myGameScreen.setLevelController(myLevelController);
 
     Screen nextScreen = myScreens.get("GameScreen");
     Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
     File file = new File("resources/stylesheet.css");
     nextScene.getStylesheets().add(file.toURI().toString());
-    //nextScene.setOnKeyPressed(event -> levelController.handleKeyPressed(event));
-    nextScene.setOnKeyPressed(levelController::handleKeyPressed);
-    nextScene.setOnKeyReleased(levelController::handleKeyReleased);
+    nextScene.setOnKeyPressed(myLevelController::handleKeyPressed);
+    nextScene.setOnKeyReleased(myLevelController::handleKeyReleased);
 
     showScene(nextScene);
 
-    levelController.beginLevel();
-  }
-
-  public void setUsers(UserList users) {
-    myUsers = users;
-    mySelectedUser = users.getSelectedUser();
-    initializeScreens();
+    myLevelController.beginLevel();
   }
 
   public UserList getUsers() {
@@ -126,7 +123,10 @@ public class ScreenController{
     initializeScreens();
   }
 
-  public void handleButtonPress(){
+  public void restartLevel(){
+    myLevelController.endLevel();
+    myScreens.remove("GameScreen");
 
   }
+
 }
