@@ -9,10 +9,9 @@ import ooga.model.entity.EntityList;
 
 public class CameraManager {
 
-  protected Entity mainEntity;
-  protected double screenHeight;
-  protected double screenWidth;
-  protected double change;
+  private Entity mainEntity;
+  private double screenHeight;
+  private double screenWidth;
   private EntityList activatedEntities;
   private EntityList deactivatedEntities;
   private EntityList onScreenEntities;
@@ -29,7 +28,7 @@ public class CameraManager {
     try {
       myDirectionController = (DirectionController) Class
           .forName("ooga.engine.manager.CameraManagers." + directionType).newInstance();
-      //myDirectionController.setToCenter(entities, screenHeight, screenWidth, mainEntity);
+      myDirectionController.initialize(entities, height, width, character);
     } catch (InstantiationException e) {
       e.printStackTrace();
     } catch (IllegalAccessException e) {
@@ -40,7 +39,7 @@ public class CameraManager {
   }
 
   public void updateCamera(EntityList entities ){
-    myDirectionController.updateCameraPosition(entities,screenHeight, screenWidth, mainEntity);
+    myDirectionController.updateCameraPosition(entities, mainEntity);
     determineEntitiesOnScreen(entities);
   }
 
@@ -52,6 +51,7 @@ public class CameraManager {
 
   public EntityList initializeActiveEntities(EntityList entities) {
     initializeActivationStorage();
+    myDirectionController.updateCameraPosition(entities, mainEntity);
     onScreenEntities = new EntityList();
     for (Entity entity : entities) {
       if (entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX()< screenWidth && entity.getBoundsInLocal().getMaxY() < screenHeight) {
