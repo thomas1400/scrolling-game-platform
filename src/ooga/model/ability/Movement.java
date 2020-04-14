@@ -41,7 +41,7 @@ public class Movement extends Ability {
   }
 
   public void bounceX(){
-    System.out.println("bounce x");
+    //System.out.println("bounce x");
     phys.stopHorizMotion();
   }
 

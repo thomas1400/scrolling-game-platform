@@ -123,6 +123,7 @@ public class LevelBuilderScreen extends Screen {
       try {
         getBackgroundFilePath(imagePath);
       } catch (IOException ex) {
+        //FIXME LET'S NOT FAIL THE CLASS :))
         ex.printStackTrace();
       }
     }, 60, 12);

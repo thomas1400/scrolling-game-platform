@@ -37,13 +37,17 @@ public class InputManager {
           Method m = myMainEntity.getClass().getDeclaredMethod(methodName);
           m.invoke(myMainEntity);
         } catch (NoSuchMethodException e) {
+          //FIXME
           e.printStackTrace();
         } catch (IllegalAccessException e) {
+          //FIXME
           e.printStackTrace();
         } catch (InvocationTargetException e) {
+          //FIXME
           e.printStackTrace();
         }
       } catch (SecurityException e) {
+        //FIXME
         e.printStackTrace();
       }
     }

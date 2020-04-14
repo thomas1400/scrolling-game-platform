@@ -185,7 +185,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
       } catch (IllegalAccessException e) {
         throw new RuntimeException(e);
       } catch (InvocationTargetException e) {
-        System.out.println(otherAttack);
+        //System.out.println(otherAttack);
         throw new RuntimeException(e);
       }
     }

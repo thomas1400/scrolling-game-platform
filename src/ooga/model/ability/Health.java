@@ -45,7 +45,7 @@ public class Health extends Ability {
   public void hit(){
     if(!immortal && !this.isDead()) {
       myLives -= 1;
-      System.out.println("ouchie");
+      //System.out.println("ouchie");
     }
   }
 }
