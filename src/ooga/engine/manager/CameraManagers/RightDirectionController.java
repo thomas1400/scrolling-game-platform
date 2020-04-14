@@ -4,34 +4,39 @@ import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 
 public class RightDirectionController extends DirectionController {
+
   private double xCenter;
+  private double myScreenHeight;
+  private double myScreenWidth;
+  private double change;
 
   public RightDirectionController() {
   }
-
-  public void updateCameraPosition(EntityList entities, double screenHeight, double screenWidth, Entity mainEntity) {
+  public void updateCameraPosition(EntityList entities, Entity mainEntity) {
+    xCenter = myScreenWidth / 2 - mainEntity.getBoundsInLocal().getWidth() / 2;
     if (mainEntity.getX() > xCenter) {
-      setToCenter(entities, screenHeight, screenWidth, mainEntity);
-      //entities.changeAllCoordinates(change, 0);
-      //determineEntitiesOnScreen(entities);
-    }
-    else if (mainEntity.getX()<0){
+      setToCenter(entities, mainEntity);
+    } else if (mainEntity.getX() < 0) {
       mainEntity.setX(0);
     }
   }
 
-  public void setToCenter(EntityList entities, double screenHeight, double screenWidth, Entity mainEntity) {
-    xCenter = screenWidth / 2 - mainEntity.getBoundsInLocal().getWidth() / 2;
-    if (mainEntity.getX() > screenWidth) {
-      change = mainEntity.getX() - xCenter;
-      resetMainEntity(mainEntity);
-      updateCoordinates(entities, mainEntity);
+  public void setToCenter(EntityList entities, Entity mainEntity) {
+    xCenter = myScreenWidth / 2 - mainEntity.getBoundsInLocal().getWidth() / 2;
+    change = mainEntity.getX() - xCenter;
+    resetMainEntity(mainEntity);
+    updateCoordinates(entities, mainEntity);
+  }
+
+  @Override
+  public void initialize(EntityList entities, double screenHeight, double screenWidth,
+      Entity mainEntity) {
+    myScreenHeight = screenHeight;
+    myScreenWidth = screenWidth;
+    if(mainEntity.getX()<0){
+      setToCenter(entities, mainEntity);
     }
-    else {
-      change = mainEntity.getX() - xCenter;
-      resetMainEntity(mainEntity);
-      updateCoordinates(entities, mainEntity);
-    }
+
   }
 
 
@@ -42,5 +47,4 @@ public class RightDirectionController extends DirectionController {
   private void resetMainEntity(Entity mainEntity) {
     mainEntity.setX(xCenter);
   }
-
 }

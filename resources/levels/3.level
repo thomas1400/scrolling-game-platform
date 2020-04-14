@@ -3,7 +3,7 @@ id:0003
 mainTitle:Level 0-3
 subTitle:The Upper Pathway
 physics:land
-scrollType:right
+scrollType:left
 deathsAllowed:1
 backgroundImage:images/gameBackground.png
 levelWidth:50
@@ -30,7 +30,7 @@ C:Coin
 B B . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 . . . . . 0 . . . . . 1 . . . . . 0 . . . . . 1 . . . . . 0 . . . . . 1 . . . . . . . . . . . . . .
 . . . . B B B . . . B B B . . . B B B . . . B B B . . . B B B . . . B B B . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . F . . . . .
-. . X . . . . C C C . . . . . . C C C . . . . . C C C . . . . . C C C . . . . . . . . B B B . . . .
+. . F . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+. B B B . . . C C C . . . . . . C C C . . . . . C C C . . . . . C C C . . . . . . . . . X . . . . .
 G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G
 #END
