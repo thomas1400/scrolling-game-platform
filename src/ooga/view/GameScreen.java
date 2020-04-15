@@ -3,6 +3,7 @@ package ooga.view;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
@@ -24,14 +25,31 @@ public class GameScreen extends Screen {
   private Group gameGroup;
   private Rectangle gameBackground;
   private User user;
+  private Button pause, resume;
 
   public GameScreen(ScreenController controller, BasicLevel level) {
     super(controller);
-    gameGroup = new Group();
     user = controller.getUsers().getSelectedUser();
-    setWorkingDimensions(3, 1);
-    initializeLayout();
+
+    gameGroup = new Group();
+    gameBackground = new Rectangle();
     gameBackground.setFill(new ImagePattern(new Image(level.getBackgroundImage())));
+
+    Label lives = new Label(resources.getString("lives") + ": " + user.getLives());
+    Label score = new Label(resources.getString("score") + ": " + user.getPoints());
+
+    pause = new Button();
+    resume = new Button();
+    resume.setDisable(true);
+
+    dynamicNodes.put("game-group", gameGroup);
+    dynamicNodes.put("game-background", gameBackground);
+    dynamicNodes.put("lives-label", lives);
+    dynamicNodes.put("score-label", score);
+    dynamicNodes.put("pause", pause);
+    dynamicNodes.put("resume", resume);
+
+    loadLayout();
   }
 
   private void initializeLayout() {
@@ -56,7 +74,6 @@ public class GameScreen extends Screen {
 
     layout.getChildren().add(infoBar);
 
-    gameBackground = new Rectangle(workingWidth+2*PADDING, 0.8*workingHeight);
     //gameBackground.setFill(Color.WHITE);
     layout.getChildren().add(gameBackground);
 
@@ -111,10 +128,14 @@ public class GameScreen extends Screen {
 
   public void pause() {
     levelController.pauseLevel();
+    pause.setDisable(true);
+    resume.setDisable(false);
   }
 
   public void resume() {
     levelController.resumeLevel();
+    pause.setDisable(false);
+    resume.setDisable(true);
   }
 
   public void quit() {

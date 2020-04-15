@@ -113,11 +113,9 @@ public class FXLRParser {
           if (node == null) {
             continue;
           }
-          System.out.println("dynamic: " + node);
         } else {
           node = (Node) Class.forName(packageName + "." + className).getDeclaredConstructor()
               .newInstance();
-          System.out.println("static: " + node);
         }
 
         // set attributes
@@ -186,7 +184,6 @@ public class FXLRParser {
   private Object[] getArgsFromStrings(Node node, String attr, String[] argStrings,
       Class[] parameterTypes) {
     Object[] args = new Object[argStrings.length];
-    System.out.println(Arrays.toString(argStrings));
 
     // Possible values of args include:
     // Integer, Double, String, Pos.ALIGNMENT, Insets (need to create from Integer/Double if needed)
