@@ -1,14 +1,12 @@
 package ooga.engine.loop;
 
-import java.util.ArrayList;
-import java.util.List;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import ooga.controller.Communicable;
 import ooga.controller.data.CompleteLevel;
-import ooga.engine.manager.CameraManagers.CameraManager;
+import ooga.engine.manager.CameraManager.CameraManager;
 import ooga.engine.manager.CollisionManager;
 import ooga.engine.manager.EntityManager;
 import ooga.engine.manager.InputManager;

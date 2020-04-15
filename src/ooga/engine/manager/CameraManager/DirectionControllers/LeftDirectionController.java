@@ -1,5 +1,6 @@
-package ooga.engine.manager.CameraManagers;
+package ooga.engine.manager.CameraManager.DirectionControllers;
 
+import ooga.engine.manager.CameraManager.DirectionControllers.DirectionController;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 
@@ -23,8 +24,7 @@ public class LeftDirectionController extends DirectionController {
     }
   }
 
-  @Override
-  public void setToCenter(EntityList entities, Entity mainEntity) {
+  private void setToCenter(EntityList entities, Entity mainEntity) {
     xCenter = myScreenWidth / 2 - mainEntity.getBoundsInLocal().getWidth() / 2;
     change = mainEntity.getX() - xCenter;
     resetMainEntity(mainEntity);
