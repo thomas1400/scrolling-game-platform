@@ -5,12 +5,14 @@ import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.layout.VBox;
 import ooga.controller.ScreenController;
 import ooga.view.Screen;
 
@@ -157,7 +159,7 @@ public class FXLRParser {
         try {
           node.addEventHandler(
               ActionEvent.ACTION,
-              e->gb.getRoot().handleButtonPress(argStrings[0])
+              e -> gb.getRoot().handleButtonPress(argStrings[0])
           );
         } catch (Exception e) {
           System.out.println("Node " + node.toString() + " has no event handler.");
@@ -179,12 +181,12 @@ public class FXLRParser {
         System.out.println("Couldn't set attribute " + attr);
       }
     }
-
   }
 
   private Object[] getArgsFromStrings(Node node, String attr, String[] argStrings,
       Class[] parameterTypes) {
     Object[] args = new Object[argStrings.length];
+    System.out.println(Arrays.toString(argStrings));
 
     // Possible values of args include:
     // Integer, Double, String, Pos.ALIGNMENT, Insets (need to create from Integer/Double if needed)

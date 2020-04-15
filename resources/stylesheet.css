@@ -8,6 +8,10 @@
   -fx-font-size: 60pt;
 }
 
+.subtitle {
+  -fx-font-size: 30pt;
+}
+
 .button {
   -fx-focus-traversable: false;
   -fx-font-size: 20;

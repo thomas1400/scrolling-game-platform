@@ -5,12 +5,15 @@
 <package javafx.scene.control>
 <package javafx.scene.layout>
 
-(VBox alignment=TOP_CENTER, layoutX=2%, layoutY=1%, spacing=1%) {
-  (username-label prefHeight=20%, prefWidth=96%)
-  (level-selector-tool width=96%, height=66%)
+(VBox alignment=TOP_CENTER, layoutX=2%, layoutY=1%, spacing=1%, maxWidth=96%) {
+  (username-label prefHeight=10%, style=subtitle, alignment=CENTER)
+  (level-selector-tool prefWidth=95%, prefHeight=76%)
   (HBox alignment=TOP_CENTER, spacing=1%) {
     (Button text=back, prefWidth=25%, prefHeight=10%, actionTag=back)
-    (level-progress-bar prefHeight=10%)
+    (VBox alignment=TOP_CENTER) {
+      (Label text=progress, prefWidth=45%, prefHeight=3.5%, alignment=CENTER)
+      (level-progress-bar prefWidth=45%, prefHeight=6%)
+    }
     (Button text=begin, prefWidth=25%, prefHeight=10%, actionTag=begin)
   }
 }
