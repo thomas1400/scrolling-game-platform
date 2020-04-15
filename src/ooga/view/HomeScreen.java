@@ -25,7 +25,6 @@ public class HomeScreen extends Screen {
   public HomeScreen(ScreenController controller) {
     super(controller);
     loadLayout();
-    //initializeLayout();
   }
 
   private void initializeLayout() {

@@ -53,6 +53,12 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
       attack = Attack.STUN;
     } else if (attackType.equals("DAMAGE")){
       attack = Attack.DAMAGE;
+    } else if (attackType.equals("SUPPORT")){
+      attack = Attack.SUPPORT;
+    } else if (attackType.equals("COLLECT")){
+      attack = Attack.COLLECT;
+    } else if (attackType.equals("COLLECTIBLE")){
+      attack = Attack.COLLECTIBLE;
     }
     //todo learn how to make enums with reflection and change the above to that
 
@@ -179,6 +185,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
       } catch (IllegalAccessException e) {
         throw new RuntimeException(e);
       } catch (InvocationTargetException e) {
+        //System.out.println(otherAttack);
         throw new RuntimeException(e);
       }
     }
@@ -191,6 +198,27 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     dead = health.isDead();
   }
 
+  //used for reflection DO NOT DELETE
+  /**
+   * note: the other one is the collectible item
+   */
+  private void collectible(Attack myAttack){
+    //todo create a bonus ability that can change score, height, etc. have that happen here as the entity is collected
+  }
+
+  //used for reflection DO NOT DELETE
+  private void collect(Attack myAttack){
+    damage(myAttack);
+    //fixme change this if you add anything to damage()
+    //todo implement bonuses here instead of in collectable?
+  }
+
+  //used for reflection DO NOT DELETE
+  private void support(Attack myAttack){
+    if(haveMovement) {
+      movement.stand();
+    }
+  }
 
   //used for reflection DO NOT DELETE
   private void stun(Attack myAttack){
@@ -199,14 +227,17 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
       side = Attack.HARMLESS;
       top = Attack.BOUNCE;
     } else {
-      damage(myAttack);
+      //damage(myAttack);
     }
   }
 
   //used for reflection DO NOT DELETE
   private void bounce(Attack myAttack){
     //if it's on the bottom
-    movement.jump();
+    System.out.println(debuggingName);
+    if(haveMovement) {
+      movement.bounceX();
+    }
     //if it's side
     /*if(stun.isStunned()){
       side
@@ -223,6 +254,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     if(haveMovement) {
       movement.update(this);
     }
+    dead = health.isDead();
   }
 
   public void moveRight(){

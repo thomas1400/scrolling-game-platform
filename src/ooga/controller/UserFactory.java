@@ -26,6 +26,7 @@ public final class UserFactory {
       return createdUser;
 
     } catch (IOException ex) {
+      //FIXME. LET'S NOT FAIL THE CLASS :))
       ex.printStackTrace();
       return null;
     }
