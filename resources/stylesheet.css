@@ -12,6 +12,16 @@
   -fx-font-size: 30pt;
 }
 
+.user-data-display {
+  -fx-font-size: 20pt;
+  -fx-padding: 5px;
+  -fx-background-color: derive(-fx-background, 10%);
+  -fx-border-width: 2px;
+  -fx-border-style: solid;
+  -fx-border-color: -fx-accent;
+  -fx-border-radius: 5px;
+}
+
 .button {
   -fx-focus-traversable: false;
   -fx-font-size: 20;

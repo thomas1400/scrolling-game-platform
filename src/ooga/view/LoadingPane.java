@@ -1,7 +1,6 @@
 package ooga.view;
 
 import java.util.ResourceBundle;
-import javafx.beans.property.BooleanProperty;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -9,8 +8,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javax.swing.plaf.synth.SynthStyle;
-import ooga.controller.ScreenController;
 import ooga.view.factory.ControlFactory;
 
 public class LoadingPane extends Pane {

@@ -1,40 +1,14 @@
 package ooga.view;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.List;
-import java.util.Scanner;
 import javafx.animation.FadeTransition;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.util.Duration;
 import ooga.controller.ScreenController;
-import ooga.exceptions.ExceptionFeedback;
-import ooga.controller.data.BasicLevel;
 import ooga.controller.data.BasicLevelList;
 import ooga.controller.data.User;
 import ooga.view.dynamicUI.DynamicUserLabel;
 import ooga.view.dynamicUI.LevelProgressBar;
 import ooga.view.dynamicUI.LevelSelectorTool;
-import ooga.view.factory.ControlFactory;
 
 public class LevelSelectorScreen extends Screen {
 

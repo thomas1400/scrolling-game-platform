@@ -2,9 +2,6 @@ package ooga.view.fxlr;
 
 import java.io.File;
 import javafx.application.Application;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ooga.controller.ScreenController;

@@ -9,7 +9,6 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
 import ooga.controller.data.User;
 import ooga.controller.data.UserList;
 
