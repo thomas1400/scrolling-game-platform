@@ -9,7 +9,7 @@ import ooga.controller.data.BasicLevelList;
 import ooga.controller.data.UserList;
 import ooga.view.LevelBuilderScreen;
 
-public class Tester extends Application {
+public class Tester extends Application{
 
   public static void main(String[] args){
     launch(args);
@@ -24,5 +24,8 @@ public class Tester extends Application {
     primaryStage.setScene(new Scene(root, 800, 600));
     primaryStage.show();
   }
+
+
+
 }
 
