@@ -81,7 +81,7 @@ public final class LevelBuilder {
       if (sectionLine.length == 2){
         sectionMap.put(sectionLine[KEY_INDEX], sectionLine[VALUE_INDEX]);
       } else {
-        ExceptionFeedback.throwException(
+        ExceptionFeedback.throwBreakingException(
             new MalformedInputException(0), "Invalid Level File. Invalid info in section");
       }
       nextLine = sc.nextLine();

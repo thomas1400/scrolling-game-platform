@@ -82,7 +82,7 @@ public class LevelSelectorTool extends Pane {
 
       s.close();
     } catch (FileNotFoundException e) {
-      ExceptionFeedback.throwException(e, "Level graph not found.");
+      ExceptionFeedback.throwBreakingException(e, "Level graph not found.");
     }
   }
 
@@ -107,7 +107,7 @@ public class LevelSelectorTool extends Pane {
 
       s.close();
     } catch (FileNotFoundException e) {
-      ExceptionFeedback.throwException(e, "Level map not found.");
+      ExceptionFeedback.throwBreakingException(e, "Level map not found.");
     }
   }
 

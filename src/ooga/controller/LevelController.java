@@ -52,7 +52,7 @@ public class LevelController implements Communicable{
       completeLevel = LevelBuilder.buildCompleteLevel(basicLevel, gs.getGameHeight(),
           gs.getGameWidth());
     } catch (FileNotFoundException e) {
-      ExceptionFeedback.throwException(e, "File not found");
+      ExceptionFeedback.throwBreakingException(e, "File not found");
     }
     return completeLevel;
   }
