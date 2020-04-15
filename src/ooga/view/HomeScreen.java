@@ -18,45 +18,9 @@ import ooga.view.factory.ControlFactory;
 
 public class HomeScreen extends Screen {
 
-  private static final List<String> BUTTON_TAGS = List.of(
-    "start", "statistics", "help", "user-select"
-  );
-
   public HomeScreen(ScreenController controller) {
     super(controller);
     loadLayout();
-  }
-
-  private void initializeLayout() {
-    Pane root = new Pane();
-    root.setPadding(new Insets(5));
-
-    ControlFactory cf = new ControlFactory(PADDING);
-    VBox layout = new VBox();
-    layout.setAlignment(Pos.TOP_CENTER);
-
-    Label title = new Label(resources.getString("title"));
-    title.setFont(Font.font(FONT_FAMILY, 60));
-    layout.getChildren().add(title);
-
-    Rectangle splash = new Rectangle(780, 400);
-    VBox.setMargin(splash, new Insets(10));
-    splash.setFill(Color.GREY);
-    splash.getStyleClass().add("home-screen-splash");
-    layout.getChildren().add(splash);
-
-
-    HBox menu = new HBox();
-    menu.setAlignment(Pos.TOP_CENTER);
-    menu.setPadding(new Insets(5));
-    menu.setSpacing(5);
-    for (String tag : BUTTON_TAGS) {
-      Button button = cf.button(resources.getString(tag), BUTTON_FONT_SIZE, e->handleButtonPress(tag), 150, 80);
-      menu.getChildren().add(button);
-    }
-    layout.getChildren().add(menu);
-
-    this.getChildren().add(layout);
   }
 
 }

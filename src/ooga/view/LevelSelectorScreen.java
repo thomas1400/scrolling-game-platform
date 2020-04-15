@@ -65,51 +65,6 @@ public class LevelSelectorScreen extends Screen {
     loadLayout();
   }
 
-  public void initializeLayout() {
-    ControlFactory cf = new ControlFactory(PADDING);
-    VBox layout = new VBox();
-    layout.setAlignment(Pos.TOP_CENTER);
-
-    if (controller.getUsers() == null) {
-      return;
-    }
-
-    User user = controller.getUsers().getSelectedUser();
-
-    Label username = cf
-        .label("User: " + controller.getUsers().getSelectedUser().getName(), BUTTON_FONT_SIZE);
-    username.setPrefHeight(workingHeight * 0.1);
-    layout.getChildren().add(username);
-
-    LevelSelectorTool lst = new LevelSelectorTool(myLevels, LEVEL_GRAPH_FILE, LEVEL_MAP_FILE, user.getLevelsUnlocked());
-    cf.setMargin(lst);
-    layout.getChildren().add(lst);
-
-    HBox menu = new HBox();
-    menu.setAlignment(Pos.CENTER);
-    menu.setPadding(new Insets(5));
-    menu.setSpacing(5);
-    menu.setPrefHeight(workingHeight * 0.1);
-
-    Button back = cf.button(resources.getString("back"), BUTTON_FONT_SIZE,
-        e->handleButtonPress("back") , 100, menu.getPrefHeight());
-    menu.getChildren().add(back);
-
-    Label progress = cf.label(resources.getString("progress"), BUTTON_FONT_SIZE);
-    menu.getChildren().add(progress);
-
-    LevelProgressBar lpb = new LevelProgressBar(1, 3);
-    menu.getChildren().add(lpb);
-
-    Button start = cf.button(resources.getString("begin"), BUTTON_FONT_SIZE,
-        e-> handleButtonPress("begin"), 100, menu.getPrefHeight());
-    menu.getChildren().add(start);
-
-    layout.getChildren().add(menu);
-
-    this.getChildren().add(layout);
-  }
-
   public void loadLevel() {
 
     Pane loadingPane = new LoadingPane(this);
