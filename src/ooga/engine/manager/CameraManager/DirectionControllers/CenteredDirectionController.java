@@ -1,50 +1,54 @@
-package ooga.engine.manager.CameraManagers;
+package ooga.engine.manager.CameraManager.DirectionControllers;
 
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 
-public class RightDirectionController extends DirectionController {
+public class CenteredDirectionController extends DirectionController {
 
   private double xCenter;
+  private double yCenter;
   private double myScreenHeight;
   private double myScreenWidth;
-  private double change;
+  private double xChange;
+  private double yChange;
 
-  public RightDirectionController() {
+  public CenteredDirectionController() {
   }
   public void updateCameraPosition(EntityList entities, Entity mainEntity) {
     xCenter = myScreenWidth / 2 - mainEntity.getBoundsInLocal().getWidth() / 2;
-    if (mainEntity.getX() > xCenter) {
+    yCenter = myScreenHeight/2- mainEntity.getBoundsInLocal().getHeight()/2;
+    if (mainEntity.getX() != xCenter){
       setToCenter(entities, mainEntity);
-    } else if (mainEntity.getX() < 0) {
-      mainEntity.setX(0);
+    }
+    if (mainEntity.getY() != yCenter) {
+      setToCenter(entities, mainEntity);
     }
   }
 
   public void setToCenter(EntityList entities, Entity mainEntity) {
     xCenter = myScreenWidth / 2 - mainEntity.getBoundsInLocal().getWidth() / 2;
-    change = mainEntity.getX() - xCenter;
+    yCenter = myScreenHeight/2- mainEntity.getBoundsInLocal().getHeight()/2;
+    xChange = mainEntity.getX() - xCenter;
+    yChange = mainEntity.getY() - yCenter;
     resetMainEntity(mainEntity);
     updateCoordinates(entities, mainEntity);
   }
 
-  @Override
+
   public void initialize(EntityList entities, double screenHeight, double screenWidth,
       Entity mainEntity) {
     myScreenHeight = screenHeight;
     myScreenWidth = screenWidth;
-    if(mainEntity.getX()<0){
-      setToCenter(entities, mainEntity);
-    }
-
+    setToCenter(entities, mainEntity);
   }
 
 
   private void updateCoordinates(EntityList entities, Entity mainEntity) {
-    entities.changeAllCoordinates(change, 0, mainEntity);
+    entities.changeAllCoordinates(xChange, yChange, mainEntity);
   }
 
   private void resetMainEntity(Entity mainEntity) {
     mainEntity.setX(xCenter);
+    mainEntity.setY(yCenter);
   }
 }

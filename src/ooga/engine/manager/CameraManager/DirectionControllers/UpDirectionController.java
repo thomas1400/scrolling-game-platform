@@ -1,5 +1,6 @@
-package ooga.engine.manager.CameraManagers;
+package ooga.engine.manager.CameraManager.DirectionControllers;
 
+import ooga.engine.manager.CameraManager.DirectionControllers.DirectionController;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 
@@ -29,7 +30,6 @@ public class UpDirectionController extends DirectionController {
     }
   }
 
-  @Override
   public void setToCenter(EntityList entities, Entity mainEntity) {
     yCenter = myScreenHeight/2- mainEntity.getBoundsInLocal().getHeight()/2;
     change = mainEntity.getY() - yCenter;

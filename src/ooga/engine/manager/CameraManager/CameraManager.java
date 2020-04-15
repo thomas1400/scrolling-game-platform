@@ -1,9 +1,7 @@
-package ooga.engine.manager.CameraManagers;
+package ooga.engine.manager.CameraManager;
 
-import java.nio.file.DirectoryIteratorException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
+import ooga.engine.manager.CameraManager.DirectionControllers.DirectionController;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 
@@ -27,7 +25,7 @@ public class CameraManager {
     String directionType = myDirectionControllerResources.getString(direction);
     try {
       myDirectionController = (DirectionController) Class
-          .forName("ooga.engine.manager.CameraManagers." + directionType).newInstance();
+          .forName("ooga.engine.manager.CameraManager.DirectionControllers." + directionType).newInstance();
       myDirectionController.initialize(entities, height, width, character);
     } catch (InstantiationException e) {
       e.printStackTrace();
