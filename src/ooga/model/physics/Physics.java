@@ -1,3 +1,4 @@
+
 package ooga.model.physics;
 
 import ooga.model.entity.Entity;
@@ -13,7 +14,6 @@ public class Physics {
   private static final double INITIAL_JUMP_VELOCITY = -1 * Math.sqrt(2*GRAVITY*JUMP_HEIGHT);
 
   private static final double MAX_VERT_VELOCITY = -1 * INITIAL_JUMP_VELOCITY;
-  private static final int SIGN_CHANGE = -1;
   private static final double MAX_HORIZ_VELOCITY = 2.5 * sizeScale;
   private static final double RUN_ACCELERATION = 2.5 * sizeScale;
   private static final double FRICTION_DAMPING = 2.0;
@@ -21,6 +21,7 @@ public class Physics {
   private static final int X = 0;
   private static final int Y = 1;
   private static final double REACTIVITY_PERCENT = 3.5;
+  private static final double TINY_BOUNCE_DISTANCE = 0.1;
 
   private double[] myPosition;
   private double[] myVelocity;
@@ -36,7 +37,6 @@ public class Physics {
     //Get on screen position
     myPosition[X] = myEntity.getX();
     myPosition[Y] = myEntity.getY();
-    //yPosition[Y] = tempCheckLandJump();
 
     //Velocity Updates
     myVelocity[X] += myAcceleration[X]*dt;
@@ -63,7 +63,7 @@ public class Physics {
   }
 
   private void adjustForFriction() {
-    //Horz Velocity Damping b/c of Friction if not in air
+    //Horiz Velocity Damping b/c of Friction if not in air
     if (myAcceleration[Y] == 0) {
       myVelocity[X] = myVelocity[X] / (1 + FRICTION_DAMPING * dt);
     }
@@ -92,22 +92,25 @@ public class Physics {
     myAcceleration[Y] = GRAVITY;
     myVelocity[Y] += INITIAL_JUMP_VELOCITY;
   }
+
   public void stopHorizMotion() {
-    //TODO: Trigger this when an object collides with the side of an object that should stop its
-    // motion
-    myAcceleration[X] = 0;
-    myVelocity[X] = 0;
+    stopDirectionalMotion(X);
   }
+
   public void stopVerticalMotion() {
-    myAcceleration[Y] = 0;
-    myVelocity[Y] = 0;
+    stopDirectionalMotion(Y);
   }
-  public void changeXAcceleration(){
-    myAcceleration[X]*=SIGN_CHANGE;
+
+  private void stopDirectionalMotion(int axis){
+    myAcceleration[axis] = 0;
+    //myPosition[axis] -= TINY_BOUNCE_DISTANCE * getDirection(myVelocity[axis]);
+    myVelocity[axis] = 0;
   }
-  public void changeYAcceleration(){
-    myAcceleration[Y]*=SIGN_CHANGE;
+
+  private double getDirection(double velocity) {
+    return velocity/Math.abs(velocity);
   }
+
   public void moveLeft() {
     if (myVelocity[X] < 0) {
       myVelocity[X] = myVelocity[X] - RUN_ACCELERATION * dt;
