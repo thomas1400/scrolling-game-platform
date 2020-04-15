@@ -24,8 +24,9 @@ public class CollisionManager implements Observable {
       for (Entity entity2 : entities) {
         if (!entity.equals(entity2)) {
           if (entity.getBoundsInLocal().intersects(entity2.getBoundsInLocal())) {
-            if (entity.getBoundsInLocal().getMaxX() > entity2.getBoundsInLocal().getMinX()
-                || entity2.getBoundsInLocal().getMaxX() > entity.getBoundsInLocal().getMinX()) {
+            //check that the sides overlap, and that one entity 'box' envelops another.
+            if (((entity.getBoundsInLocal().getMaxX() > entity2.getBoundsInLocal().getMinX()) || entity2.getBoundsInLocal().getMaxX() > entity.getBoundsInLocal().getMinX())
+                && (entity.getBoundsInLocal().getMinY() >= entity2.getBoundsInLocal().getMinY() && entity.getBoundsInLocal().getMaxY() <= entity2.getBoundsInLocal().getMaxY())){
               //printDebug(SIDE, entity, entity2);
               createAndSendCollision(SIDE, entity2.getAttack(SIDE), entity);
               createAndSendCollision(SIDE, entity.getAttack(SIDE), entity2);
@@ -49,8 +50,15 @@ public class CollisionManager implements Observable {
 
   //fixme delete after debugging over
   private void printDebug(String loc, Entity a, Entity b){
-    if((a.debug().equals("Mario.png")||b.debug().equals("Mario.png")) && (!a.debug().contains("Ground")&&!b.debug().contains("Ground"))) {
-      System.out.println(loc);
+    if((a.debug().equals("Mario.png")||b.debug().equals("Mario.png"))){// && (!a.debug().contains("Ground")&&!b.debug().contains("Ground"))) {
+      System.out.println("a max x: "+ a.getBoundsInLocal().getMaxX());
+      System.out.println("a min x: " + a.getBoundsInLocal().getMinX());
+      System.out.println("b max x: "+ b.getBoundsInLocal().getMaxX());
+      System.out.println("b min x: " + b.getBoundsInLocal().getMinX());
+      System.out.println("a max y: "+ a.getBoundsInLocal().getMaxY());
+      System.out.println("a min y: " + a.getBoundsInLocal().getMinY());
+      System.out.println("b max y: "+ b.getBoundsInLocal().getMaxY());
+      System.out.println("b min y: " + b.getBoundsInLocal().getMinY());
       System.out.println("Me: " + a.debug() + " && other:" + b.debug());
       System.out.println("ATTACK TYPES: me: " + a.getAttack(loc) + " other: " + b.getAttack(loc));
     }
