@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -23,10 +24,14 @@ public class HomeScreen extends Screen {
 
   public HomeScreen(ScreenController controller) {
     super(controller);
+    loadLayout();
     //initializeLayout();
   }
 
   private void initializeLayout() {
+    Pane root = new Pane();
+    root.setPadding(new Insets(5));
+
     ControlFactory cf = new ControlFactory(PADDING);
     VBox layout = new VBox();
     layout.setAlignment(Pos.TOP_CENTER);

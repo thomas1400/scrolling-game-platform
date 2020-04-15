@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import ooga.controller.ScreenController;
 import ooga.controller.data.BasicLevelList;
 import ooga.controller.data.UserList;
+import ooga.view.HomeScreen;
 import ooga.view.Screen;
 
 public class FxlrTester extends Application {
@@ -21,18 +22,11 @@ public class FxlrTester extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     try {
-      FXLRParser parser = new FXLRParser(new ScreenController(primaryStage, new UserList(), new BasicLevelList()));
-      Screen root = parser.loadFXLRLayout(new File("resources/view/HomeScreen.fxlr"));
+      ScreenController sc = new ScreenController(primaryStage, new UserList(), new BasicLevelList());
+      Screen root = new HomeScreen(sc);
+      new FXLRParser().loadFXLRLayout(new HomeScreen(sc), new File("resources/view/LevelSelectorScreen.fxlr"));
+      root.getStylesheets().add(new File("resources/stylesheet.css").toURI().toString());
       primaryStage.setScene(new Scene(root));
-//      for (Node child : root.getChildren()) {
-//        System.out.println(child + " {");
-//        try {
-//          for (Node grandchild : (ObservableList<Node>) child.getClass().getMethod("getChildren").invoke(child)) {
-//            System.out.println("\t" + grandchild);
-//          }
-//        } catch (Exception ignored) {}
-//        System.out.println("}");
-//      }
     } catch (Exception e) {
       e.printStackTrace();
     }

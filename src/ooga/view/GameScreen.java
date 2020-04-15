@@ -30,10 +30,11 @@ public class GameScreen extends Screen {
     gameGroup = new Group();
     user = controller.getUsers().getSelectedUser();
     setWorkingDimensions(3, 1);
-    initializeLayout(level);
+    initializeLayout();
+    gameBackground.setFill(new ImagePattern(new Image(level.getBackgroundImage())));
   }
 
-  private void initializeLayout(BasicLevel level) {
+  private void initializeLayout() {
     ControlFactory cf = new ControlFactory(PADDING);
     VBox layout = new VBox();
     layout.setAlignment(Pos.CENTER);
@@ -57,7 +58,6 @@ public class GameScreen extends Screen {
 
     gameBackground = new Rectangle(workingWidth+2*PADDING, 0.8*workingHeight);
     //gameBackground.setFill(Color.WHITE);
-    gameBackground.setFill(new ImagePattern(new Image(level.getBackgroundImage())));
     layout.getChildren().add(gameBackground);
 
     HBox menuBar = new HBox();

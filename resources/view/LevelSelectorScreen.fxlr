@@ -1,0 +1,17 @@
+### Home Screen FXLR
+
+<package ooga.view>
+<package ooga.view.dynamicUI>
+<package javafx.scene.control>
+<package javafx.scene.layout>
+
+(VBox alignment=TOP_CENTER, layoutX=2%, layoutY=1%, spacing=1%) {
+  (username-label prefHeight=20%, prefWidth=96%)
+  (level-selector-tool width=96%, height=66%)
+  (HBox alignment=TOP_CENTER, spacing=1%) {
+    (Button text=back, prefWidth=25%, prefHeight=10%, actionTag=back)
+    (level-progress-bar prefHeight=10%)
+    (Button text=begin, prefWidth=25%, prefHeight=10%, actionTag=begin)
+  }
+}
+

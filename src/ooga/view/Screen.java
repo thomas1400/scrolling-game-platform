@@ -1,13 +1,18 @@
 package ooga.view;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import ooga.controller.ScreenController;
+import ooga.view.fxlr.FXLRParser;
 
-public class Screen extends Pane implements Displayable {
+public abstract class Screen extends Pane implements Displayable {
 
   private static final int PREF_WIDTH = 800, PREF_HEIGHT = 600;
   static final String FONT_FAMILY = "Cambria";
@@ -24,9 +29,11 @@ public class Screen extends Pane implements Displayable {
   protected ScreenController controller;
   protected ResourceBundle buttonActions;
   protected ResourceBundle resources;
+  protected Map<String, Node> dynamicNodes;
 
   public Screen(ScreenController controller) {
     this.controller = controller;
+    this.dynamicNodes = new HashMap<>();
     initializeResources();
     initializeScreen();
   }
@@ -42,6 +49,16 @@ public class Screen extends Pane implements Displayable {
 
   protected void initializeScreen() {
     this.setPrefSize(PREF_WIDTH, PREF_HEIGHT);
+  }
+
+  protected void loadLayout() {
+    try {
+      new FXLRParser().loadFXLRLayout(this,
+          new File("resources/view/" + this.getClass().getSimpleName() + ".fxlr"));
+    } catch (FileNotFoundException e) {
+      // FIXME : remove
+      e.printStackTrace();
+    }
   }
 
   protected void setWorkingDimensions(int vPanels, int hPanels) {
@@ -67,6 +84,14 @@ public class Screen extends Pane implements Displayable {
         }
       }
     } catch (MissingResourceException ignored) { }
+  }
+
+  public String getResource(String tag) {
+    return resources.getString(tag);
+  }
+
+  public Node getDynamicUIElement(String tag) {
+    return dynamicNodes.get(tag);
   }
 
   @Override

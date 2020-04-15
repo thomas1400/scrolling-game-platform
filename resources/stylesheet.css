@@ -4,8 +4,13 @@
   -fx-accent: #507dbc;
 }
 
+.title {
+  -fx-font-size: 60pt;
+}
+
 .button {
   -fx-focus-traversable: false;
+  -fx-font-size: 20;
 }
 
 .radio-button > .radio {
@@ -26,5 +31,5 @@
 }
 
 .home-screen-splash {
-  -fx-fill: url(images/TeamLogo.png);
+  -fx-fill: url(images/gameBackground.png);
 }

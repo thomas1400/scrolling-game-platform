@@ -31,6 +31,9 @@ import ooga.exceptions.ExceptionFeedback;
 import ooga.controller.data.BasicLevel;
 import ooga.controller.data.BasicLevelList;
 import ooga.controller.data.User;
+import ooga.view.dynamicUI.DynamicUserLabel;
+import ooga.view.dynamicUI.LevelProgressBar;
+import ooga.view.dynamicUI.LevelSelectorTool;
 import ooga.view.factory.ControlFactory;
 
 public class LevelSelectorScreen extends Screen {
@@ -44,8 +47,22 @@ public class LevelSelectorScreen extends Screen {
   public LevelSelectorScreen(ScreenController controller, BasicLevelList levels) {
     super(controller);
     myLevels = levels;
-    setWorkingDimensions(3, 1);
-    initializeLayout();
+
+    if (controller.getUsers() != null) {
+      User user = controller.getUsers().getSelectedUser();
+
+      DynamicUserLabel username = new DynamicUserLabel();
+      username.setText(resources.getString("user") + " : " + user.getName());
+      LevelProgressBar lpb = new LevelProgressBar(1, 3);
+      lst = new LevelSelectorTool(levels, LEVEL_GRAPH_FILE, LEVEL_MAP_FILE,
+          user.getLevelsUnlocked());
+
+      dynamicNodes.put("username-label", username);
+      dynamicNodes.put("level-selector-tool", lst);
+      dynamicNodes.put("level-progress-bar", lpb);
+    }
+
+    loadLayout();
   }
 
   public void initializeLayout() {
@@ -64,8 +81,7 @@ public class LevelSelectorScreen extends Screen {
     username.setPrefHeight(workingHeight * 0.1);
     layout.getChildren().add(username);
 
-    lst = new LevelSelectorTool(workingWidth, workingHeight*0.8,
-        LEVEL_GRAPH_FILE, LEVEL_MAP_FILE, user.getLevelsUnlocked());
+    LevelSelectorTool lst = new LevelSelectorTool(myLevels, LEVEL_GRAPH_FILE, LEVEL_MAP_FILE, user.getLevelsUnlocked());
     cf.setMargin(lst);
     layout.getChildren().add(lst);
 
@@ -82,7 +98,7 @@ public class LevelSelectorScreen extends Screen {
     Label progress = cf.label(resources.getString("progress"), BUTTON_FONT_SIZE);
     menu.getChildren().add(progress);
 
-    LevelProgressBar lpb = new LevelProgressBar(200, menu.getPrefHeight(), 1, 3);
+    LevelProgressBar lpb = new LevelProgressBar(1, 3);
     menu.getChildren().add(lpb);
 
     Button start = cf.button(resources.getString("begin"), BUTTON_FONT_SIZE,
@@ -110,150 +126,6 @@ public class LevelSelectorScreen extends Screen {
       controller.initializeNewLevel(lst.getSelected());
       this.getChildren().remove(loadingPane);
     });
-  }
-
-  private class LevelSelectorTool extends Pane {
-
-    private static final double STROKE_WIDTH = 5.0;
-    private static final double CENTER_OFFSET = 10.0;
-
-    private ToggleGroup levels;
-    private boolean[][] adjacency;
-    double[][] locations;
-    private int numLevels;
-
-    LevelSelectorTool(double width, double height, String levelGraphFile, String levelMapFile, List<Integer> levelProgress) {
-      parseGraph(levelGraphFile);
-      parseMap(levelMapFile);
-
-      this.setPrefSize(width, height);
-      this.setMinSize(width, height);
-      this.setBackground(new Background(new BackgroundFill(Color.GREY, null, null)));
-
-      // draw connecting lines
-      for (int a = 0; a < numLevels; a++) {
-        double[] start = locations[a];
-        for (int b = 0; b < numLevels; b++) {
-          if (adjacency[a][b]) {
-            double[] end = locations[b];
-            Line connection = new Line(
-                start[0] + CENTER_OFFSET, start[1] + CENTER_OFFSET,
-                end[0] + CENTER_OFFSET, end[1] + CENTER_OFFSET);
-            connection.setStrokeWidth(STROKE_WIDTH);
-            this.getChildren().add(connection);
-          }
-        }
-      }
-
-      levels = new ToggleGroup();
-      for (int i = 0; i < numLevels; i++) {
-        RadioButton button = new RadioButton(""+(i+1));
-        button.setFont(Font.font(FONT_FAMILY, BUTTON_FONT_SIZE));
-        button.setTextFill(Color.WHITE);
-        button.setToggleGroup(levels);
-        button.setId(Integer.toString(i+1));
-        if (i == levelProgress.get(levelProgress.size()-1)) {
-          button.setSelected(true);
-        }
-        button.setLayoutX(locations[i][0]);
-        button.setLayoutY(locations[i][1]);
-        this.getChildren().add(button);
-      }
-    }
-
-    void parseGraph(String file) {
-      try {
-        Scanner s = new Scanner(new File(file));
-
-        int numLevels = Integer.parseInt(s.nextLine());
-        this.numLevels = numLevels;
-
-        adjacency = new boolean[numLevels][numLevels];
-
-        while (s.hasNextLine()) {
-          String[] edge = s.nextLine().split("\\s+");
-          int v0 = Integer.parseInt(edge[0]) - 1, v1 = Integer.parseInt(edge[1]) - 1;
-          adjacency[v0][v1] = true;
-          adjacency[v1][v0] = true;
-        }
-
-        s.close();
-      } catch (FileNotFoundException e) {
-        ExceptionFeedback.throwException(e, "Level graph not found.");
-      }
-    }
-
-    void parseMap(String file) {
-      try {
-        Scanner s = new Scanner(new File(file));
-
-        //skip the header
-        String firstLine = s.nextLine();
-        while (firstLine.charAt(0) == '#') {
-          firstLine = s.nextLine();
-        }
-
-        int numLevels = Integer.parseInt(firstLine);
-        locations = new double[numLevels][];
-
-        while (s.hasNextLine()) {
-          int levelNum = s.nextInt() - 1;
-          double[] location = new double[]{s.nextInt(), s.nextInt()};
-          locations[levelNum] = location;
-        }
-
-        s.close();
-      } catch (FileNotFoundException e) {
-        ExceptionFeedback.throwException(e, "Level map not found.");
-      }
-    }
-
-    BasicLevel getSelected() {
-      return myLevels.getBasicLevel(Integer.parseInt(((RadioButton) levels.getSelectedToggle()).getId()));
-    }
-
-  }
-
-  private class LevelProgressBar extends Pane {
-
-    private final Color background = Color.WHITE;
-    private final Color fill = Color.DARKGREY;
-    private final Color border = Color.BLACK;
-    private double levelProgressFraction;
-
-    LevelProgressBar(double width, double height, int levelProgress, int totalLevels) {
-      this.setPrefSize(width, height);
-      this.setMaxSize(width, height);
-      levelProgressFraction = (float) levelProgress / totalLevels;
-
-      this.setBackground(new Background(new BackgroundFill(background, null, null)));
-
-
-      this.setBorder(new Border(new BorderStroke(border,
-          BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-    }
-
-    private void initializeBar(double width, double height) {
-      Rectangle bar = new Rectangle(width * (float) levelProgressFraction - 2, height - 2);
-      bar.setFill(fill);
-      bar.setX(1);
-      bar.setY(1);
-      this.getChildren().add(bar);
-    }
-
-    void setFillWidth(boolean value) {
-      if (value) {
-        this.setMaxWidth(Double.MAX_VALUE);
-      }
-    }
-
-    @Override
-    public void resize(double width, double height) {
-      super.resize(width, height);
-      this.getChildren().clear();
-      initializeBar(width, height);
-    }
-
   }
 
 }

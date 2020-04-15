@@ -5,15 +5,12 @@ import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
 import ooga.controller.ScreenController;
 import ooga.view.Screen;
 
@@ -38,24 +35,26 @@ public class FXLRParser {
   private static final char NODE_CLOSE_CHAR = ')';
   private static final char CHILDREN_OPEN_CHAR = '{';
   private static final char CHILDREN_CLOSE_CHAR = '}';
-  private static final String ROOT_NAME = "root";
   private static final int ATTR_EQUALITY_CHAR = '=';
   private static final char PACKAGE_OPEN_CHAR = '<';
   private static final char PACKAGE_CLOSE_CHAR = '>';
-  private static final String FONT_FAMILY = "Cambria";
-  //private static final int LINE_DELIMITER = ';';
+  private static final String STYLECLASS_ATTR_TAG = "style";
+  private static final String ACTION_EVENT_TAG = "actionTag";
+  private static final char RELATIVE_SIZE_CHAR = '%';
+  private static final String WIDTH_STRING = "width";
+  private static final String HEIGHT_STRING = "height";
+  private static final String DYNAMIC_UI_PACKAGE = "ooga.view.dynamicUI";
+
 
   private FXGraphBuilder gb;
   private List<String> packages;
-  private ScreenController controller;
 
-  public FXLRParser(ScreenController controller) {
-    this.controller = controller;
-  }
+  public FXLRParser() { }
 
-  public Screen loadFXLRLayout(File file) throws FileNotFoundException {
+  public Screen loadFXLRLayout(Screen root, File file) throws FileNotFoundException {
     packages = new ArrayList<>();
     gb = new FXGraphBuilder();
+    gb.setRoot(root);
 
     Scanner s = new Scanner(file);
 
@@ -105,24 +104,30 @@ public class FXLRParser {
 
     for (String packageName : packages) {
       try {
-        try {
-          Node node = (Node) Class.forName(packageName + "." + className).getDeclaredConstructor()
+        Node node;
+        if (packageName.equals(DYNAMIC_UI_PACKAGE)) {
+          node = gb.getRoot()
+              .getDynamicUIElement(className);
+          if (node == null) {
+            continue;
+          }
+          System.out.println("dynamic: " + node);
+        } else {
+          node = (Node) Class.forName(packageName + "." + className).getDeclaredConstructor()
               .newInstance();
+          System.out.println("static: " + node);
+        }
 
-          // set attributes
-          if (line.indexOf(' ') != -1 && line.indexOf(' ') < line.indexOf(NODE_CLOSE_CHAR)) {
-            String attrLine = line.substring(line.indexOf(' ') + 1, line.indexOf(NODE_CLOSE_CHAR));
-            setAttributes(node, attrLine);
-          }
+        // set attributes
+        if (line.indexOf(' ') != -1 && line.indexOf(' ') < line.indexOf(NODE_CLOSE_CHAR)) {
+          String attrLine = line.substring(line.indexOf(' ') + 1, line.indexOf(NODE_CLOSE_CHAR));
+          setAttributes(node, attrLine);
+        }
 
-          gb.addChild(node);
+        gb.addChild(node);
 
-          if (line.charAt(line.length() - 1) == CHILDREN_OPEN_CHAR) {
-            gb.branchOn(node);
-          }
-        } catch (NoSuchMethodException e) {
-          Screen root = (Screen) Class.forName(packageName + "." + className).getDeclaredConstructor(ScreenController.class).newInstance(controller);
-          gb.setRoot(root);
+        if (line.charAt(line.length() - 1) == CHILDREN_OPEN_CHAR) {
+          gb.branchOn(node);
         }
 
         return;
@@ -134,8 +139,6 @@ public class FXLRParser {
   }
 
   private void setAttributes(Node node, String attrLine) {
-    System.out.println(Arrays.toString(attrLine.split(",")));
-
     // set each attribute
     for (String item : attrLine.split(",")) {
       // find the setter method
@@ -143,6 +146,23 @@ public class FXLRParser {
       String attr = split[0].replace(" ", "");
       String[] argStrings = split[1].split("\\s+");
 
+      // special case for setting style class
+      if (attr.equals(STYLECLASS_ATTR_TAG)) {
+        node.getStyleClass().add(argStrings[0]);
+        return;
+      }
+
+      // special case for setting control action tags
+      if (attr.equals(ACTION_EVENT_TAG)) {
+        try {
+          node.addEventHandler(
+              ActionEvent.ACTION,
+              e->gb.getRoot().handleButtonPress(argStrings[0])
+          );
+        } catch (Exception e) {
+          System.out.println("Node " + node.toString() + " has no event handler.");
+        }
+      }
 
       try {
         String setterName =
@@ -150,7 +170,7 @@ public class FXLRParser {
         Method[] methods = node.getClass().getMethods();
         for (Method method : methods) {
           if (method.getName().equals(setterName)) {
-            Object[] args = getArgsFromStrings(argStrings, method.getParameterTypes());
+            Object[] args = getArgsFromStrings(node, attr, argStrings, method.getParameterTypes());
             method.invoke(node, args);
           }
         }
@@ -162,9 +182,9 @@ public class FXLRParser {
 
   }
 
-  private Object[] getArgsFromStrings(String[] argStrings, Class[] parameterTypes) {
+  private Object[] getArgsFromStrings(Node node, String attr, String[] argStrings,
+      Class[] parameterTypes) {
     Object[] args = new Object[argStrings.length];
-    System.out.println(Arrays.toString(parameterTypes));
 
     // Possible values of args include:
     // Integer, Double, String, Pos.ALIGNMENT, Insets (need to create from Integer/Double if needed)
@@ -173,28 +193,72 @@ public class FXLRParser {
       String argString = argStrings[i];
       Object arg = null;
       if (parameterTypes[i].equals(double.class)) {
-        arg = Double.parseDouble(argString);
+        if (argString.charAt(argString.length()-1) == RELATIVE_SIZE_CHAR) {
+          double temp = Double.parseDouble(argString.substring(0, argString.length()-1));
+          if (isWidthWiseAttribute(node, attr)) {
+            arg = temp / 100.0 * gb.getRoot().getPrefWidth();
+          } else if (isHeightWiseAttribute(node, attr)) {
+            arg = temp / 100.0 * gb.getRoot().getPrefHeight();
+          }
+        } else {
+          arg = Double.parseDouble(argString);
+        }
       }
       if (parameterTypes[i].equals(int.class)) {
-        arg = Integer.parseInt(argString);
+        if (argString.charAt(argString.length()-1) == RELATIVE_SIZE_CHAR) {
+          int temp = Integer.parseInt(argString.substring(0, argString.length()-1));
+          if (isWidthWiseAttribute(node, attr)) {
+            arg = (int) (temp / 100.0 * gb.getRoot().getPrefWidth());
+          } else if (isHeightWiseAttribute(node, attr)) {
+            arg = (int) (temp / 100.0 * gb.getRoot().getPrefHeight());
+          }
+        } else {
+          arg = Integer.parseInt(argString);
+        }
       }
       if (parameterTypes[i].equals(Pos.class)) {
         arg = Pos.valueOf(argString);
       }
       if (parameterTypes[i].equals(String.class)) {
-        arg = argString;
+        if (isTextAttribute(node, attr)) {
+          arg = gb.getRoot().getResource(argString);
+        } else {
+          arg = argString;
+        }
       }
-      if (parameterTypes[i].equals(Font.class)) {
-        arg = new Font(FONT_FAMILY, Integer.parseInt(argString));
-      }
-      if (parameterTypes[i].equals(Paint.class)) {
-        arg = Color.valueOf(argString);
+      if (parameterTypes[i].equals(Insets.class)) {
+        if (argStrings.length == 4) {
+          arg = new Insets(
+              Double.parseDouble(argStrings[0]),
+              Double.parseDouble(argStrings[1]),
+              Double.parseDouble(argStrings[2]),
+              Double.parseDouble(argStrings[3])
+          );
+        } else if (argStrings.length == 1) {
+          arg = new Insets(
+              Double.parseDouble(argStrings[0]));
+        }
       }
       args[i] = arg;
     }
 
-    System.out.println(Arrays.toString(args));
     return args;
+  }
+
+  private boolean isWidthWiseAttribute(Node node, String attr) {
+    return attr.toLowerCase().contains(WIDTH_STRING) ||
+        (node.getClass().getSimpleName().equals("HBox") && attr.contains("spacing")) ||
+        attr.contains("X");
+  }
+
+  private boolean isHeightWiseAttribute(Node node, String attr) {
+    return attr.toLowerCase().contains(HEIGHT_STRING) ||
+        (node.getClass().getSimpleName().equals("VBox") && attr.contains("spacing")) ||
+        attr.contains("Y");
+  }
+
+  private boolean isTextAttribute(Node node, String attr) {
+    return attr.toLowerCase().contains("text");
   }
 
 }
