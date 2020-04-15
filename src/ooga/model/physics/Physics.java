@@ -46,8 +46,8 @@ public class Physics {
 
     //Position Updates
     myPosition[X] += myVelocity[X]*dt;
-    //myPosition[Y] += myVelocity[Y]*dt;
-    myPosition[Y] = tempCheckLandJump();
+    myPosition[Y] += myVelocity[Y]*dt;
+    //myPosition[Y] = tempCheckLandJump();
 
     //Update Image Position
     myEntity.setX(myPosition[X]);
