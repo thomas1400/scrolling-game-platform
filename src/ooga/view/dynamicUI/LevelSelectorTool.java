@@ -28,12 +28,34 @@ public class LevelSelectorTool extends Pane {
 
   public LevelSelectorTool(BasicLevelList levels, String levelGraphFile, String levelMapFile,
       List<Integer> levelProgress) {
+
     myLevels = levels;
     parseGraph(levelGraphFile);
     parseMap(levelMapFile);
 
-    this.setBackground(new Background(new BackgroundFill(Color.GREY, null, null)));
+    drawLevelConnections();
+    initializeLevelButtons(levelProgress);
 
+    this.getStyleClass().add("level-selector-tool");
+  }
+
+  private void initializeLevelButtons(List<Integer> levelProgress) {
+    levelToggles = new ToggleGroup();
+    for (int i = 0; i < numLevels; i++) {
+      RadioButton button = new RadioButton(""+(i+1));
+      button.setToggleGroup(levelToggles);
+      button.setId(Integer.toString(i+1));
+      if (i == levelProgress.get(levelProgress.size()-1)) {
+        button.setSelected(true);
+      }
+      button.setLayoutX(locations[i][0]);
+      button.setLayoutY(locations[i][1]);
+      button.getStyleClass().add("level-button");
+      this.getChildren().add(button);
+    }
+  }
+
+  private void drawLevelConnections() {
     // draw connecting lines
     for (int a = 0; a < numLevels; a++) {
       double[] start = locations[a];
@@ -48,19 +70,6 @@ public class LevelSelectorTool extends Pane {
           this.getChildren().add(connection);
         }
       }
-    }
-
-    levelToggles = new ToggleGroup();
-    for (int i = 0; i < numLevels; i++) {
-      RadioButton button = new RadioButton(""+(i+1));
-      button.setToggleGroup(levelToggles);
-      button.setId(Integer.toString(i+1));
-      if (i == levelProgress.get(levelProgress.size()-1)) {
-        button.setSelected(true);
-      }
-      button.setLayoutX(locations[i][0]);
-      button.setLayoutY(locations[i][1]);
-      this.getChildren().add(button);
     }
   }
 

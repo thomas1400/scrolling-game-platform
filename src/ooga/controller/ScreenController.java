@@ -36,6 +36,7 @@ public class ScreenController{
 
   public ScreenController(Stage primaryStage, UserList users, BasicLevelList levels){
     myStage = primaryStage;
+    myStage.setResizable(false);
 
     myUsers = users;
     mySelectedUser = users.getSelectedUser();

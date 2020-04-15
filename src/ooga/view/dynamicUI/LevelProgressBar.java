@@ -14,33 +14,21 @@ import javafx.scene.shape.Rectangle;
 
 public class LevelProgressBar extends Pane {
 
-  private final Color background = Color.WHITE;
-  private final Color fill = Color.DARKGREY;
-  private final Color border = Color.BLACK;
+  public static final int BAR_LAYOUT_OFFSET = 1;
   private double levelProgressFraction;
 
   public LevelProgressBar(int levelProgress, int totalLevels) {
     levelProgressFraction = (float) levelProgress / totalLevels;
 
-    this.setBackground(new Background(new BackgroundFill(background, null, null)));
-
-
-    this.setBorder(new Border(new BorderStroke(border,
-        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+    this.getStyleClass().add("level-progress-bar");
   }
 
   private void initializeBar(double width, double height) {
     Rectangle bar = new Rectangle(width * (float) levelProgressFraction - 2, height - 2);
-    bar.setFill(fill);
-    bar.setX(1);
-    bar.setY(1);
+    bar.setX(BAR_LAYOUT_OFFSET);
+    bar.setY(BAR_LAYOUT_OFFSET);
+    bar.getStyleClass().add("dynamic-ui-filled");
     this.getChildren().add(bar);
-  }
-
-  void setFillWidth(boolean value) {
-    if (value) {
-      this.setMaxWidth(Double.MAX_VALUE);
-    }
   }
 
   @Override

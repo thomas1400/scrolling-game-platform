@@ -2,6 +2,7 @@
   -fx-base: #bbd1ea;
   -fx-background: #dae3e5;
   -fx-accent: #507dbc;
+  -fx-dark-fill: #04080f;
 }
 
 .title {
@@ -22,9 +23,26 @@
   -fx-border-radius: 5px;
 }
 
+.level-progress-bar {
+  -fx-background-color: derive(-fx-background, 50%);
+  -fx-border-width: 2px;
+  -fx-border-style: solid;
+  -fx-border-color: -fx-accent;
+  -fx-border-radius: 1px;
+}
+
+.level-progress.bar > .dynamic-ui-filled {
+  -fx-fill: -fx-dark-fill;
+}
+
+.level-selector-tool {
+  -fx-background-color: -fx-base;
+}
+
 .button {
   -fx-focus-traversable: false;
   -fx-font-size: 20;
+  /* -fx-background-color: -fx-base */
 }
 
 .radio-button > .radio {

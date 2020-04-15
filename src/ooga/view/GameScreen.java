@@ -72,6 +72,10 @@ public class GameScreen extends Screen {
     handleButtonPress("exit");
   }
 
+  public void reset() {
+    controller.restartLevel();
+  }
+
   public double getGameWidth() {
     return gameBackground.getWidth();
   }
