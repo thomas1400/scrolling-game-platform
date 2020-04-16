@@ -1,6 +1,9 @@
 package ooga.view.dynamicUI;
 
 
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
@@ -18,8 +21,9 @@ public class LevelProgressBar extends Pane {
   public static final int BAR_LAYOUT_OFFSET = 1;
   private double levelProgressFraction;
   private Region bar;
+  private Label label;
 
-  public LevelProgressBar(int levelProgress, int totalLevels) {
+  public LevelProgressBar(String text, int levelProgress, int totalLevels) {
     levelProgressFraction = (float) levelProgress / totalLevels;
     bar = new Region();
     bar.setLayoutX(BAR_LAYOUT_OFFSET);
@@ -27,19 +31,24 @@ public class LevelProgressBar extends Pane {
     bar.getStyleClass().add("bar");
     this.getChildren().add(bar);
 
+    label = new Label(text);
+    label.setBlendMode(BlendMode.DIFFERENCE);
+    label.setAlignment(Pos.CENTER);
+    this.getChildren().add(label);
+
     this.getStyleClass().add("level-progress-bar");
   }
 
-  @Override
-  public void setWidth(double width) {
-    super.setWidth(width);
+  public void setPreferredWidth(double width) {
+    this.setPrefWidth(width);
     bar.setPrefWidth(width * (float) levelProgressFraction - 2);
+    label.setPrefWidth(width);
   }
 
-  @Override
-  public void setHeight(double height) {
-    super.setHeight(height);
+  public void setPreferredHeight(double height) {
+    this.setPrefHeight(height);
     bar.setPrefHeight(height - 2);
+    label.setPrefHeight(height);
   }
 
 }

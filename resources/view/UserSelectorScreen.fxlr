@@ -5,7 +5,7 @@
 <package javafx.scene.control>
 <package javafx.scene.layout>
 
-(VBox alignment=TOP_CENTER, layoutX=2%, layoutY=1%, spacing=1%, maxWidth=96%) {
+(VBox alignment=CENTER, layoutX=2%, layoutY=1%, spacing=1%, maxWidth=96%, prefHeight=100%) {
   (user-selector paneWidth=96%, paneHeight=80%)
   (HBox alignment=TOP_CENTER, spacing=1%) {
     (Button text=back, prefWidth=25%, prefHeight=10%, actionTag=back)
