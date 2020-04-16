@@ -7,6 +7,7 @@ import java.util.List;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import ooga.model.ability.Ability;
+import ooga.model.ability.CollectiblePackage;
 import ooga.model.ability.Health;
 import ooga.model.ability.Movement;
 import ooga.model.ability.Stunnable;
@@ -72,6 +73,16 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     } catch (InvocationTargetException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public void addCollectiblePackage(String packageType){
+    CollectiblePackage pac = CollectiblePackage.DEFAULT;
+    if(packageType.equals("POINTS")){
+      pac = CollectiblePackage.POINTS;
+    } else if (packageType.equals("SIZE")){
+      pac = CollectiblePackage.SIZE;
+    }
+
   }
 
   public void addAbility(String abilityType, Ability ability){
