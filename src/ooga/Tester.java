@@ -1,13 +1,12 @@
 package ooga;
 
-import java.io.IOException;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ooga.controller.ScreenController;
 import ooga.controller.data.BasicLevelList;
 import ooga.controller.data.UserList;
-import ooga.view.LevelBuilderScreen;
+import ooga.view.screen.LevelBuilderScreen;
 
 public class Tester extends Application{
 

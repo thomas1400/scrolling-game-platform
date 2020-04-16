@@ -1,4 +1,4 @@
-package ooga.view;
+package ooga.view.screen;
 
 import java.util.ResourceBundle;
 import javafx.geometry.Pos;

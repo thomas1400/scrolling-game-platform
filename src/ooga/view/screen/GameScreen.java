@@ -1,4 +1,4 @@
-package ooga.view;
+package ooga.view.screen;
 
 import javafx.scene.Group;
 import javafx.scene.control.Button;

@@ -17,6 +17,10 @@ public class BasicLevelList {
     }
   }
 
+  public int size() {
+    return myLevels.keySet().size();
+  }
+
 
 
   public BasicLevel getBasicLevel(int levelIndex){

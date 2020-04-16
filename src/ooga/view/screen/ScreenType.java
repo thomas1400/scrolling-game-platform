@@ -1,4 +1,4 @@
-package ooga.view;
+package ooga.view.screen;
 
 public enum ScreenType {
 }

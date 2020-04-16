@@ -2,14 +2,12 @@ package ooga.view.dynamicUI;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import ooga.controller.data.BasicLevel;
 import ooga.controller.data.BasicLevelList;
@@ -21,6 +19,8 @@ public class LevelSelectorTool extends Pane {
   private static final double CENTER_OFFSET = 10.0;
 
   private BasicLevelList myLevels;
+  private List<Integer> myUnlockedLevels;
+  private List<Integer> myCompletedLevels;
   private ToggleGroup levelToggles;
   private boolean[][] adjacency;
   double[][] locations;
@@ -30,8 +30,13 @@ public class LevelSelectorTool extends Pane {
       List<Integer> levelProgress) {
 
     myLevels = levels;
+    myUnlockedLevels = new ArrayList<>();
+    myCompletedLevels = levelProgress;
+
     parseGraph(levelGraphFile);
     parseMap(levelMapFile);
+
+    findUnlockedLevels();
 
     drawLevelConnections();
     initializeLevelButtons(levelProgress);
@@ -41,8 +46,8 @@ public class LevelSelectorTool extends Pane {
 
   private void initializeLevelButtons(List<Integer> levelProgress) {
     levelToggles = new ToggleGroup();
-    for (int i = 0; i < numLevels; i++) {
-      RadioButton button = new RadioButton(""+(i+1));
+    for (int i : myUnlockedLevels) {
+      RadioButton button = new RadioButton(myLevels.getBasicLevel(i+1).getMainTitle());
       button.setToggleGroup(levelToggles);
       button.setId(Integer.toString(i+1));
       if (i == levelProgress.get(levelProgress.size()-1)) {
@@ -50,16 +55,15 @@ public class LevelSelectorTool extends Pane {
       }
       button.setLayoutX(locations[i][0]);
       button.setLayoutY(locations[i][1]);
-      button.getStyleClass().add("level-button");
       this.getChildren().add(button);
     }
   }
 
   private void drawLevelConnections() {
     // draw connecting lines
-    for (int a = 0; a < numLevels; a++) {
+    for (int a : myUnlockedLevels) {
       double[] start = locations[a];
-      for (int b = 0; b < numLevels; b++) {
+      for (int b : myUnlockedLevels) {
         if (adjacency[a][b]) {
           double[] end = locations[b];
           Line connection = new Line(
@@ -117,6 +121,24 @@ public class LevelSelectorTool extends Pane {
       s.close();
     } catch (FileNotFoundException e) {
       ExceptionFeedback.throwBreakingException(e, "Level map not found.");
+    }
+  }
+
+  private void findUnlockedLevels() {
+    // for each level in myLevels
+    // only show the level if completedLevels contains a level that connects to it
+    for (int i = 0; i < numLevels; i++) {
+      int levelNum = i+1;
+      if (myCompletedLevels.contains(i)) {
+        myUnlockedLevels.add(i);
+      }
+      for (int completed : myCompletedLevels) {
+        if (completed < numLevels) {
+          if (adjacency[completed][i]) {
+            myUnlockedLevels.add(i);
+          }
+        }
+      }
     }
   }
 

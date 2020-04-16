@@ -1,4 +1,4 @@
-package ooga.view;
+package ooga.view.screen;
 
 import javafx.animation.FadeTransition;
 import javafx.scene.layout.Pane;
