@@ -27,9 +27,11 @@ public class GameScreen extends Screen {
     gameBackground = new Rectangle();
     gameBackground.setFill(new ImagePattern(new Image(level.getBackgroundImage())));
 
-    Label lives = new Label(resources.getString("lives") + ": " + user.getLives());
+    Label lives = new Label();
+    lives.textProperty().bind(user.getLivesProperty().asString(resources.getString("lives") + ": %d"));
     lives.getStyleClass().add("user-data-display");
-    Label score = new Label(resources.getString("score") + ": " + user.getPoints());
+    Label score = new Label();
+    score.textProperty().bind(user.getPointsProperty().asString(resources.getString("score") + ": %d"));
     score.getStyleClass().add("user-data-display");
 
     pause = new Button();
