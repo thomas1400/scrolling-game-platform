@@ -245,7 +245,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   //used for reflection DO NOT DELETE
   private void bounce(Attack myAttack){
     //if it's on the bottom
-    System.out.println(debuggingName);
     if(haveMovement) {
       movement.bounceX();
     }
@@ -277,7 +276,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   public void jump(){
-    System.out.println("hi");
+    setY(getY()-Physics.TINY_DISTANCE);
     movement.jump();
   }
 
