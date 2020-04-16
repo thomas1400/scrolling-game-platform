@@ -258,10 +258,15 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   public void moveRight(){
+
+    setScaleX(1);
     movement.right();
   }
 
   public void moveLeft(){
+    //scaleXProperty();
+    setScaleX(-1);
+
     movement.left();
   }
 
