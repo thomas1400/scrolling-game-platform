@@ -35,6 +35,8 @@
 .button {
   -fx-focus-traversable: false;
   -fx-font-size: 20pt;
+  -fx-background-radius: 10px;
+  -fx-border-radius: 10px;
 }
 
 
@@ -64,11 +66,13 @@
   -fx-border-width: 2px;
   -fx-border-style: solid;
   -fx-border-color: -fx-accent;
-  -fx-border-radius: 1px;
+  -fx-border-radius: 5px;
+  -fx-background-radius: 5px;
 }
 
-.level-progress.bar > .dynamic-ui-filled {
-  -fx-fill: -fx-dark-fill;
+.level-progress-bar > .bar {
+  -fx-background-color: #000;
+  -fx-background-radius: 5px;
 }
 
 
@@ -78,23 +82,32 @@
 
 .level-selector-tool {
   -fx-background-color: -fx-base;
+  -fx-background-radius: 10px;
+}
+
+.level-selector-tool > .radio-button .text {
+  -fx-font-size: 15pt;
+  -fx-font-weight: bolder;
+  -fx-stroke: white;
+  -fx-stroke-width: 1px;
 }
 
 .level-selector-tool > .radio-button > .radio {
-  -fx-border-width: 1px;
-  -fx-border-color: #000;
+  -fx-border-width: 2px;
+  -fx-border-color: -fx-dark-fill;
   -fx-background-color: white;
-  -fx-background-image: null;
-  -fx-border-radius: 30px;
-  -fx-padding: 4px;
+  -fx-background-radius: 100px;
+  -fx-border-radius: 100px;
+  -fx-padding: 5px;
 }
-.level-selector-tool > .radio-button > .radio:selected {
-  -fx-background-color: white;
-  -fx-background-image: null;
+
+.level-selector-tool > .radio-button > .radio > .dot {
+  -fx-padding: 10px;
+  -fx-background-insets: 0;
 }
-.level-selector-tool > .radio-button > .dot {
-  -fx-background-radius: 30px;
-  -fx-padding: 8px;
+
+.level-selector-tool > .radio-button:selected > .radio > .dot {
+  -fx-background-color: -fx-dark-fill;
 }
 
 .level-selector-tool > .level-connection {
