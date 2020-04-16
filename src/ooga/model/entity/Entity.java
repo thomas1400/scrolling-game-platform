@@ -266,6 +266,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   public void jump(){
+    System.out.println("hi");
     movement.jump();
   }
 
