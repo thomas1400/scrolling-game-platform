@@ -1,6 +1,8 @@
 package ooga.controller.data;
 
 import java.util.List;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.Image;
 import ooga.controller.UserSaver;
 import ooga.model.entity.Entity;
@@ -12,7 +14,9 @@ public class User {
   private String myImageFileName;
   private List<Integer> myLevelsUnlocked;
   private int myLives;
+  private IntegerProperty livesProperty;
   private int myPoints = 0;
+  private IntegerProperty pointsProperty;
   private String myPower = "none";
   private String mySize = "small";
   //private List<String> myAchievements;
@@ -22,6 +26,9 @@ public class User {
     myImageFileName = imageFileName;
     myLevelsUnlocked = levelsUnlocked;
     myLives = lives;
+    livesProperty = new SimpleIntegerProperty(myLives);
+    pointsProperty = new SimpleIntegerProperty(myPoints);
+
   }
 
   public void saveUser(){
@@ -71,10 +78,12 @@ public class User {
 
   public void addLife(){
     myLives += 1;
+    livesProperty.add(1);
   }
 
   public void adjustLives(int lives) {
     myLives += lives;
+    livesProperty.add(lives);
   }
 
   public int getPoints() {
@@ -83,10 +92,20 @@ public class User {
 
   public void addPoint(){
     myPoints += 1;
+    pointsProperty.add(1);
   }
 
   public void adjustPoints(int points) {
     myPoints += points;
+    pointsProperty.add(points);
+  }
+
+  public IntegerProperty getLivesProperty() {
+    return livesProperty;
+  }
+
+  public IntegerProperty getPointsProperty() {
+    return pointsProperty;
   }
 
   public String getPower() {
