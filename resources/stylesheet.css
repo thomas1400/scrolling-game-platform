@@ -35,8 +35,15 @@
 .button {
   -fx-focus-traversable: false;
   -fx-font-size: 20pt;
-  -fx-background-radius: 10px;
-  -fx-border-radius: 10px;
+  -fx-background-radius: 20px;
+  -fx-border-radius: 20px;
+  -fx-border-color: derive(-fx-accent, 25%);
+}
+
+.button .text {
+  -fx-stroke: white;
+  -fx-stroke-weight: 0.75;
+  -fx-font-weight: bolder;
 }
 
 
@@ -70,9 +77,14 @@
   -fx-background-radius: 5px;
 }
 
-.level-progress-bar > .bar {
+.level-progress-bar .bar {
   -fx-background-color: #000;
   -fx-background-radius: 5px;
+}
+
+.level-progress-bar .label {
+  -fx-font-size: 15pt;
+  -fx-text-fill: white;
 }
 
 
@@ -83,16 +95,18 @@
 .level-selector-tool {
   -fx-background-color: -fx-base;
   -fx-background-radius: 10px;
+  -fx-border-color: -fx-accent;
+  -fx-border-radius: 10px;
 }
 
-.level-selector-tool > .radio-button .text {
+.level-selector-tool .radio-button .text {
   -fx-font-size: 15pt;
   -fx-font-weight: bolder;
   -fx-stroke: white;
   -fx-stroke-width: 1px;
 }
 
-.level-selector-tool > .radio-button > .radio {
+.level-selector-tool .radio-button .radio {
   -fx-border-width: 2px;
   -fx-border-color: -fx-dark-fill;
   -fx-background-color: white;
@@ -101,12 +115,12 @@
   -fx-padding: 5px;
 }
 
-.level-selector-tool > .radio-button > .radio > .dot {
+.level-selector-tool .radio-button .radio .dot {
   -fx-padding: 10px;
   -fx-background-insets: 0;
 }
 
-.level-selector-tool > .radio-button:selected > .radio > .dot {
+.level-selector-tool .radio-button:selected .radio .dot {
   -fx-background-color: -fx-dark-fill;
 }
 
@@ -128,4 +142,28 @@
   -fx-border-style: solid;
   -fx-border-color: -fx-accent;
   -fx-border-radius: 5px;
+}
+
+
+/********************************************************
+ *                                                      *
+ *                Loading Screen Styling                *
+ *                                                      *
+ ********************************************************/
+
+.loading-screen {
+  -fx-background-color: -fx-dark-fill;
+}
+
+.loading-screen .label {
+  -fx-text-fill: white;
+}
+
+.loading-screen .subtitle .text {
+  -fx-stroke: -fx-accent;
+  -fx-stroke-width: 1px;
+}
+
+.loading-screen .level-label {
+  -fx-font-size: 20pt;
 }

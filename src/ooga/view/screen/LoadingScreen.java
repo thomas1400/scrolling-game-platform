@@ -14,7 +14,7 @@ import ooga.controller.data.BasicLevel;
 import ooga.view.factory.ControlFactory;
 import ooga.view.fxlr.FXLRParser;
 
-public class LoadingPane extends Screen {
+public class LoadingScreen extends Screen {
 
   private static final Color BACKGROUND = Color.BLACK;
   private static final Color TEXT_COLOR = Color.WHITE;
@@ -24,9 +24,11 @@ public class LoadingPane extends Screen {
   private static final String RESOURCES_PATH = "ooga.view.resources.";
   private static final String RESOURCES_SUFFIX = "Text";
 
-  public LoadingPane(Node parent, BasicLevel level) {
+  public LoadingScreen(Node parent, BasicLevel level) {
     super(null);
     this.setPrefSize(parent.getLayoutBounds().getWidth(), parent.getLayoutBounds().getHeight());
+
+    this.getStyleClass().add("loading-screen");
 
     dynamicNodes.put("level-label", new Label(level.getMainTitle()));
 

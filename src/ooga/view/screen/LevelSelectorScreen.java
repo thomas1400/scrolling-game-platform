@@ -27,7 +27,7 @@ public class LevelSelectorScreen extends Screen {
 
       DynamicUserLabel username = new DynamicUserLabel();
       username.setText(resources.getString("user") + " : " + user.getName());
-      LevelProgressBar lpb = new LevelProgressBar(user.getLevelsUnlocked().size(), myLevels.size());
+      LevelProgressBar lpb = new LevelProgressBar(resources.getString("progress"), user.getLevelsUnlocked().size(), myLevels.size());
       lst = new LevelSelectorTool(levels, LEVEL_GRAPH_FILE, LEVEL_MAP_FILE,
           user.getLevelsUnlocked());
 
@@ -41,7 +41,7 @@ public class LevelSelectorScreen extends Screen {
 
   public void loadLevel() {
 
-    Pane loadingPane = new LoadingPane(this);
+    Pane loadingPane = new LoadingScreen(this, lst.getSelected());
     this.getChildren().add(loadingPane);
 
     FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), loadingPane);

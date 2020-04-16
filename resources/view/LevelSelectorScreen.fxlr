@@ -10,9 +10,8 @@
   (level-selector-tool prefWidth=95%, prefHeight=76%)
   (HBox alignment=TOP_CENTER, spacing=1%) {
     (Button text=back, prefWidth=25%, prefHeight=10%, actionTag=back)
-    (VBox alignment=TOP_CENTER) {
-      (Label text=progress, prefWidth=45%, prefHeight=3.5%, alignment=CENTER)
-      (level-progress-bar width=45%, height=5%)
+    (VBox alignment=CENTER) {
+      (level-progress-bar preferredWidth=45%, preferredHeight=5%)
     }
     (Button text=begin, prefWidth=25%, prefHeight=10%, actionTag=begin)
   }
