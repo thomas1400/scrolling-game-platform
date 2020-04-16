@@ -53,10 +53,10 @@ public class CollisionManager {
             String[] results = myCollisionLocationResources.getString(min).split(",");
             createAndSendCollision(results[0], entity2.getAttack(results[1]), entity);
             System.out.println(results[0]);
-            System.out.println(entity2.getAttack(results[0]));
+            System.out.println(entity2.getAttack(results[1]));
             System.out.println(entity.getX() + " " + entity.getY());
             System.out.println(results[1]);
-            System.out.println(entity.getAttack(results[1]));
+            System.out.println(entity.getAttack(results[0]));
             System.out.println(entity2.getX() + " " + entity2.getY());
             createAndSendCollision(results[1], entity.getAttack(results[0]), entity2);
           }
