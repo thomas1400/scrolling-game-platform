@@ -27,7 +27,7 @@ public class LevelSelectorScreen extends Screen {
 
       DynamicUserLabel username = new DynamicUserLabel();
       username.setText(resources.getString("user") + " : " + user.getName());
-      LevelProgressBar lpb = new LevelProgressBar(1, 3);
+      LevelProgressBar lpb = new LevelProgressBar(user.getLevelsUnlocked().size(), myLevels.size());
       lst = new LevelSelectorTool(levels, LEVEL_GRAPH_FILE, LEVEL_MAP_FILE,
           user.getLevelsUnlocked());
 
