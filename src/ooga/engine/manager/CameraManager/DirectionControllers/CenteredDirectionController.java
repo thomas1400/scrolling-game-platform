@@ -17,10 +17,7 @@ public class CenteredDirectionController extends DirectionController {
   public void updateCameraPosition(EntityList entities, Entity mainEntity) {
     xCenter = myScreenWidth / 2 - mainEntity.getBoundsInLocal().getWidth() / 2;
     yCenter = myScreenHeight/2- mainEntity.getBoundsInLocal().getHeight()/2;
-    if (mainEntity.getX() != xCenter){
-      setToCenter(entities, mainEntity);
-    }
-    if (mainEntity.getY() != yCenter) {
+    if (mainEntity.getX() != xCenter | mainEntity.getY() != yCenter){
       setToCenter(entities, mainEntity);
     }
   }
@@ -30,6 +27,7 @@ public class CenteredDirectionController extends DirectionController {
     yCenter = myScreenHeight/2- mainEntity.getBoundsInLocal().getHeight()/2;
     xChange = mainEntity.getX() - xCenter;
     yChange = mainEntity.getY() - yCenter;
+    System.out.println(yChange);
     resetMainEntity(mainEntity);
     updateCoordinates(entities, mainEntity);
   }
