@@ -1,0 +1,12 @@
+### Loading Screen FXLR
+
+<package ooga.view>
+<package ooga.view.dynamicUI>
+<package javafx.scene.control>
+<package javafx.scene.layout>
+
+(VBox alignment=CENTER, prefWidth=100%, prefHeight=100%, spacing=5%) {
+  (Label text=loading, style=sub-subtitle prefHeight=25%, prefWidth=100%)
+  (level-label)
+}
+
