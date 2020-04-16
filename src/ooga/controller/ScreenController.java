@@ -12,11 +12,11 @@ import ooga.controller.data.BasicLevel;
 import ooga.controller.data.BasicLevelList;
 import ooga.controller.data.User;
 import ooga.controller.data.UserList;
-import ooga.view.GameScreen;
-import ooga.view.HomeScreen;
-import ooga.view.LevelSelectorScreen;
-import ooga.view.Screen;
-import ooga.view.UserSelectorScreen;
+import ooga.view.screen.GameScreen;
+import ooga.view.screen.HomeScreen;
+import ooga.view.screen.LevelSelectorScreen;
+import ooga.view.screen.Screen;
+import ooga.view.screen.UserSelectorScreen;
 
 public class ScreenController{
 
@@ -36,6 +36,7 @@ public class ScreenController{
 
   public ScreenController(Stage primaryStage, UserList users, BasicLevelList levels){
     myStage = primaryStage;
+    myStage.setResizable(false);
 
     myUsers = users;
     mySelectedUser = users.getSelectedUser();

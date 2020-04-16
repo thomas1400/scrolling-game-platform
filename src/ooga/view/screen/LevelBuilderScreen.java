@@ -1,4 +1,4 @@
-package ooga.view;
+package ooga.view.screen;
 
 import java.io.File;
 import java.io.IOException;

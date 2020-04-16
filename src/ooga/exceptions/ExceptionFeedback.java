@@ -17,19 +17,20 @@ public class ExceptionFeedback {
    * @param message message to include
    */
   public static void throwBreakingException(Exception e, String message) {
-    showAlert(e.getClass().getSimpleName(), message);
+    ButtonType quit = new ButtonType("QUIT", ButtonData.OK_DONE);
+    showAlert(e.getClass().getSimpleName(), message, quit);
 
     e.printStackTrace();
     System.exit(-1);
   }
 
   public static void throwHandledException(Exception e, String message) {
-    showAlert(e.getClass().getSimpleName(), message);
+    ButtonType close = new ButtonType("CLOSE", ButtonData.OK_DONE);
+    showAlert(e.getClass().getSimpleName(), message, close);
   }
 
-  private static void showAlert(String header, String message) {
-    ButtonType quit = new ButtonType("QUIT", ButtonData.OK_DONE);
-    Alert alert = new Alert(AlertType.ERROR, "", quit);
+  private static void showAlert(String header, String message, ButtonType buttonType) {
+    Alert alert = new Alert(AlertType.ERROR, "", buttonType);
     alert.setHeaderText(header);
 
     StringBuilder sb = new StringBuilder(message);

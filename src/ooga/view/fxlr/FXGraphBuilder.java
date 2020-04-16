@@ -2,7 +2,7 @@ package ooga.view.fxlr;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import ooga.view.Screen;
+import ooga.view.screen.Screen;
 
 class FXGraphBuilder {
 

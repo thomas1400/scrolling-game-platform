@@ -103,7 +103,7 @@ public class Physics {
 
   private void stopDirectionalMotion(int axis){
     myAcceleration[axis] = 0;
-    //myPosition[axis] -= TINY_BOUNCE_DISTANCE * getDirection(myVelocity[axis]);
+    myPosition[axis] -= TINY_BOUNCE_DISTANCE * getDirection(myVelocity[axis]);
     myVelocity[axis] = 0;
   }
 

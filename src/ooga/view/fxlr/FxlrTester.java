@@ -7,8 +7,8 @@ import javafx.stage.Stage;
 import ooga.controller.ScreenController;
 import ooga.controller.data.BasicLevelList;
 import ooga.controller.data.UserList;
-import ooga.view.HomeScreen;
-import ooga.view.Screen;
+import ooga.view.screen.HomeScreen;
+import ooga.view.screen.Screen;
 
 public class FxlrTester extends Application {
 

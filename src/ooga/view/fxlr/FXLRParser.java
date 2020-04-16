@@ -11,7 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import ooga.view.Screen;
+import ooga.view.screen.Screen;
 
 /**
  * Parses .FXLR (FX Layout Representation) files and creates JavaFX node hierarchies.

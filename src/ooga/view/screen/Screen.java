@@ -1,4 +1,4 @@
-package ooga.view;
+package ooga.view.screen;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import ooga.controller.ScreenController;
+import ooga.view.Displayable;
 import ooga.view.fxlr.FXLRParser;
 
 public abstract class Screen extends Pane implements Displayable {

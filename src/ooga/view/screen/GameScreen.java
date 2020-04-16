@@ -1,4 +1,4 @@
-package ooga.view;
+package ooga.view.screen;
 
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -70,6 +70,10 @@ public class GameScreen extends Screen {
   public void quit() {
     levelController.endLevel();
     handleButtonPress("exit");
+  }
+
+  public void reset() {
+    controller.restartLevel();
   }
 
   public double getGameWidth() {

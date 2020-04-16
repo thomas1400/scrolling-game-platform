@@ -73,7 +73,6 @@ public class UserSelector extends Pane {
   }
 
   public void setPaneWidth(double width) {
-    System.out.println("set width");
     setPrefWidth(width);
     reinitializeButtons();
   }

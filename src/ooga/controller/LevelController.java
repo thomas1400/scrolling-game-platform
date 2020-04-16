@@ -10,7 +10,7 @@ import ooga.controller.data.CompleteLevel;
 import ooga.controller.data.User;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
-import ooga.view.GameScreen;
+import ooga.view.screen.GameScreen;
 
 public class LevelController implements Communicable{
 
