@@ -24,7 +24,6 @@ public class HorizontalDirectionController extends DirectionController {
     }
     if (mainEntity.getY()<=0){
       mainEntity.setY(0.1);
-      System.out.println("hi");
     }
   }
 
