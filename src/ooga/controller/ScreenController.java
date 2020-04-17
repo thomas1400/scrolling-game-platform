@@ -62,10 +62,7 @@ public class ScreenController{
 
   private void initializeScreens(){
     Screen myLevelSelectorScreen = new LevelSelectorScreen(this, myBasicLevels);
-<<<<<<< HEAD
     Screen myUserCreationScreen = new UserCreationScreen(this);
-=======
->>>>>>> 6db68806f7c5cc6caebbe5af43388ac39c0ad5d8
     Screen myUserSelectorScreen = new UserSelectorScreen(this, myUsers);
     Screen myHomeScreen = new HomeScreen(this);
     //private Screen myLevelBuilderScreen = new LevelBuilderScreen();

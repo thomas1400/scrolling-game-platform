@@ -14,11 +14,7 @@ public class UpDirectionController extends DirectionController {
   }
 
   public void updateCameraPosition(EntityList entities, Entity mainEntity) {
-<<<<<<< HEAD
-    yCenter = myScreenHeight / 2 - mainEntity.getBoundsInLocal().getHeight() / 2;
-=======
     yCenter = myScreenHeight / 2 - mainEntity.getBoundsInLocal().getHeight() / 2-100;
->>>>>>> 6db68806f7c5cc6caebbe5af43388ac39c0ad5d8
     if (mainEntity.getY() < yCenter) {
       setToCenter(entities, mainEntity);
       //entities.changeAllCoordinates(0, change);
