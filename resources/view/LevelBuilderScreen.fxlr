@@ -26,7 +26,7 @@
       (HBox alignment=CENTER, prefWidth=40%, prefHeight=8%) {
         (Label text=background , style=detail, prefWidth=16%, prefHeight=8%)
         (background-input preferredWidth=16%, preferredHeight=8%)
-        (Button text=Load, actionTag=choose-image)
+        (Button text=load, actionTag=choose-image)
       }
     }
     (VBox alignment=CENTER, prefWidth=30%) {
