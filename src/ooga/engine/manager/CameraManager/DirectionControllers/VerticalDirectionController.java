@@ -22,6 +22,12 @@ public class VerticalDirectionController extends DirectionController {
     else if (mainEntity.getY() < yCenter - OFFSET) {
       setToCenter(entities, mainEntity, - OFFSET);
     }
+    else if (mainEntity.getX() > myScreenWidth - mainEntity.getBoundsInLocal().getWidth()) {
+      mainEntity.setX(myScreenWidth - mainEntity.getBoundsInLocal().getWidth());
+    }
+    else if (mainEntity.getX() < 0) {
+      mainEntity.setX(0);
+    }
   }
 
   private void setToCenter(EntityList entities, Entity mainEntity, int offset) {

@@ -3,7 +3,7 @@ id:0001
 mainTitle:Testing Level
 subTitle:Tutorial
 physics:land
-scrollType:horizontal
+scrollType:right
 deathsAllowed:1
 backgroundImage:images/gameBackground.png
 levelWidth:50
@@ -32,7 +32,7 @@ S:MiniMushroom
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . F . . .
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . G G G G G G G
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . G G G G 6 6 6 6 6 6 6
-. . X . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . G G G G 6 6 6 6 6 6 6 6 6 6 6
+. X . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . G G G G 6 6 6 6 6 6 6 6 6 6 6
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . G G G G 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6
 G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6
 #END

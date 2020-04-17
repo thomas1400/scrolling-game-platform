@@ -56,31 +56,24 @@ public class InputManager {
           e.printStackTrace();
         }
       } catch (SecurityException e) {
-        //FIXME
-        e.printStackTrace();
       }
     }
   }
 
   public void invokeMethod(String keyPressed) {
     try {
-      String methodName = myUserInputsResources.getString(keyPressed);
-      try {
-        Method m = myMainEntity.getClass().getDeclaredMethod(methodName);
-        m.invoke(myMainEntity);
-      } catch (NoSuchMethodException e) {
-        //FIXME
-        e.printStackTrace();
-      } catch (IllegalAccessException e) {
-        //FIXME
-        e.printStackTrace();
-      } catch (InvocationTargetException e) {
-        //FIXME
-        e.printStackTrace();
+      String methodName;
+      if(myUserInputsResources.containsKey(keyPressed)) {
+        methodName = myUserInputsResources.getString(keyPressed);
+        try {
+          Method m = myMainEntity.getClass().getDeclaredMethod(methodName);
+          m.invoke(myMainEntity);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+          //FIXME
+          e.printStackTrace();
+        }
       }
-    } catch (SecurityException e) {
-      //FIXME
-      e.printStackTrace();
+    } catch (SecurityException ignored) {
     }
   }
 }
