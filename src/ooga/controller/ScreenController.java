@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.Map;
+import javafx.animation.FadeTransition;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import ooga.controller.data.BasicLevel;
 import ooga.controller.data.BasicLevelList;
 import ooga.controller.data.User;
@@ -16,6 +18,7 @@ import ooga.exceptions.ExceptionFeedback;
 import ooga.view.screen.GameScreen;
 import ooga.view.screen.HomeScreen;
 import ooga.view.screen.LevelSelectorScreen;
+import ooga.view.screen.LoadingScreen;
 import ooga.view.screen.Screen;
 import ooga.view.screen.UserSelectorScreen;
 
@@ -122,6 +125,27 @@ public class ScreenController{
     mySelectedUser = user;
     myUsers.setSelectedUser(user);
     initializeScreens();
+  }
+
+  public void restartLevel(){
+    myLevelController.endLevel();
+
+    Pane loadingPane = new LoadingScreen(myGameScreen, myCurrentLevel);
+    myGameScreen.getChildren().add(loadingPane);
+
+    FadeTransition fade = new FadeTransition(Duration.seconds(0.5), loadingPane);
+    doFade(fade);
+    fade.setOnFinished((e) -> {
+      initializeNewLevel(myCurrentLevel);
+    });
+
+  }
+
+  private void doFade(FadeTransition fadeIn) {
+    fadeIn.setFromValue(0);
+    fadeIn.setToValue(1);
+    fadeIn.setCycleCount(1);
+    fadeIn.play();
   }
 
 }

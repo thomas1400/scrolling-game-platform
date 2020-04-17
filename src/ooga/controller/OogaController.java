@@ -22,7 +22,7 @@ public class OogaController {
     loadUsers();
     loadLevels();
 
-    handleCloseEvent(primaryStage);
+    //handleCloseEvent(primaryStage);
 
     new ScreenController(primaryStage, myUsers, myLevels);
   }
