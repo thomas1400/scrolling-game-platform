@@ -2,13 +2,13 @@ package ooga.model.ability.attacktypes;
 
 public enum Attack {
 
-  HARMLESS("nothing"),
-  COLLECT("collect"),
-  COLLECTIBLE("collectible"),
-  DAMAGE("damage"),
-  STUN("stun"),
-  SUPPORT("support"),
-  BOUNCE("bounce");
+  HARMLESS("Nothing"),
+  COLLECT("Collect"),
+  COLLECTIBLE("Collectible"),
+  DAMAGE("Damage"),
+  STUN("Stun"),
+  SUPPORT("Support"),
+  BOUNCE("Bounce");
 
   private String attackType;
 

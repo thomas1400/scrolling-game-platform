@@ -20,8 +20,6 @@ public class LevelController implements Communicable{
   private boolean levelLifeGainAllowed;
 
   private GameScreen myGS;
-  private CompleteLevel myCompleteLevel;
-  private CompleteLevel myInitialLevelState;
 
   private LevelLoop myLevelLoop;
   private Group myVisualGroup = new Group();
@@ -31,8 +29,7 @@ public class LevelController implements Communicable{
     myUser = user;
 
     myLevelNumber = basicLevel.getLevelIndex();
-    myCompleteLevel = getCompleteLevel(gs, basicLevel);
-    myInitialLevelState = myCompleteLevel;
+    CompleteLevel myCompleteLevel = getCompleteLevel(gs, basicLevel);
 
     setLivesRemaining(myCompleteLevel.getDeathsAllowed());
     levelLifeGainAllowed = myCompleteLevel.getLifeGainAllowed();

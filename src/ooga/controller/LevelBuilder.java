@@ -29,7 +29,6 @@ public final class LevelBuilder {
   private static final double PADDING = 0.01;
   private static final String LEVEL_HEIGHT_SPECIFIER = "levelHeight";
   private static final String LEVEL_WIDTH_SPECIFIER = "levelWidth";
-  private static final String LEVELS_SUFFIX = ".level";
 
   public static BasicLevel buildBasicLevel(File levelFile) throws FileNotFoundException {
     Map<String,String> headerInfo = getMapFromFile(levelFile, HEADER_TAG);

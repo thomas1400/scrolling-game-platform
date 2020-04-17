@@ -52,8 +52,8 @@ public class Physics {
 
     //Position Updates
     myPosition[X] += myVelocity[X]*dt;
-    myPosition[Y] += myVelocity[Y]*dt;
-    //myPosition[Y] = tempCheckLandJump();
+    //myPosition[Y] += myVelocity[Y]*dt;
+    myPosition[Y] = tempCheckLandJump();
 
     //Update Image Position
     myEntity.setX(myPosition[X]);
@@ -79,6 +79,14 @@ public class Physics {
     if (myAcceleration[Y] == 0) {
       myVelocity[X] = myVelocity[X] / (1 + FRICTION_DAMPING * dt);
     }
+  }
+
+  public void bounceX(){
+    myVelocity[X]*=-1;
+  }
+
+  public void bounceY(){
+    myVelocity[Y]*=-1;
   }
 
   private double tempCheckLandJump() {

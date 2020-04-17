@@ -20,6 +20,7 @@ import ooga.view.screen.HomeScreen;
 import ooga.view.screen.LevelSelectorScreen;
 import ooga.view.screen.LoadingScreen;
 import ooga.view.screen.Screen;
+import ooga.view.screen.UserCreationScreen;
 import ooga.view.screen.UserSelectorScreen;
 
 public class ScreenController{
@@ -64,6 +65,7 @@ public class ScreenController{
 
   private void initializeScreens(){
     Screen myLevelSelectorScreen = new LevelSelectorScreen(this, myBasicLevels);
+    Screen myUserCreationScreen = new UserCreationScreen(this);
     Screen myUserSelectorScreen = new UserSelectorScreen(this, myUsers);
     Screen myHomeScreen = new HomeScreen(this);
     //private Screen myLevelBuilderScreen = new LevelBuilderScreen();
@@ -71,6 +73,7 @@ public class ScreenController{
     myScreens.put("HomeScreen", myHomeScreen);
     myScreens.put("UserSelectorScreen", myUserSelectorScreen);
     myScreens.put("LevelSelectorScreen", myLevelSelectorScreen);
+    myScreens.put("UserCreationScreen", myUserCreationScreen);
     //private Screen myLevelBuilderScreen = new LevelBuilderScreen();
   };
 

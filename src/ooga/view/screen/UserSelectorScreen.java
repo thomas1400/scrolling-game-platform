@@ -26,6 +26,4 @@ public class UserSelectorScreen extends Screen {
     controller.switchToScreen("HomeScreen");
   }
 
-  // TODO : add capability to add a new user from the user selection screen
-
 }
