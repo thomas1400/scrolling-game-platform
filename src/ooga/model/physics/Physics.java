@@ -1,3 +1,4 @@
+
 package ooga.model.physics;
 
 import ooga.model.entity.Entity;
@@ -13,30 +14,35 @@ public class Physics {
   private static final double INITIAL_JUMP_VELOCITY = -1 * Math.sqrt(2*GRAVITY*JUMP_HEIGHT);
 
   private static final double MAX_VERT_VELOCITY = -1 * INITIAL_JUMP_VELOCITY;
-  private static final int SIGN_CHANGE = -1;
-  private static final double MAX_HORIZ_VELOCITY = 2.5 * sizeScale;
+  private static final double MAX_HORIZ_VELOCITY = 0.3 * sizeScale;
   private static final double RUN_ACCELERATION = 2.5 * sizeScale;
-  private static final double FRICTION_DAMPING = 2.0;
+  private static final double FRICTION_DAMPING = 0.2;
 
   private static final int X = 0;
   private static final int Y = 1;
   private static final double REACTIVITY_PERCENT = 3.5;
+  public static final double TINY_DISTANCE = MAX_VERT_VELOCITY*dt;
 
   private double[] myPosition;
   private double[] myVelocity;
   private double[] myAcceleration;
+  private double[] myInputAdjust;
 
   public Physics() {
     myPosition = new double[]{0, 0};
     myVelocity = new double[]{0, 0};
     myAcceleration = new double[]{0, 0};
+    myInputAdjust = new double[] {0,0};
   }
 
   public void update(Entity myEntity) {
-    //Get on screen position
+    //Update to use on screen position
     myPosition[X] = myEntity.getX();
     myPosition[Y] = myEntity.getY();
-    //yPosition[Y] = tempCheckLandJump();
+
+    //Adjust based on inputs
+    myPosition[X] += getInputAdjust(X);
+    myPosition[Y] += getInputAdjust(Y);
 
     //Velocity Updates
     myVelocity[X] += myAcceleration[X]*dt;
@@ -53,8 +59,14 @@ public class Physics {
     myEntity.setX(myPosition[X]);
     myEntity.setY(myPosition[Y]);
 
-    //Re-take initial Accel[Y] Value
+    //Reset Gravity
     myAcceleration[Y] = GRAVITY;
+  }
+
+  private double getInputAdjust(int axis) {
+    double adjustThisTick = myInputAdjust[axis];
+    myInputAdjust[axis] = 0;
+    return adjustThisTick;
   }
 
   private void limitVelocities() {
@@ -63,7 +75,7 @@ public class Physics {
   }
 
   private void adjustForFriction() {
-    //Horz Velocity Damping b/c of Friction if not in air
+    //Horiz Velocity Damping b/c of Friction if not in air
     if (myAcceleration[Y] == 0) {
       myVelocity[X] = myVelocity[X] / (1 + FRICTION_DAMPING * dt);
     }
@@ -75,7 +87,7 @@ public class Physics {
       myPosition[Y] += myVelocity[Y]*dt;
     } else {
       stopVerticalMotion();
-      myPosition[Y] -= 0.1;
+      myPosition[Y] -= TINY_DISTANCE;
     }
     return myPosition[Y];
   }
@@ -88,26 +100,29 @@ public class Physics {
     }
   }
 
+  public void stopHorizMotion() {
+    myInputAdjust[X] -= TINY_DISTANCE * getDirection(myVelocity[X]);
+    stopDirectionalMotion(X);
+  }
+
+  public void stopVerticalMotion() {
+    stopDirectionalMotion(Y);
+  }
+
+  private void stopDirectionalMotion(int axis){
+    myAcceleration[axis] = 0;
+    myVelocity[axis] = 0;
+  }
+
+  private double getDirection(double velocity) {
+    return velocity/Math.abs(velocity);
+  }
+
   public void jump() {
-    myAcceleration[Y] = GRAVITY;
+    myInputAdjust[Y] -= TINY_DISTANCE;
     myVelocity[Y] += INITIAL_JUMP_VELOCITY;
   }
-  public void stopHorizMotion() {
-    //TODO: Trigger this when an object collides with the side of an object that should stop its
-    // motion
-    myAcceleration[X] = 0;
-    myVelocity[X] = 0;
-  }
-  public void stopVerticalMotion() {
-    myAcceleration[Y] = 0;
-    myVelocity[Y] = 0;
-  }
-  public void changeXAcceleration(){
-    myAcceleration[X]*=SIGN_CHANGE;
-  }
-  public void changeYAcceleration(){
-    myAcceleration[Y]*=SIGN_CHANGE;
-  }
+
   public void moveLeft() {
     if (myVelocity[X] < 0) {
       myVelocity[X] = myVelocity[X] - RUN_ACCELERATION * dt;

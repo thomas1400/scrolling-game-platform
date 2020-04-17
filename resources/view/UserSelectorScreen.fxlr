@@ -1,0 +1,15 @@
+### User Selector Screen FXLR
+
+<package ooga.view>
+<package ooga.view.dynamicUI>
+<package javafx.scene.control>
+<package javafx.scene.layout>
+
+(VBox alignment=CENTER, layoutX=2%, layoutY=1%, spacing=3%, maxWidth=96%, prefHeight=100%) {
+  (user-selector paneWidth=96%, paneHeight=50%)
+  (HBox alignment=TOP_CENTER, prefHeight=10%, spacing=1%) {
+    (Button text=back, prefWidth=20%, prefHeight=10%, actionTag=back)
+    (Button text=select-user, prefWidth=40%, prefHeight=10%, actionTag=begin)
+    (Button text=new-user, prefWidth=20%, prefHeight=10%, actionTag=new-user)
+  }
+}

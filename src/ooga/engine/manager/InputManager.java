@@ -22,11 +22,29 @@ public class InputManager {
   }
 
   public void handleKeyPress(KeyEvent keyEvent) {
-    keysCurrentlyPressed.add(keyEvent.getCode().toString());
+    if (!keysCurrentlyPressed.contains(keyEvent.getCode().toString())) {
+      keysCurrentlyPressed.add(keyEvent.getCode().toString());
+      invokeMethod(keyEvent.getCode().toString());
+    }
+    /*else {
+      if (myUserInputsResources.getString(keyEvent.getCode().toString() + "ONREPEAT")
+          .equals("repeat")) {
+        invokeMethod(keyEvent.getCode().toString());
+      }*/
+  }
+
+  public void processInput() {
+    for (String str : keysCurrentlyPressed) {
+      if (myUserInputsResources.getString(str + "ONREPEAT")
+          .equals("repeat")) {
+        invokeMethod(str);
+      }
+    }
   }
 
   public void handleKeyRelease(KeyEvent keyEvent) {
     keysCurrentlyPressed.remove(keyEvent.getCode().toString());
+
   }
 
   public void invokeMethods() {
@@ -36,10 +54,7 @@ public class InputManager {
         try {
           Method m = myMainEntity.getClass().getDeclaredMethod(methodName);
           m.invoke(myMainEntity);
-        } catch (NoSuchMethodException e) {
-          //FIXME
-          e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchMethodException | IllegalAccessException e) {
           //FIXME
           e.printStackTrace();
         } catch (InvocationTargetException e) {
@@ -47,10 +62,24 @@ public class InputManager {
           e.printStackTrace();
         }
       } catch (SecurityException e) {
-        //FIXME
-        e.printStackTrace();
       }
     }
   }
 
+  public void invokeMethod(String keyPressed) {
+    try {
+      String methodName;
+      if(myUserInputsResources.containsKey(keyPressed)) {
+        methodName = myUserInputsResources.getString(keyPressed);
+        try {
+          Method m = myMainEntity.getClass().getDeclaredMethod(methodName);
+          m.invoke(myMainEntity);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+          //FIXME
+          e.printStackTrace();
+        }
+      }
+    } catch (SecurityException ignored) {
+    }
+  }
 }

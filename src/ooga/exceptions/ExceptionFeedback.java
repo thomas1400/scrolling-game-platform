@@ -2,7 +2,6 @@ package ooga.exceptions;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -17,17 +16,21 @@ public class ExceptionFeedback {
    * @param e       Exception to throw
    * @param message message to include
    */
-  public static void throwException(Exception e, String message) {
-    Alert alert = createAlert(e.getClass().getSimpleName(), message);
+  public static void throwBreakingException(Exception e, String message) {
+    ButtonType quit = new ButtonType("QUIT", ButtonData.OK_DONE);
+    showAlert(e.getClass().getSimpleName(), message, quit);
 
-    alert.showAndWait();
     e.printStackTrace();
     System.exit(-1);
   }
 
-  private static Alert createAlert(String header, String message) {
-    ButtonType quit = new ButtonType("QUIT", ButtonData.OK_DONE);
-    Alert alert = new Alert(AlertType.ERROR, "", quit);
+  public static void throwHandledException(Exception e, String message) {
+    ButtonType close = new ButtonType("CLOSE", ButtonData.OK_DONE);
+    showAlert(e.getClass().getSimpleName(), message, close);
+  }
+
+  private static void showAlert(String header, String message, ButtonType buttonType) {
+    Alert alert = new Alert(AlertType.ERROR, "", buttonType);
     alert.setHeaderText(header);
 
     StringBuilder sb = new StringBuilder(message);
@@ -37,6 +40,6 @@ public class ExceptionFeedback {
 
     Label t = new Label(sb.toString());
     alert.getDialogPane().setContent(t);
-    return alert;
+    alert.showAndWait();
   }
 }

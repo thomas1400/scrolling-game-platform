@@ -216,6 +216,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   //used for reflection DO NOT DELETE
   private void support(Attack myAttack){
     if(haveMovement) {
+      //setY(getY()-Physics.TINY_DISTANCE);
       movement.stand();
     }
   }
@@ -234,7 +235,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   //used for reflection DO NOT DELETE
   private void bounce(Attack myAttack){
     //if it's on the bottom
-    System.out.println(debuggingName);
     if(haveMovement) {
       movement.bounceX();
     }
@@ -258,14 +258,18 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   public void moveRight(){
+    setScaleX(1);
     movement.right();
   }
 
   public void moveLeft(){
+    setScaleX(-1);
+
     movement.left();
   }
 
   public void jump(){
+    setY(getY()-Physics.TINY_DISTANCE);
     movement.jump();
   }
 
