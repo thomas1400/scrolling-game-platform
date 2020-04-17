@@ -12,6 +12,7 @@ import ooga.controller.data.BasicLevel;
 import ooga.controller.data.BasicLevelList;
 import ooga.controller.data.User;
 import ooga.controller.data.UserList;
+import ooga.exceptions.ExceptionFeedback;
 import ooga.view.screen.GameScreen;
 import ooga.view.screen.HomeScreen;
 import ooga.view.screen.LevelSelectorScreen;
@@ -28,6 +29,7 @@ public class ScreenController{
   private UserList myUsers;
   private User mySelectedUser;
   private BasicLevelList myBasicLevels;
+  private BasicLevel myCurrentLevel;
 
   private Map<String, Screen> myScreens = new HashMap<>();
 
@@ -52,20 +54,18 @@ public class ScreenController{
     try {
       Image icon = new Image(new FileInputStream(ARTWORK_GOOMBA_PNG));
       myStage.getIcons().add(icon);
-    } catch (Exception ignored) {
-      //TODO: add actual catch
+    } catch (Exception e) {
+      ExceptionFeedback.throwBreakingException(e, "App Icon Not Found (Screen Controller)");
     }
   }
 
   private void initializeScreens(){
     Screen myLevelSelectorScreen = new LevelSelectorScreen(this, myBasicLevels);
-    //private Screen mySplashScreen = new SplashScreen();
     Screen myUserSelectorScreen = new UserSelectorScreen(this, myUsers);
     Screen myHomeScreen = new HomeScreen(this);
-    //private Screen mySplashScreen = new SplashScreen();
+    //private Screen myLevelBuilderScreen = new LevelBuilderScreen();
 
     myScreens.put("HomeScreen", myHomeScreen);
-    //myScreens.put("SplashScreen", mySplashScreen);
     myScreens.put("UserSelectorScreen", myUserSelectorScreen);
     myScreens.put("LevelSelectorScreen", myLevelSelectorScreen);
     //private Screen myLevelBuilderScreen = new LevelBuilderScreen();
@@ -79,7 +79,6 @@ public class ScreenController{
   private void showScene(Scene nextScene) {
     Scene lastScene = myStage.getScene();
     myStage.setScene(nextScene);
-    // TODO : look at alternatives to this bugfix, added by Thomas
     if (lastScene != null) {
       lastScene.setRoot(new Pane());
     }
@@ -95,7 +94,8 @@ public class ScreenController{
   }
 
   public void initializeNewLevel(BasicLevel basicLevel){
-    myGameScreen = new GameScreen(this, basicLevel);
+    myCurrentLevel = basicLevel;
+    myGameScreen = new GameScreen(this, myCurrentLevel);
     myScreens.put("GameScreen", myGameScreen);
 
     myLevelController =
@@ -122,12 +122,6 @@ public class ScreenController{
     mySelectedUser = user;
     myUsers.setSelectedUser(user);
     initializeScreens();
-  }
-
-  public void restartLevel(){
-    myLevelController.endLevel();
-    myScreens.remove("GameScreen");
-
   }
 
 }
