@@ -58,6 +58,9 @@ public final class UserSaver {
   }
 
   private static String buildStringFromList(List userPropertyList) {
+    if (userPropertyList.isEmpty()) {
+      return "";
+    }
     StringBuilder newString = new StringBuilder();
     for (Object property : userPropertyList){
       newString.append(property.toString()).append(",");
