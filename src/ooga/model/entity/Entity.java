@@ -231,7 +231,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   //used for reflection DO NOT DELETE
   private void points(Double value){
     score += value;
-    //System.out.println("score: " + score);
+    System.out.println("score: " + score);
   }
 
   //used for reflection DO NOT DELETE
@@ -241,7 +241,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
 
   //used for reflection DO NOT DELETE
   private void levelEnd(Double value){
-    //System.out.println("we did it");
+    System.out.println("we did it");
     levelEnded = true;
     success = (value!=0);
   }
