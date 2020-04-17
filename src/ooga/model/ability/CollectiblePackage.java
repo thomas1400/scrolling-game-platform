@@ -1,21 +1,25 @@
 package ooga.model.ability;
 
-public enum CollectiblePackage {
+public class CollectiblePackage extends Ability {
 
-  //should I use enums? or should I make subclasses?
-  DEFAULT("doNothing"),
-  POINTS("score"),
-  SIZE("scale");
+  private static final int TYPE_LOCATION = 0;
+  private static final int VALUE_LOCATION = 1;
+  private String typeTag;
+  private double packageValue;
 
-  private String packageType;
+  public CollectiblePackage(String information){
+    String[] array = information.split(" ");
+    //todo if array's size is zero, make value 0. if array's size is bigger than two throw an error
+    typeTag = array[TYPE_LOCATION];
+    packageValue = Double.parseDouble(array[VALUE_LOCATION]);
+  }
 
-  CollectiblePackage(String type){
-    packageType = type;
+  public double getPackageValue(){
+    return packageValue;
   }
 
   @Override
   public String toString(){
-    return packageType;
+    return typeTag;
   }
-
 }
