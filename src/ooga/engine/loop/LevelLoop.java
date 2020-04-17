@@ -61,6 +61,7 @@ public class LevelLoop implements Loopable {
     // tell the entities to update gravity and stuff
     processInput();
     updateCamera();
+    updateScoreAndLives();
     sendEntities();
   }
 
@@ -104,19 +105,25 @@ public class LevelLoop implements Loopable {
 
   private void updateScoreAndLives(){
     //myLevelController.adjustPoints(mainEntity.getScore);
-    myLevelController.adjustPoints((int) mainEntity.getScore());
-    System.out.println(mainEntity.getScore());
-    //mainEntity.setScore(0);
-    if(mainEntity.endedLevel()) {
-      end();
-      if (mainEntity.isSuccess()) {
-        myLevelController.handleWin();
-        end();
+    for(Entity entity: myEntityManager.getEntities()){
+      if(entity.getScore()!=0){
+        myLevelController.adjustPoints((int) mainEntity.getScore());
+        System.out.println(mainEntity.getScore());
       }
-      else{
-        myLevelController.adjustLives(-1);
+      if(entity.endedLevel()) {
+        System.out.println("we did it yay");
+        end();
+        if (entity.isSuccess()) {
+          myLevelController.handleWin();
+          end();
+        }
+        else{
+          myLevelController.adjustLives(-1);
+        }
       }
     }
+    //mainEntity.setScore(0);
+
   }
   private void sendEntities(){
     if(myEntityManager.getAddedEntities().size()!=0) {
