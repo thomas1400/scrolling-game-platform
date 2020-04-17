@@ -5,6 +5,7 @@ import javafx.animation.Timeline;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import ooga.controller.Communicable;
+import ooga.controller.GameLevel;
 import ooga.controller.data.CompleteLevel;
 import ooga.engine.manager.CameraManager.CameraManager;
 import ooga.engine.manager.CollisionManager;
@@ -15,7 +16,7 @@ import ooga.model.entity.EntityList;
 
 public class LevelLoop implements Loopable {
 
-  private Communicable myLevelController;
+  private GameLevel myLevelController;
   private EntityManager myEntityManager;
   private CameraManager myCameraManager;
   private InputManager myInputManager;
@@ -26,8 +27,9 @@ public class LevelLoop implements Loopable {
   private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
   private Timeline myTimeline;
   private Object KeyEvent;
+  private Entity mainEntity;
 
-  public LevelLoop(Communicable levelController, CompleteLevel level, double screenHeight, double screenWidth) {
+  public LevelLoop(GameLevel levelController, CompleteLevel level, double screenHeight, double screenWidth) {
     System.out.println(screenWidth + " " + screenHeight);
     myLevelController = levelController;
     EntityList myEntities = level.getEntities();
@@ -37,10 +39,7 @@ public class LevelLoop implements Loopable {
     myCollisionManager = new CollisionManager();
     EntityList entitiesOnScreen = myCameraManager.initializeActiveEntities(myEntities);
     myVisibleEntities =  entitiesOnScreen;
-    for (Entity entity: myEntityManager.getEntities()){
-      //System.out.println(entity);
-    }
-    //myEntityManager.addAllEntities(entitiesOnScreen);
+    mainEntity = level.getMainEntity();
     myEntityManager.initializeEntityLists();
     createTimeline();
   }
@@ -103,6 +102,22 @@ public class LevelLoop implements Loopable {
     }
   }
 
+  private void updateScoreAndLives(){
+    //myLevelController.adjustPoints(mainEntity.getScore);
+    myLevelController.adjustPoints((int) mainEntity.getScore());
+    System.out.println(mainEntity.getScore());
+    //mainEntity.setScore(0);
+    if(mainEntity.endedLevel()) {
+      end();
+      if (mainEntity.isSuccess()) {
+        myLevelController.handleWin();
+        end();
+      }
+      else{
+        myLevelController.adjustLives(-1);
+      }
+    }
+  }
   private void sendEntities(){
     if(myEntityManager.getAddedEntities().size()!=0) {
       myLevelController.addAllEntities(myEntityManager.getAddedEntities());
