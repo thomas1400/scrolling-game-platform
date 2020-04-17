@@ -17,8 +17,11 @@ public class RightDirectionController extends DirectionController {
     xCenter = myScreenWidth / 2 - mainEntity.getBoundsInLocal().getWidth() / 2;
     if (mainEntity.getX() > xCenter) {
       setToCenter(entities, mainEntity);
-    } else if (mainEntity.getX() < 0) {
+    } else if (mainEntity.getX() <= 0) {
       mainEntity.setX(0);
+    }
+    else if (mainEntity.getY()<=0){
+      mainEntity.setY(0.1);
     }
   }
 

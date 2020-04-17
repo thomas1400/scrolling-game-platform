@@ -22,6 +22,10 @@ public class HorizontalDirectionController extends DirectionController {
     else if (mainEntity.getX() < xCenter - OFFSET) {
       setToCenter(entities, mainEntity, - OFFSET);
     }
+    if (mainEntity.getY()<=0){
+      mainEntity.setY(0.1);
+      System.out.println("hi");
+    }
   }
 
   private void setToCenter(EntityList entities, Entity mainEntity, int offset) {

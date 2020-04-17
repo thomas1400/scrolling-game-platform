@@ -14,7 +14,7 @@ public class Physics {
   private static final double INITIAL_JUMP_VELOCITY = -1 * Math.sqrt(2*GRAVITY*JUMP_HEIGHT);
 
   private static final double MAX_VERT_VELOCITY = -1 * INITIAL_JUMP_VELOCITY;
-  private static final double MAX_HORIZ_VELOCITY = 2.5 * sizeScale;
+  private static final double MAX_HORIZ_VELOCITY = 0.3 * sizeScale;
   private static final double RUN_ACCELERATION = 2.5 * sizeScale;
   private static final double FRICTION_DAMPING = 0.2;
 

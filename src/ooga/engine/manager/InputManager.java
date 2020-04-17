@@ -25,10 +25,19 @@ public class InputManager {
     if (!keysCurrentlyPressed.contains(keyEvent.getCode().toString())) {
       keysCurrentlyPressed.add(keyEvent.getCode().toString());
       invokeMethod(keyEvent.getCode().toString());
-    } else {
+    }
+    /*else {
       if (myUserInputsResources.getString(keyEvent.getCode().toString() + "ONREPEAT")
           .equals("repeat")) {
         invokeMethod(keyEvent.getCode().toString());
+      }*/
+  }
+
+  public void processInput() {
+    for (String str : keysCurrentlyPressed) {
+      if (myUserInputsResources.getString(str + "ONREPEAT")
+          .equals("repeat")) {
+        invokeMethod(str);
       }
     }
   }
@@ -45,10 +54,7 @@ public class InputManager {
         try {
           Method m = myMainEntity.getClass().getDeclaredMethod(methodName);
           m.invoke(myMainEntity);
-        } catch (NoSuchMethodException e) {
-          //FIXME
-          e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchMethodException | IllegalAccessException e) {
           //FIXME
           e.printStackTrace();
         } catch (InvocationTargetException e) {
