@@ -93,9 +93,10 @@ public class LevelLoop implements Loopable {
 
   private void updateScoreAndLives(){
     //myLevelController.adjustPoints(mainEntity.getScore);
-    myLevelController.adjustPoints(0);
-    //mainEntity.resetScore();
-    /*if(mainEntity.levelEnded()) {
+    myLevelController.adjustPoints((int) mainEntity.getScore());
+    System.out.println(mainEntity.getScore());
+    //mainEntity.setScore(0);
+    if(mainEntity.endedLevel()) {
       end();
       if (mainEntity.isSuccess()) {
         myLevelController.handleWin();
@@ -104,7 +105,7 @@ public class LevelLoop implements Loopable {
       else{
         myLevelController.adjustLives(-1);
       }
-    }*/
+    }
   }
 
   private void sendEntities(){
