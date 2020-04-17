@@ -37,6 +37,7 @@ public class CameraManager {
   }
 
   public void updateCamera(EntityList entities ){
+    //System.out.println(mainEntity.getX() + " " + mainEntity.getY());
     myDirectionController.updateCameraPosition(entities, mainEntity);
     determineEntitiesOnScreen(entities);
   }

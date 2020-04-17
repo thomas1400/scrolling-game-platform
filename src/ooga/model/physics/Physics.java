@@ -106,6 +106,7 @@ public class Physics {
   }
 
   public void stopVerticalMotion() {
+    System.out.println("detected");
     stopDirectionalMotion(Y);
   }
 
