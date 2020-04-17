@@ -8,6 +8,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import ooga.controller.ScreenController;
+import ooga.controller.UserSaver;
 import ooga.controller.data.User;
 import ooga.exceptions.ExceptionFeedback;
 
@@ -35,7 +36,10 @@ public class UserCreationScreen extends Screen {
 
   public void save() {
     if (imageFile != null && !nameField.getText().equals("")) {
-      //controller.getUsers().addUser(new User(nameField.getText(), imageFile.getPath(), new ArrayList<>(), 3));
+      User newUser = new User(nameField.getText(), imageFile.toURI().toString(), new ArrayList<>(), 3);
+      UserSaver.saveUser(newUser);
+      controller.getUsers().addUser(newUser);
+      controller.setSelectedUser(newUser);
       controller.switchToScreen("HomeScreen");
     } else {
       ExceptionFeedback.throwHandledException(new FileNotFoundException(),
