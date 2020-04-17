@@ -13,7 +13,7 @@ class EntityTest {
     return eb.getEntity(filename);
   }
 
-  private CollisionEvent buildCollisionEvent(String location, Attack attack){
+  private CollisionEvent buildCollisionEvent(String location, String attack){
     return new CollisionEvent(location, attack);
   }
 
@@ -29,25 +29,25 @@ class EntityTest {
   @Test
   void testHandleCollision() {
     Entity mario = buildEntity("Mario.png");
-    CollisionEvent sideDamage = buildCollisionEvent("SIDE", Attack.DAMAGE);
-    CollisionEvent topDamage = buildCollisionEvent("TOP", Attack.DAMAGE);
-    CollisionEvent bottomDamage = buildCollisionEvent("BOTTOM", Attack.DAMAGE);
+    CollisionEvent sideDamage = buildCollisionEvent("SIDE", "Damage");
+    CollisionEvent topDamage = buildCollisionEvent("TOP", "Damage");
+    CollisionEvent bottomDamage = buildCollisionEvent("BOTTOM", "Damage");
 
-    CollisionEvent sideBounce = buildCollisionEvent("SIDE", Attack.BOUNCE);
-    CollisionEvent topBounce = buildCollisionEvent("TOP", Attack.BOUNCE);
-    CollisionEvent bottomBounce = buildCollisionEvent("BOTTOM", Attack.BOUNCE);
+    CollisionEvent sideBounce = buildCollisionEvent("SIDE", "BounceX");
+    CollisionEvent topBounce = buildCollisionEvent("TOP", "BounceY");
+    CollisionEvent bottomBounce = buildCollisionEvent("BOTTOM", "BounceY");
 
-    CollisionEvent sideSupport = buildCollisionEvent("SIDE", Attack.SUPPORT);
-    CollisionEvent topSupport = buildCollisionEvent("TOP", Attack.SUPPORT);
-    CollisionEvent bottomSupport = buildCollisionEvent("BOTTOM", Attack.SUPPORT);
+    CollisionEvent sideSupport = buildCollisionEvent("SIDE", "SupportX");
+    CollisionEvent topSupport = buildCollisionEvent("TOP", "SupportY");
+    CollisionEvent bottomSupport = buildCollisionEvent("BOTTOM", "SupportY");
 
-    CollisionEvent sideStun = buildCollisionEvent("SIDE", Attack.STUN);
-    CollisionEvent topStun = buildCollisionEvent("TOP", Attack.STUN);
-    CollisionEvent bottomStun = buildCollisionEvent("BOTTOM", Attack.STUN);
+    CollisionEvent sideStun = buildCollisionEvent("SIDE", "Stun");
+    CollisionEvent topStun = buildCollisionEvent("TOP", "Stun");
+    CollisionEvent bottomStun = buildCollisionEvent("BOTTOM", "Stun");
 
-    CollisionEvent sideHarmless = buildCollisionEvent("SIDE", Attack.HARMLESS);
-    CollisionEvent topHarmless = buildCollisionEvent("TOP", Attack.HARMLESS);
-    CollisionEvent bottomHarmless = buildCollisionEvent("BOTTOM", Attack.HARMLESS);
+    CollisionEvent sideHarmless = buildCollisionEvent("SIDE", "Harmless");
+    CollisionEvent topHarmless = buildCollisionEvent("TOP", "Harmless");
+    CollisionEvent bottomHarmless = buildCollisionEvent("BOTTOM", "Harmless");
 
     assertEquals(/*what do I put in here?*/1, 1);
   }

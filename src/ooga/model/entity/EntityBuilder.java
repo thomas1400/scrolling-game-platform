@@ -3,6 +3,7 @@ package ooga.model.entity;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import javafx.scene.image.Image;
 import ooga.model.ability.Ability;
@@ -56,27 +57,29 @@ public class EntityBuilder {
    * @return created entity
    */
   public static Entity getEntity(String statsFilename) {
-    //ResourceParser parser = new ResourceParser(STATS_PACKAGE_NAME, statsFilename);
-    //System.out.println("images/entityimages/"+parser.getSymbol("Image"));
-    ResourceBundle resources = ResourceBundle.getBundle(STATS_PACKAGE_NAME + statsFilename);
-    //System.out.println("images/entityimages/" + resources.getString("Image")); //fixme remove
-    // print
-    Image image = new Image("images/entityimages/" + resources.getString("Image"));
-    Entity entity = new Entity(image, resources.getString("Image"));
+    try {
+      ResourceBundle resources = ResourceBundle.getBundle(STATS_PACKAGE_NAME + statsFilename);
+      Image image = new Image("images/entityimages/" + resources.getString("Image"));
+      Entity entity = new Entity(image, resources.getString("Image"));
 
-    for (String s : Collections.list(resources.getKeys())) {
-      //todo remove this if?
-      if (!s.equals("Image")) {
-        //reflection!
-        if (s.contains("Attack")) {
-          entity.updateAttack(s, resources.getString(s));
-        } else {
-          Ability a = makeAbility(s, resources.getString(s));
-          entity.addAbility(s, a);
+      for (String s : Collections.list(resources.getKeys())) {
+        //todo remove this if?
+        if (!s.equals("Image")) {
+          //reflection!
+          if (s.contains("Attack")) {
+            entity.updateAttack(s, resources.getString(s));
+          } else {
+            Ability a = makeAbility(s, resources.getString(s));
+            entity.addAbility(s, a);
+          }
         }
       }
+      return entity;
+    } catch (MissingResourceException e){
+      System.out.println("You didn't edit the level file correctly. Can't find the properties file for a type! Either add the file or remove the type from the level");
+      //todo add which type it is
+      throw new RuntimeException(e);
     }
-    return entity;
   }
 
   public static void main(String[] args) {

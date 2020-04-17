@@ -1,16 +1,12 @@
 package ooga.engine.manager;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import ooga.model.ability.attacktypes.Attack;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 import ooga.utility.event.CollisionEvent;
-import ooga.utility.observer.Observable;
 import ooga.utility.observer.Observer;
 
 
@@ -50,14 +46,14 @@ public class CollisionManager {
             String min = calculateDistances(entity, entity2);
             String[] results = myCollisionLocationResources.getString(min).split(",");
             createAndSendCollision(results[0], entity2.getAttack(results[1]), entity);
-            System.out.println(entity.debug());
+            /*System.out.println(entity.debug());
             System.out.println(results[0]);
             System.out.println(entity2.getAttack(results[1]));
             System.out.println(entity.getX() + " " + entity.getY());
             System.out.println(entity2.debug());
             System.out.println(results[1]);
             System.out.println(entity.getAttack(results[0]));
-            System.out.println(entity2.getX() + " " + entity2.getY());
+            System.out.println(entity2.getX() + " " + entity2.getY());*/
             createAndSendCollision(results[1], entity.getAttack(results[0]), entity2);
           }
         }
@@ -88,24 +84,9 @@ public class CollisionManager {
   }
 
 
-  //fixme delete after debugging over
-  private void printDebug(String loc, Entity a, Entity b) {
-    if ((a.debug().equals("Mario.png") || b.debug().equals(
-        "Mario.png"))) {// && (!a.debug().contains("Ground")&&!b.debug().contains("Ground"))) {
-      System.out.println("a max x: " + a.getBoundsInLocal().getMaxX());
-      System.out.println("a min x: " + a.getBoundsInLocal().getMinX());
-      System.out.println("b max x: " + b.getBoundsInLocal().getMaxX());
-      System.out.println("b min x: " + b.getBoundsInLocal().getMinX());
-      System.out.println("a max y: " + a.getBoundsInLocal().getMaxY());
-      System.out.println("a min y: " + a.getBoundsInLocal().getMinY());
-      System.out.println("b max y: " + b.getBoundsInLocal().getMaxY());
-      System.out.println("b min y: " + b.getBoundsInLocal().getMinY());
-      System.out.println("Me: " + a.debug() + " && other:" + b.debug());
-      System.out.println("ATTACK TYPES: me: " + a.getAttack(loc) + " other: " + b.getAttack(loc));
-    }
-  }
 
-  private void createAndSendCollision(String typeOfCollision, Attack attack, Entity entity) {
+
+  private void createAndSendCollision(String typeOfCollision, String attack, Entity entity) {
     //receive an entity object from the entity
     entitiesReceived.addEntity(entity.handleCollision(new CollisionEvent(typeOfCollision, attack)));
   }
