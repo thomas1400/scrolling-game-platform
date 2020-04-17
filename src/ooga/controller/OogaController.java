@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import javafx.stage.Stage;
 import ooga.controller.data.BasicLevelList;
+import ooga.controller.data.User;
 import ooga.controller.data.UserList;
 
 public class OogaController {
@@ -21,7 +22,18 @@ public class OogaController {
     loadUsers();
     loadLevels();
 
+    handleCloseEvent(primaryStage);
+
     new ScreenController(primaryStage, myUsers, myLevels);
+  }
+
+  private void handleCloseEvent(Stage primaryStage) {
+    primaryStage.setOnCloseRequest(event -> {
+      for (User user : myUsers){
+        UserSaver.saveUser(user);
+      }
+      System.out.println("Users Saved Successfully");
+    });
   }
 
   private void loadUsers() {

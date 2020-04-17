@@ -10,17 +10,16 @@ public class User {
   private static final int POINTS_TO_LIFE_RATIO = 100;
   private String myName;
   private String myImageFileName;
-  private List<Integer> myLevelsUnlocked;
+  private List<Integer> myLevelsCompleted;
   private int myLives;
   private int myPoints = 0;
   private String myPower = "none";
   private String mySize = "small";
-  //private List<String> myAchievements;
 
-  public User(String name, String imageFileName, List<Integer> levelsUnlocked, int lives){
+  public User(String name, String imageFileName, List<Integer> levelsCompleted, int lives){
     myName = name;
     myImageFileName = imageFileName;
-    myLevelsUnlocked = levelsUnlocked;
+    myLevelsCompleted = levelsCompleted;
     myLives = lives;
   }
 
@@ -58,11 +57,11 @@ public class User {
   }
 
   public List<Integer> getLevelsUnlocked() {
-    return myLevelsUnlocked;
+    return myLevelsCompleted;
   }
 
-  public void addUnlockedLevel(int unlockedLevel) {
-    myLevelsUnlocked.add(unlockedLevel);
+  public void unlockNextLevel(int currentLevel) {
+    myLevelsCompleted.add(currentLevel);
   }
 
   public int getLives() {
