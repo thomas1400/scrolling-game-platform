@@ -1,0 +1,29 @@
+#HEADER
+id:0001
+mainTitle:Flappy
+subTitle:Tutorial
+physics:land
+scrollType:horizontal
+deathsAllowed:1
+backgroundImage:images/gameBackground.png
+levelWidth:50
+levelHeight:12
+#ENTITIES
+F:Flag
+P:Brick
+X:Player
+G:Ground
+#LEVEL
+. . . . . . . . . . P P . . . . . . . . P P . . . . . . . . P P . . . . . . . . P P . . . . . . . .
+. . . . . . . . . . P P . . . . . . . . P P . . . . . . . . . . . . . . . . . . P P . . . . . . . .
+. . . . . . . . . . . . . . . . . . . . P P . . . . . . . . . . . . . . . . . . P P . . . . . . . .
+. . . . . . . . . . . . . . . . . . . . P P . . . . . . . . . . . . . . . . . . P P . . . . . . . .
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . P P . . . . . . . .
+. . X . . . . . . . . . . . . . . . . . . . . . . . . . . . P P . . . . . . . . P P . . . . . . . .
+. . . . . . . . . . P P . . . . . . . . . . . . . . . . . . P P . . . . . . . . P P . . . . . . . .
+. . . . . . . . . . P P . . . . . . . . . . . . . . . . . . P P . . . . . . . . . . . . . . . . . .
+. . . . . . . . . . P P . . . . . . . . P P . . . . . . . . P P . . . . . . . . . . . . . . . . . .
+. . . . . . . . . . P P . . . . . . . . P P . . . . . . . . P P . . . . . . . . . . . . . . . . . .
+. . . . . . . . . . P P . . . . . . . . P P . . . . . . . . P P . . . . . . . . . . . . . . . F . .
+G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6
+#END
