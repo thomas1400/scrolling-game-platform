@@ -3,7 +3,7 @@ id:0001
 mainTitle:Testing Level
 subTitle:Tutorial
 physics:land
-scrollType:right
+scrollType:horizontal
 deathsAllowed:1
 backgroundImage:images/gameBackground.png
 levelWidth:50

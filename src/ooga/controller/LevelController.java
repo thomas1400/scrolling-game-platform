@@ -111,8 +111,11 @@ public class LevelController implements Communicable{
   public void resetLevel() {
     myLevelLoop.end();
     UserSaver.saveUser(myUser);
-
     myLevelLoop = createLevelLoop();
+
+    myVisualGroup.getChildren().clear();
+    myVisualGroup.getChildren().addAll(myLevelLoop.getInitialVisibleEntityList().getAsList());
+    myGS.setVisibleGroup(myVisualGroup);
   }
 
   //In Game Adjustments
