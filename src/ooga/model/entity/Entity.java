@@ -4,29 +4,31 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import ooga.model.ability.Ability;
+import ooga.model.ability.CollectiblePackage;
 import ooga.model.ability.Health;
 import ooga.model.ability.Movement;
-import ooga.model.ability.Stunnable;
 import ooga.model.ability.attacktypes.Attack;
 import ooga.model.behavior.Collidible;
-import ooga.model.behavior.CollisionBehaviorBundle;
 import ooga.model.physics.Physics;
 import ooga.utility.event.CollisionEvent;
 
 public class Entity extends ImageView implements Collidible, Manageable, Renderable {
 
-  private CollisionBehaviorBundle cbb;
-  private Physics myPhysics;
+  private static final String HARMLESS = "Harmless";
+
   private Health health;
   private Movement movement;
-  private Stunnable stunType;
-  private Attack side, top, bottom;
+  private CollectiblePackage myPackage;
+  private String side, top, bottom;
   private List<Ability> myAbilities;
   private String debuggingName;
-  private boolean dead, haveMovement;
+  private double score, scale;
+  private boolean dead, haveMovement, levelEnded, success;
 
   /**
    * Create default health and attacks, which can be overwritten later
@@ -37,16 +39,18 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     debuggingName = name;
     myAbilities = new ArrayList<Ability>();
     health = new Health();
-    side = Attack.HARMLESS;
-    top = Attack.HARMLESS;
-    bottom = Attack.HARMLESS;
-    stunType = new Stunnable();
-    myPhysics = new Physics();
+    side = HARMLESS;
+    top = HARMLESS;
+    bottom = HARMLESS;
     haveMovement = false;
+    myPackage = new CollectiblePackage("nothing 0");
+    score = 0;
+    scale = 1;
+    //todo take out magic vals
   }
 
   public void updateAttack(String location, String attackType) {
-    Attack attack = Attack.HARMLESS;
+    /*Attack attack = Attack.HARMLESS;
     if (attackType.equals("BOUNCE")){
       attack = Attack.BOUNCE;
     } else if (attackType.equals("STUN")){
@@ -61,10 +65,10 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
       attack = Attack.COLLECTIBLE;
     }
     //todo learn how to make enums with reflection and change the above to that
-
+*/
     try {
-      Method method = Entity.class.getDeclaredMethod("add"+location, Attack.class);
-      method.invoke(Entity.this, attack);
+      Method method = Entity.class.getDeclaredMethod("add"+location, String.class);
+      method.invoke(Entity.this, attackType);
     } catch (NoSuchMethodException e) {
       throw new RuntimeException(e);
     } catch (IllegalAccessException e) {
@@ -95,27 +99,28 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   //used for reflection DO NOT DELETE
-  private void addStunnable(Ability s){
-    stunType = (Stunnable) s;
+  public void addCollectiblePackage(Ability p){
+    myPackage = (CollectiblePackage) p;
   }
 
+  //used for reflection DO NOT DELETE
   private void addMovement(Ability m){
     movement = (Movement) m;
     haveMovement = true;
   }
 
   //used for reflection DO NOT DELETE
-  private void addSideAttack(Attack a){
+  private void addSideAttack(String a){
     side = a;
   }
 
   //used for reflection DO NOT DELETE
-  private void addTopAttack(Attack a){
+  private void addTopAttack(String a){
     top = a;
   }
 
   //used for reflection DO NOT DELETE
-  private void addBottomAttack(Attack a){
+  private void addBottomAttack(String a){
     bottom = a;
   }
 
@@ -140,10 +145,10 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    * @param location
    * @return call method to get the attack of the specific location
    */
-  public Attack getAttack(String location){
+  public String getAttack(String location){
     try {
       Method method = Entity.class.getDeclaredMethod("get"+location+"Attack");
-      return (Attack) method.invoke(Entity.this);
+      return (String) method.invoke(Entity.this);
     } catch (NoSuchMethodException e) {
       throw new RuntimeException(e);
     } catch (IllegalAccessException e) {
@@ -154,46 +159,49 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   //used for reflection DO NOT DELETE
-  private Attack getSideAttack(){
-    /*if(stun.isStunned()){
-      side = Attack.DAMAGE;
-    }*/
+  private String getSideAttack(){
     return side;
   }
 
   //used for reflection DO NOT DELETE
-  private Attack getTopAttack(){
+  private String getTopAttack(){
     return top;
   }
 
   //used for reflection DO NOT DELETE
-  private Attack getBottomAttack(){
+  private String getBottomAttack(){
     return bottom;
   }
 
   @Override
   public Entity handleCollision(CollisionEvent ce) {
     String location = ce.getCollisionLocation();
-    Attack otherAttack = ce.getAttackType();
-    Attack myAttack = this.getAttack(location);
-    if(!myAttack.equals(otherAttack)) {
-      try {
-        Method method = Entity.class.getDeclaredMethod(otherAttack.toString(), Attack.class);
-        method.invoke(Entity.this, myAttack);
-      } catch (NoSuchMethodException e) {
-        throw new RuntimeException(e);
-      } catch (IllegalAccessException e) {
-        throw new RuntimeException(e);
-      } catch (InvocationTargetException e) {
-        //System.out.println(otherAttack);
-        throw new RuntimeException(e);
+    String otherAttack = ce.getAttackType();
+    String myAttack = this.getAttack(location);
+
+    try {
+      ResourceBundle myAttackSpecificResponseBundle = ResourceBundle.getBundle("entities/collisions/"+otherAttack.toString());
+      String[] methodsToCall = myAttackSpecificResponseBundle.getString(myAttack).split(" ");
+      for(String s : methodsToCall) {
+        Method method = Entity.class.getDeclaredMethod(s);
+        method.invoke(Entity.this);
       }
+    } catch (MissingResourceException e) {
+      System.out.println("Couldn't find key in bundle I'm:"+ debuggingName+"; we're at: "+location);
+      throw new RuntimeException(e);
+    } catch (NoSuchMethodException e) {
+      throw new RuntimeException(e);
+    } catch (IllegalAccessException e) {
+      throw new RuntimeException(e);
+    } catch (InvocationTargetException e) {
+      //System.out.println(otherAttack);
+      throw new RuntimeException(e);
     }
     return this;
   }
 
   //used for reflection DO NOT DELETE
-  private void damage(Attack myAttack){
+  private void damage(){
     health.hit();
     dead = health.isDead();
   }
@@ -202,75 +210,125 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   /**
    * note: the other one is the collectible item
    */
-  private void collectible(Attack myAttack){
+  private void collectMe(){
     //todo create a bonus ability that can change score, height, etc. have that happen here as the entity is collected
+    String methodToCall = myPackage.toString();
+    double value = myPackage.getPackageValue();
+    if(!dead){
+      try {
+        Method method = Entity.class.getDeclaredMethod(methodToCall, Double.class);
+        method.invoke(Entity.this, value);
+      } catch (NoSuchMethodException e) {
+        throw new RuntimeException(e);
+      } catch (IllegalAccessException e) {
+        throw new RuntimeException(e);
+      } catch (InvocationTargetException e) {
+        throw new RuntimeException(e);
+      }
+    }
   }
 
   //used for reflection DO NOT DELETE
-  private void collect(Attack myAttack){
-    damage(myAttack);
-    //fixme change this if you add anything to damage()
-    //todo implement bonuses here instead of in collectable?
+  private void points(Double value){
+    score += value;
+    //System.out.println("score: " + score);
   }
 
   //used for reflection DO NOT DELETE
-  private void support(Attack myAttack){
+  private void size(Double value){
+    scale = value;
+  }
+
+  //used for reflection DO NOT DELETE
+  private void levelEnd(Double value){
+    //System.out.println("we did it");
+    levelEnded = true;
+    success = (value!=0);
+  }
+
+  //used for reflection DO NOT DELETE
+  private void collect(){
+    //do nothing
+  }
+
+  //used for reflection DO NOT DELETE
+  private void supportY(){
     if(haveMovement) {
       //setY(getY()-Physics.TINY_DISTANCE);
-      movement.stand();
+      movement.standY();
     }
   }
 
   //used for reflection DO NOT DELETE
-  private void stun(Attack myAttack){
-    if(stunType.isStunnable()) {
-      stunType.setStunned(true);
-      side = Attack.HARMLESS;
-      top = Attack.BOUNCE;
-    } else {
-      //damage(myAttack);
+  private void supportX(){
+    if(haveMovement) {
+      //setY(getY()-Physics.TINY_DISTANCE);
+      movement.standX();
     }
   }
 
   //used for reflection DO NOT DELETE
-  private void bounce(Attack myAttack){
-    //if it's on the bottom
+  private void bounceY(){
+    if(haveMovement) {
+      movement.bounceY();
+    }
+  }
+
+  //used for reflection DO NOT DELETE
+  private void bounceX(){
     if(haveMovement) {
       movement.bounceX();
     }
-    //if it's side
-    /*if(stun.isStunned()){
-      side
-    }*/
   }
 
   //used for reflection DO NOT DELETE
-  private void nothing(Attack myAttack){
+  private void nothing(){
     //do nothing
   }
 
   @Override
   public void updateVisualization() {
-    if(haveMovement) {
+    if (haveMovement) {
       movement.update(this);
     }
+    this.setScaleX(scale);
+    this.setScaleY(scale);
     dead = health.isDead();
   }
+  //used for reflection DO NOT DELETE
+  public boolean endedLevel(){
+    return levelEnded;
+  }
 
+  //used for reflection DO NOT DELETE
+  public boolean isSuccess(){
+    return success;
+  }
+
+  //used for reflection DO NOT DELETE
+  public void setScore(double newScore){
+    score = newScore;
+  }
+  //used for reflection DO NOT DELETE
+  public double getScore(){
+    return score;
+  }
+
+  //used for reflection DO NOT DELETE
   public void moveRight(){
     setScaleX(1);
     movement.right();
   }
 
+  //used for reflection DO NOT DELETE
   public void moveLeft(){
     setScaleX(-1);
-
     movement.left();
   }
 
+  //used for reflection DO NOT DELETE
   public void jump(){
     setY(getY()-Physics.TINY_DISTANCE);
     movement.jump();
   }
-
 }

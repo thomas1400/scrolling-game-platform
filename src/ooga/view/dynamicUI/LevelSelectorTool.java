@@ -50,7 +50,7 @@ public class LevelSelectorTool extends Pane {
       RadioButton button = new RadioButton(myLevels.getBasicLevel(i+1).getMainTitle());
       button.setToggleGroup(levelToggles);
       button.setId(Integer.toString(i+1));
-      if (i == levelProgress.get(levelProgress.size()-1)) {
+      if (levelProgress.size() > 0 && i == levelProgress.get(levelProgress.size()-1)) {
         button.setSelected(true);
       }
       button.setLayoutX(locations[i][0]);
@@ -129,7 +129,7 @@ public class LevelSelectorTool extends Pane {
     // only show the level if completedLevels contains a level that connects to it
     for (int i = 0; i < numLevels; i++) {
       int levelNum = i+1;
-      if (myCompletedLevels.contains(i)) {
+      if (myCompletedLevels.contains(i) || i == 0) {
         myUnlockedLevels.add(i);
       }
       for (int completed : myCompletedLevels) {
