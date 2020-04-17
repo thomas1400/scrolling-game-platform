@@ -12,8 +12,8 @@ import ooga.view.dynamicUI.LevelSelectorTool;
 
 public class LevelSelectorScreen extends Screen {
 
-  private static final String LEVEL_GRAPH_FILE = "resources/levels/LevelGraph.txt";
-  private static final String LEVEL_MAP_FILE = "resources/levels/LevelMap.txt";
+  private static final String LEVEL_GRAPH_FILE = "resources/levels/resources/LevelGraph.txt";
+  private static final String LEVEL_MAP_FILE = "resources/levels/resources/LevelMap.txt";
 
   private BasicLevelList myLevels;
   private LevelSelectorTool lst;

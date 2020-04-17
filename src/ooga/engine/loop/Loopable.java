@@ -6,11 +6,11 @@ public interface Loopable {
 
   void begin();
 
-  void pause();
+  void end();
 
   void resume();
 
-  void end();
+  void exit();
 
 
 
