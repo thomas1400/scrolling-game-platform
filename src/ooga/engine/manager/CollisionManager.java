@@ -28,7 +28,7 @@ public class CollisionManager {
   private static final String MINY_MAXY = "minYmaxY";
   private static final String MAXX_MINX = "maxXminX";
   private static final String MAXY_MINY = "maxYminY";
-  private static final Map<Double, String> map = new HashMap<>();
+  private static Map<Double, String> map = new HashMap<>();
   private static Map<Entity, EntityList> collision = new HashMap<>();
 
 
@@ -40,6 +40,7 @@ public class CollisionManager {
   }
 
   public void manageCollisions(EntityList entities) {
+    map = new HashMap<>();
     entitiesReceived = new EntityList();
     collision = new HashMap<>();
     for (Entity entity : entities) {
@@ -53,9 +54,11 @@ public class CollisionManager {
             String min = calculateDistances(entity, entity2);
             String[] results = myCollisionLocationResources.getString(min).split(",");
             createAndSendCollision(results[0], entity2.getAttack(results[1]), entity);
+            System.out.println(entity.debug());
             System.out.println(results[0]);
             System.out.println(entity2.getAttack(results[1]));
             System.out.println(entity.getX() + " " + entity.getY());
+            System.out.println(entity2.debug());
             System.out.println(results[1]);
             System.out.println(entity.getAttack(results[0]));
             System.out.println(entity2.getX() + " " + entity2.getY());

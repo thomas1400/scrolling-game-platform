@@ -216,8 +216,8 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   //used for reflection DO NOT DELETE
   private void support(Attack myAttack){
     if(haveMovement) {
-      movement.stand();
       setY(getY()-Physics.TINY_DISTANCE);
+      movement.stand();
     }
   }
 
