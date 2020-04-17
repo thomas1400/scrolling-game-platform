@@ -10,7 +10,6 @@ public class EntityManager implements Communicable {
   private EntityList myEntityList;
   private EntityList addedEntities;
   private EntityList removedEntities;
-  private CollisionManager myCollisionManager;
 
   public EntityManager(EntityList entities) {
     myEntityList = entities;
@@ -62,9 +61,6 @@ public class EntityManager implements Communicable {
     removedEntities.addAllEntities(entities);
     //needs to be reset somewhere
   }
-
-
-
 
   @Override
   public void addEntity(Entity entity) {

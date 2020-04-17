@@ -12,7 +12,7 @@ import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 import ooga.view.screen.GameScreen;
 
-public class LevelController implements Communicable{
+public class LevelController implements UpdateGame{
 
   private User myUser;
   private int myLivesRemaining;
