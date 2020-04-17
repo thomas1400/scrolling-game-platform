@@ -26,6 +26,11 @@ public class InputManager {
       keysCurrentlyPressed.add(keyEvent.getCode().toString());
       invokeMethod(keyEvent.getCode().toString());
     }
+    /*else {
+      if (myUserInputsResources.getString(keyEvent.getCode().toString() + "ONREPEAT")
+          .equals("repeat")) {
+        invokeMethod(keyEvent.getCode().toString());
+      }*/
   }
 
   public void processInput() {
@@ -40,6 +45,25 @@ public class InputManager {
   public void handleKeyRelease(KeyEvent keyEvent) {
     keysCurrentlyPressed.remove(keyEvent.getCode().toString());
 
+  }
+
+  public void invokeMethods() {
+    for (String keyPressed : keysCurrentlyPressed) {
+      try {
+        String methodName = myUserInputsResources.getString(keyPressed);
+        try {
+          Method m = myMainEntity.getClass().getDeclaredMethod(methodName);
+          m.invoke(myMainEntity);
+        } catch (NoSuchMethodException | IllegalAccessException e) {
+          //FIXME
+          e.printStackTrace();
+        } catch (InvocationTargetException e) {
+          //FIXME
+          e.printStackTrace();
+        }
+      } catch (SecurityException e) {
+      }
+    }
   }
 
   public void invokeMethod(String keyPressed) {

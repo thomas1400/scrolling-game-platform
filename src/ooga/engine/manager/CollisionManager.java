@@ -13,6 +13,9 @@ import ooga.utility.observer.Observer;
 public class CollisionManager {
   private ResourceBundle myCollisionLocationResources;
   private static final String CollisionLocationResources = "entities/collisions/CollisionLocation";
+  private static final String SIDE = "Side";
+  private static final String TOP = "Top";
+  private static final String BOTTOM = "Bottom";
   private double minX1maxX2 = 0;
   private double maxX1minX2 = 0;
   private double minY1maxY2 = 0;
@@ -25,6 +28,7 @@ public class CollisionManager {
   private static Map<Entity, EntityList> collision = new HashMap<>();
 
 
+  private List<Observer> observers;
   private EntityList entitiesReceived;
 
   public CollisionManager(){
