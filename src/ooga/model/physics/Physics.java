@@ -81,6 +81,14 @@ public class Physics {
     }
   }
 
+  public void bounceX(){
+    myVelocity[X]*=-1;
+  }
+
+  public void bounceY(){
+    myVelocity[Y]*=-1;
+  }
+
   private double tempCheckLandJump() {
     double groundHeight = 300;
     if (myPosition[Y] < groundHeight) {
