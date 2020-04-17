@@ -5,11 +5,9 @@ import ooga.model.entity.Entity;
 
 public class CollisionEvent{
 
-  private String typeOfCollision;
-  private Attack attackType;
+  private String typeOfCollision, attackType;
 
-
-  public CollisionEvent(String whereCollisionOccurred, Attack attack){
+  public CollisionEvent(String whereCollisionOccurred, String attack){
     typeOfCollision = whereCollisionOccurred;
     attackType = attack;
   }
@@ -18,7 +16,7 @@ public class CollisionEvent{
     return typeOfCollision;
   }
 
-  public Attack getAttackType(){
+  public String getAttackType(){
     return attackType;
   }
 }

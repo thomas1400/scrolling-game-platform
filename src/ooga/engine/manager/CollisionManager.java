@@ -1,16 +1,12 @@
 package ooga.engine.manager;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import ooga.model.ability.attacktypes.Attack;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 import ooga.utility.event.CollisionEvent;
-import ooga.utility.observer.Observable;
 import ooga.utility.observer.Observer;
 
 
@@ -95,7 +91,7 @@ public class CollisionManager {
 
 
 
-  private void createAndSendCollision(String typeOfCollision, Attack attack, Entity entity) {
+  private void createAndSendCollision(String typeOfCollision, String attack, Entity entity) {
     //receive an entity object from the entity
     entitiesReceived.addEntity(entity.handleCollision(new CollisionEvent(typeOfCollision, attack)));
   }
