@@ -20,8 +20,6 @@ public class LevelController implements Communicable{
   private boolean levelLifeGainAllowed;
 
   private GameScreen myGS;
-  private CompleteLevel myCompleteLevel;
-  private CompleteLevel myInitialLevelState;
 
   private LevelLoop myLevelLoop;
   private Group myVisualGroup = new Group();
@@ -31,13 +29,12 @@ public class LevelController implements Communicable{
     myUser = user;
 
     myLevelNumber = basicLevel.getLevelIndex();
-    myCompleteLevel = getCompleteLevel(gs, basicLevel);
-    myInitialLevelState = myCompleteLevel;
+    CompleteLevel myCompleteLevel = getCompleteLevel(gs, basicLevel);
 
     setLivesRemaining(myCompleteLevel.getDeathsAllowed());
     levelLifeGainAllowed = myCompleteLevel.getLifeGainAllowed();
 
-    myLevelLoop = createLevelLoop();
+    myLevelLoop = createLevelLoop(myCompleteLevel);
 
     EntityList visibleEntityList = myLevelLoop.getInitialVisibleEntityList();
     myVisualGroup.getChildren().addAll(visibleEntityList.getAsList());
@@ -45,9 +42,9 @@ public class LevelController implements Communicable{
     gs.setVisibleGroup(myVisualGroup);
   }
 
-  private LevelLoop createLevelLoop() {
+  private LevelLoop createLevelLoop(CompleteLevel level) {
     return new LevelLoop(
-        this, myCompleteLevel, myGS.getGameHeight(), myGS.getGameWidth());
+        this, level, myGS.getGameHeight(), myGS.getGameWidth());
   }
 
   private CompleteLevel getCompleteLevel(GameScreen gs, BasicLevel basicLevel) {
@@ -107,15 +104,6 @@ public class LevelController implements Communicable{
     myLevelLoop.end();
     UserSaver.saveUser(myUser);
     deleteLevelLoop();
-  }
-  public void resetLevel() {
-    myLevelLoop.end();
-    UserSaver.saveUser(myUser);
-    myLevelLoop = createLevelLoop();
-
-    myVisualGroup.getChildren().clear();
-    myVisualGroup.getChildren().addAll(myLevelLoop.getInitialVisibleEntityList().getAsList());
-    myGS.setVisibleGroup(myVisualGroup);
   }
 
   //In Game Adjustments
