@@ -50,7 +50,7 @@ public class LevelSelectorTool extends Pane {
     for (int i : myUnlockedLevels) {
       RadioButton button = new RadioButton(myLevels.getBasicLevel(i+1).getMainTitle());
       button.setToggleGroup(levelToggles);
-      button.setId("button" + (i + 1));
+      button.setId(""+ (i + 1));
       if (levelProgress.size() > 0 && i == levelProgress.get(levelProgress.size()-1)) {
         button.setSelected(true);
       }
