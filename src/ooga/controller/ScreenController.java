@@ -52,8 +52,8 @@ public class ScreenController{
     addApplicationIcon();
     initializeScreens();
 
-    //switchToScreen("HomeScreen");
-    switchToScreen("LevelBuilderScreen");
+    switchToScreen("HomeScreen");
+    //switchToScreen("LevelBuilderScreen");
   }
 
   private void addApplicationIcon() {
