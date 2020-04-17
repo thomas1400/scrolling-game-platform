@@ -3,6 +3,7 @@ package ooga.model.ability;
 import ooga.model.entity.Entity;
 import ooga.model.physics.Physics;
 
+//todo what is the point of this class
 public class Movement extends Ability {
 
   private static final String PHYSICS_PACKAGE = "ooga.model.physics.";
@@ -31,18 +32,23 @@ public class Movement extends Ability {
     phys.moveLeft();
   }
 
-  public void stand(){
+  public void standY(){
     phys.stopVerticalMotion();
-    //fixme change so it doesn't stop in air if it hits a brick
+  }
+
+  public void standX(){
+    bounceX();
+    standY();
+    System.out.println("standX");
   }
 
   public void bounceY(){
-    phys.stopVerticalMotion();
+    phys.bounceY();
   }
 
   public void bounceX(){
-    //System.out.println("bounce x");
-    phys.stopHorizMotion();
+    System.out.println("bounccccce x");
+    phys.bounceX();
   }
 
   public void update(Entity entity){

@@ -3,30 +3,44 @@
 <package javafx.scene.control>
 <package javafx.scene.layout>
 <package ooga.view>
+<package ooga.view.dynamicUI>
 
 (VBox alignment=CENTER, layoutX=2%, layoutY=1%, spacing=1%, maxWidth=96%, prefHeight=100%) {
 ###TITLE BOX
-  (layout) {
-    (control)
-    (control)
-    (layout) {
-      (control attribute=value);
-    }
+  (HBox alignment=CENTER, prefWidth=100%) {
+    (Label text=LevelBuilder, style=title, prefHeight=10%, prefWidth=96%)
   }
-  (layout attribute=value, attribute=value, attribute = value1 value2 value3 value4) {
-    # attribute values for size can be in px (default) or percent (xx%)
-    (control)
-  }
-###TITLE BOX
-    HBox titleBox = new HBox();
-    Label screenTitle = cf.label("LevelBuilder", TITLE_FONT_SIZE);
-    titleBox.getChildren().add(screenTitle);
 ###LEVEL OPTIONS BOX
-    HBox levelOptions = new HBox();
-    VBox generalOptions = getGeneralOptionsBox();
-    VBox specificOptions = getSpecificOptionsBox();
-    VBox gridOptions = getGridOptionsBox();
-    levelOptions.getChildren().addAll(generalOptions, specificOptions, gridOptions);
+    (HBox alignment=CENTER, prefWidth=100%) {
+      (VBox alignment=CENTER, prefWidth=33%) {
+        (HBox alignment=CENTER, prefWidth=100%) {
+              (Label text=Level Title: , style=detail, prefWidth=100%)
+              (level-title-input preferredWidth=45%, preferredHeight=5%
+        }
+      }
+      (VBox alignment=CENTER, prefWidth=33%) {
+
+      }
+      (VBox alignment=CENTER, prefWidth=33%) {
+
+      }
+    }
+
+HBox levelTitleBox = new HBox();
+Label levelTitle = cf.label("Level Title: ", DETAIL_FONT_SIZE);
+TextField levelTitleInput = new TextField();
+levelTitleBox.getChildren().addAll(levelTitle, levelTitleInput);
+
+HBox subTitleBox = new HBox();
+Label subTitle = cf.label("Sub Title: ", DETAIL_FONT_SIZE);
+TextField subTitleInput = new TextField();
+subTitleBox.getChildren().addAll(subTitle, subTitleInput);
+
+HBox backgroundBox = new HBox();
+Label background = cf.label("Background: ", DETAIL_FONT_SIZE);
+Label imagePath = cf.label("", DETAIL_FONT_SIZE);
+Button selectorButton = cf.button("Choose", 10, e -> {
+
 ###LEVEL CREATION BOX
     HBox levelCreation = new HBox();
     ScrollPane levelEditor = getLevelEditor();

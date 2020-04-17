@@ -75,7 +75,7 @@ public class GameScreen extends Screen {
   }
 
   public void reset() {
-    levelController.resetLevel();
+    controller.restartLevel();
   }
 
   public double getGameWidth() {

@@ -12,21 +12,19 @@ import ooga.model.ability.Ability;
 import ooga.model.ability.CollectiblePackage;
 import ooga.model.ability.Health;
 import ooga.model.ability.Movement;
-import ooga.model.ability.Stunnable;
 import ooga.model.ability.attacktypes.Attack;
 import ooga.model.behavior.Collidible;
-import ooga.model.behavior.CollisionBehaviorBundle;
 import ooga.model.physics.Physics;
 import ooga.utility.event.CollisionEvent;
 
 public class Entity extends ImageView implements Collidible, Manageable, Renderable {
 
-  private CollisionBehaviorBundle cbb;
+  private static final String HARMLESS = "Harmless";
+
   private Health health;
   private Movement movement;
-  private Stunnable stunType;
   private CollectiblePackage myPackage;
-  private Attack side, top, bottom;
+  private String side, top, bottom;
   private List<Ability> myAbilities;
   private String debuggingName;
   private double score, scale;
@@ -41,10 +39,9 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     debuggingName = name;
     myAbilities = new ArrayList<Ability>();
     health = new Health();
-    side = Attack.HARMLESS;
-    top = Attack.HARMLESS;
-    bottom = Attack.HARMLESS;
-    stunType = new Stunnable();
+    side = HARMLESS;
+    top = HARMLESS;
+    bottom = HARMLESS;
     haveMovement = false;
     myPackage = new CollectiblePackage("nothing 0");
     score = 0;
@@ -53,7 +50,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   public void updateAttack(String location, String attackType) {
-    Attack attack = Attack.HARMLESS;
+    /*Attack attack = Attack.HARMLESS;
     if (attackType.equals("BOUNCE")){
       attack = Attack.BOUNCE;
     } else if (attackType.equals("STUN")){
@@ -68,10 +65,10 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
       attack = Attack.COLLECTIBLE;
     }
     //todo learn how to make enums with reflection and change the above to that
-
+*/
     try {
-      Method method = Entity.class.getDeclaredMethod("add"+location, Attack.class);
-      method.invoke(Entity.this, attack);
+      Method method = Entity.class.getDeclaredMethod("add"+location, String.class);
+      method.invoke(Entity.this, attackType);
     } catch (NoSuchMethodException e) {
       throw new RuntimeException(e);
     } catch (IllegalAccessException e) {
@@ -102,11 +99,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   //used for reflection DO NOT DELETE
-  private void addStunnable(Ability s){
-    stunType = (Stunnable) s;
-  }
-
-  //used for reflection DO NOT DELETE
   public void addCollectiblePackage(Ability p){
     myPackage = (CollectiblePackage) p;
   }
@@ -118,17 +110,17 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   //used for reflection DO NOT DELETE
-  private void addSideAttack(Attack a){
+  private void addSideAttack(String a){
     side = a;
   }
 
   //used for reflection DO NOT DELETE
-  private void addTopAttack(Attack a){
+  private void addTopAttack(String a){
     top = a;
   }
 
   //used for reflection DO NOT DELETE
-  private void addBottomAttack(Attack a){
+  private void addBottomAttack(String a){
     bottom = a;
   }
 
@@ -153,10 +145,10 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    * @param location
    * @return call method to get the attack of the specific location
    */
-  public Attack getAttack(String location){
+  public String getAttack(String location){
     try {
       Method method = Entity.class.getDeclaredMethod("get"+location+"Attack");
-      return (Attack) method.invoke(Entity.this);
+      return (String) method.invoke(Entity.this);
     } catch (NoSuchMethodException e) {
       throw new RuntimeException(e);
     } catch (IllegalAccessException e) {
@@ -167,32 +159,32 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   //used for reflection DO NOT DELETE
-  private Attack getSideAttack(){
+  private String getSideAttack(){
     return side;
   }
 
   //used for reflection DO NOT DELETE
-  private Attack getTopAttack(){
+  private String getTopAttack(){
     return top;
   }
 
   //used for reflection DO NOT DELETE
-  private Attack getBottomAttack(){
+  private String getBottomAttack(){
     return bottom;
   }
 
   @Override
   public Entity handleCollision(CollisionEvent ce) {
     String location = ce.getCollisionLocation();
-    Attack otherAttack = ce.getAttackType();
-    Attack myAttack = this.getAttack(location);
+    String otherAttack = ce.getAttackType();
+    String myAttack = this.getAttack(location);
 
     try {
       ResourceBundle myAttackSpecificResponseBundle = ResourceBundle.getBundle("entities/collisions/"+otherAttack.toString());
-      String[] methodsToCall = myAttackSpecificResponseBundle.getString(myAttack.toString()).split(" ");
+      String[] methodsToCall = myAttackSpecificResponseBundle.getString(myAttack).split(" ");
       for(String s : methodsToCall) {
-        Method method = Entity.class.getDeclaredMethod(s, Attack.class);
-        method.invoke(Entity.this, myAttack);
+        Method method = Entity.class.getDeclaredMethod(s);
+        method.invoke(Entity.this);
       }
     } catch (MissingResourceException e) {
       System.out.println("Couldn't find key in bundle I'm:"+ debuggingName+"; we're at: "+location);
@@ -209,7 +201,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   //used for reflection DO NOT DELETE
-  private void damage(Attack myAttack){
+  private void damage(){
     health.hit();
     dead = health.isDead();
   }
@@ -218,19 +210,21 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   /**
    * note: the other one is the collectible item
    */
-  private void collectMe(Attack myAttack){
+  private void collectMe(){
     //todo create a bonus ability that can change score, height, etc. have that happen here as the entity is collected
     String methodToCall = myPackage.toString();
     double value = myPackage.getPackageValue();
-    try {
-      Method method = Entity.class.getDeclaredMethod(methodToCall, Double.class);
-      method.invoke(Entity.this, value);
-    } catch (NoSuchMethodException e) {
-      throw new RuntimeException(e);
-    } catch (IllegalAccessException e) {
-      throw new RuntimeException(e);
-    } catch (InvocationTargetException e) {
-      throw new RuntimeException(e);
+    if(!dead){
+      try {
+        Method method = Entity.class.getDeclaredMethod(methodToCall, Double.class);
+        method.invoke(Entity.this, value);
+      } catch (NoSuchMethodException e) {
+        throw new RuntimeException(e);
+      } catch (IllegalAccessException e) {
+        throw new RuntimeException(e);
+      } catch (InvocationTargetException e) {
+        throw new RuntimeException(e);
+      }
     }
   }
 
@@ -253,38 +247,42 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   //used for reflection DO NOT DELETE
-  private void collect(Attack myAttack){
+  private void collect(){
     //do nothing
   }
 
   //used for reflection DO NOT DELETE
-  private void support(Attack myAttack){
+  private void supportY(){
     if(haveMovement) {
       //setY(getY()-Physics.TINY_DISTANCE);
-      movement.stand();
+      movement.standY();
     }
   }
 
   //used for reflection DO NOT DELETE
-  private void stun(Attack myAttack){
-    if(stunType.isStunnable()) {
-      stunType.setStunned(true);
-      side = Attack.HARMLESS;
-      top = Attack.BOUNCE;
-    } else {
-      //damage(myAttack);
+  private void supportX(){
+    if(haveMovement) {
+      //setY(getY()-Physics.TINY_DISTANCE);
+      movement.standX();
     }
   }
 
   //used for reflection DO NOT DELETE
-  private void bounce(Attack myAttack){
+  private void bounceY(){
+    if(haveMovement) {
+      movement.bounceY();
+    }
+  }
+
+  //used for reflection DO NOT DELETE
+  private void bounceX(){
     if(haveMovement) {
       movement.bounceX();
     }
   }
 
   //used for reflection DO NOT DELETE
-  private void nothing(Attack myAttack){
+  private void nothing(){
     //do nothing
   }
 
@@ -297,13 +295,23 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     this.setScaleY(scale);
     dead = health.isDead();
   }
-
+  //used for reflection DO NOT DELETE
   public boolean endedLevel(){
     return levelEnded;
   }
 
+  //used for reflection DO NOT DELETE
   public boolean isSuccess(){
     return success;
+  }
+
+  //used for reflection DO NOT DELETE
+  public void setScore(double newScore){
+    score = newScore;
+  }
+  //used for reflection DO NOT DELETE
+  public double getScore(){
+    return score;
   }
 
   //used for reflection DO NOT DELETE
@@ -315,7 +323,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   //used for reflection DO NOT DELETE
   public void moveLeft(){
     setScaleX(-1);
-
     movement.left();
   }
 
