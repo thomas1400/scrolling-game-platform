@@ -1,0 +1,44 @@
+### Level Builder Screen FXLR
+
+<package javafx.scene.control>
+<package javafx.scene.layout>
+<package ooga.view>
+
+(VBox alignment=CENTER, layoutX=2%, layoutY=1%, spacing=1%, maxWidth=96%, prefHeight=100%) {
+###TITLE BOX
+  (layout) {
+    (control)
+    (control)
+    (layout) {
+      (control attribute=value);
+    }
+  }
+  (layout attribute=value, attribute=value, attribute = value1 value2 value3 value4) {
+    # attribute values for size can be in px (default) or percent (xx%)
+    (control)
+  }
+###TITLE BOX
+    HBox titleBox = new HBox();
+    Label screenTitle = cf.label("LevelBuilder", TITLE_FONT_SIZE);
+    titleBox.getChildren().add(screenTitle);
+###LEVEL OPTIONS BOX
+    HBox levelOptions = new HBox();
+    VBox generalOptions = getGeneralOptionsBox();
+    VBox specificOptions = getSpecificOptionsBox();
+    VBox gridOptions = getGridOptionsBox();
+    levelOptions.getChildren().addAll(generalOptions, specificOptions, gridOptions);
+###LEVEL CREATION BOX
+    HBox levelCreation = new HBox();
+    ScrollPane levelEditor = getLevelEditor();
+    VBox entityEditor = getEntityEditor();
+    levelCreation.getChildren().addAll(levelEditor, entityEditor);
+###LEVEL SUBMISSION BOX
+    HBox levelSubmission = new HBox();
+    Button validateButton = cf.button("VALIDATE", MEDIUM_TEXT_SIZE, e -> validateLevel(), 150, 50);
+    Button saveButton = cf.button("SAVE LEVEL", MEDIUM_TEXT_SIZE, e -> saveLevel(), 150,
+        50);
+    Button clearButton = cf.button("CLEAR ALL", MEDIUM_TEXT_SIZE, e -> clearLevel(), 150, 50);
+    levelSubmission.getChildren().addAll(validateButton, saveButton, clearButton);
+###FINAL ADDER
+  layout.getChildren().addAll(titleBox, levelOptions, levelCreation, levelSubmission);
+}

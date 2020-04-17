@@ -14,25 +14,23 @@ import ooga.controller.data.User;
 public final class UserSaver {
 
   public static void saveUser(User user) {
-    try (OutputStream output = new FileOutputStream("resources/users/" + user.getName() + ".user")) {
+    if (!user.getName().equals("Default User")) {
+      try (OutputStream output = new FileOutputStream(
+          "resources/users/" + user.getName() + ".user")) {
 
-      Properties userProperties = new Properties();
+        Properties userProperties = new Properties();
 
-      // set the properties value
-      setSimpleProperties(user, userProperties);
-      setUnlockedLevelsProperty(user, userProperties);
+        // set the properties value
+        setSimpleProperties(user, userProperties);
+        setUnlockedLevelsProperty(user, userProperties);
 
-      // save properties to project root folder
-      userProperties.store(output, "User properties file for user: " + user.getName());
+        // save properties to project root folder
+        userProperties.store(output, "User properties file for user: " + user.getName());
 
-    } catch (IOException io) {
-      io.printStackTrace();
+      } catch (IOException io) {
+        io.printStackTrace();
+      }
     }
-  }
-
-  private static void setUnlockedLevelsProperty(User user, Properties userProperties) {
-    String unlockedLevelsString = buildStringFromList(user.getLevelsUnlocked());
-    userProperties.setProperty("levelsUnlocked", unlockedLevelsString);
   }
 
   private static void setSimpleProperties(User user, Properties userProperties) {
@@ -52,6 +50,11 @@ public final class UserSaver {
         e.printStackTrace();
       }
     }
+  }
+
+  private static void setUnlockedLevelsProperty(User user, Properties userProperties) {
+    String unlockedLevelsString = buildStringFromList(user.getLevelsUnlocked());
+    userProperties.setProperty("levelsUnlocked", unlockedLevelsString);
   }
 
   private static String buildStringFromList(List userPropertyList) {
