@@ -7,12 +7,12 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import ooga.controller.ScreenController;
-import ooga.view.Displayable;
 import ooga.view.fxlr.FXLRParser;
 
-public abstract class Screen extends Pane implements Displayable {
+public abstract class Screen extends Pane {
 
   private static final int PREF_WIDTH = 800, PREF_HEIGHT = 600;
   static final String FONT_FAMILY = "Cambria";
@@ -92,11 +92,6 @@ public abstract class Screen extends Pane implements Displayable {
 
   public Node getDynamicUIElement(String tag) {
     return dynamicNodes.get(tag);
-  }
-
-  @Override
-  public Node getDisplay() {
-    return this;
   }
 
 }

@@ -28,6 +28,7 @@ public class LevelLoop implements Loopable {
   private Object KeyEvent;
 
   public LevelLoop(Communicable levelController, CompleteLevel level, double screenHeight, double screenWidth) {
+    System.out.println(screenWidth + " " + screenHeight);
     myLevelController = levelController;
     EntityList myEntities = level.getEntities();
     myEntityManager = new EntityManager(myEntities);

@@ -35,6 +35,7 @@ public class LeftDirectionController extends DirectionController {
   @Override
   public void initialize(EntityList entities, double screenHeight, double screenWidth,
       Entity mainEntity) {
+    mainEntity.setScaleX(-1);
     myScreenHeight = screenHeight;
     myScreenWidth = screenWidth;
     if(mainEntity.getX()>screenWidth){
