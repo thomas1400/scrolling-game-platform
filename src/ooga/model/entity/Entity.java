@@ -214,15 +214,17 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     //todo create a bonus ability that can change score, height, etc. have that happen here as the entity is collected
     String methodToCall = myPackage.toString();
     double value = myPackage.getPackageValue();
-    try {
-      Method method = Entity.class.getDeclaredMethod(methodToCall, Double.class);
-      method.invoke(Entity.this, value);
-    } catch (NoSuchMethodException e) {
-      throw new RuntimeException(e);
-    } catch (IllegalAccessException e) {
-      throw new RuntimeException(e);
-    } catch (InvocationTargetException e) {
-      throw new RuntimeException(e);
+    if(!dead){
+      try {
+        Method method = Entity.class.getDeclaredMethod(methodToCall, Double.class);
+        method.invoke(Entity.this, value);
+      } catch (NoSuchMethodException e) {
+        throw new RuntimeException(e);
+      } catch (IllegalAccessException e) {
+        throw new RuntimeException(e);
+      } catch (InvocationTargetException e) {
+        throw new RuntimeException(e);
+      }
     }
   }
 
