@@ -39,6 +39,9 @@ public class Health extends Ability {
     return (myLives == DEATH && !immortal);
   }
 
+  public void addLives(int lives){
+    myLives+=lives;
+  }
   /**
    * Decreases the number of lives by one if the object is not dead
    */

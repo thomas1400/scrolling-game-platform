@@ -206,6 +206,14 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     dead = health.isDead();
   }
 
+  private void bounce(){
+    if(haveMovement && (movement.getYVelocity() >= movement.getXVelocity())){
+      bounceY();
+    } else if (haveMovement && movement.getYVelocity()<movement.getXVelocity()){
+      bounceX();
+    }
+  }
+
   //used for reflection DO NOT DELETE
   /**
    * note: the other one is the collectible item
@@ -214,7 +222,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     //todo create a bonus ability that can change score, height, etc. have that happen here as the entity is collected
     String methodToCall = myPackage.toString();
     double value = myPackage.getPackageValue();
-    if(!dead){
+    if(!dead && !levelEnded){
       try {
         Method method = Entity.class.getDeclaredMethod(methodToCall, Double.class);
         method.invoke(Entity.this, value);
@@ -231,7 +239,11 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   //used for reflection DO NOT DELETE
   private void points(Double value){
     score += value;
-    //System.out.println("score: " + score);
+    System.out.println("score: " + score);
+  }
+
+  private void health(Double value){
+    health.addLives((int) Math.floor(value));
   }
 
   //used for reflection DO NOT DELETE
@@ -241,7 +253,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
 
   //used for reflection DO NOT DELETE
   private void levelEnd(Double value){
-    //System.out.println("we did it");
+    System.out.println("we did it");
     levelEnded = true;
     success = (value!=0);
   }
@@ -313,6 +325,8 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   public double getScore(){
     return score;
   }
+
+
 
   //used for reflection DO NOT DELETE
   public void moveRight(){
