@@ -66,7 +66,6 @@ public class CollisionManager {
   }
 
   private String calculateDistances(Entity entity, Entity entity2) {
-    //map = new HashMap<>();
     minX1maxX2 = Math
         .abs(entity.getBoundsInLocal().getMinX() - entity2.getBoundsInLocal().getMaxX());
     map.put(minX1maxX2, MINX_MAXX);
@@ -79,7 +78,7 @@ public class CollisionManager {
     maxY1minY2 = Math
         .abs(entity.getBoundsInLocal().getMaxY() - entity2.getBoundsInLocal().getMinY());
     map.put(maxY1minY2, MAXY_MINY);
-    double min = minX1maxX2;
+    double min = minY1maxY2;
     for (double d : map.keySet()) {
       if (d < min) {
         min = d;

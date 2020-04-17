@@ -1,8 +1,12 @@
 #User properties file for user: Thoooomas
+<<<<<<< HEAD
 #Fri Apr 17 01:26:54 EDT 2020
+=======
+#Fri Apr 17 00:53:53 EDT 2020
+>>>>>>> 01a5e4a01a534c24841dcf90fb4d60b02a321f5c
 image=images/creators/thomas.jpeg
 levelsUnlocked=1,2,3,4
-lives=5
+lives=4
 size=mini
 name=Thoooomas
 power=mini

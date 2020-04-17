@@ -1,26 +1,44 @@
 package ooga.view.dynamicUI;
 
+import static javafx.geometry.Pos.CENTER_LEFT;
+
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import ooga.controller.data.User;
 import ooga.controller.data.UserList;
 
 public class UserSelector extends Pane {
 
-  private static final double PADDING = 10;
-  private final int MAX_USERS = 4;
+  private static final double SPACING = 10;
+  private static final double TILES_PER_PAGE = 3;
+  private static final double SCROLL_BAR_OFFSET = 50.0;
   private ToggleGroup userToggles;
   private List<User> users;
+  private ScrollPane scrollPane;
+  private HBox usersPane;
+  private double tileSize;
 
   public UserSelector(UserList userList) {
     userToggles = new ToggleGroup();
+    scrollPane = new ScrollPane();
+    usersPane = new HBox();
+    usersPane.setAlignment(CENTER_LEFT);
+    usersPane.setSpacing(SPACING);
+    scrollPane.setContent(usersPane);
+    scrollPane.setFitToHeight(true);
+    scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+    scrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
 
     users = new ArrayList<>();
     if (userList != null) {
@@ -30,36 +48,37 @@ public class UserSelector extends Pane {
     }
 
     initializeButtons();
+    this.getChildren().add(scrollPane);
+    this.getStyleClass().add("user-selector");
   }
 
   private void initializeButtons() {
-    int numUsers = Math.min(MAX_USERS, users.size());
-    double buttonWidth = (getPrefWidth()-(numUsers-1)*PADDING) / numUsers;
+    int numUsers = users.size();
+    tileSize = this.getPrefWidth()/(TILES_PER_PAGE) - SPACING;
 
     for (int i = 0; i < numUsers; i++) {
+
       ImageView image = new ImageView(users.get(i).getImage());
-      double imageSize = Math.min(0.5*getPrefHeight(), 0.8*buttonWidth);
-      image.setFitHeight(imageSize);
-      image.setFitWidth(imageSize);
+      image.setFitHeight(tileSize);
+      image.setFitWidth(tileSize);
+
       ToggleButton button = new ToggleButton();
       button.setGraphic(image);
-
       button.setId(Integer.toString(i));
-
-      button.setLayoutX(i * (buttonWidth + PADDING));
-      button.setPrefSize(buttonWidth, getPrefHeight());
       button.setToggleGroup(userToggles);
-      this.getChildren().add(button);
+      button.setPrefSize(tileSize, tileSize);
 
-      // TODO : find a better way to add a label to the user selection button
-      // TODO : maybe make a custom ToggleButton? If so, how?
       Label username = new Label(users.get(i).getName());
-      username.setLayoutX(i* (buttonWidth + PADDING));
-      username.setLayoutY(getPrefHeight() * 0.75);
-      username.setPrefWidth(buttonWidth);
-      username.setAlignment(Pos.CENTER);
+      username.setPrefWidth(button.getPrefWidth());
+      username.setAlignment(Pos.TOP_CENTER);
       username.getStyleClass().add("user-select-toggle");
-      this.getChildren().add(username);
+      username.setMinHeight(SCROLL_BAR_OFFSET);
+
+      VBox buttonBox = new VBox();
+      buttonBox.setAlignment(Pos.CENTER);
+      buttonBox.getChildren().add(button);
+      buttonBox.getChildren().add(username);
+      usersPane.getChildren().add(buttonBox);
     }
   }
 
@@ -75,6 +94,7 @@ public class UserSelector extends Pane {
   public void setPaneWidth(double width) {
     setPrefWidth(width);
     reinitializeButtons();
+    scrollPane.setPrefWidth(width);
   }
 
   public void setPaneHeight(double height) {
@@ -83,7 +103,7 @@ public class UserSelector extends Pane {
   }
 
   private void reinitializeButtons() {
-    this.getChildren().clear();
+    usersPane.getChildren().clear();
     initializeButtons();
   }
 

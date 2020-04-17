@@ -22,6 +22,9 @@ public class LeftDirectionController extends DirectionController {
     else if (mainEntity.getX() > myScreenWidth- mainEntity.getBoundsInLocal().getWidth()){
       mainEntity.setX(myScreenWidth-mainEntity.getBoundsInLocal().getWidth());
     }
+    else if (mainEntity.getY()<0){
+      mainEntity.setY(0.1);
+    }
   }
 
   private void setToCenter(EntityList entities, Entity mainEntity) {
