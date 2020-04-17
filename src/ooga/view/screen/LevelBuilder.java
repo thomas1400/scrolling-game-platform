@@ -33,8 +33,7 @@ public class LevelBuilder extends Screen {
   private ImageView levelTitleValidated = new ImageView(DEFAULT_URL);
   private TextField subTitle = new TextField();
   private ImageView subTitleValidated = new ImageView(DEFAULT_URL);
-  private TextField background = new TextField(); 
-  private FileChooser backgroundPicker = new FileChooser();
+  private TextField background = new TextField();
   private ComboBox<String> physicsType = new ComboBox<>();
   private ImageView physicsValidated = new ImageView(DEFAULT_URL);
   private ComboBox<String> scrollType = new ComboBox<>();
@@ -45,7 +44,11 @@ public class LevelBuilder extends Screen {
   private ImageView heightValidated = new ImageView(DEFAULT_URL);
   private TextField width = new TextField();
   private ImageView widthValidated = new ImageView(DEFAULT_URL);
-  private Button makeGridButton = new Button("MAKE GRID");
+  private ImageView validated = new ImageView(DEFAULT_URL);
+
+  private FileChooser backgroundPicker = new FileChooser();
+  private ScrollPane levelGrid = new ScrollPane();
+  private ScrollPane entitySelector = new ScrollPane();
   
 
   public LevelBuilder(ScreenController controller) {
@@ -57,31 +60,36 @@ public class LevelBuilder extends Screen {
     dynamicNodes.put("sub-title-input", subTitle);
     dynamicNodes.put("sub-title-validate", subTitleValidated);
     dynamicNodes.put("background-input", background);
-    dynamicNodes.put("background-selector", backgroundPicker);
-    dynamicNodes.put("level-title-input", );
-    dynamicNodes.put("level-title-input", );
-    dynamicNodes.put("level-title-input", );
-    dynamicNodes.put("level-title-input", );
-    dynamicNodes.put("level-title-input", );
-    dynamicNodes.put("level-title-input", );
-    dynamicNodes.put("level-title-input", );
-    dynamicNodes.put("level-title-input", );
-    dynamicNodes.put("level-title-input", );
-    dynamicNodes.put("level-title-input", );
-    dynamicNodes.put("level-title-input", );
-    dynamicNodes.put("level-title-input", );
-    dynamicNodes.put("level-title-input", );
+    dynamicNodes.put("physics-type-input", physicsType);
+    dynamicNodes.put("physics-type-validate", physicsValidated);
+    dynamicNodes.put("scroll-type-input", scrollType);
+    dynamicNodes.put("scroll-type-validate", scrollValidated);
+    dynamicNodes.put("lives-input", levelLives);
+    dynamicNodes.put("lives-validate", levelLivesValidated);
+    dynamicNodes.put("height-input", height);
+    dynamicNodes.put("height-validate", heightValidated);
+    dynamicNodes.put("width-input", width);
+    dynamicNodes.put("width-validate", widthValidated);
+    dynamicNodes.put("level-editor", levelGrid);
+    dynamicNodes.put("entity-editor", entitySelector);
+    dynamicNodes.put("validated-image", validated);
 
     loadLayout();
   }
 
-  private void clearLevel() {
-  }
+  public void makeGrid() {
 
-  private void saveLevel() {
   }
+  public void validateLevel() {
 
-  private void validateLevel() {
+  }
+  public void saveLevel() {
+
+  }
+  public void clearLevel() {
+
+  }
+  public void chooseImage(){
 
   }
 

@@ -26,39 +26,39 @@
       (HBox alignment=CENTER, prefWidth=40%, prefHeight=8%) {
         (Label text=background , style=detail, prefWidth=16%, prefHeight=8%)
         (background-input preferredWidth=16%, preferredHeight=8%)
-        (background-selector preferredWidth=5%, preferredHeight=8%)
+        (Button text=Load, actionTag=choose-image)
       }
     }
     (VBox alignment=CENTER, prefWidth=30%) {
       (HBox alignment=CENTER, prefWidth=30%, prefHeight=8%) {
-        (Label text=Physics Type: , style=detail, prefWidth=12%, prefHeight=8%)
+        (Label text=physics-label , style=detail, prefWidth=12%, prefHeight=8%)
         (physics-type-input preferredWidth=12%, preferredHeight=8%)
         (physics-type-validate preferredWidth=5%, preferredHeight=8%)
       }
       (HBox alignment=CENTER, prefWidth=30%, prefHeight=8%) {
-        (Label text=Sub Title: , style=detail, prefWidth=12%, prefHeight=8%)
+        (Label text=scroll-label , style=detail, prefWidth=12%, prefHeight=8%)
         (scroll-type-input preferredWidth=12%, preferredHeight=8%)
         (scroll-type-validate preferredWidth=5%, preferredHeight=8%)
       }
       (HBox alignment=CENTER, prefWidth=30%, prefHeight=8%) {
-        (Label text=Lives/Level: , style=detail, prefWidth=12%, prefHeight=8%)
+        (Label text=lives-label , style=detail, prefWidth=12%, prefHeight=8%)
         (lives-input preferredWidth=12%, preferredHeight=8%)
         (lives-validate preferredWidth=5%, preferredHeight=8%)
       }
     }
     (VBox alignment=CENTER, prefWidth=30%) {
       (HBox alignment=CENTER, prefWidth=30%, prefHeight=8%) {
-        (Label text=Height: , style=detail, prefWidth=12%, prefHeight=8%)
+        (Label text=height-label , style=detail, prefWidth=12%, prefHeight=8%)
         (height-input preferredWidth=12%, preferredHeight=8%)
         (height-validate preferredWidth=5%, preferredHeight=8%)
       }
       (HBox alignment=CENTER, prefWidth=30%, prefHeight=8%) {
-        (Label text=Width: , style=detail, prefWidth=12%, prefHeight=8%)
+        (Label text=width-label , style=detail, prefWidth=12%, prefHeight=8%)
         (width-input preferredWidth=12%, preferredHeight=8%)
         (width-validate preferredWidth=5%, preferredHeight=8%)
       }
       (HBox alignment=CENTER, prefWidth=30%, prefHeight=8%) {
-        (make-grid-button preferredWidth=30%, preferredHeight=8%)
+        (Button text=make-grid, actionTag=make-grid)
       }
     }
   }
@@ -68,15 +68,16 @@
       (level-editor preferredWidth=65%, preferredHeight=55%)
     }
     (VBox alignment=CENTER, prefWidth=35%) {
-      (Label text=Entity Selector: , style=title, prefWidth=35%, prefHeight=10%)
-      (level-editor preferredWidth=35%, preferredHeight=45%)
+      (Label text=entity-selector-label , style=title, prefWidth=35%, prefHeight=10%)
+      (entity-editor preferredWidth=35%, preferredHeight=45%)
     }
   }
 ###LEVEL SUBMISSION BOX
   (HBox alignment=CENTER, prefWidth=100%) {
-    (validator preferredWidth=30%, preferredHeight=10%)
-    (val-image preferredWidth=30%, preferredHeight=10%)
-    (save-level preferredWidth=30%, preferredHeight=10%)
-    (clear-inputs preferredWidth=30%, preferredHeight=10%)
+    (Button text=back, actionTag=quit)
+    (Button text=clear-input, actionTag=clear)
+    (Button text=validate, actionTag=validate)
+    (validated-image preferredWidth=10%, preferredHeight=10%)
+    (Button text=save-level, actionTag=save-level)
   }
 }
