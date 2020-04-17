@@ -29,7 +29,7 @@ public class CollisionManager {
   private static final String MAXX_MINX = "maxXminX";
   private static final String MAXY_MINY = "maxYminY";
   private static final Map<Double, String> map = new HashMap<>();
-  private static final Map<Entity, EntityList> collision = new HashMap<>();
+  private static Map<Entity, EntityList> collision = new HashMap<>();
 
 
   private List<Observer> observers;
@@ -41,6 +41,7 @@ public class CollisionManager {
 
   public void manageCollisions(EntityList entities) {
     entitiesReceived = new EntityList();
+    collision = new HashMap<>();
     for (Entity entity : entities) {
       collision.putIfAbsent(entity, new EntityList());
       for (Entity entity2 : entities) {

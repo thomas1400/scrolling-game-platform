@@ -14,11 +14,15 @@ public class UpDirectionController extends DirectionController {
   }
 
   public void updateCameraPosition(EntityList entities, Entity mainEntity) {
-    yCenter = myScreenHeight/2- mainEntity.getBoundsInLocal().getHeight()/2;
+    yCenter = myScreenHeight / 2 - mainEntity.getBoundsInLocal().getHeight() / 2;
     if (mainEntity.getY() < yCenter) {
       setToCenter(entities, mainEntity);
       //entities.changeAllCoordinates(0, change);
       //determineEntitiesOnScreen(entities);
+    } else if (mainEntity.getX() > myScreenWidth - mainEntity.getBoundsInLocal().getWidth()) {
+      mainEntity.setX(myScreenWidth - mainEntity.getBoundsInLocal().getWidth());
+    } else if (mainEntity.getX() < 0) {
+      mainEntity.setX(0);
     }
   }
 
