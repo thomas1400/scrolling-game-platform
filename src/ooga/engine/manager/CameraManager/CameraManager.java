@@ -28,10 +28,13 @@ public class CameraManager {
           .forName("ooga.engine.manager.CameraManager.DirectionControllers." + directionType).newInstance();
       myDirectionController.initialize(entities, height, width, character);
     } catch (InstantiationException e) {
+      //FIXME
       e.printStackTrace();
     } catch (IllegalAccessException e) {
+      //FIXME
       e.printStackTrace();
     } catch (ClassNotFoundException e) {
+      //FIXME
       e.printStackTrace();
     }
   }

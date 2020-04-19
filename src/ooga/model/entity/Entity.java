@@ -12,7 +12,6 @@ import ooga.model.ability.Ability;
 import ooga.model.ability.CollectiblePackage;
 import ooga.model.ability.Health;
 import ooga.model.ability.Movement;
-import ooga.model.ability.attacktypes.Attack;
 import ooga.model.behavior.Collidible;
 import ooga.model.physics.Physics;
 import ooga.utility.event.CollisionEvent;
@@ -20,6 +19,11 @@ import ooga.utility.event.CollisionEvent;
 public class Entity extends ImageView implements Collidible, Manageable, Renderable {
 
   private static final String HARMLESS = "Harmless";
+  private static final String DEFAULT_PACKAGE_CONTENT = "nothing 0";
+  private static final String COLLISIONS_HANDLING_PATH = "entities/collisions/";
+  private static final String ADD = "add";
+  private static final double INITIAL_SCORE = 0;
+  private static final double DEFAULT_SCALE = 1;
 
   private Health health;
   private Movement movement;
@@ -43,10 +47,9 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     top = HARMLESS;
     bottom = HARMLESS;
     haveMovement = false;
-    myPackage = new CollectiblePackage("nothing 0");
-    score = 0;
-    scale = 1;
-    //todo take out magic vals
+    myPackage = new CollectiblePackage(DEFAULT_PACKAGE_CONTENT);
+    score = INITIAL_SCORE;
+    scale = DEFAULT_SCALE;
   }
 
   /**
@@ -56,7 +59,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    */
   public void updateAttack(String location, String attackType) {
     try {
-      Method method = Entity.class.getDeclaredMethod("add"+location, String.class);
+      Method method = Entity.class.getDeclaredMethod(ADD+location, String.class);
       method.invoke(Entity.this, attackType);
     } catch (NoSuchMethodException e) {
       throw new RuntimeException(e);
@@ -75,7 +78,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    */
   public void addAbility(String abilityType, Ability ability){
     try {
-      Method method = Entity.class.getDeclaredMethod("add"+abilityType, Ability.class);
+      Method method = Entity.class.getDeclaredMethod(ADD+abilityType, Ability.class);
       method.invoke(Entity.this, ability);
     } catch (NoSuchMethodException e) {
       throw new RuntimeException(e);
@@ -185,7 +188,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     String myAttack = this.getAttack(location);
 
     try {
-      ResourceBundle myAttackSpecificResponseBundle = ResourceBundle.getBundle("entities/collisions/"+otherAttack.toString());
+      ResourceBundle myAttackSpecificResponseBundle = ResourceBundle.getBundle(COLLISIONS_HANDLING_PATH+otherAttack.toString());
       String[] methodsToCall = myAttackSpecificResponseBundle.getString(myAttack).split(" ");
       for(String s : methodsToCall) {
         Method method = Entity.class.getDeclaredMethod(s);
@@ -251,6 +254,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     //System.out.println("score: " + score);
   }
 
+  //used for reflection DO NOT DELETE
   private void health(Double value){
     health.addLives((int) Math.floor(value));
   }

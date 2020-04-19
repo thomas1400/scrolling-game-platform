@@ -20,6 +20,7 @@ public class ExceptionFeedback {
     ButtonType quit = new ButtonType("QUIT", ButtonData.OK_DONE);
     showAlert(e.getClass().getSimpleName(), message, quit);
 
+    //todo GET RID OF THIS PRINT OF STACK TRACE!!!
     e.printStackTrace();
     System.exit(-1);
   }
