@@ -9,7 +9,7 @@ import java.util.ListIterator;
 import javafx.event.Event;
 import ooga.utility.observer.Observer;
 
-public class EntityList implements Iterable<Entity>, Observer {
+public class EntityList implements Iterable<Entity> {
   private List<Entity> myEntities;
   private Entity myMainEntity;
 
@@ -44,11 +44,6 @@ public class EntityList implements Iterable<Entity>, Observer {
 
   public Iterator<Entity> iterator() {
     return myEntities.iterator();
-  }
-
-  @Override
-  public void handleNotification(Event e) {
-
   }
 
   public Entity getMainEntity() {

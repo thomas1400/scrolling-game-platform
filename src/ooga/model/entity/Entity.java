@@ -49,23 +49,12 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     //todo take out magic vals
   }
 
+  /**
+   * Override any attack types as specified by the new attack type and location
+   * @param location where the attack goes
+   * @param attackType new type to replace old one at location
+   */
   public void updateAttack(String location, String attackType) {
-    /*Attack attack = Attack.HARMLESS;
-    if (attackType.equals("BOUNCE")){
-      attack = Attack.BOUNCE;
-    } else if (attackType.equals("STUN")){
-      attack = Attack.STUN;
-    } else if (attackType.equals("DAMAGE")){
-      attack = Attack.DAMAGE;
-    } else if (attackType.equals("SUPPORT")){
-      attack = Attack.SUPPORT;
-    } else if (attackType.equals("COLLECT")){
-      attack = Attack.COLLECT;
-    } else if (attackType.equals("COLLECTIBLE")){
-      attack = Attack.COLLECTIBLE;
-    }
-    //todo learn how to make enums with reflection and change the above to that
-*/
     try {
       Method method = Entity.class.getDeclaredMethod("add"+location, String.class);
       method.invoke(Entity.this, attackType);
@@ -78,9 +67,13 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     }
   }
 
+  /**
+   * Add abilities to the entity. This is a general method that allows all
+   * ability objects to be added to the entity
+   * @param abilityType what ability to add, directs it to the correct specific method
+   * @param ability the ability object to be handed to this entity
+   */
   public void addAbility(String abilityType, Ability ability){
-    //myAbilities.add(a);
-    //makeMethod("add"+abilityType);
     try {
       Method method = Entity.class.getDeclaredMethod("add"+abilityType, Ability.class);
       method.invoke(Entity.this, ability);
@@ -129,10 +122,16 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     return new String[0];
   }
 
+  /**
+   * returns if the entity has health greater than 0;
+   * aka if it is dead or not
+   * @return boolean tracking health status
+   */
   public boolean isDead(){
     return dead;
   }
 
+  //todo delete when finished
   public String debug(){
     if(debuggingName.equals("Mario.png")){
      // System.out.println("Side: "+side.toString()+" Bottom: "+bottom.toString()+" top: "+top.toString());
@@ -174,6 +173,12 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   @Override
+  /**
+   * handle collisions based on a given collision event
+   * find the attack the entity has at the location of the collision,
+   * search in the file of the attack of the OTHER entity for the methods
+   * that should be executed based on this.attackType, then execute those methods
+   */
   public Entity handleCollision(CollisionEvent ce) {
     String location = ce.getCollisionLocation();
     String otherAttack = ce.getAttackType();
@@ -194,7 +199,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     } catch (IllegalAccessException e) {
       throw new RuntimeException(e);
     } catch (InvocationTargetException e) {
-      //System.out.println(otherAttack);
       throw new RuntimeException(e);
     }
     return this;
@@ -206,17 +210,22 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     dead = health.isDead();
   }
 
+  //used for reflection DO NOT DELETE
+  /**
+   * chooses which bounce method to use based on which speed is greater; x or y
+   */
   private void bounce(){
-    if(haveMovement && (movement.getYVelocity() >= movement.getXVelocity())){
+    if(haveMovement && (Math.abs(movement.getYVelocity()) >= Math.abs(movement.getXVelocity()))){
       bounceY();
-    } else if (haveMovement && movement.getYVelocity()<movement.getXVelocity()){
+    } else if (haveMovement && Math.abs(movement.getYVelocity()) < Math.abs(movement.getXVelocity())){
       bounceX();
     }
   }
 
   //used for reflection DO NOT DELETE
   /**
-   * note: the other one is the collectible item
+   * note: the effects of a collectible entity will only
+   * be shown within that entity in order to hide other objects
    */
   private void collectMe(){
     //todo create a bonus ability that can change score, height, etc. have that happen here as the entity is collected
@@ -239,7 +248,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   //used for reflection DO NOT DELETE
   private void points(Double value){
     score += value;
-    System.out.println("score: " + score);
+    //System.out.println("score: " + score);
   }
 
   private void health(Double value){
@@ -253,7 +262,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
 
   //used for reflection DO NOT DELETE
   private void levelEnd(Double value){
-    System.out.println("we did it");
+    //System.out.println("we did it");
     levelEnded = true;
     success = (value!=0);
   }
@@ -299,48 +308,80 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   @Override
+  /**
+   * called every cycle, move the entity, and check for entity death
+   */
   public void updateVisualization() {
     if (haveMovement) {
       movement.update(this);
     }
+    //todo this isn't changeing the scale of the player bc it's changing the scale of the mushroom
     this.setScaleX(scale);
     this.setScaleY(scale);
     dead = health.isDead();
   }
+
   //used for reflection DO NOT DELETE
+  /**
+   * return is a level is over for the specific entity
+   * @return levelEnded
+   */
   public boolean endedLevel(){
     return levelEnded;
   }
 
   //used for reflection DO NOT DELETE
+  //fixme because this isn't in the player entity, this method will always be false for players
+  // and always true for collected level end entities. ask cayla if you can delete this
+  /**
+   * True if a level was ended by collecting a level end entity.
+   * @return success
+   */
   public boolean isSuccess(){
     return success;
   }
 
   //used for reflection DO NOT DELETE
+  //fixme where is this being used? would it be ok to delete/replace with a clear score method?
+  /**
+   * set the score of an entity to an incoming value
+   * @param newScore new score to set the entity to
+   */
   public void setScore(double newScore){
     score = newScore;
   }
+
   //used for reflection DO NOT DELETE
+  /**
+   * return the score of a collected entity
+   * @return
+   */
   public double getScore(){
     return score;
   }
 
-
-
   //used for reflection DO NOT DELETE
+  /**
+   * Move the entity to the right if it can do so
+   */
   public void moveRight(){
     setScaleX(1);
     movement.right();
   }
 
   //used for reflection DO NOT DELETE
+  /**
+   * Move the entity to the left if it can do so
+   */
   public void moveLeft(){
     setScaleX(-1);
     movement.left();
   }
 
   //used for reflection DO NOT DELETE
+  /**
+   * Move the entity up if it can do so
+   */
   public void jump(){
     setY(getY()-Physics.TINY_DISTANCE);
     movement.jump();

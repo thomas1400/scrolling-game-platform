@@ -22,7 +22,7 @@ public class InputManager {
   }
 
   public void handleKeyPress(KeyEvent keyEvent) {
-    if (!keysCurrentlyPressed.contains(keyEvent.getCode().toString())) {
+    if (!keysCurrentlyPressed.contains(keyEvent.getCode().toString()) && myUserInputsResources.containsKey(keyEvent.getCode().toString())) {
       keysCurrentlyPressed.add(keyEvent.getCode().toString());
       invokeMethod(keyEvent.getCode().toString());
     }
