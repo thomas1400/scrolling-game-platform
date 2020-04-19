@@ -28,6 +28,7 @@ public final class UserSaver {
         userProperties.store(output, "User properties file for user: " + user.getName());
 
       } catch (IOException io) {
+        //FIXME GET RID OF PRINTING THE STACK TRACK
         io.printStackTrace();
       }
     }
@@ -44,9 +45,11 @@ public final class UserSaver {
           Method m = user.getClass().getDeclaredMethod(methodName);
           userProperties.setProperty(userProperty, m.invoke(user) + "");
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+          //FIXME TAKE OUT PRINTING THE STACK TRACE
           e.printStackTrace();
         }
       } catch (SecurityException e) {
+        //FIXME TAKE OUT PRINTING THE STACK TRACE
         e.printStackTrace();
       }
     }

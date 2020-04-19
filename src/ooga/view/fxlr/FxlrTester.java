@@ -25,6 +25,7 @@ public class FxlrTester extends Application {
       root.getStylesheets().add(new File("resources/stylesheet.css").toURI().toString());
       primaryStage.setScene(new Scene(root));
     } catch (Exception e) {
+      //todo GET RID OF THIS PRINT STACK TRACE
       e.printStackTrace();
     }
   }
