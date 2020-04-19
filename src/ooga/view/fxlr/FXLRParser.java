@@ -129,9 +129,11 @@ public class FXLRParser {
 
         return;
       } catch (InvocationTargetException e) {
+        //FIXME
         e.printStackTrace();
       } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException ignored) {}
     }
+    //FIXME TAKE OUT PRINTING THE STACK TRACE
     (new ClassNotFoundException("Class not found for classname " + className)).printStackTrace();
   }
 
@@ -172,6 +174,7 @@ public class FXLRParser {
           }
         }
       } catch (Exception e) {
+        //FIXME
         e.printStackTrace();
         System.out.println("Couldn't set attribute " + attr);
       }

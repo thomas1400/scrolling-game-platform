@@ -25,10 +25,13 @@ public class Health extends Ability {
     immortal = false;
   }
 
+  /**
+   * Constructor to create immortal objects
+   */
   public Health(){
     immortal = true;
     myLives = DEATH;
-    //todo if isDead breaks than add myLives = 1;
+    //todo if isDead breaks than change to myLives = 1;
   }
 
   /**
@@ -36,7 +39,16 @@ public class Health extends Ability {
    * @return if the entity is immortal or myLives is equal to zero
    */
   public boolean isDead(){
-    return (myLives == DEATH && !immortal);
+    return (myLives <= DEATH && !immortal);
+  }
+  //todo if health suddenly stops working change <= to ==
+
+  /**
+   * Change number of lives by the incoming value
+   * @param lives value to change lives by
+   */
+  public void addLives(int lives){
+    myLives+=lives;
   }
 
   /**

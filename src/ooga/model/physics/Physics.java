@@ -108,6 +108,14 @@ public class Physics {
     }
   }
 
+  public double getYVelocity(){
+    return myVelocity[Y];
+  }
+
+  public double getXVelocity(){
+    return myVelocity[X];
+  }
+
   public void stopHorizMotion() {
     myInputAdjust[X] -= TINY_DISTANCE * getDirection(myVelocity[X]);
     stopDirectionalMotion(X);

@@ -49,7 +49,41 @@ class EntityTest {
     CollisionEvent topHarmless = buildCollisionEvent("TOP", "Harmless");
     CollisionEvent bottomHarmless = buildCollisionEvent("BOTTOM", "Harmless");
 
-    assertEquals(/*what do I put in here?*/1, 1);
+    mario.handleCollision(sideDamage);
+    assertEquals(true, mario.isDead());
+
+    mario = buildEntity("Mario.png");
+    mario.handleCollision(topDamage);
+    assertEquals(true, mario.isDead());
+
+    mario = buildEntity("Mario.png");
+    mario.handleCollision(bottomDamage);
+    assertEquals(true, mario.isDead());
+
+    mario = buildEntity("Mario.png");
+    mario.handleCollision(sideBounce);
+    assertEquals(false, mario.isDead());
+
+    mario = buildEntity("Mario.png");
+    mario.handleCollision(topBounce);
+    assertEquals(false, mario.isDead());
+
+    mario = buildEntity("Mario.png");
+    mario.handleCollision(bottomBounce);
+    assertEquals(false, mario.isDead());
+
+    mario = buildEntity("Mario.png");
+    mario.handleCollision(sideSupport);
+    assertEquals(false, mario.isDead());
+
+    mario = buildEntity("Mario.png");
+    mario.handleCollision(bottomSupport);
+    assertEquals(false, mario.isDead());
+
+    mario = buildEntity("Mario.png");
+    mario.handleCollision(topSupport);
+    assertEquals(false, mario.isDead());
+
   }
 
   @Test
