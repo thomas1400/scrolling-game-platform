@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.nio.charset.MalformedInputException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 import ooga.exceptions.ExceptionFeedback;
 import ooga.controller.data.BasicLevel;
@@ -32,9 +33,10 @@ public final class LevelBuilder {
   public static BasicLevel buildBasicLevel(File levelFile) throws FileNotFoundException {
     Map<String,String> headerInfo = getMapFromFile(levelFile, HEADER_TAG);
 
-    //FIXME: Get the level number from a properties file based off of the level name, not the
-    // level file named the concrete number it's supposed to be
-    int levelNumber = Integer.parseInt(levelFile.getName().substring(0,1));
+    ResourceBundle myLevelsBundle = ResourceBundle.getBundle("levels/resources/levelOrder");
+    myLevelsBundle.getString(levelFile.getName());
+
+    int levelNumber = Integer.parseInt(myLevelsBundle.getString(levelFile.getName()));
     return new BasicLevel(levelNumber, levelFile, headerInfo);
   }
 
