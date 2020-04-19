@@ -17,6 +17,7 @@ import ooga.controller.data.UserList;
 import ooga.exceptions.ExceptionFeedback;
 import ooga.view.screen.GameScreen;
 import ooga.view.screen.HomeScreen;
+import ooga.view.screen.LevelBuilderScreen;
 import ooga.view.screen.LevelSelectorScreen;
 import ooga.view.screen.LoadingScreen;
 import ooga.view.screen.Screen;
@@ -52,6 +53,7 @@ public class ScreenController{
     initializeScreens();
 
     switchToScreen("HomeScreen");
+    //switchToScreen("LevelBuilderScreen");
   }
 
   private void addApplicationIcon() {
@@ -68,13 +70,13 @@ public class ScreenController{
     Screen myUserCreationScreen = new UserCreationScreen(this);
     Screen myUserSelectorScreen = new UserSelectorScreen(this, myUsers);
     Screen myHomeScreen = new HomeScreen(this);
-    //private Screen myLevelBuilderScreen = new LevelBuilderScreen();
+    Screen myLevelBuilderScreen = new LevelBuilderScreen(this);
 
     myScreens.put("HomeScreen", myHomeScreen);
     myScreens.put("UserSelectorScreen", myUserSelectorScreen);
     myScreens.put("LevelSelectorScreen", myLevelSelectorScreen);
     myScreens.put("UserCreationScreen", myUserCreationScreen);
-    //private Screen myLevelBuilderScreen = new LevelBuilderScreen();
+    myScreens.put("LevelBuilderScreen", myLevelBuilderScreen);
   };
 
   public void switchToScreen(String screenName){

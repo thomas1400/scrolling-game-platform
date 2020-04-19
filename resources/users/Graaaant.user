@@ -1,9 +1,8 @@
 #User properties file for user: Graaaant
-#Fri Apr 17 03:05:28 EDT 2020
-resources/users/Graaaant.user
+#Sun Apr 19 11:22:57 EDT 2020
 image=images/creators/grant.jpeg
 levelsUnlocked=1,2,3,4
-lives=99995
+lives=99992
 size=large
 name=Graaaant
 power=star
