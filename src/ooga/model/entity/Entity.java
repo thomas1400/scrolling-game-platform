@@ -8,6 +8,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import ooga.exceptions.ExceptionFeedback;
 import ooga.model.ability.Ability;
 import ooga.model.ability.CollectiblePackage;
 import ooga.model.ability.Health;
@@ -152,12 +153,16 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
       Method method = Entity.class.getDeclaredMethod("get"+location+"Attack");
       return (String) method.invoke(Entity.this);
     } catch (NoSuchMethodException e) {
-      throw new RuntimeException(e);
+      ExceptionFeedback.throwHandledException(e, "No such method used when trying to to get the "+location+" attack");
+      //throw new RuntimeException(e);
     } catch (IllegalAccessException e) {
-      throw new RuntimeException(e);
+      ExceptionFeedback.throwHandledException(e, "No access to method used when trying to get the "+location+" attack");
+      //throw new RuntimeException(e);
     } catch (InvocationTargetException e) {
-      throw new RuntimeException(e);
+      ExceptionFeedback.throwHandledException(e, "Failed to invoke method called when trying to get the "+location+" attack");
+      //throw new RuntimeException(e);
     }
+    return HARMLESS;
   }
 
   //used for reflection DO NOT DELETE
@@ -195,14 +200,18 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
         method.invoke(Entity.this);
       }
     } catch (MissingResourceException e) {
-      System.out.println("Couldn't find key in bundle I'm:"+ debuggingName+"; we're at: "+location);
-      throw new RuntimeException(e);
+      ExceptionFeedback.throwHandledException(e, "Couldn't find key in bundle");
+      //System.out.println("Couldn't find key in bundle I'm:"+ debuggingName+"; we're at: "+location);
+      //throw new RuntimeException(e);
     } catch (NoSuchMethodException e) {
-      throw new RuntimeException(e);
+      ExceptionFeedback.throwHandledException(e, "Method name was incorrect in trying to make the entity");
+      //throw new RuntimeException(e);
     } catch (IllegalAccessException e) {
-      throw new RuntimeException(e);
+      ExceptionFeedback.throwHandledException(e, "You don't have access to that method, try again");
+      //throw new RuntimeException(e);
     } catch (InvocationTargetException e) {
-      throw new RuntimeException(e);
+      ExceptionFeedback.throwHandledException(e, "Couldn't invoke the method when creating the entity");
+      //throw new RuntimeException(e);
     }
     return this;
   }
@@ -239,11 +248,14 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
         Method method = Entity.class.getDeclaredMethod(methodToCall, Double.class);
         method.invoke(Entity.this, value);
       } catch (NoSuchMethodException e) {
-        throw new RuntimeException(e);
+        ExceptionFeedback.throwHandledException(e, "Method name was incorrect when trying to collect the entity");
+        //throw new RuntimeException(e);
       } catch (IllegalAccessException e) {
-        throw new RuntimeException(e);
+        ExceptionFeedback.throwHandledException(e, "No access to method used when trying to collect the entity");
+        //throw new RuntimeException(e);
       } catch (InvocationTargetException e) {
-        throw new RuntimeException(e);
+        ExceptionFeedback.throwHandledException(e, "Method can't be invoked when used when trying to collect the entity");
+        //throw new RuntimeException(e);
       }
     }
   }
