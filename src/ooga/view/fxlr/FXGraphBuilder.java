@@ -16,6 +16,7 @@ class FXGraphBuilder {
       ObservableList<Node> children = (ObservableList<Node>) parent.getClass().getMethod("getChildren").invoke(parent);
       children.add(node);
     } catch (Throwable e) {
+      //FIXME
       e.printStackTrace();
     }
   }
