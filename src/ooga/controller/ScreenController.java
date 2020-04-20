@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.animation.FadeTransition;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
@@ -21,6 +23,7 @@ import ooga.view.screen.LevelBuilderScreen;
 import ooga.view.screen.LevelSelectorScreen;
 import ooga.view.screen.LoadingScreen;
 import ooga.view.screen.Screen;
+import ooga.view.screen.SettingsScreen;
 import ooga.view.screen.UserCreationScreen;
 import ooga.view.screen.UserSelectorScreen;
 
@@ -153,4 +156,21 @@ public class ScreenController{
     fadeIn.play();
   }
 
+  public ObservableList<String> getCameraManagerOptions() {
+    // TODO : get camera manager options
+    return FXCollections.observableArrayList("Right-Direction", "Left-Direction", "Centered");
+  }
+
+  public void setCameraManagerOption(String selected) {
+    // TODO : set camera manager
+  }
+
+  public ObservableList<String> getPhysicsOptions() {
+    // TODO : get physics options
+    return FXCollections.observableArrayList("Land", "Water", "Floating", "Flying");
+  }
+
+  public void setPhysicsOption(String selected) {
+    // TODO : set physics option
+  }
 }
