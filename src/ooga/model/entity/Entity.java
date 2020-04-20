@@ -2,12 +2,13 @@ package ooga.model.entity;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.transform.Scale;
 import ooga.exceptions.ExceptionFeedback;
 import ooga.model.ability.Ability;
 import ooga.model.ability.CollectiblePackage;
@@ -17,12 +18,16 @@ import ooga.model.behavior.Collidible;
 import ooga.model.physics.Physics;
 import ooga.utility.event.CollisionEvent;
 
+
 public class Entity extends ImageView implements Collidible, Manageable, Renderable {
 
   private static final String HARMLESS = "Harmless";
-  private static final String DEFAULT_PACKAGE_CONTENT = "nothing 0";
+  private static final String DEFAULT_PACKAGE_CONTENT = "empty 0";
   private static final String COLLISIONS_HANDLING_PATH = "entities/collisions/";
   private static final String ADD = "add";
+  private static final String SCORE = "score";
+  private static final String HEALTH = "health";
+  private static final String SCALE = "scale";
   private static final double INITIAL_SCORE = 0;
   private static final double DEFAULT_SCALE = 1;
 
@@ -30,7 +35,8 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   private Movement movement;
   private CollectiblePackage myPackage;
   private String side, top, bottom;
-  private List<Ability> myAbilities;
+  private Map<String, Ability> myAbilities;
+  private Map<String, Double> myInformation;
   private String debuggingName;
   private double score, scale;
   private boolean dead, haveMovement, levelEnded, success;
@@ -42,15 +48,16 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   public Entity(Image image, String name){
     super(image);
     debuggingName = name;
-    myAbilities = new ArrayList<Ability>();
-    health = new Health();
-    side = HARMLESS;
-    top = HARMLESS;
-    bottom = HARMLESS;
+    myAbilities = new HashMap<>();
+    myInformation = new HashMap<>();
+    addHealth(new Health());
+    addSideAttack(HARMLESS);
+    addTopAttack(HARMLESS);
+    addBottomAttack(HARMLESS);
     haveMovement = false;
-    myPackage = new CollectiblePackage(DEFAULT_PACKAGE_CONTENT);
-    score = INITIAL_SCORE;
-    scale = DEFAULT_SCALE;
+    addCollectiblePackage(new CollectiblePackage(DEFAULT_PACKAGE_CONTENT));
+    setScore(INITIAL_SCORE);
+    size(DEFAULT_SCALE);
   }
 
   /**
@@ -70,6 +77,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
       throw new RuntimeException(e);
     }
   }
+
 
   /**
    * Add abilities to the entity. This is a general method that allows all
@@ -93,16 +101,20 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   //used for reflection DO NOT DELETE
   private void addHealth(Ability h){
     health = (Health) h;
+    myAbilities.put("Health", health);
+    health(0.0);//todo remove magic num
   }
 
   //used for reflection DO NOT DELETE
   public void addCollectiblePackage(Ability p){
     myPackage = (CollectiblePackage) p;
+    myAbilities.put("Package", myPackage);
   }
 
   //used for reflection DO NOT DELETE
   private void addMovement(Ability m){
     movement = (Movement) m;
+    myAbilities.put("Movement", movement);
     haveMovement = true;
   }
 
@@ -122,8 +134,19 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   @Override
-  public String[] getTags() {
-    return new String[0];
+  public Map<String, Ability> getAbilities() {
+    return myAbilities;
+  }
+
+  @Override
+  public double getData(String informationType){
+    if(myInformation.containsKey(informationType))
+      return myInformation.get(informationType);
+    else{
+      ExceptionFeedback.throwHandledException(new RuntimeException(), "You're looking for information (\""+informationType+"\" in the data map that isn't there");
+      return 0;
+      //todo get rid of magic val
+    }
   }
 
   /**
@@ -143,6 +166,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     return debuggingName;
   }
 
+  @Override
   /**
    * Get the attack of the specific side
    * @param location
@@ -153,8 +177,8 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
       Method method = Entity.class.getDeclaredMethod("get"+location+"Attack");
       return (String) method.invoke(Entity.this);
     } catch (NoSuchMethodException e) {
-      ExceptionFeedback.throwHandledException(e, "No such method used when trying to to get the "+location+" attack");
-      //throw new RuntimeException(e);
+      //ExceptionFeedback.throwHandledException(e, "No such method used when trying to to get the "+location+" attack");
+      throw new RuntimeException(e);
     } catch (IllegalAccessException e) {
       ExceptionFeedback.throwHandledException(e, "No access to method used when trying to get the "+location+" attack");
       //throw new RuntimeException(e);
@@ -180,7 +204,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     return bottom;
   }
 
-  @Override
   /**
    * handle collisions based on a given collision event
    * find the attack the entity has at the location of the collision,
@@ -191,29 +214,50 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     String location = ce.getCollisionLocation();
     String otherAttack = ce.getAttackType();
     String myAttack = this.getAttack(location);
+    Collidible otherEntity = ce.getOther();
 
-    try {
-      ResourceBundle myAttackSpecificResponseBundle = ResourceBundle.getBundle(COLLISIONS_HANDLING_PATH+otherAttack.toString());
-      String[] methodsToCall = myAttackSpecificResponseBundle.getString(myAttack).split(" ");
-      for(String s : methodsToCall) {
-        Method method = Entity.class.getDeclaredMethod(s);
-        method.invoke(Entity.this);
+    if(!otherEntity.isDead()) { //fixme remove if the entities are removed later
+      try {
+        ResourceBundle myAttackSpecificResponseBundle = ResourceBundle
+            .getBundle(COLLISIONS_HANDLING_PATH + otherAttack.toString());
+        String[] methodsToCall = myAttackSpecificResponseBundle.getString(myAttack).split(" ");
+        for (String s : methodsToCall) {
+          if (s.equals("collect")) {
+            otherEntity.otherCollectMe();
+            updateMeAfterCollecting(otherEntity);
+
+            otherEntity.otherResetAfterCollect();
+          } else {
+            Method method = Entity.class.getDeclaredMethod(s);
+            method.invoke(Entity.this);
+          }
+        }
+      } catch (MissingResourceException e) {
+        ExceptionFeedback.throwHandledException(e, "Couldn't find key in bundle");
+        //System.out.println("Couldn't find key in bundle I'm:"+ debuggingName+"; we're at: "+location);
+        //throw new RuntimeException(e);
+      } catch (NoSuchMethodException e) {
+        ExceptionFeedback
+            .throwHandledException(e, "Method name was incorrect in trying to make the entity");
+        //throw new RuntimeException(e);
+      } catch (IllegalAccessException e) {
+        ExceptionFeedback
+            .throwHandledException(e, "You don't have access to that method, try again");
+        //throw new RuntimeException(e);
+      } catch (InvocationTargetException e) {
+        ExceptionFeedback
+            .throwHandledException(e, "Couldn't invoke the method when creating the entity");
+        //throw new RuntimeException(e);
       }
-    } catch (MissingResourceException e) {
-      ExceptionFeedback.throwHandledException(e, "Couldn't find key in bundle");
-      //System.out.println("Couldn't find key in bundle I'm:"+ debuggingName+"; we're at: "+location);
-      //throw new RuntimeException(e);
-    } catch (NoSuchMethodException e) {
-      ExceptionFeedback.throwHandledException(e, "Method name was incorrect in trying to make the entity");
-      //throw new RuntimeException(e);
-    } catch (IllegalAccessException e) {
-      ExceptionFeedback.throwHandledException(e, "You don't have access to that method, try again");
-      //throw new RuntimeException(e);
-    } catch (InvocationTargetException e) {
-      ExceptionFeedback.throwHandledException(e, "Couldn't invoke the method when creating the entity");
-      //throw new RuntimeException(e);
     }
     return this;
+  }
+
+  private void updateMeAfterCollecting(Collidible other){
+    this.points(other.getData(SCORE));
+    this.health(other.getData(HEALTH));
+    health.setLives(getData(HEALTH));
+    this.size(other.getData(SCALE));
   }
 
   //used for reflection DO NOT DELETE
@@ -239,7 +283,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    * note: the effects of a collectible entity will only
    * be shown within that entity in order to hide other objects
    */
-  private void collectMe(){
+  private void openPackage(){
     //todo create a bonus ability that can change score, height, etc. have that happen here as the entity is collected
     String methodToCall = myPackage.toString();
     double value = myPackage.getPackageValue();
@@ -248,8 +292,8 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
         Method method = Entity.class.getDeclaredMethod(methodToCall, Double.class);
         method.invoke(Entity.this, value);
       } catch (NoSuchMethodException e) {
-        ExceptionFeedback.throwHandledException(e, "Method name was incorrect when trying to collect the entity");
-        //throw new RuntimeException(e);
+        //ExceptionFeedback.throwHandledException(e, "Method name was incorrect when trying to collect the entity");
+        throw new RuntimeException(e);
       } catch (IllegalAccessException e) {
         ExceptionFeedback.throwHandledException(e, "No access to method used when trying to collect the entity");
         //throw new RuntimeException(e);
@@ -260,20 +304,57 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     }
   }
 
+  @Override
+  public void otherCollectMe(){
+    openPackage();
+  }
+
+  //used for reflection DO NOT DELETE
+  private void collectMe(){
+    openPackage();
+    otherResetAfterCollect();
+  }
+
+  @Override
+  public void otherResetAfterCollect(){
+    resetScore();
+    size(DEFAULT_SCALE);
+    health(0.0);
+  }
+
   //used for reflection DO NOT DELETE
   private void points(Double value){
     score += value;
+    myInformation.put(SCORE, score);
     //System.out.println("score: " + score);
   }
 
   //used for reflection DO NOT DELETE
   private void health(Double value){
-    health.addLives((int) Math.floor(value));
+    //health.addLives((int) Math.floor(value));
+    myInformation.put(HEALTH, value);
   }
 
   //used for reflection DO NOT DELETE
   private void size(Double value){
     scale = value;
+    setScale();
+    myInformation.put(SCALE, scale);
+  }
+
+  private void setScale(){
+    //Scale sc = new Scale(scale, scale);
+    System.out.println(this.getFitHeight());
+    this.getScaleX();
+    this.setFitHeight(this.getFitHeight()*scale);
+    System.out.println(this.getFitHeight());
+    System.out.println(this.getFitWidth());
+    this.setFitWidth(this.getFitWidth()*scale);
+    System.out.println(this.getFitWidth());
+  }
+
+  private void empty(Double value){
+    nothing();
   }
 
   //used for reflection DO NOT DELETE
@@ -331,9 +412,10 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     if (haveMovement) {
       movement.update(this);
     }
-    //todo this isn't changeing the scale of the player bc it's changing the scale of the mushroom
-    this.setScaleX(scale);
-    this.setScaleY(scale);
+    //todo this isn't changing the scale of the player bc it's changing the scale of the mushroom
+    /*this.setScaleX(scale);
+    this.setScaleY(scale);*/
+    //setScale();
     dead = health.isDead();
   }
 
@@ -365,6 +447,12 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    */
   public void setScore(double newScore){
     score = newScore;
+    myInformation.put(SCORE, score);
+  }
+
+  //@Override
+  public void resetScore(){
+    setScore(INITIAL_SCORE);
   }
 
   //used for reflection DO NOT DELETE
@@ -401,5 +489,107 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   public void jump(){
     setY(getY()-Physics.TINY_DISTANCE);
     movement.jump();
+  }
+
+  public double debugHealth(){
+    return health.getLives();
+  }
+
+  public static void main(String[] args) {
+    Entity player = EntityBuilder.getEntity("Player");
+    Entity coin = EntityBuilder.getEntity("Coin");
+
+    CollisionEvent coinSideCE = new CollisionEvent("Side", coin.getAttack("Side"), coin);
+    CollisionEvent playerSideCE = new CollisionEvent("Side", player.getAttack("Side"), player);
+    player.handleCollision(coinSideCE);
+    coin.handleCollision(playerSideCE);
+
+    System.out.println("Expected: p100, c0");
+    System.out.println("Player's score: "+player.getScore());
+    System.out.println("Coin's score: "+coin.getScore());
+    System.out.println();
+
+    player = EntityBuilder.getEntity("Player");
+    coin = EntityBuilder.getEntity("Coin");
+    CollisionEvent coinTopCE = new CollisionEvent("Top", coin.getAttack("Side"), coin);
+    CollisionEvent playerBottomCE = new CollisionEvent("Side", player.getAttack("Side"), player);
+    player.handleCollision(coinTopCE);
+    coin.handleCollision(playerBottomCE);
+
+    System.out.println("Expected: p0, c0 for now. this is what should happen, but try and make it so that players can pick up coins with damage type but enemies cannot");
+    System.out.println("Player's score: "+player.getScore());
+    System.out.println("Coin's score: "+coin.getScore());
+    System.out.println();
+
+    player = EntityBuilder.getEntity("Player");
+    coin = EntityBuilder.getEntity("Coin");
+    CollisionEvent coinBottomCE = new CollisionEvent("Bottom", coin.getAttack("Bottom"), coin);
+    CollisionEvent playerTopCE = new CollisionEvent("Top", player.getAttack("Top"), player);
+    player.handleCollision(coinBottomCE);
+    coin.handleCollision(playerTopCE);
+
+    System.out.println("Expected: p100, c0");
+    System.out.println("Player's score: "+player.getScore());
+    System.out.println("Coin's score: "+coin.getScore());
+    System.out.println();
+
+    player = EntityBuilder.getEntity("Player");
+    coin = EntityBuilder.getEntity("Coin");
+    coinBottomCE = new CollisionEvent("Bottom", coin.getAttack("Bottom"), coin);
+    playerTopCE = new CollisionEvent("Top", player.getAttack("Top"), player);
+
+    coin.handleCollision(playerTopCE);
+    player.handleCollision(coinBottomCE);
+
+    System.out.println("Expected: p100, c0");
+    System.out.println("Player's score: "+player.getScore());
+    System.out.println("Coin's score: "+coin.getScore());
+    System.out.println("yay, order doesn't matter!");
+    System.out.println();
+
+
+    coin = EntityBuilder.getEntity("Coin");
+    coinBottomCE = new CollisionEvent("Bottom", coin.getAttack("Bottom"), coin);
+    player.handleCollision(coinBottomCE);
+    System.out.println("Expected: p200, c0");
+    System.out.println("Player's score: "+player.getScore());
+    System.out.println("Coin's score: "+coin.getScore());
+    System.out.println();
+
+    Entity lifeMushroom = EntityBuilder.getEntity("LifeMushroom");
+    CollisionEvent lifeMushroomSideCE = new CollisionEvent("Side", lifeMushroom.getAttack("Side"), lifeMushroom);
+
+    player.handleCollision(lifeMushroomSideCE);
+    lifeMushroom.handleCollision(playerSideCE);
+    System.out.println("Expected: p2, lm0");
+    System.out.println("Player's lives: "+player.debugHealth());
+    System.out.println("Mushroom's lives: "+lifeMushroom.debugHealth());
+    System.out.println();
+
+    lifeMushroom = EntityBuilder.getEntity("LifeMushroom");
+    CollisionEvent lifeMushroomTopCE = new CollisionEvent("Top", lifeMushroom.getAttack("Top"), lifeMushroom);
+    player.handleCollision(lifeMushroomTopCE);
+    lifeMushroom.handleCollision(playerBottomCE);
+    System.out.println("Expected: p3, lm0");
+    System.out.println("Player's lives: "+player.debugHealth());
+    System.out.println("Mushroom's lives: "+lifeMushroom.debugHealth());
+    System.out.println();
+
+    lifeMushroom = EntityBuilder.getEntity("LifeMushroom");
+    CollisionEvent lifeMushroomBottomCE = new CollisionEvent("Bottom", lifeMushroom.getAttack("Bottom"), lifeMushroom);
+    player.handleCollision(lifeMushroomBottomCE);
+    lifeMushroom.handleCollision(playerTopCE);
+    System.out.println("Expected: p4, lm0");
+    System.out.println("Player's lives: "+player.debugHealth());
+    System.out.println("Mushroom's lives: "+lifeMushroom.debugHealth());
+    System.out.println();
+
+    Entity bigMushroom = EntityBuilder.getEntity("BigMushroom");
+    CollisionEvent bigMushroomSideCE = new CollisionEvent("Side", lifeMushroom.getAttack("Side"), bigMushroom);
+    player.handleCollision(bigMushroomSideCE);
+    lifeMushroom.handleCollision(playerSideCE);
+    System.out.println("Expected: pbigger, lm1");
+    System.out.println();
+
   }
 }

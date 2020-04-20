@@ -13,93 +13,72 @@ class EntityTest {
     return eb.getEntity(filename);
   }
 
-  private CollisionEvent buildCollisionEvent(String location, String attack){
-    return new CollisionEvent(location, attack);
-  }
-
-  @Test
-  void testUpdateAttack() {
-
-  }
-
-  @Test
-  void testAddAbility() {
+  private CollisionEvent buildCollisionEvent(String location, String attack, Entity entity){
+    return new CollisionEvent(location, attack, entity);
   }
 
   @Test
   void testHandleCollision() {
-    Entity mario = buildEntity("Mario.png");
-    CollisionEvent sideDamage = buildCollisionEvent("SIDE", "Damage");
-    CollisionEvent topDamage = buildCollisionEvent("TOP", "Damage");
-    CollisionEvent bottomDamage = buildCollisionEvent("BOTTOM", "Damage");
+    Entity mario = EntityBuilder.getEntity("Player");
+    Entity brick = EntityBuilder.getEntity("Brick");
+    Entity goomba = EntityBuilder.getEntity("Goomba");
+    Entity ground = EntityBuilder.getEntity("Ground");
+    //System.out.println("hello");
+    CollisionEvent sideDamage = new CollisionEvent("SIDE", "Damage", goomba);
+    CollisionEvent topDamage = new CollisionEvent("TOP", "Damage", goomba);
+    CollisionEvent bottomDamage = new CollisionEvent("BOTTOM", "Damage", goomba);
 
-    CollisionEvent sideBounce = buildCollisionEvent("SIDE", "BounceX");
-    CollisionEvent topBounce = buildCollisionEvent("TOP", "BounceY");
-    CollisionEvent bottomBounce = buildCollisionEvent("BOTTOM", "BounceY");
+    CollisionEvent sideBounce = new CollisionEvent("SIDE", "BounceX", brick);
+    CollisionEvent topBounce = new CollisionEvent("TOP", "BounceY", brick);
+    CollisionEvent bottomBounce = new CollisionEvent("BOTTOM", "BounceY", brick);
 
-    CollisionEvent sideSupport = buildCollisionEvent("SIDE", "SupportX");
-    CollisionEvent topSupport = buildCollisionEvent("TOP", "SupportY");
-    CollisionEvent bottomSupport = buildCollisionEvent("BOTTOM", "SupportY");
+    CollisionEvent sideSupport = new CollisionEvent("SIDE", "SupportX", ground);
+    CollisionEvent topSupport = new CollisionEvent("TOP", "SupportY", ground);
+    CollisionEvent bottomSupport = new CollisionEvent("BOTTOM", "SupportY", ground);
 
-    CollisionEvent sideStun = buildCollisionEvent("SIDE", "Stun");
-    CollisionEvent topStun = buildCollisionEvent("TOP", "Stun");
-    CollisionEvent bottomStun = buildCollisionEvent("BOTTOM", "Stun");
+    /*
+    CollisionEvent sideStun = new CollisionEvent("SIDE", "Stun");
+    CollisionEvent topStun = new CollisionEvent("TOP", "Stun");
+    CollisionEvent bottomStun = new CollisionEvent("BOTTOM", "Stun");
 
-    CollisionEvent sideHarmless = buildCollisionEvent("SIDE", "Harmless");
-    CollisionEvent topHarmless = buildCollisionEvent("TOP", "Harmless");
-    CollisionEvent bottomHarmless = buildCollisionEvent("BOTTOM", "Harmless");
-
+    CollisionEvent sideHarmless = new CollisionEvent("SIDE", "Harmless");
+    CollisionEvent topHarmless = new CollisionEvent("TOP", "Harmless");
+    CollisionEvent bottomHarmless = new CollisionEvent("BOTTOM", "Harmless");
+*/
     mario.handleCollision(sideDamage);
     assertEquals(true, mario.isDead());
 
-    mario = buildEntity("Mario.png");
+    mario = EntityBuilder.getEntity("Player");
     mario.handleCollision(topDamage);
     assertEquals(true, mario.isDead());
 
-    mario = buildEntity("Mario.png");
+    mario = EntityBuilder.getEntity("Player");
     mario.handleCollision(bottomDamage);
     assertEquals(true, mario.isDead());
 
-    mario = buildEntity("Mario.png");
+    mario = EntityBuilder.getEntity("Player");
     mario.handleCollision(sideBounce);
     assertEquals(false, mario.isDead());
 
-    mario = buildEntity("Mario.png");
+    mario = EntityBuilder.getEntity("Player");
     mario.handleCollision(topBounce);
     assertEquals(false, mario.isDead());
 
-    mario = buildEntity("Mario.png");
+    mario = EntityBuilder.getEntity("Player");
     mario.handleCollision(bottomBounce);
     assertEquals(false, mario.isDead());
 
-    mario = buildEntity("Mario.png");
+    mario = EntityBuilder.getEntity("Player");
     mario.handleCollision(sideSupport);
     assertEquals(false, mario.isDead());
 
-    mario = buildEntity("Mario.png");
+    mario = EntityBuilder.getEntity("Player");
     mario.handleCollision(bottomSupport);
     assertEquals(false, mario.isDead());
 
-    mario = buildEntity("Mario.png");
+    mario = EntityBuilder.getEntity("Player");
     mario.handleCollision(topSupport);
     assertEquals(false, mario.isDead());
 
-  }
-
-  @Test
-  void testUpdateVisualization() {
-  }
-
-  @Test
-  void testMoveRight() {
-
-  }
-
-  @Test
-  void testMoveLeft() {
-  }
-
-  @Test
-  void testJump() {
   }
 }
