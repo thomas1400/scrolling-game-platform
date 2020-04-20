@@ -11,6 +11,8 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import ooga.view.screen.Screen;
 
 /**
@@ -237,6 +239,12 @@ public class FXLRParser {
           arg = new Insets(
               Double.parseDouble(argStrings[0]));
         }
+      }
+      if (parameterTypes[i].equals(Node.class)) {
+        ImageView imageView = new ImageView(new Image(new File(gb.getRoot().getResource(argString)).toURI().toString()));
+        imageView.setFitWidth(20);
+        imageView.setFitHeight(20);
+        arg = imageView;
       }
       args[i] = arg;
     }
