@@ -59,7 +59,7 @@ public class EntityBuilder {
   public static Entity getEntity(String statsFilename) {
     try {
       ResourceBundle resources = ResourceBundle.getBundle(STATS_PACKAGE_NAME + statsFilename);
-      Image image = new Image("images/entityimages/" + resources.getString("Image"));
+      Image image = new Image("images/entityimages/marioimages/" + resources.getString("Image"));
       Entity entity = new Entity(image, resources.getString("Image"));
 
       for (String s : Collections.list(resources.getKeys())) {
