@@ -82,6 +82,24 @@
   -fx-border-width: 2px;
 }
 
+/********************************************************
+ *                                                      *
+ *                 Help Screen Styling                  *
+ *                                                      *
+ ********************************************************/
+
+.help-screen .background {
+  -fx-background-color: -fx-base;
+}
+
+.help-screen .directions .label {
+  -fx-wrap-text: true;
+}
+
+.help-screen .directions .text {
+  -fx-font-size: 15pt;
+}
+
 
 /********************************************************
  *                                                      *
@@ -177,15 +195,19 @@
  *                                                      *
  ********************************************************/
 
-.user-selector {
-  -fx-border-color:black;
-}
-
 .user-selector .label {
   -fx-font-size: 16pt;
 }
 
 .user-creation-screen .label .text {
+  -fx-font-size: 16pt;
+}
+
+.user-selector .scroll-pane .users {
+  -fx-padding: 5 5 10 5;
+}
+
+.user-selector .scroll-pane {
   -fx-font-size: 16pt;
 }
 

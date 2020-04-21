@@ -18,6 +18,7 @@ import ooga.controller.data.User;
 import ooga.controller.data.UserList;
 import ooga.exceptions.ExceptionFeedback;
 import ooga.view.screen.GameScreen;
+import ooga.view.screen.HelpScreen;
 import ooga.view.screen.HomeScreen;
 import ooga.view.screen.LevelBuilderScreen;
 import ooga.view.screen.LevelSelectorScreen;
@@ -74,12 +75,14 @@ public class ScreenController{
     Screen myUserSelectorScreen = new UserSelectorScreen(this, myUsers);
     Screen myHomeScreen = new HomeScreen(this);
     Screen myLevelBuilderScreen = new LevelBuilderScreen(this);
+    Screen myHelpScreen = new HelpScreen(this);
 
     myScreens.put("HomeScreen", myHomeScreen);
     myScreens.put("UserSelectorScreen", myUserSelectorScreen);
     myScreens.put("LevelSelectorScreen", myLevelSelectorScreen);
     myScreens.put("UserCreationScreen", myUserCreationScreen);
     myScreens.put("LevelBuilderScreen", myLevelBuilderScreen);
+    myScreens.put("HelpScreen", myHelpScreen);
   };
 
   public void switchToScreen(String screenName){

@@ -1,0 +1,25 @@
+### Home Screen FXLR
+
+<package ooga.view>
+<package ooga.view.dynamicUI>
+<package javafx.scene.control>
+<package javafx.scene.layout>
+
+(VBox alignment=CENTER, prefWidth=100%, prefHeight=100%, spacing=5%, style=background) {
+  (HBox alignment=CENTER, prefHeight=100%, prefWidth=100%, spacing=5%) {
+    (VBox alignment=CENTER, maxHeight=90%, prefWidth=90%, spacing=5%, style=opaque) {
+      (Label text=help, alignment=CENTER, style=subtitle, prefHeight=25%, prefWidth=100%)
+      (Separator)
+      (VBox alignment=CENTER, prefWidth=100%, style=directions, spacing=2%) {
+        (Label text=movement)
+        (Label text=enemies)
+        (Label text=powerups)
+        (Label text=goal)
+      }
+      (HBox alignment=CENTER, prefWidth=100%, spacing=2%) {
+        (Button text=back, actionTag=back)
+      }
+    }
+  }
+}
+
