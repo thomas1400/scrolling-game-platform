@@ -49,7 +49,7 @@ public class CollisionManager {
             collision.get(entity2).addEntity(entity);
             String min = calculateDistances(entity, entity2);
             String[] results = myCollisionLocationResources.getString(min).split(",");
-            createAndSendCollision(results[0], entity2.getAttack(results[1]), entity);
+            createAndSendCollision(results[0], entity2.getAttack(results[1]), entity, entity2);
             /*System.out.println(entity.debug());
             System.out.println(results[0]);
             System.out.println(entity2.getAttack(results[1]));
@@ -58,7 +58,7 @@ public class CollisionManager {
             System.out.println(results[1]);
             System.out.println(entity.getAttack(results[0]));
             System.out.println(entity2.getX() + " " + entity2.getY());*/
-            createAndSendCollision(results[1], entity.getAttack(results[0]), entity2);
+            createAndSendCollision(results[1], entity.getAttack(results[0]), entity2, entity);
           }
         }
       }
@@ -90,9 +90,9 @@ public class CollisionManager {
 
 
 
-  private void createAndSendCollision(String typeOfCollision, String attack, Entity entity) {
+  private void createAndSendCollision(String typeOfCollision, String attack, Entity entityToHandle, Entity other) {
     //receive an entity object from the entity
-    entitiesReceived.addEntity(entity.handleCollision(new CollisionEvent(typeOfCollision, attack)));
+    entitiesReceived.addEntity(entityToHandle.handleCollision(new CollisionEvent(typeOfCollision, attack, other)));
   }
 
   public EntityList getEntitiesReceived() {

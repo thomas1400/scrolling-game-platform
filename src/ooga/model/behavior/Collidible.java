@@ -1,12 +1,25 @@
 package ooga.model.behavior;
 
+import java.util.Map;
+import ooga.model.ability.Ability;
 import ooga.model.entity.Entity;
 import ooga.utility.event.CollisionEvent;
 
 public interface Collidible {
 
-  String[] getTags();
+  Map<String, Ability> getAbilities();
 
-  Entity handleCollision(CollisionEvent ce);
+  boolean isDead();
+
+  double getData(String informationType);
+
+  void otherCollectMe();
+
+  String getAttack(String location);
+
+  //double getScore();
+  void otherResetAfterCollect();
+
+  //double getScale();
 
 }
