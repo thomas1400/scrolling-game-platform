@@ -225,7 +225,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
           if (s.equals("collect")) {
             otherEntity.otherCollectMe();
             updateMeAfterCollecting(otherEntity);
-
+            //setScale();
             otherEntity.otherResetAfterCollect();
           } else {
             Method method = Entity.class.getDeclaredMethod(s);
@@ -233,9 +233,9 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
           }
         }
       } catch (MissingResourceException e) {
-        ExceptionFeedback.throwHandledException(e, "Couldn't find key in bundle");
-        //System.out.println("Couldn't find key in bundle I'm:"+ debuggingName+"; we're at: "+location);
-        //throw new RuntimeException(e);
+        //ExceptionFeedback.throwHandledException(e, "Couldn't find key in bundle");
+        System.out.println("Couldn't find key in bundle I'm:"+ debuggingName+"; we're at: "+location);
+        throw new RuntimeException(e);
       } catch (NoSuchMethodException e) {
         ExceptionFeedback
             .throwHandledException(e, "Method name was incorrect in trying to make the entity");
@@ -338,19 +338,20 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   //used for reflection DO NOT DELETE
   private void size(Double value){
     scale = value;
-    setScale();
+    //setScale();
     myInformation.put(SCALE, scale);
   }
 
   private void setScale(){
     //Scale sc = new Scale(scale, scale);
-    System.out.println(this.getFitHeight());
-    this.getScaleX();
+    //System.out.println(this.getFitHeight());
+    //System.out.println(getBoundsInParent());
+    //System.out.println(this.getScaleX());
     this.setFitHeight(this.getFitHeight()*scale);
-    System.out.println(this.getFitHeight());
-    System.out.println(this.getFitWidth());
+    //System.out.println(this.getFitHeight());
+    //System.out.println(this.getFitWidth());
     this.setFitWidth(this.getFitWidth()*scale);
-    System.out.println(this.getFitWidth());
+    //System.out.println(this.getFitWidth());
   }
 
   private void empty(Double value){
@@ -412,10 +413,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     if (haveMovement) {
       movement.update(this);
     }
-    //todo this isn't changing the scale of the player bc it's changing the scale of the mushroom
-    /*this.setScaleX(scale);
-    this.setScaleY(scale);*/
-    //setScale();
     dead = health.isDead();
   }
 
@@ -450,7 +447,9 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     myInformation.put(SCORE, score);
   }
 
-  //@Override
+  /**
+   * Reset's the entity's score to the initial value
+   */
   public void resetScore(){
     setScore(INITIAL_SCORE);
   }
@@ -458,7 +457,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   //used for reflection DO NOT DELETE
   /**
    * return the score of a collected entity
-   * @return
+   * @return score
    */
   public double getScore(){
     return score;
@@ -491,105 +490,11 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     movement.jump();
   }
 
+  /**
+   * used for unit testing.
+   * @return lives of the entity
+   */
   public double debugHealth(){
     return health.getLives();
-  }
-
-  public static void main(String[] args) {
-    Entity player = EntityBuilder.getEntity("Player");
-    Entity coin = EntityBuilder.getEntity("Coin");
-
-    CollisionEvent coinSideCE = new CollisionEvent("Side", coin.getAttack("Side"), coin);
-    CollisionEvent playerSideCE = new CollisionEvent("Side", player.getAttack("Side"), player);
-    player.handleCollision(coinSideCE);
-    coin.handleCollision(playerSideCE);
-
-    System.out.println("Expected: p100, c0");
-    System.out.println("Player's score: "+player.getScore());
-    System.out.println("Coin's score: "+coin.getScore());
-    System.out.println();
-
-    player = EntityBuilder.getEntity("Player");
-    coin = EntityBuilder.getEntity("Coin");
-    CollisionEvent coinTopCE = new CollisionEvent("Top", coin.getAttack("Side"), coin);
-    CollisionEvent playerBottomCE = new CollisionEvent("Side", player.getAttack("Side"), player);
-    player.handleCollision(coinTopCE);
-    coin.handleCollision(playerBottomCE);
-
-    System.out.println("Expected: p0, c0 for now. this is what should happen, but try and make it so that players can pick up coins with damage type but enemies cannot");
-    System.out.println("Player's score: "+player.getScore());
-    System.out.println("Coin's score: "+coin.getScore());
-    System.out.println();
-
-    player = EntityBuilder.getEntity("Player");
-    coin = EntityBuilder.getEntity("Coin");
-    CollisionEvent coinBottomCE = new CollisionEvent("Bottom", coin.getAttack("Bottom"), coin);
-    CollisionEvent playerTopCE = new CollisionEvent("Top", player.getAttack("Top"), player);
-    player.handleCollision(coinBottomCE);
-    coin.handleCollision(playerTopCE);
-
-    System.out.println("Expected: p100, c0");
-    System.out.println("Player's score: "+player.getScore());
-    System.out.println("Coin's score: "+coin.getScore());
-    System.out.println();
-
-    player = EntityBuilder.getEntity("Player");
-    coin = EntityBuilder.getEntity("Coin");
-    coinBottomCE = new CollisionEvent("Bottom", coin.getAttack("Bottom"), coin);
-    playerTopCE = new CollisionEvent("Top", player.getAttack("Top"), player);
-
-    coin.handleCollision(playerTopCE);
-    player.handleCollision(coinBottomCE);
-
-    System.out.println("Expected: p100, c0");
-    System.out.println("Player's score: "+player.getScore());
-    System.out.println("Coin's score: "+coin.getScore());
-    System.out.println("yay, order doesn't matter!");
-    System.out.println();
-
-
-    coin = EntityBuilder.getEntity("Coin");
-    coinBottomCE = new CollisionEvent("Bottom", coin.getAttack("Bottom"), coin);
-    player.handleCollision(coinBottomCE);
-    System.out.println("Expected: p200, c0");
-    System.out.println("Player's score: "+player.getScore());
-    System.out.println("Coin's score: "+coin.getScore());
-    System.out.println();
-
-    Entity lifeMushroom = EntityBuilder.getEntity("LifeMushroom");
-    CollisionEvent lifeMushroomSideCE = new CollisionEvent("Side", lifeMushroom.getAttack("Side"), lifeMushroom);
-
-    player.handleCollision(lifeMushroomSideCE);
-    lifeMushroom.handleCollision(playerSideCE);
-    System.out.println("Expected: p2, lm0");
-    System.out.println("Player's lives: "+player.debugHealth());
-    System.out.println("Mushroom's lives: "+lifeMushroom.debugHealth());
-    System.out.println();
-
-    lifeMushroom = EntityBuilder.getEntity("LifeMushroom");
-    CollisionEvent lifeMushroomTopCE = new CollisionEvent("Top", lifeMushroom.getAttack("Top"), lifeMushroom);
-    player.handleCollision(lifeMushroomTopCE);
-    lifeMushroom.handleCollision(playerBottomCE);
-    System.out.println("Expected: p3, lm0");
-    System.out.println("Player's lives: "+player.debugHealth());
-    System.out.println("Mushroom's lives: "+lifeMushroom.debugHealth());
-    System.out.println();
-
-    lifeMushroom = EntityBuilder.getEntity("LifeMushroom");
-    CollisionEvent lifeMushroomBottomCE = new CollisionEvent("Bottom", lifeMushroom.getAttack("Bottom"), lifeMushroom);
-    player.handleCollision(lifeMushroomBottomCE);
-    lifeMushroom.handleCollision(playerTopCE);
-    System.out.println("Expected: p4, lm0");
-    System.out.println("Player's lives: "+player.debugHealth());
-    System.out.println("Mushroom's lives: "+lifeMushroom.debugHealth());
-    System.out.println();
-
-    Entity bigMushroom = EntityBuilder.getEntity("BigMushroom");
-    CollisionEvent bigMushroomSideCE = new CollisionEvent("Side", lifeMushroom.getAttack("Side"), bigMushroom);
-    player.handleCollision(bigMushroomSideCE);
-    lifeMushroom.handleCollision(playerSideCE);
-    System.out.println("Expected: pbigger, lm1");
-    System.out.println();
-
   }
 }
