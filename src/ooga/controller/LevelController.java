@@ -27,7 +27,6 @@ public class LevelController implements GameLevel{
   public LevelController(GameScreen gs, User user, BasicLevel basicLevel) {
     myGS = gs;
     myUser = user;
-
     myLevelNumber = basicLevel.getLevelIndex();
     CompleteLevel myCompleteLevel = getCompleteLevel(gs, basicLevel);
 
@@ -59,13 +58,7 @@ public class LevelController implements GameLevel{
   }
 
   private void setLivesRemaining(int deathsAllowed) {
-    if (deathsAllowed < myUser.getLives()) {
-      myLivesRemaining = deathsAllowed;
-      myUser.adjustLives(-1 * deathsAllowed);
-    } else {
-      myLivesRemaining = myUser.getLives();
-      myUser.adjustLives(-1 * myUser.getLives());
-    }
+    myLivesRemaining = Math.min(deathsAllowed, myUser.getLives());
   }
 
   //Entity Visualization Handling
@@ -108,12 +101,25 @@ public class LevelController implements GameLevel{
 
   //In Game Adjustments
   public void adjustLives(int lifeAdjustment) {
+    System.out.println("LIFE ADJUST: " + lifeAdjustment);
     if (levelLifeGainAllowed) {
       myLivesRemaining += lifeAdjustment;
     }
     myUser.adjustLives(lifeAdjustment);
+    checkEndLevel();
+
   }
+
+  private void checkEndLevel() {
+    if (myLivesRemaining == 0){
+      endLevel();
+    } else if (myLivesRemaining < 0){
+      ExceptionFeedback.throwHandledException(new RuntimeException(), "Negative Lives Left in Level");
+    }
+  }
+
   public void adjustPoints(int pointsAdjustment) {
+    System.out.println("POINTS: " + pointsAdjustment);
     myUser.adjustPoints(pointsAdjustment);
     checkNewLife();
   }

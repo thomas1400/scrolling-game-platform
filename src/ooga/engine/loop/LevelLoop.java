@@ -119,6 +119,7 @@ public class LevelLoop implements Loopable {
           end();
         }
         else{
+          System.out.println("DEAD");
           myLevelController.adjustLives(-1);
         }
       }

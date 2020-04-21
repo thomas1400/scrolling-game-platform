@@ -40,7 +40,7 @@ public class Movement extends Ability {
   public void standX(){
     bounceX();
     standY();
-    System.out.println("standX");
+    //System.out.println("standX");
   }
 
   public double getYVelocity(){
@@ -56,7 +56,7 @@ public class Movement extends Ability {
   }
 
   public void bounceX(){
-    System.out.println("bounccccce x");
+    //System.out.println("bounccccce x");
     phys.bounceX();
   }
 
