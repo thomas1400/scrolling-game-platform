@@ -1,5 +1,6 @@
 package ooga.view.screen;
 
+import java.util.ArrayList;
 import javafx.animation.FadeTransition;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
@@ -27,9 +28,9 @@ public class LevelSelectorScreen extends Screen {
 
       DynamicUserLabel username = new DynamicUserLabel();
       username.setText(resources.getString("user") + " : " + user.getName());
-      LevelProgressBar lpb = new LevelProgressBar(resources.getString("progress"), user.getLevelsUnlocked().size(), myLevels.size());
+      LevelProgressBar lpb = new LevelProgressBar(resources.getString("progress"), user.getLevelsCompleted().size(), myLevels.size());
       lst = new LevelSelectorTool(levels, LEVEL_GRAPH_FILE, LEVEL_MAP_FILE,
-          user.getLevelsUnlocked());
+          new ArrayList<>(user.getLevelsCompleted()));
 
       dynamicNodes.put("username-label", username);
       dynamicNodes.put("level-selector-tool", lst);

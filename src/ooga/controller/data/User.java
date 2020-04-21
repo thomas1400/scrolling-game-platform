@@ -1,6 +1,8 @@
 package ooga.controller.data;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.Image;
@@ -12,7 +14,7 @@ public class User {
   private static final int POINTS_TO_LIFE_RATIO = 100;
   private String myName;
   private String myImageFileName;
-  private List<Integer> myLevelsCompleted;
+  private Set<Integer> myLevelsCompleted;
   private int myLives;
   private IntegerProperty livesProperty;
   private int myPoints = 0;
@@ -20,11 +22,11 @@ public class User {
   private String myPower = "none";
   private String mySize = "small";
 
-  public User(String name, String imageFileName, List<Integer> levelsCompleted, int lives){
+  public User(String name, String imageFileName){
     myName = name;
     myImageFileName = imageFileName;
-    myLevelsCompleted = levelsCompleted;
-    myLives = lives;
+    myLevelsCompleted = new HashSet<>();
+    myLives = 0;
     livesProperty = new SimpleIntegerProperty(myLives);
     pointsProperty = new SimpleIntegerProperty(myPoints);
 
@@ -63,7 +65,7 @@ public class User {
     myImageFileName = imageFileName;
   }
 
-  public List<Integer> getLevelsUnlocked() {
+  public Set<Integer> getLevelsCompleted() {
     return myLevelsCompleted;
   }
 
@@ -130,5 +132,13 @@ public class User {
       return true;
     }
     return false;
+  }
+
+  public void setLevelsUnlocked(Set<Integer> levelsUnlocked) {
+    myLevelsCompleted = levelsUnlocked;
+  }
+
+  public void setLives(int lives) {
+    myLives = lives;
   }
 }

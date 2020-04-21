@@ -17,11 +17,12 @@ B:Brick
 T:Brick
 X:Player
 G:Ground
-R:GroundCorner
+L:GroundLeft
+R:GroundRight
 C:Coin
 6:GroundCenter
 M:BigMushroom
-L:LifeMushroom
+I:LifeMushroom
 S:MiniMushroom
 #LEVEL
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -32,8 +33,8 @@ S:MiniMushroom
 . . X . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 . . B . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-. . . . . B . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . R G R . . . . . . . .
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . R G G G 6 6 6 G R . . . . . .
-. . . . . . C . . S . M . L . . . . . . . . . . . . . . . . . R G G G 6 6 6 6 6 6 6 6 6 G G F G G G
+. . . . . B . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . L G R . . . . . . . .
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . L G G G 6 6 6 G R . . . . . .
+. . . . . . C . . S . M . I . . . . . . . . . . . . . . . . . L G G G 6 6 6 6 6 6 6 6 6 G G F G G G
 G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6
 #END
