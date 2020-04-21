@@ -7,7 +7,8 @@ import ooga.model.physics.Physics;
 public class Movement extends Ability {
 
   private static final String PHYSICS_PACKAGE = "ooga.model.physics.";
-  private static final String PHYSICS = "Physics";
+  //FIXME: this should be leaded in from the entity file
+  private static final String PHYSICS = "MarioPhysics";
   private Physics phys;
 
   public Movement(String physicsType){

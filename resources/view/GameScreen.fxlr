@@ -16,10 +16,13 @@
   }
   (game-background width=100%, height=76%)
   (HBox alignment=CENTER, prefHeight=10%, spacing=1%) {
-    (pause text=pause, prefWidth=20%, prefHeight=10%, actionTag=pause)
-    (resume text=resume, prefWidth=20%, prefHeight=10%, actionTag=resume)
-    (Button text=reset, prefWidth=20%, prefHeight=10%, actionTag=reset)
-    (Button text=quit, prefWidth=20%, prefHeight=10%, actionTag=quit)
+    (Button text=settings, prefWidth=20%, actionTag=settings)
+    (Separator)
+    (pause graphic=pause, prefWidth=10%, actionTag=pause)
+    (resume graphic=resume, prefWidth=10%, actionTag=resume)
+    (Button graphic=reset, prefWidth=10%, actionTag=reset)
+    (Separator)
+    (Button text=quit, prefWidth=20%, actionTag=quit)
   }
 }
 (game-group layoutX=0, layoutY=0, translateY=18.5%)

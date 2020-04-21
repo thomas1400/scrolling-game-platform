@@ -8,10 +8,9 @@
 (VBox alignment=TOP_CENTER, layoutX=2%, layoutY=1%, spacing=1%) {
   (Label text=title, style=title, prefHeight=25%, prefWidth=96%)
   (Region prefWidth=96%, prefHeight=66%, style=home-screen-splash)
-  (HBox alignment=TOP_CENTER, prefHeight=10%, spacing=1%) {
-    (Button text=start, prefWidth=25%, actionTag=start)
-    (Button text=help, prefWidth=25%, actionTag=help);
-    (Button text=user-select, prefWidth=25%, actionTag=user-select)
+  (HBox alignment=TOP_CENTER, spacing=1%) {
+    (Button text=start, prefWidth=25%, prefHeight=10%, actionTag=start)
+    (Button text=user-select, prefWidth=25%, prefHeight=10%, actionTag=user-select)
   }
 }
 

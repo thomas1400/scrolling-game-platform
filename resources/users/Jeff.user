@@ -1,8 +1,8 @@
 #User properties file for user: Jeff
-#Fri Apr 17 03:05:28 EDT 2020
+#Sun Apr 19 13:05:36 EDT 2020
 image=file\:/C\:/Users/thoma/Documents/.1920Spring/Comp%20Sci%20308/final_team16/artwork/bigMushroom.png
-levelsUnlocked=
-lives=3
+levelsUnlocked=1
+lives=2
 size=small
 name=Jeff
 power=none

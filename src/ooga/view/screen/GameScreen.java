@@ -1,11 +1,15 @@
 package ooga.view.screen;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import ooga.controller.LevelController;
 import ooga.controller.ScreenController;
 import ooga.controller.data.BasicLevel;
@@ -55,6 +59,12 @@ public class GameScreen extends Screen {
   public void setVisibleGroup(Group visibleGroup){
     gameGroup.getChildren().clear();
     gameGroup.getChildren().addAll(visibleGroup);
+  }
+
+  public void openSettings() {
+    pause();
+    SettingsScreen settings = new SettingsScreen(controller, this);
+    this.getChildren().add(settings);
   }
 
   public void pause() {

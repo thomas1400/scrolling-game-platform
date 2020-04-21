@@ -50,6 +50,7 @@ public class UserSelector extends Pane {
     initializeButtons();
     this.getChildren().add(scrollPane);
     this.getStyleClass().add("user-selector");
+    usersPane.getStyleClass().add("users");
   }
 
   private void initializeButtons() {

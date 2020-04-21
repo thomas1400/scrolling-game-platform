@@ -52,6 +52,22 @@
   -fx-font-weight: bolder;
 }
 
+/********************************************************
+ *                                                      *
+ *                    Layout Styling                    *
+ *                                                      *
+ ********************************************************/
+
+ .opaque {
+  -fx-background-color: -fx-background;
+  -fx-background-radius: 20;
+  -fx-border-color: -fx-accent;
+  -fx-border-radius: 20;
+ }
+
+ .translucent {
+  -fx-background-color: rgba(218, 227, 229, 0.5);
+ }
 
 /********************************************************
  *                                                      *
@@ -64,6 +80,24 @@
   -fx-background-size: cover;
   -fx-border-color: -fx-accent;
   -fx-border-width: 2px;
+}
+
+/********************************************************
+ *                                                      *
+ *                 Help Screen Styling                  *
+ *                                                      *
+ ********************************************************/
+
+.help-screen .background {
+  -fx-background-color: -fx-base;
+}
+
+.help-screen .directions .label {
+  -fx-wrap-text: true;
+}
+
+.help-screen .directions .text {
+  -fx-font-size: 15pt;
 }
 
 
@@ -146,11 +180,12 @@
 .user-data-display {
   -fx-font-size: 20pt;
   -fx-padding: 5px;
-  -fx-background-color: derive(-fx-background, 10%);
+  -fx-background-color: derive(-fx-background, 25%);
   -fx-border-width: 2px;
   -fx-border-style: solid;
   -fx-border-color: -fx-accent;
-  -fx-border-radius: 5px;
+  -fx-border-radius: 10px;
+  -fx-background-radius: 10px;
 }
 
 
@@ -160,15 +195,19 @@
  *                                                      *
  ********************************************************/
 
-.user-selector {
-  -fx-border-color:black;
-}
-
 .user-selector .label {
   -fx-font-size: 16pt;
 }
 
 .user-creation-screen .label .text {
+  -fx-font-size: 16pt;
+}
+
+.user-selector .scroll-pane .users {
+  -fx-padding: 5 5 10 5;
+}
+
+.user-selector .scroll-pane {
   -fx-font-size: 16pt;
 }
 
