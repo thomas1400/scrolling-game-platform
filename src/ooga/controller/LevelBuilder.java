@@ -138,16 +138,15 @@ public final class LevelBuilder {
   private static void setEntityCoordinates(int j, int i, Entity myEntity,
       double scaleFactor) {
     myEntity.setX(getRelativeX(i, scaleFactor));
-    double imageHeight = myEntity.getBoundsInLocal().getHeight();
-    myEntity.setY(getRelativeY(j, imageHeight, scaleFactor));
+    myEntity.setY(getRelativeY(j, scaleFactor));
   }
 
-  private static double getRelativeY(int j, double imageHeight, double scaleFactor) {
-    return (j*scaleFactor) - imageHeight;
+  private static double getRelativeY(int j, double scaleFactor) {
+    return (j*scaleFactor) + PADDING/2;
   }
 
   private static double getRelativeX(int i, double scaleFactor) {
-    return i*scaleFactor;
+    return i*scaleFactor + PADDING/2;
   }
 
 }

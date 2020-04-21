@@ -28,7 +28,7 @@ public class LevelController implements GameLevel{
     myGS = gs;
     myUser = user;
     myLevelNumber = basicLevel.getLevelIndex();
-    CompleteLevel myCompleteLevel = getCompleteLevel(gs, basicLevel);
+    CompleteLevel myCompleteLevel = getCompleteLevel(basicLevel);
 
     setLivesRemaining(myCompleteLevel.getDeathsAllowed());
     levelLifeGainAllowed = myCompleteLevel.getLifeGainAllowed();
@@ -46,11 +46,11 @@ public class LevelController implements GameLevel{
         this, level, myGS.getGameHeight(), myGS.getGameWidth());
   }
 
-  private CompleteLevel getCompleteLevel(GameScreen gs, BasicLevel basicLevel) {
+  private CompleteLevel getCompleteLevel(BasicLevel basicLevel) {
     CompleteLevel completeLevel = null;
     try {
-      completeLevel = LevelBuilder.buildCompleteLevel(basicLevel, gs.getGameHeight(),
-          gs.getGameWidth());
+      completeLevel = LevelBuilder.buildCompleteLevel(basicLevel, myGS.getGameHeight(),
+          myGS.getGameWidth());
     } catch (FileNotFoundException e) {
       ExceptionFeedback.throwBreakingException(e, "File not found");
     }
