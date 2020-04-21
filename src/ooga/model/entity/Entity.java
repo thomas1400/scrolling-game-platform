@@ -387,7 +387,9 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    * Move the entity up if it can do so
    */
   public void jump(){
-    setY(getY()-Physics.TINY_DISTANCE);
+    // Old Line (changed because TINY_DISTANCE shouldn't be static)
+    //setY(getY()-Physics.TINY_DISTANCE);
+    setY(getY()-5);
     movement.jump();
   }
 }
