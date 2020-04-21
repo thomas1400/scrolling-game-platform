@@ -8,14 +8,12 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.transform.Scale;
 import ooga.exceptions.ExceptionFeedback;
 import ooga.model.ability.Ability;
 import ooga.model.ability.CollectiblePackage;
 import ooga.model.ability.Health;
 import ooga.model.ability.Movement;
 import ooga.model.behavior.Collidible;
-import ooga.model.physics.Physics;
 import ooga.utility.event.CollisionEvent;
 
 
@@ -30,6 +28,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   private static final String SCALE = "scale";
   private static final double INITIAL_SCORE = 0;
   private static final double DEFAULT_SCALE = 1;
+  private static final double SINGLE_LIFE = 1;
 
   private Health health;
   private Movement movement;
@@ -158,6 +157,16 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     return dead;
   }
 
+  /**
+   * revives the entity if the entity dies
+   */
+  public void revive(){
+    if(dead) {
+      health.addLives(SINGLE_LIFE);
+      dead = health.isDead();
+    }
+  }
+
   //todo delete when finished
   public String debug(){
     if(debuggingName.equals("Mario.png")){
@@ -225,7 +234,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
           if (s.equals("collect")) {
             otherEntity.otherCollectMe();
             updateMeAfterCollecting(otherEntity);
-            //setScale();
+            setScaleOfImage();
             otherEntity.otherResetAfterCollect();
           } else {
             Method method = Entity.class.getDeclaredMethod(s);
@@ -256,7 +265,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   private void updateMeAfterCollecting(Collidible other){
     this.points(other.getData(SCORE));
     this.health(other.getData(HEALTH));
-    health.setLives(getData(HEALTH));
+    health.addLives(getData(HEALTH));
     this.size(other.getData(SCALE));
   }
 
@@ -318,7 +327,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   @Override
   public void otherResetAfterCollect(){
     resetScore();
-    size(DEFAULT_SCALE);
+    //size(DEFAULT_SCALE);
     health(0.0);
   }
 
@@ -342,15 +351,18 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     myInformation.put(SCALE, scale);
   }
 
-  private void setScale(){
+  private void setScaleOfImage(){
     //Scale sc = new Scale(scale, scale);
     //System.out.println(this.getFitHeight());
     //System.out.println(getBoundsInParent());
     //System.out.println(this.getScaleX());
-    this.setFitHeight(this.getFitHeight()*scale);
+    System.out.println("scale: "+scale);
+    //his.setFitHeight(this.getFitHeight()*scale);
+    this.setScaleX(this.getScaleX()*scale);
+    //this.setScaleY(this.getScaleY()*scale);
     //System.out.println(this.getFitHeight());
     //System.out.println(this.getFitWidth());
-    this.setFitWidth(this.getFitWidth()*scale);
+    //this.setFitWidth(this.getFitWidth()*scale);
     //System.out.println(this.getFitWidth());
   }
 
@@ -468,7 +480,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    * Move the entity to the right if it can do so
    */
   public void moveRight(){
-    setScaleX(1);
+    setScaleX(scale);
     movement.right();
   }
 
@@ -477,7 +489,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    * Move the entity to the left if it can do so
    */
   public void moveLeft(){
-    setScaleX(-1);
+    setScaleX(-1*scale);
     movement.left();
   }
 
