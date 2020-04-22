@@ -45,6 +45,10 @@ public class EntityList implements Iterable<Entity> {
   public Iterator<Entity> iterator() {
     return myEntities.iterator();
   }
+  public void clear(){
+    myEntities.clear();
+
+  }
 
   public Entity getMainEntity() {
     return myMainEntity;
