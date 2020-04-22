@@ -55,12 +55,12 @@ public class LevelLoop implements Loopable {
 
   private void loop() {
     reinitializeEntities();
-    manageCollisions();
     //System.out.println(myEntityManager.getAddedEntities());
     updateEntities();
     // tell the entities to update gravity and stuff
     processInput();
     updateCamera();
+    manageCollisions();
     updateScoreAndLives();
     sendEntities();
   }
@@ -83,6 +83,7 @@ public class LevelLoop implements Loopable {
 
   private void manageCollisions() {
     myCollisionManager.manageCollisions(myCameraManager.getOnScreenEntities());
+    //myCollisionManager.manageCollisions(myEntityManager.getEntities());
     myEntityManager.manageEntities(myCollisionManager.getEntitiesReceived());
   }
 
@@ -101,18 +102,22 @@ public class LevelLoop implements Loopable {
     if(myCameraManager.getDeactivatedEntities().size()!=0) {
       myEntityManager.removeOldEntities(myCameraManager.getDeactivatedEntities());
     }
+    for(Entity entity: myCameraManager.getDeactivatedEntities()){
+      System.out.println(entity.debug());
+    }
   }
 
   private void updateScoreAndLives(){
     //myLevelController.adjustPoints(mainEntity.getScore);
     for(Entity entity: myEntityManager.getRemovedEntities()) {
       if (entity.getScore() > 0) {
+        System.out.println("points");
         myLevelController.adjustPoints((int) entity.getScore());
       }
     }
     for(Entity entity: myEntityManager.getEntities()){
-      if(entity.endedLevel()) {
-        //System.out.println("we did it yay");
+      if(entity.endedLevel()|| mainEntity.endedLevel()) {
+        System.out.println("we did it yay");
         end();
         if (entity.isSuccess()) {
           myLevelController.handleWin();
@@ -121,6 +126,7 @@ public class LevelLoop implements Loopable {
         else{
           System.out.println("DEAD");
           myLevelController.adjustLives(-1);
+          System.out.println("end");
         }
       }
     }
@@ -134,6 +140,9 @@ public class LevelLoop implements Loopable {
     if(myEntityManager.getRemovedEntities().size()!=0){
       myLevelController.removeAllEntities(myEntityManager.getRemovedEntities());
     }
+    /*for(Entity entity: myEntityManager.getRemovedEntities()){
+      System.out.println(entity.debug());
+    }*/
   }
 
 

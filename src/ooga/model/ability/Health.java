@@ -9,6 +9,7 @@ public class Health extends Ability {
 
   private static final String RESOURCE_PACKAGE = "abilitytypes/Health";
   private static final int DEATH = 0;
+  private static final double SINGLE_LIFE = 1;
 
   private double myLives;
   private boolean immortal;
@@ -47,7 +48,7 @@ public class Health extends Ability {
    * Change number of lives by the incoming value
    * @param lives value to change lives by
    */
-  public void setLives(double lives){
+  public void addLives(double lives){
     myLives+=lives;
   }
 
@@ -56,7 +57,7 @@ public class Health extends Ability {
    */
   public void hit(){
     if(!immortal && !this.isDead()) {
-      myLives -= 1;
+      myLives -= SINGLE_LIFE;
       //System.out.println("ouchie");
     }
   }
