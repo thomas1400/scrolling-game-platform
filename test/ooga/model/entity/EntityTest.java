@@ -165,7 +165,7 @@ class EntityTest extends ApplicationTest {
   }
 
   @Test
-  void testLevelEnd(){
+  void testLevelEndAndSuccess(){
     Entity player = EntityBuilder.getEntity("Player");
     Entity flag = EntityBuilder.getEntity("Flag");
 
@@ -178,5 +178,15 @@ class EntityTest extends ApplicationTest {
     assertTrue(player.endedLevel());
     assertTrue(player.isSuccess());
 
+    player = EntityBuilder.getEntity("Player");
+    Entity goomba = EntityBuilder.getEntity("Goomba");
+
+    CollisionEvent sideDamage = new CollisionEvent("Side", "Damage", goomba);
+
+    player.handleCollision(sideDamage);
+    assertTrue(player.isDead());
+    player.updateVisualization();
+    assertTrue(player.endedLevel());
+    assertFalse(player.isSuccess());
   }
 }
