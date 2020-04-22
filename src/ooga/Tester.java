@@ -4,8 +4,8 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ooga.controller.ScreenController;
-import ooga.controller.data.BasicLevelList;
-import ooga.controller.data.UserList;
+import ooga.controller.levels.BasicLevelList;
+import ooga.controller.users.UserList;
 import ooga.view.screen.LevelBuilderScreen;
 
 public class Tester extends Application{

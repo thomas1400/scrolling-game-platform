@@ -4,9 +4,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
-import ooga.controller.Communicable;
 import ooga.controller.GameLevel;
-import ooga.controller.data.CompleteLevel;
+import ooga.controller.levels.CompleteLevel;
 import ooga.engine.manager.CameraManager.CameraManager;
 import ooga.engine.manager.CollisionManager;
 import ooga.engine.manager.EntityManager;
@@ -30,10 +29,10 @@ public class LevelLoop implements Loopable {
   private Entity mainEntity;
 
   public LevelLoop(GameLevel levelController, CompleteLevel level, double screenHeight, double screenWidth) {
-    System.out.println(screenWidth + " " + screenHeight);
+    //System.out.println(screenWidth + " " + screenHeight);
     myLevelController = levelController;
     EntityList myEntities = level.getEntities();
-    myEntityManager = new EntityManager(myEntities);
+    myEntityManager = new EntityManager(myEntities, level.getMainEntity());
     myCameraManager = new CameraManager(level.getMainEntity(), screenHeight, screenWidth, level.getScrollType(), myEntities);
     myInputManager = new InputManager(level.getMainEntity());
     myCollisionManager = new CollisionManager();
@@ -55,12 +54,12 @@ public class LevelLoop implements Loopable {
 
   private void loop() {
     reinitializeEntities();
-    manageCollisions();
     //System.out.println(myEntityManager.getAddedEntities());
     updateEntities();
     // tell the entities to update gravity and stuff
     processInput();
     updateCamera();
+    manageCollisions();
     updateScoreAndLives();
     sendEntities();
   }
@@ -83,6 +82,7 @@ public class LevelLoop implements Loopable {
 
   private void manageCollisions() {
     myCollisionManager.manageCollisions(myCameraManager.getOnScreenEntities());
+    //myCollisionManager.manageCollisions(myEntityManager.getEntities());
     myEntityManager.manageEntities(myCollisionManager.getEntitiesReceived());
   }
 
@@ -105,11 +105,23 @@ public class LevelLoop implements Loopable {
 
   private void updateScoreAndLives(){
     //myLevelController.adjustPoints(mainEntity.getScore);
-    for(Entity entity: myEntityManager.getRemovedEntities()){
-      if(entity.getScore()>0){
+    if (mainEntity.getScore() > 0) {
+      System.out.println("mainpoints");
+      myLevelController.adjustPoints((int) mainEntity.getScore());
+      mainEntity.setScore(0);
+    }
+    /*for(Entity entity: myEntityManager.getRemovedEntities()) {
+      if (entity.getScore() > 0) {
+        System.out.println("points");
         myLevelController.adjustPoints((int) entity.getScore());
       }
-      if(entity.endedLevel()) {
+    }*/
+    if(mainEntity.isDead()){
+      myLevelController.adjustLives(-1);
+      //setmainEntitytoalive
+    }
+    for(Entity entity: myEntityManager.getEntities()){
+      if(entity.endedLevel()|| mainEntity.endedLevel()) {
         System.out.println("we did it yay");
         end();
         if (entity.isSuccess()) {
@@ -117,11 +129,12 @@ public class LevelLoop implements Loopable {
           end();
         }
         else{
+          System.out.println("DEAD");
           myLevelController.adjustLives(-1);
+          System.out.println("end");
         }
       }
     }
-    //mainEntity.setScore(0);
 
   }
   private void sendEntities(){
@@ -131,13 +144,11 @@ public class LevelLoop implements Loopable {
     if(myEntityManager.getRemovedEntities().size()!=0){
       myLevelController.removeAllEntities(myEntityManager.getRemovedEntities());
     }
+    /*for(Entity entity: myEntityManager.getRemovedEntities()){
+      System.out.println(entity.debug());
+    }*/
   }
 
-
-  /*private void sendEntitiesToController(EntityList activatedEntities, EntityList deactivedEntities) {
-    myLevelController.addAllEntities(activatedEntities);
-    myLevelController.removeAllEntities(deactivedEntities);
-  }*/
 
   public void begin() {
     myTimeline.play();

@@ -7,13 +7,14 @@ import ooga.model.physics.Physics;
 public class Movement extends Ability {
 
   private static final String PHYSICS_PACKAGE = "ooga.model.physics.";
-  private static final String PHYSICS = "Physics";
+  //FIXME: this should be leaded in from the entity file
   private Physics phys;
 
   public Movement(String physicsType){
     //reflection to set the physics Type
     //my idea here is that physics will have enums? maybe?
-    phys = (Physics) super.reflect(PHYSICS_PACKAGE, PHYSICS);//fixme change the empty string to physicsType
+    phys = (Physics) super.reflect(PHYSICS_PACKAGE, physicsType);//fixme change the empty string to
+    // physicsType
   }
 
   //todo this one is only used by the user interactable interfaces
@@ -39,7 +40,15 @@ public class Movement extends Ability {
   public void standX(){
     bounceX();
     standY();
-    System.out.println("standX");
+    //System.out.println("standX");
+  }
+
+  public double getYVelocity(){
+    return phys.getYVelocity();
+  }
+
+  public double getXVelocity(){
+    return phys.getXVelocity();
   }
 
   public void bounceY(){
@@ -47,7 +56,7 @@ public class Movement extends Ability {
   }
 
   public void bounceX(){
-    System.out.println("bounccccce x");
+    //System.out.println("bounccccce x");
     phys.bounceX();
   }
 

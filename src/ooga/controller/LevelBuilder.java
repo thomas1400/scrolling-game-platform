@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 import ooga.exceptions.ExceptionFeedback;
-import ooga.controller.data.BasicLevel;
-import ooga.controller.data.CompleteLevel;
+import ooga.controller.levels.BasicLevel;
+import ooga.controller.levels.CompleteLevel;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityBuilder;
 import ooga.model.entity.EntityList;
@@ -103,13 +103,13 @@ public final class LevelBuilder {
     for (int j = 0; j < levelHeight; j++){
       String[] levelLine = sc.nextLine().split(LEVEL_OBJ_SEPARATOR);
       for (int i = 0; i < levelWidth; i++){
-        String symbol = levelLine[i];
-        if (!symbol.equals(EMPTY_SPACE_SYMBOL)){
-          String entityFile = entityInfo.get(symbol);
-          Entity myEntity = EntityBuilder.getEntity(entityFile);
+        String entityCode = levelLine[i];
+        if (!entityCode.equals(EMPTY_SPACE_SYMBOL)){
+          String entityName = entityInfo.get(entityCode);
+          Entity myEntity = EntityBuilder.getEntity(entityName);
           setEntitySize(myEntity, scaleFactor);
           setEntityCoordinates(j, i, myEntity, scaleFactor);
-          addNewEntityToEntitiesList(myEntities, symbol, myEntity);
+          addNewEntityToEntitiesList(myEntities, entityCode, myEntity);
         }
       }
     }
@@ -137,16 +137,15 @@ public final class LevelBuilder {
   private static void setEntityCoordinates(int j, int i, Entity myEntity,
       double scaleFactor) {
     myEntity.setX(getRelativeX(i, scaleFactor));
-    double imageHeight = myEntity.getBoundsInLocal().getHeight();
-    myEntity.setY(getRelativeY(j, imageHeight, scaleFactor));
+    myEntity.setY(getRelativeY(j, scaleFactor));
   }
 
-  private static double getRelativeY(int j, double imageHeight, double scaleFactor) {
-    return (j*scaleFactor) - imageHeight;
+  private static double getRelativeY(int j, double scaleFactor) {
+    return (j*scaleFactor) + PADDING/2;
   }
 
   private static double getRelativeX(int i, double scaleFactor) {
-    return i*scaleFactor;
+    return i*scaleFactor + PADDING/2;
   }
 
 }

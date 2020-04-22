@@ -8,8 +8,8 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import ooga.controller.LevelController;
 import ooga.controller.ScreenController;
-import ooga.controller.data.BasicLevel;
-import ooga.controller.data.User;
+import ooga.controller.levels.BasicLevel;
+import ooga.controller.users.User;
 
 public class GameScreen extends Screen {
 
@@ -55,6 +55,12 @@ public class GameScreen extends Screen {
   public void setVisibleGroup(Group visibleGroup){
     gameGroup.getChildren().clear();
     gameGroup.getChildren().addAll(visibleGroup);
+  }
+
+  public void openSettings() {
+    pause();
+    SettingsScreen settings = new SettingsScreen(controller, this);
+    this.getChildren().add(settings);
   }
 
   public void pause() {

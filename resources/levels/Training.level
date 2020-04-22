@@ -2,7 +2,7 @@
 id:0001
 mainTitle:Testing Level
 subTitle:Tutorial
-physics:land
+physics:MarioPhysics
 scrollType:horizontal
 deathsAllowed:1
 backgroundImage:images/gameBackground.png
@@ -17,11 +17,12 @@ B:Brick
 T:Brick
 X:Player
 G:Ground
-R:GroundCorner
+L:GroundLeft
+R:GroundRight
 C:Coin
 6:GroundCenter
 M:BigMushroom
-L:LifeMushroom
+I:LifeMushroom
 S:MiniMushroom
 #LEVEL
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -31,9 +32,9 @@ S:MiniMushroom
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 . . X . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . R G R . . . . . . . .
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . R G G G 6 6 6 G R . . . . . .
-. . . . . . C . . . . . . . . . . . . . . . . . . . . . . . . R G G G 6 6 6 6 6 6 6 6 6 G G F G G G
+. . B . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+. . . . . B . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . L G R . . . . . . . .
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . L G G G 6 6 6 G R . . F . . .
+. . . . . . C . . S . M . I . . . . . . . . . . . . . . . . . L G G G 6 6 6 6 6 6 6 6 6 G G G G G G
 G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6
 #END

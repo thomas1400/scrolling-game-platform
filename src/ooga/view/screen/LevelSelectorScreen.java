@@ -1,11 +1,12 @@
 package ooga.view.screen;
 
+import java.util.ArrayList;
 import javafx.animation.FadeTransition;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import ooga.controller.ScreenController;
-import ooga.controller.data.BasicLevelList;
-import ooga.controller.data.User;
+import ooga.controller.levels.BasicLevelList;
+import ooga.controller.users.User;
 import ooga.view.dynamicUI.DynamicUserLabel;
 import ooga.view.dynamicUI.LevelProgressBar;
 import ooga.view.dynamicUI.LevelSelectorTool;
@@ -27,9 +28,17 @@ public class LevelSelectorScreen extends Screen {
 
       DynamicUserLabel username = new DynamicUserLabel();
       username.setText(resources.getString("user") + " : " + user.getName());
-      LevelProgressBar lpb = new LevelProgressBar(resources.getString("progress"), user.getLevelsUnlocked().size(), myLevels.size());
+      //FIXME: The "mario" should load in only the level selector for Mario levels, using
+      // "flappy" or "doodle" should load in the other levels. I assume eventually you'll call
+      // this in a loop for all level types, which I envision being passed to you slightly
+      // differently in your constructor... possibly a Map of levels with keys corresponding to
+      // their string level type. Lmk what you think -from Grant
+      final String GAME_TYPE = "mario";
+      LevelProgressBar lpb = new LevelProgressBar(resources.getString("progress"),
+          user.getLevelsCompleted(GAME_TYPE).size(), myLevels.size());
       lst = new LevelSelectorTool(levels, LEVEL_GRAPH_FILE, LEVEL_MAP_FILE,
-          user.getLevelsUnlocked());
+          new ArrayList<>(user.getLevelsCompleted(GAME_TYPE)));
+
 
       dynamicNodes.put("username-label", username);
       dynamicNodes.put("level-selector-tool", lst);

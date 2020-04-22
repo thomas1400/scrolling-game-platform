@@ -6,10 +6,10 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collections;
-import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import ooga.controller.data.User;
+import java.util.Set;
+import ooga.controller.users.User;
 
 public final class UserSaver {
 
@@ -22,15 +22,22 @@ public final class UserSaver {
 
         // set the properties value
         setSimpleProperties(user, userProperties);
+        setGamesProperty(user, userProperties);
         setUnlockedLevelsProperty(user, userProperties);
 
         // save properties to project root folder
         userProperties.store(output, "User properties file for user: " + user.getName());
 
       } catch (IOException io) {
+        //FIXME GET RID OF PRINTING THE STACK TRACK
         io.printStackTrace();
       }
     }
+  }
+
+  private static void setGamesProperty(User user, Properties userProperties) {
+    String gamesString = buildStringFromList(user.getAllGames());
+    userProperties.setProperty("games", gamesString);
   }
 
   private static void setSimpleProperties(User user, Properties userProperties) {
@@ -44,20 +51,24 @@ public final class UserSaver {
           Method m = user.getClass().getDeclaredMethod(methodName);
           userProperties.setProperty(userProperty, m.invoke(user) + "");
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+          //FIXME TAKE OUT PRINTING THE STACK TRACE
           e.printStackTrace();
         }
       } catch (SecurityException e) {
+        //FIXME TAKE OUT PRINTING THE STACK TRACE
         e.printStackTrace();
       }
     }
   }
 
   private static void setUnlockedLevelsProperty(User user, Properties userProperties) {
-    String unlockedLevelsString = buildStringFromList(user.getLevelsUnlocked());
-    userProperties.setProperty("levelsUnlocked", unlockedLevelsString);
+    for (String game : user.getAllGames()) {
+      String unlockedLevelsString = buildStringFromList(user.getLevelsCompleted(game));
+      userProperties.setProperty(game + "Levels", unlockedLevelsString);
+    }
   }
 
-  private static String buildStringFromList(List userPropertyList) {
+  private static String buildStringFromList(Set userPropertyList) {
     if (userPropertyList.isEmpty()) {
       return "";
     }

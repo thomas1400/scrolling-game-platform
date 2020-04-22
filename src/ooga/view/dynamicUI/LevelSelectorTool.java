@@ -9,8 +9,8 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
-import ooga.controller.data.BasicLevel;
-import ooga.controller.data.BasicLevelList;
+import ooga.controller.levels.BasicLevel;
+import ooga.controller.levels.BasicLevelList;
 import ooga.exceptions.ExceptionFeedback;
 
 public class LevelSelectorTool extends Pane {

@@ -12,6 +12,7 @@ public class EntityBuilder {
 
   private static final String ABILITY_PACKAGE = "ooga.model.ability.";
   private static final String STATS_PACKAGE_NAME = "entities/";
+  public static final String IMAGE_KEY = "Image";
 
   //private ResourceBundle resources;
   //private Entity entity;
@@ -59,7 +60,7 @@ public class EntityBuilder {
   public static Entity getEntity(String statsFilename) {
     try {
       ResourceBundle resources = ResourceBundle.getBundle(STATS_PACKAGE_NAME + statsFilename);
-      Image image = new Image("images/entityimages/" + resources.getString("Image"));
+      Image image = new Image("images/entityimages/marioimages/" + resources.getString(IMAGE_KEY));
       Entity entity = new Entity(image, resources.getString("Image"));
 
       for (String s : Collections.list(resources.getKeys())) {

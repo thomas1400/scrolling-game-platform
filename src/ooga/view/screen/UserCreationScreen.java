@@ -2,14 +2,12 @@ package ooga.view.screen;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import ooga.controller.ScreenController;
 import ooga.controller.UserSaver;
-import ooga.controller.data.User;
+import ooga.controller.users.User;
 import ooga.exceptions.ExceptionFeedback;
 
 public class UserCreationScreen extends Screen {
@@ -36,7 +34,7 @@ public class UserCreationScreen extends Screen {
 
   public void save() {
     if (imageFile != null && !nameField.getText().equals("")) {
-      User newUser = new User(nameField.getText(), imageFile.toURI().toString(), new ArrayList<>(), 3);
+      User newUser = new User(nameField.getText(), imageFile.toURI().toString());
       UserSaver.saveUser(newUser);
       controller.getUsers().addUser(newUser);
       controller.setSelectedUser(newUser);

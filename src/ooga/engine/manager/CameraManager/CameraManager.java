@@ -28,10 +28,13 @@ public class CameraManager {
           .forName("ooga.engine.manager.CameraManager.DirectionControllers." + directionType).newInstance();
       myDirectionController.initialize(entities, height, width, character);
     } catch (InstantiationException e) {
+      //FIXME
       e.printStackTrace();
     } catch (IllegalAccessException e) {
+      //FIXME
       e.printStackTrace();
     } catch (ClassNotFoundException e) {
+      //FIXME
       e.printStackTrace();
     }
   }
@@ -40,6 +43,7 @@ public class CameraManager {
     //System.out.println(mainEntity.getX() + " " + mainEntity.getY());
     myDirectionController.updateCameraPosition(entities, mainEntity);
     determineEntitiesOnScreen(entities);
+    determinedead();
   }
 
 
@@ -74,9 +78,20 @@ public class CameraManager {
     }
   }
 
+  public void determinedead(){
+    EntityList entitiesToRemove = new EntityList();
+    for (Entity entity : onScreenEntities) {
+      if (entity.isDead()) {
+        entitiesToRemove.addEntity(entity);
+      }
+    }
+    onScreenEntities.removeAllEntities(entitiesToRemove);
+    //removeAllEntities(entitiesToRemove);
+  }
+
   private boolean entityIsOnScreen(Entity entity){
     //return entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX() < screenWidth && entity.getBoundsInLocal().getMinY() > 0 && entity.getBoundsInLocal().getMaxY()< screenHeight;
-    return entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX() < screenWidth && entity.getBoundsInLocal().getMinY() > 0 && entity.getBoundsInLocal().getMaxY()< screenHeight;
+    return !entity.isDead() && entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX() < screenWidth && entity.getBoundsInLocal().getMinY() > 0 && entity.getBoundsInLocal().getMaxY()< screenHeight;
   }
 
   public EntityList getActivatedEntities(){

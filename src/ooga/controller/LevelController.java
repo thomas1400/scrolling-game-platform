@@ -5,9 +5,9 @@ import javafx.scene.Group;
 import javafx.scene.input.KeyEvent;
 import ooga.engine.loop.LevelLoop;
 import ooga.exceptions.ExceptionFeedback;
-import ooga.controller.data.BasicLevel;
-import ooga.controller.data.CompleteLevel;
-import ooga.controller.data.User;
+import ooga.controller.levels.BasicLevel;
+import ooga.controller.levels.CompleteLevel;
+import ooga.controller.users.User;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 import ooga.view.screen.GameScreen;
@@ -16,6 +16,7 @@ public class LevelController implements GameLevel{
 
   private User myUser;
   private int myLivesRemaining;
+  private String myGameType;
   private int myLevelNumber;
   private boolean levelLifeGainAllowed;
 
@@ -27,9 +28,9 @@ public class LevelController implements GameLevel{
   public LevelController(GameScreen gs, User user, BasicLevel basicLevel) {
     myGS = gs;
     myUser = user;
-
     myLevelNumber = basicLevel.getLevelIndex();
-    CompleteLevel myCompleteLevel = getCompleteLevel(gs, basicLevel);
+    myGameType = basicLevel.getGameType();
+    CompleteLevel myCompleteLevel = getCompleteLevel(basicLevel);
 
     setLivesRemaining(myCompleteLevel.getDeathsAllowed());
     levelLifeGainAllowed = myCompleteLevel.getLifeGainAllowed();
@@ -47,11 +48,11 @@ public class LevelController implements GameLevel{
         this, level, myGS.getGameHeight(), myGS.getGameWidth());
   }
 
-  private CompleteLevel getCompleteLevel(GameScreen gs, BasicLevel basicLevel) {
+  private CompleteLevel getCompleteLevel(BasicLevel basicLevel) {
     CompleteLevel completeLevel = null;
     try {
-      completeLevel = LevelBuilder.buildCompleteLevel(basicLevel, gs.getGameHeight(),
-          gs.getGameWidth());
+      completeLevel = LevelBuilder.buildCompleteLevel(basicLevel, myGS.getGameHeight(),
+          myGS.getGameWidth());
     } catch (FileNotFoundException e) {
       ExceptionFeedback.throwBreakingException(e, "File not found");
     }
@@ -59,13 +60,7 @@ public class LevelController implements GameLevel{
   }
 
   private void setLivesRemaining(int deathsAllowed) {
-    if (deathsAllowed < myUser.getLives()) {
-      myLivesRemaining = deathsAllowed;
-      myUser.adjustLives(-1 * deathsAllowed);
-    } else {
-      myLivesRemaining = myUser.getLives();
-      myUser.adjustLives(-1 * myUser.getLives());
-    }
+    myLivesRemaining = Math.min(deathsAllowed, myUser.getLives());
   }
 
   //Entity Visualization Handling
@@ -108,12 +103,22 @@ public class LevelController implements GameLevel{
 
   //In Game Adjustments
   public void adjustLives(int lifeAdjustment) {
-    if (levelLifeGainAllowed) {
-      myLivesRemaining += lifeAdjustment;
-    }
+    System.out.println("LIFE ADJUST: " + lifeAdjustment);
+    myLivesRemaining += lifeAdjustment;
     myUser.adjustLives(lifeAdjustment);
+    checkEndLevel();
   }
+
+  private void checkEndLevel() {
+    if (myLivesRemaining == 0){
+      myGS.quit();
+    } else if (myLivesRemaining < 0){
+      ExceptionFeedback.throwHandledException(new RuntimeException(), "Negative Lives Left in Level");
+    }
+  }
+
   public void adjustPoints(int pointsAdjustment) {
+    System.out.println("POINTS: " + pointsAdjustment);
     myUser.adjustPoints(pointsAdjustment);
     checkNewLife();
   }
@@ -121,7 +126,7 @@ public class LevelController implements GameLevel{
   //User & Level Effect Handling
   public void handleWin() {
     //TODO: display some cool win screen?
-    myUser.unlockNextLevel(myLevelNumber);
+    myUser.unlockNextLevel(myGameType, myLevelNumber);
     myGS.quit();
   }
 
@@ -131,7 +136,7 @@ public class LevelController implements GameLevel{
   }
 
   private void checkNewLife() {
-    if (myUser.checkPointsToLife() && levelLifeGainAllowed){
+    if (myUser.canConvertPointsToLife() && levelLifeGainAllowed){
       myLivesRemaining += 1;
     }
   }

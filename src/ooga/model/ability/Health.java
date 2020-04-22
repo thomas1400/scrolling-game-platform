@@ -9,8 +9,9 @@ public class Health extends Ability {
 
   private static final String RESOURCE_PACKAGE = "abilitytypes/Health";
   private static final int DEATH = 0;
+  private static final double SINGLE_LIFE = 1;
 
-  private int myLives;
+  private double myLives;
   private boolean immortal;
 
   /**
@@ -25,10 +26,13 @@ public class Health extends Ability {
     immortal = false;
   }
 
+  /**
+   * Constructor to create immortal objects
+   */
   public Health(){
     immortal = true;
     myLives = DEATH;
-    //todo if isDead breaks than add myLives = 1;
+    //todo if isDead breaks than change to myLives = 1;
   }
 
   /**
@@ -36,7 +40,16 @@ public class Health extends Ability {
    * @return if the entity is immortal or myLives is equal to zero
    */
   public boolean isDead(){
-    return (myLives == DEATH && !immortal);
+    return (myLives <= DEATH && !immortal);
+  }
+  //todo if health suddenly stops working change <= to ==
+
+  /**
+   * Change number of lives by the incoming value
+   * @param lives value to change lives by
+   */
+  public void addLives(double lives){
+    myLives+=lives;
   }
 
   /**
@@ -44,8 +57,13 @@ public class Health extends Ability {
    */
   public void hit(){
     if(!immortal && !this.isDead()) {
-      myLives -= 1;
+      myLives -= SINGLE_LIFE;
       //System.out.println("ouchie");
     }
+  }
+
+  //todo delete when finished debugging
+  public double getLives(){
+    return myLives;
   }
 }
