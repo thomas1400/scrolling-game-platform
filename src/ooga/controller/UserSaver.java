@@ -22,6 +22,7 @@ public final class UserSaver {
 
         // set the properties value
         setSimpleProperties(user, userProperties);
+        setGamesProperty(user, userProperties);
         setUnlockedLevelsProperty(user, userProperties);
 
         // save properties to project root folder
@@ -32,6 +33,11 @@ public final class UserSaver {
         io.printStackTrace();
       }
     }
+  }
+
+  private static void setGamesProperty(User user, Properties userProperties) {
+    String gamesString = buildStringFromList(user.getAllGames());
+    userProperties.setProperty("games", gamesString);
   }
 
   private static void setSimpleProperties(User user, Properties userProperties) {
@@ -62,7 +68,7 @@ public final class UserSaver {
     }
   }
 
-  private static String buildStringFromList(Set<Integer> userPropertyList) {
+  private static String buildStringFromList(Set userPropertyList) {
     if (userPropertyList.isEmpty()) {
       return "";
     }

@@ -153,4 +153,9 @@ public class User {
   public void addGame(String game) {
     myGames.add(game);
   }
+
+  //USED FOR REFLECTION, DO NOT DELETE
+  public String getImageFileName(){
+    return myImageFileName;
+  }
 }
