@@ -145,7 +145,7 @@ class EntityTest extends ApplicationTest {
     player.handleCollision(lifeMushroomSideCE);
     lifeMushroom.handleCollision(playerSideCE);
     assertEquals(2, player.debugHealth());
-    assertEquals(true, lifeMushroom.isDead());
+    assertTrue(lifeMushroom.isDead());
 
     lifeMushroom = EntityBuilder.getEntity("LifeMushroom");
     CollisionEvent lifeMushroomTopCE = new CollisionEvent("Top", lifeMushroom.getAttack("Bottom"), lifeMushroom);
@@ -153,7 +153,7 @@ class EntityTest extends ApplicationTest {
     player.handleCollision(lifeMushroomTopCE);
     lifeMushroom.handleCollision(playerBottomCE);
     assertEquals(3, player.debugHealth());
-    assertEquals(true, lifeMushroom.isDead());
+    assertTrue(lifeMushroom.isDead());
 
     lifeMushroom = EntityBuilder.getEntity("LifeMushroom");
     CollisionEvent lifeMushroomBottomCE = new CollisionEvent("Bottom", lifeMushroom.getAttack("Top"), lifeMushroom);
@@ -161,7 +161,22 @@ class EntityTest extends ApplicationTest {
     player.handleCollision(lifeMushroomBottomCE);
     lifeMushroom.handleCollision(playerTopCE);
     assertEquals(4, player.debugHealth());
-    assertEquals(true, lifeMushroom.isDead());
+    assertTrue(lifeMushroom.isDead());
   }
 
+  @Test
+  void testLevelEnd(){
+    Entity player = EntityBuilder.getEntity("Player");
+    Entity flag = EntityBuilder.getEntity("Flag");
+
+    CollisionEvent playerSideCE = new CollisionEvent("Side", player.getAttack("Side"), player);
+    CollisionEvent flagSideCE = new CollisionEvent("Side", flag.getAttack("Side"), flag);
+
+    player.handleCollision(flagSideCE);
+    flag.handleCollision(playerSideCE);
+    assertFalse(player.isDead());
+    assertTrue(player.endedLevel());
+    assertTrue(player.isSuccess());
+
+  }
 }
