@@ -15,8 +15,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import ooga.controller.data.User;
-import ooga.controller.data.UserList;
+import ooga.controller.users.User;
+import ooga.controller.users.UserList;
 
 public class UserSelector extends Pane {
 

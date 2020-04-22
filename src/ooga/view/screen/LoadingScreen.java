@@ -1,18 +1,9 @@
 package ooga.view.screen;
 
-import java.io.File;
-import java.util.ResourceBundle;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import ooga.controller.data.BasicLevel;
-import ooga.view.factory.ControlFactory;
-import ooga.view.fxlr.FXLRParser;
+import ooga.controller.levels.BasicLevel;
 
 public class LoadingScreen extends Screen {
 

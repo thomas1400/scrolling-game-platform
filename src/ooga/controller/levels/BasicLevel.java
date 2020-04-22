@@ -1,6 +1,5 @@
-package ooga.controller.data;
+package ooga.controller.levels;
 
-import java.awt.Image;
 import java.io.File;
 import java.util.Map;
 
@@ -14,6 +13,7 @@ public class BasicLevel {
 
   private int myLevelIndex;
   private File myLevelFile;
+  private String myGameType;
   private String myMainTitle;
   private String mySubTitle;
   private String myBackgroundImage;
@@ -23,6 +23,7 @@ public class BasicLevel {
     myLevelIndex = index;
     myLevelFile = levelFile;
     myHeaderInfo = headerInfo;
+    myGameType = myHeaderInfo.get("gameType");
     myMainTitle = myHeaderInfo.get("mainTitle");
     mySubTitle = myHeaderInfo.get("subTitle");
     myBackgroundImage = myHeaderInfo.get("backgroundImage");
@@ -49,4 +50,8 @@ public class BasicLevel {
   }
 
   public File getLevelFile() { return myLevelFile; }
+
+  public String getGameType() {
+    return myGameType;
+  }
 }

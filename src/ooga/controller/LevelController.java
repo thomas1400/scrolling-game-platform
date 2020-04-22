@@ -5,9 +5,9 @@ import javafx.scene.Group;
 import javafx.scene.input.KeyEvent;
 import ooga.engine.loop.LevelLoop;
 import ooga.exceptions.ExceptionFeedback;
-import ooga.controller.data.BasicLevel;
-import ooga.controller.data.CompleteLevel;
-import ooga.controller.data.User;
+import ooga.controller.levels.BasicLevel;
+import ooga.controller.levels.CompleteLevel;
+import ooga.controller.users.User;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 import ooga.view.screen.GameScreen;
@@ -16,6 +16,7 @@ public class LevelController implements GameLevel{
 
   private User myUser;
   private int myLivesRemaining;
+  private String myGameType;
   private int myLevelNumber;
   private boolean levelLifeGainAllowed;
 
@@ -28,6 +29,7 @@ public class LevelController implements GameLevel{
     myGS = gs;
     myUser = user;
     myLevelNumber = basicLevel.getLevelIndex();
+    myGameType = basicLevel.getGameType();
     CompleteLevel myCompleteLevel = getCompleteLevel(basicLevel);
 
     setLivesRemaining(myCompleteLevel.getDeathsAllowed());
@@ -102,17 +104,14 @@ public class LevelController implements GameLevel{
   //In Game Adjustments
   public void adjustLives(int lifeAdjustment) {
     System.out.println("LIFE ADJUST: " + lifeAdjustment);
-    if (levelLifeGainAllowed) {
-      myLivesRemaining += lifeAdjustment;
-    }
+    myLivesRemaining += lifeAdjustment;
     myUser.adjustLives(lifeAdjustment);
     checkEndLevel();
-
   }
 
   private void checkEndLevel() {
     if (myLivesRemaining == 0){
-      endLevel();
+      myGS.quit();
     } else if (myLivesRemaining < 0){
       ExceptionFeedback.throwHandledException(new RuntimeException(), "Negative Lives Left in Level");
     }
@@ -127,7 +126,7 @@ public class LevelController implements GameLevel{
   //User & Level Effect Handling
   public void handleWin() {
     //TODO: display some cool win screen?
-    myUser.unlockNextLevel(myLevelNumber);
+    myUser.unlockNextLevel(myGameType, myLevelNumber);
     myGS.quit();
   }
 
@@ -137,7 +136,7 @@ public class LevelController implements GameLevel{
   }
 
   private void checkNewLife() {
-    if (myUser.checkPointsToLife() && levelLifeGainAllowed){
+    if (myUser.canConvertPointsToLife() && levelLifeGainAllowed){
       myLivesRemaining += 1;
     }
   }

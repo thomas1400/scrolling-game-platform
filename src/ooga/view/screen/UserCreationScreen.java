@@ -2,14 +2,12 @@ package ooga.view.screen;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import ooga.controller.ScreenController;
 import ooga.controller.UserSaver;
-import ooga.controller.data.User;
+import ooga.controller.users.User;
 import ooga.exceptions.ExceptionFeedback;
 
 public class UserCreationScreen extends Screen {

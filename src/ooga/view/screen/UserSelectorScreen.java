@@ -1,7 +1,7 @@
 package ooga.view.screen;
 
 import ooga.controller.ScreenController;
-import ooga.controller.data.UserList;
+import ooga.controller.users.UserList;
 import ooga.view.dynamicUI.UserSelector;
 
 public class UserSelectorScreen extends Screen {
