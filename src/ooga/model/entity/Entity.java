@@ -380,6 +380,10 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     //System.out.println("we did it");
     myInformation.put(LEVEL_ENDED, value);
     levelEnded = (value!=PLAYING);
+    checkForSuccess();
+  }
+
+  private void checkForSuccess(){
     success = (levelEnded && !this.isDead());
     myInformation.put(LEVEL_COMPLETION_SUCCESS, success?1.0:0.0); //convert boolean to a double
   }
@@ -433,6 +437,8 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
       movement.update(this);
     }
     dead = health.isDead();
+    levelEnd(dead?1.0:0.0); //convert boolean to a double
+    checkForSuccess();
   }
 
   //used for reflection DO NOT DELETE
