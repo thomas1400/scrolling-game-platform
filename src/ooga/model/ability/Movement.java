@@ -8,13 +8,13 @@ public class Movement extends Ability {
 
   private static final String PHYSICS_PACKAGE = "ooga.model.physics.";
   //FIXME: this should be leaded in from the entity file
-  private static final String PHYSICS = "MarioPhysics";
   private Physics phys;
 
   public Movement(String physicsType){
     //reflection to set the physics Type
     //my idea here is that physics will have enums? maybe?
-    phys = (Physics) super.reflect(PHYSICS_PACKAGE, PHYSICS);//fixme change the empty string to physicsType
+    phys = (Physics) super.reflect(PHYSICS_PACKAGE, physicsType);//fixme change the empty string to
+    // physicsType
   }
 
   //todo this one is only used by the user interactable interfaces
