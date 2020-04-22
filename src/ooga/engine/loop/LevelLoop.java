@@ -102,9 +102,6 @@ public class LevelLoop implements Loopable {
     if(myCameraManager.getDeactivatedEntities().size()!=0) {
       myEntityManager.removeOldEntities(myCameraManager.getDeactivatedEntities());
     }
-    for(Entity entity: myCameraManager.getDeactivatedEntities()){
-      System.out.println(entity.debug());
-    }
   }
 
   private void updateScoreAndLives(){
@@ -139,7 +136,6 @@ public class LevelLoop implements Loopable {
         }
       }
     }
-    //mainEntity.setScore(0);
 
   }
   private void sendEntities(){
@@ -154,11 +150,6 @@ public class LevelLoop implements Loopable {
     }*/
   }
 
-
-  /*private void sendEntitiesToController(EntityList activatedEntities, EntityList deactivedEntities) {
-    myLevelController.addAllEntities(activatedEntities);
-    myLevelController.removeAllEntities(deactivedEntities);
-  }*/
 
   public void begin() {
     myTimeline.play();
