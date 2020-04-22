@@ -7,7 +7,8 @@ import ooga.model.physics.Physics;
 public class Movement extends Ability {
 
   private static final String PHYSICS_PACKAGE = "ooga.model.physics.";
-  private static final String PHYSICS = "Physics";
+  //FIXME: this should be leaded in from the entity file
+  private static final String PHYSICS = "MarioPhysics";
   private Physics phys;
 
   public Movement(String physicsType){
@@ -39,7 +40,7 @@ public class Movement extends Ability {
   public void standX(){
     bounceX();
     standY();
-    System.out.println("standX");
+    //System.out.println("standX");
   }
 
   public double getYVelocity(){
@@ -55,7 +56,7 @@ public class Movement extends Ability {
   }
 
   public void bounceX(){
-    System.out.println("bounccccce x");
+    //System.out.println("bounccccce x");
     phys.bounceX();
   }
 

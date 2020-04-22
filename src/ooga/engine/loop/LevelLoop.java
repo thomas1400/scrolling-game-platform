@@ -30,7 +30,7 @@ public class LevelLoop implements Loopable {
   private Entity mainEntity;
 
   public LevelLoop(GameLevel levelController, CompleteLevel level, double screenHeight, double screenWidth) {
-    System.out.println(screenWidth + " " + screenHeight);
+    //System.out.println(screenWidth + " " + screenHeight);
     myLevelController = levelController;
     EntityList myEntities = level.getEntities();
     myEntityManager = new EntityManager(myEntities);
@@ -124,6 +124,7 @@ public class LevelLoop implements Loopable {
           end();
         }
         else{
+          System.out.println("DEAD");
           myLevelController.adjustLives(-1);
           System.out.println("end");
         }

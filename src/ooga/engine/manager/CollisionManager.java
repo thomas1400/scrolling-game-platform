@@ -97,9 +97,9 @@ public class CollisionManager {
 
 
 
-  private void createAndSendCollision(String typeOfCollision, String attack, Entity entity) {
+  private void createAndSendCollision(String typeOfCollision, String attack, Entity entityToHandle, Entity other) {
     //receive an entity object from the entity
-    entitiesReceived.addEntity(entity.handleCollision(new CollisionEvent(typeOfCollision, attack)));
+    entitiesReceived.addEntity(entityToHandle.handleCollision(new CollisionEvent(typeOfCollision, attack, other)));
   }
 
   public EntityList getEntitiesReceived() {

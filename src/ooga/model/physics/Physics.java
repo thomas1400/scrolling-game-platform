@@ -3,25 +3,25 @@ package ooga.model.physics;
 
 import ooga.model.entity.Entity;
 
-public class Physics {
+public abstract class Physics {
 
-  private static final double dt = 1/60.0;
-  private static final double sizeScale = 50.0;
+  protected double dt;
+  protected double sizeScale;
 
-  private static final double JUMP_HEIGHT = 3.75 * sizeScale;
-  private static final double TIME_TO_APEX = 4.0;
-  private static final double GRAVITY = (2*JUMP_HEIGHT)/Math.pow(TIME_TO_APEX,2);
-  private static final double INITIAL_JUMP_VELOCITY = -1 * Math.sqrt(2*GRAVITY*JUMP_HEIGHT);
+  protected double JUMP_HEIGHT;
+  protected double TIME_TO_APEX;
+  protected double GRAVITY;
+  protected double INITIAL_JUMP_VELOCITY;
 
-  private static final double MAX_VERT_VELOCITY = -1 * INITIAL_JUMP_VELOCITY;
-  private static final double MAX_HORIZ_VELOCITY = 0.3 * sizeScale;
-  private static final double RUN_ACCELERATION = 2.5 * sizeScale;
-  private static final double FRICTION_DAMPING = 0.2;
+  protected double MAX_VERT_VELOCITY;
+  protected double MAX_HORIZ_VELOCITY;
+  protected double RUN_ACCELERATION;
+  protected double FRICTION_DAMPING;
+  protected double REACTIVITY_PERCENT;
+  protected double TINY_DISTANCE;
 
   private static final int X = 0;
   private static final int Y = 1;
-  private static final double REACTIVITY_PERCENT = 3.5;
-  public static final double TINY_DISTANCE = MAX_VERT_VELOCITY*dt;
 
   private double[] myPosition;
   private double[] myVelocity;

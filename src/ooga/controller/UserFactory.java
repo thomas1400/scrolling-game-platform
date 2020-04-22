@@ -5,8 +5,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import ooga.controller.data.User;
 
 public final class UserFactory {
@@ -17,11 +19,10 @@ public final class UserFactory {
       Properties prop = new Properties();
       prop.load(input);
 
-      List<Integer> levelsUnlocked = getUnlockedLevelsArray(prop);
+      Set<Integer> levelsUnlocked = getUnlockedLevelsSet(prop);
 
-      User createdUser = createBaseUser(prop, levelsUnlocked);
-
-      addAdditionalProperties(prop, createdUser);
+      User createdUser = createBaseUser(prop);
+      addAdditionalProperties(prop, createdUser, levelsUnlocked);
 
       return createdUser;
 
@@ -32,25 +33,23 @@ public final class UserFactory {
     }
   }
 
-  private static void addAdditionalProperties(Properties prop, User createdUser) {
+  private static void addAdditionalProperties(Properties prop, User createdUser,
+      Set<Integer> levelsUnlocked) {
     createdUser.setPower(prop.getProperty("power"));
     createdUser.setSize(prop.getProperty("size"));
     createdUser.adjustPoints(Integer.parseInt(prop.getProperty("points")));
+    createdUser.setLevelsUnlocked(levelsUnlocked);
+    createdUser.setLives(Integer.parseInt(prop.getProperty("lives")));
   }
 
-  private static User createBaseUser(Properties prop, List<Integer> levelsUnlocked) {
-    return new User(
-            prop.getProperty("name"),
-            prop.getProperty("image"),
-            levelsUnlocked,
-            Integer.parseInt(prop.getProperty("lives"))
-        );
+  private static User createBaseUser(Properties prop) {
+    return new User(prop.getProperty("name"), prop.getProperty("image"));
   }
 
-  private static List<Integer> getUnlockedLevelsArray(Properties prop) {
-    ArrayList<Integer> levelsUnlocked = new ArrayList<>();
+  private static Set<Integer> getUnlockedLevelsSet(Properties prop) {
+    Set<Integer> levelsUnlocked = new HashSet<>();
     if (prop.getProperty("levelsUnlocked").equals("")) {
-      return new ArrayList<>();
+      return new HashSet<>();
     }
     for (String unlockedLevel : prop.getProperty("levelsUnlocked").split(",")){
       levelsUnlocked.add(Integer.parseInt(unlockedLevel));
@@ -65,8 +64,13 @@ public final class UserFactory {
 
   public static User getDefaultUser() {
     //TODO: eventually just have this call getUser(new File("Default.user"));
-    List<Integer> defaultLevelsUnlocked = new ArrayList<>();
+    HashSet<Integer> defaultLevelsUnlocked = new HashSet<>();
     defaultLevelsUnlocked.add(0);
-    return new User("Default User", "Mario.png", defaultLevelsUnlocked, 3);
+
+    User defaultUser = new User("Default User", "Mario.png");
+    defaultUser.setLevelsUnlocked(defaultLevelsUnlocked);
+    defaultUser.setLives(3);
+
+    return defaultUser;
   }
 }
