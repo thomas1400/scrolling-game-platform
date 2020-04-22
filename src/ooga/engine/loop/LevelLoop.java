@@ -102,7 +102,7 @@ public class LevelLoop implements Loopable {
       myEntityManager.removeOldEntities(myCameraManager.getDeactivatedEntities());
     }
     for(Entity entity: myCameraManager.getDeactivatedEntities()){
-      System.out.println(entity.debug());
+      //System.out.println(entity.debug());
     }
   }
 

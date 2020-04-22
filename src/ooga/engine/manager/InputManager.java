@@ -25,7 +25,6 @@ public class InputManager {
     if (!keysCurrentlyPressed.contains(keyEvent.getCode().toString()) && myUserInputsResources.containsKey(keyEvent.getCode().toString())) {
       keysCurrentlyPressed.add(keyEvent.getCode().toString());
       invokeMethod(keyEvent.getCode().toString());
-      System.out.println(keyEvent);
     }
     /*else {
       if (myUserInputsResources.getString(keyEvent.getCode().toString() + "ONREPEAT")
