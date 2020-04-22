@@ -48,7 +48,7 @@ public class CollisionManager {
               entity.setX(entity.getX() + d);
             }
             if(min.equals("maxXminX")){
-              entity.setX(entity.getX()-d); 
+              entity.setX(entity.getX()-d);
             }
             /*if(entity2.debug().equals("GroundCenter.png")){
               min = "minXmaxX";
