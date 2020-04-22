@@ -7,7 +7,7 @@ scrollType:horizontal
 deathsAllowed:1
 backgroundImage:images/gameBackground.png
 levelWidth:50
-levelHeight:15
+levelHeight:12
 #ENTITIES
 F:Flag
 1:Goomba
@@ -25,9 +25,6 @@ M:BigMushroom
 I:LifeMushroom
 S:MiniMushroom
 #LEVEL
-G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6
-G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6
-G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -37,7 +34,7 @@ G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G 6 6 6 6 6 6 6 6 6 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 . . B . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 . . . . . B . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . L G R . . . . . . . .
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . L G G G 6 6 6 G R . . . . . .
-. . . . . . C . . S . M . I . . . . . . . . . . . . . . . . . L G G G 6 6 6 6 6 6 6 6 6 G G F G G G
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . L G G G 6 6 6 G R . . F . . .
+. . . . . . C . . S . M . I . . . . . . . . . . . . . . . . . L G G G 6 6 6 6 6 6 6 6 6 G G G G G G
 G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6
 #END
