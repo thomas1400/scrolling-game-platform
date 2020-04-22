@@ -47,17 +47,13 @@ public class CollisionManager {
           if (entity.getBoundsInLocal().intersects(entity2.getBoundsInLocal())) {
             collision.get(entity).addEntity(entity2);
             collision.get(entity2).addEntity(entity);
-            String min = calculateDistances(entity, entity2);
+            double d = calculateDistances(entity, entity2);
+            String min = map.get(d);
+            if(min.equals("maxYminY")){
+              entity.setY(entity.getY() - d);
+            }
             String[] results = myCollisionLocationResources.getString(min).split(",");
             createAndSendCollision(results[0], entity2.getAttack(results[1]), entity);
-            /*System.out.println(entity.debug());
-            System.out.println(results[0]);
-            System.out.println(entity2.getAttack(results[1]));
-            System.out.println(entity.getX() + " " + entity.getY());
-            System.out.println(entity2.debug());
-            System.out.println(results[1]);
-            System.out.println(entity.getAttack(results[0]));
-            System.out.println(entity2.getX() + " " + entity2.getY());*/
             createAndSendCollision(results[1], entity.getAttack(results[0]), entity2);
           }
         }
@@ -65,7 +61,8 @@ public class CollisionManager {
     }
   }
 
-  private String calculateDistances(Entity entity, Entity entity2) {
+  private double calculateDistances(Entity entity, Entity entity2) {
+    map.clear();
     minX1maxX2 = Math
         .abs(entity.getBoundsInLocal().getMinX() - entity2.getBoundsInLocal().getMaxX());
     map.put(minX1maxX2, MINX_MAXX);
@@ -80,11 +77,21 @@ public class CollisionManager {
     map.put(maxY1minY2, MAXY_MINY);
     double min = minY1maxY2;
     for (double d : map.keySet()) {
-      if (d < min) {
-        min = d;
+      if (d <= min) {
+        //System.out.println("entity max y:" + entity.getBoundsInLocal().getMaxY());
+        //System.out.println("entity 2 min y: " + entity2.getBoundsInLocal().getMinY());
+        /*if((map.get(d).equals("maxXminX") || map.get(d).equals("minXmaxX")) && (entity.getBoundsInLocal().getMaxY()-.4<entity2.getBoundsInLocal().getMinY())){
+          //System.out.println("hi");
+          continue;
+        }*/
+        /*else if((map.get(d).equals("maxYminY") || map.get(d).equals("minYmaxY")) && (entity.getBoundsInLocal().getMaxX()-.4<entity2.getBoundsInLocal().getMinX())){
+          continue;
+        }*/
+
+          min = d;
       }
     }
-    return map.get(min);
+    return min;
   }
 
 
@@ -99,23 +106,3 @@ public class CollisionManager {
     return entitiesReceived;
   }
 }
-
-
-/*    if (((entity.getBoundsInLocal().getMaxX() > entity2.getBoundsInLocal().getMinX()) || entity2.getBoundsInLocal().getMaxX() > entity.getBoundsInLocal().getMinX())
-        && (entity.getBoundsInLocal().getMinY() >= entity2.getBoundsInLocal().getMinY() && entity.getBoundsInLocal().getMaxY() <= entity2.getBoundsInLocal().getMaxY())){
-        //printDebug(SIDE, entity, entity2);
-        createAndSendCollision(SIDE, entity2.getAttack(SIDE), entity);
-        createAndSendCollision(SIDE, entity.getAttack(SIDE), entity2);
-        } else if (entity.getBoundsInLocal().getMaxY() <= entity2.getBoundsInLocal()
-        .getMinY()) {
-        //printDebug(TOP, entity, entity2);
-        //printDebug(BOTTOM, entity2, entity);
-        createAndSendCollision(TOP, entity2.getAttack(TOP), entity);
-        createAndSendCollision(BOTTOM, entity.getAttack(BOTTOM), entity2);
-        } else {
-        //printDebug(BOTTOM, entity, entity2);
-        //printDebug(TOP, entity2, entity);
-        createAndSendCollision(BOTTOM, entity2.getAttack(BOTTOM), entity);
-        createAndSendCollision(TOP, entity.getAttack(TOP), entity2);
-        }*/
-

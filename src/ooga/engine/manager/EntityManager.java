@@ -20,6 +20,8 @@ public class EntityManager implements Communicable {
   public void initializeEntityLists() {
     addedEntities = new EntityList();
     removedEntities = new EntityList();
+    addedEntities.clear();
+    removedEntities.clear();
   }
 
   public void manageEntities(EntityList entitiesReceived) {
