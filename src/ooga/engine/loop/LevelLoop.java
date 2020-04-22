@@ -33,7 +33,7 @@ public class LevelLoop implements Loopable {
     //System.out.println(screenWidth + " " + screenHeight);
     myLevelController = levelController;
     EntityList myEntities = level.getEntities();
-    myEntityManager = new EntityManager(myEntities);
+    myEntityManager = new EntityManager(myEntities, level.getMainEntity());
     myCameraManager = new CameraManager(level.getMainEntity(), screenHeight, screenWidth, level.getScrollType(), myEntities);
     myInputManager = new InputManager(level.getMainEntity());
     myCollisionManager = new CollisionManager();
@@ -109,11 +109,20 @@ public class LevelLoop implements Loopable {
 
   private void updateScoreAndLives(){
     //myLevelController.adjustPoints(mainEntity.getScore);
-    for(Entity entity: myEntityManager.getRemovedEntities()) {
+    if (mainEntity.getScore() > 0) {
+      System.out.println("mainpoints");
+      myLevelController.adjustPoints((int) mainEntity.getScore());
+      mainEntity.setScore(0);
+    }
+    /*for(Entity entity: myEntityManager.getRemovedEntities()) {
       if (entity.getScore() > 0) {
         System.out.println("points");
         myLevelController.adjustPoints((int) entity.getScore());
       }
+    }*/
+    if(mainEntity.isDead()){
+      myLevelController.adjustLives(-1);
+      //setmainEntitytoalive
     }
     for(Entity entity: myEntityManager.getEntities()){
       if(entity.endedLevel()|| mainEntity.endedLevel()) {

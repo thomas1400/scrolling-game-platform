@@ -10,10 +10,12 @@ public class EntityManager implements Communicable {
   private EntityList myEntityList;
   private EntityList addedEntities;
   private EntityList removedEntities;
+  private Entity myMainEntity;
   private CollisionManager myCollisionManager;
 
-  public EntityManager(EntityList entities) {
+  public EntityManager(EntityList entities, Entity mainEntity) {
     myEntityList = entities;
+    myMainEntity = mainEntity;
     initializeEntityLists();
   }
 
@@ -36,7 +38,7 @@ public class EntityManager implements Communicable {
   private void checkForDeadEntities() {
     EntityList entitiesToRemove = new EntityList();
     for (Entity entity : myEntityList) {
-      if (entity.isDead()) {
+      if (entity.isDead() && !entity.equals(myMainEntity)) {
         entitiesToRemove.addEntity(entity);
       }
     }
@@ -64,8 +66,6 @@ public class EntityManager implements Communicable {
     removedEntities.addAllEntities(entities);
     //needs to be reset somewhere
   }
-
-
 
 
   @Override
