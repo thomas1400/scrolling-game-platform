@@ -53,8 +53,8 @@ public class CollisionManager {
               entity.setY(entity.getY() - d);
             }
             String[] results = myCollisionLocationResources.getString(min).split(",");
-            createAndSendCollision(results[0], entity2.getAttack(results[1]), entity);
-            createAndSendCollision(results[1], entity.getAttack(results[0]), entity2);
+            createAndSendCollision(results[0], entity2.getAttack(results[1]), entity, entity2);
+            createAndSendCollision(results[1], entity.getAttack(results[0]), entity2, entity);
           }
         }
       }
