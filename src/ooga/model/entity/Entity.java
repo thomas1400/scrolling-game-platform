@@ -378,7 +378,8 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   private void levelEnd(Double value){
     //System.out.println("we did it");
     myInformation.put(LEVEL_ENDED, value);
-    success = (value!=0);
+    //levelEnded = value;
+    success = (value!=PLAYING && this.isDead());
   }
 
   //used for reflection DO NOT DELETE
