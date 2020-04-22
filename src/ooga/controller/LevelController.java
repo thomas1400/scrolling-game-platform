@@ -102,17 +102,14 @@ public class LevelController implements GameLevel{
   //In Game Adjustments
   public void adjustLives(int lifeAdjustment) {
     System.out.println("LIFE ADJUST: " + lifeAdjustment);
-    if (levelLifeGainAllowed) {
-      myLivesRemaining += lifeAdjustment;
-    }
+    myLivesRemaining += lifeAdjustment;
     myUser.adjustLives(lifeAdjustment);
     checkEndLevel();
-
   }
 
   private void checkEndLevel() {
     if (myLivesRemaining == 0){
-      endLevel();
+      myGS.quit();
     } else if (myLivesRemaining < 0){
       ExceptionFeedback.throwHandledException(new RuntimeException(), "Negative Lives Left in Level");
     }
