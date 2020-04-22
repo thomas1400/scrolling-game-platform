@@ -1,6 +1,6 @@
 package ooga.model.physics;
 
-public class MarioPhysics extends Physics {
+public class DoodlePhysics extends Physics {
 
   private static final double myDt = 1/60.0;
   private static final double mySizeScale = 50.0;
@@ -18,7 +18,7 @@ public class MarioPhysics extends Physics {
   private static final double MY_REACTIVITY_PERCENT = 3.5;
   private static final double MY_TINY_DISTANCE = MY_MAX_VERT_VELOCITY*myDt;
 
-  public MarioPhysics() {
+  public DoodlePhysics() {
     super();
 
     initializeConstants();

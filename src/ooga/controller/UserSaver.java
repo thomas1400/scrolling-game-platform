@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.Set;
 import ooga.controller.data.User;
 
 public final class UserSaver {
@@ -56,11 +57,11 @@ public final class UserSaver {
   }
 
   private static void setUnlockedLevelsProperty(User user, Properties userProperties) {
-    String unlockedLevelsString = buildStringFromList(user.getLevelsUnlocked());
+    String unlockedLevelsString = buildStringFromList(user.getLevelsCompleted());
     userProperties.setProperty("levelsUnlocked", unlockedLevelsString);
   }
 
-  private static String buildStringFromList(List userPropertyList) {
+  private static String buildStringFromList(Set<Integer> userPropertyList) {
     if (userPropertyList.isEmpty()) {
       return "";
     }

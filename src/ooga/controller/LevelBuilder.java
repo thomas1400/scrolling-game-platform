@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Scanner;
+import javafx.scene.image.Image;
 import ooga.exceptions.ExceptionFeedback;
 import ooga.controller.data.BasicLevel;
 import ooga.controller.data.CompleteLevel;
@@ -103,13 +104,13 @@ public final class LevelBuilder {
     for (int j = 0; j < levelHeight; j++){
       String[] levelLine = sc.nextLine().split(LEVEL_OBJ_SEPARATOR);
       for (int i = 0; i < levelWidth; i++){
-        String symbol = levelLine[i];
-        if (!symbol.equals(EMPTY_SPACE_SYMBOL)){
-          String entityFile = entityInfo.get(symbol);
-          Entity myEntity = EntityBuilder.getEntity(entityFile);
+        String entityCode = levelLine[i];
+        if (!entityCode.equals(EMPTY_SPACE_SYMBOL)){
+          String entityName = entityInfo.get(entityCode);
+          Entity myEntity = EntityBuilder.getEntity(entityName);
           setEntitySize(myEntity, scaleFactor);
           setEntityCoordinates(j, i, myEntity, scaleFactor);
-          addNewEntityToEntitiesList(myEntities, symbol, myEntity);
+          addNewEntityToEntitiesList(myEntities, entityCode, myEntity);
         }
       }
     }
