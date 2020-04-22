@@ -1,12 +1,12 @@
-#User properties file for user: Dannnna
-#Fri Apr 17 03:05:28 EDT 2020
-image=images/creators/dana.jpeg
-games=mario,flappy,doodle
+#User properties file for user: Dana
+#Wed Apr 22 18:44:43 EDT 2020
 marioLevels=0,1,2,3
-flappyLevels=0,1
-doodleLevels=0
-lives=68
+image=images/creators/dana.jpeg
+lives=72
 size=small
+doodleLevels=0
 name=Dana
+games=flappy,mario,doodle
+flappyLevels=0,1
 power=fire
-points=666
+points=306
