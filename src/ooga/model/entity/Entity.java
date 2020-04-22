@@ -467,7 +467,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    * set the score of an entity to an incoming value
    * @param newScore new score to set the entity to
    */
-  private void setScore(double newScore){
+  public void setScore(double newScore){
     score = newScore;
     myInformation.put(SCORE, score);
   }
