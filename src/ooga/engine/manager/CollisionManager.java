@@ -13,19 +13,11 @@ import ooga.utility.observer.Observer;
 public class CollisionManager {
   private ResourceBundle myCollisionLocationResources;
   private static final String CollisionLocationResources = "entities/collisions/CollisionLocation";
-  private static final String SIDE = "Side";
-  private static final String TOP = "Top";
-  private static final String BOTTOM = "Bottom";
-  private double minX1maxX2 = 0;
-  private double maxX1minX2 = 0;
-  private double minY1maxY2 = 0;
-  private double maxY1minY2 = 0;
   private static final String MINX_MAXX = "minXmaxX";
   private static final String MINY_MAXY = "minYmaxY";
   private static final String MAXX_MINX = "maxXminX";
   private static final String MAXY_MINY = "maxYminY";
   private static Map<Double, String> map = new HashMap<>();
-  private static Map<Entity, EntityList> collision = new HashMap<>();
 
 
   private List<Observer> observers;
@@ -38,7 +30,7 @@ public class CollisionManager {
   public void manageCollisions(EntityList entities) {
     map = new HashMap<>();
     entitiesReceived = new EntityList();
-    collision = new HashMap<>();
+    Map<Entity, EntityList> collision = new HashMap<>();
     for (Entity entity : entities) {
       collision.putIfAbsent(entity, new EntityList());
       for (Entity entity2 : entities) {
@@ -52,6 +44,16 @@ public class CollisionManager {
             if(min.equals("maxYminY")){
               entity.setY(entity.getY() - d);
             }
+            if(min.equals("minXmaxX")){
+              entity.setX(entity.getX() + d);
+            }
+            if(min.equals("maxXminX")){
+              entity.setX(entity.getX()-d); 
+            }
+            /*if(entity2.debug().equals("GroundCenter.png")){
+              min = "minXmaxX";
+
+            }*/
             String[] results = myCollisionLocationResources.getString(min).split(",");
             createAndSendCollision(results[0], entity2.getAttack(results[1]), entity, entity2);
             createAndSendCollision(results[1], entity.getAttack(results[0]), entity2, entity);
@@ -63,16 +65,16 @@ public class CollisionManager {
 
   private double calculateDistances(Entity entity, Entity entity2) {
     map.clear();
-    minX1maxX2 = Math
+    double minX1maxX2 = Math
         .abs(entity.getBoundsInLocal().getMinX() - entity2.getBoundsInLocal().getMaxX());
     map.put(minX1maxX2, MINX_MAXX);
-    maxX1minX2 = Math
+    double maxX1minX2 = Math
         .abs(entity.getBoundsInLocal().getMaxX() - entity2.getBoundsInLocal().getMinX());
     map.put(maxX1minX2, MAXX_MINX);
-    minY1maxY2 = Math
+    double minY1maxY2 = Math
         .abs(entity.getBoundsInLocal().getMinY() - entity2.getBoundsInLocal().getMaxY());
     map.put(minY1maxY2, MINY_MAXY);
-    maxY1minY2 = Math
+    double maxY1minY2 = Math
         .abs(entity.getBoundsInLocal().getMaxY() - entity2.getBoundsInLocal().getMinY());
     map.put(maxY1minY2, MAXY_MINY);
     double min = minY1maxY2;
