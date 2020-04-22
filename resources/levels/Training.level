@@ -2,7 +2,7 @@
 id:0001
 mainTitle:Testing Level
 subTitle:Tutorial
-physics:land
+physics:MarioPhysics
 scrollType:horizontal
 deathsAllowed:1
 backgroundImage:images/gameBackground.png
@@ -34,7 +34,7 @@ S:MiniMushroom
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 . . B . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 . . . . . B . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . L G R . . . . . . . .
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . L G G G 6 6 6 G R . . . . . .
-. . . . . . C . . S . M . I . . . . . . . . . . . . . . . . . L G G G 6 6 6 6 6 6 6 6 6 G G F G G G
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . L G G G 6 6 6 G R . . F . . .
+. . . . . . C . . S . M . I . . . . . . . . . . . . . . . . . L G G G 6 6 6 6 6 6 6 6 6 G G G G G G
 G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6
 #END

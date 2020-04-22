@@ -26,9 +26,12 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   private static final String SCORE = "score";
   private static final String HEALTH = "health";
   private static final String SCALE = "scale";
+  private static final String LEVEL_ENDED = "levelEnd";
+  private static final String LEVEL_COMPLETION_SUCCESS = "success";
   private static final double INITIAL_SCORE = 0;
   private static final double DEFAULT_SCALE = 1;
   private static final double SINGLE_LIFE = 1;
+  private static final double PLAYING = 0;
 
   private Health health;
   private Movement movement;
@@ -57,6 +60,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     addCollectiblePackage(new CollectiblePackage(DEFAULT_PACKAGE_CONTENT));
     setScore(INITIAL_SCORE);
     size(DEFAULT_SCALE);
+    levelEnd(PLAYING);
   }
 
   /**
@@ -234,7 +238,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
           if (s.equals("collect")) {
             otherEntity.otherCollectMe();
             updateMeAfterCollecting(otherEntity);
-            setScaleOfImage();
+            //setScaleOfImage();
             otherEntity.otherResetAfterCollect();
           } else {
             Method method = Entity.class.getDeclaredMethod(s);
@@ -267,6 +271,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     this.health(other.getData(HEALTH));
     health.addLives(getData(HEALTH));
     this.size(other.getData(SCALE));
+    this.levelEnd(other.getData(LEVEL_ENDED));
   }
 
   //used for reflection DO NOT DELETE
@@ -357,12 +362,12 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     //System.out.println(getBoundsInParent());
     //System.out.println(this.getScaleX());
     System.out.println("scale: "+scale);
-    //his.setFitHeight(this.getFitHeight()*scale);
+    this.setFitHeight(this.getFitHeight()*scale);
     this.setScaleX(this.getScaleX()*scale);
-    //this.setScaleY(this.getScaleY()*scale);
+    this.setFitWidth(this.getFitWidth()*scale);
+    this.setScaleY(this.getScaleY()*scale);
     //System.out.println(this.getFitHeight());
     //System.out.println(this.getFitWidth());
-    //this.setFitWidth(this.getFitWidth()*scale);
     //System.out.println(this.getFitWidth());
   }
 
@@ -373,8 +378,14 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   //used for reflection DO NOT DELETE
   private void levelEnd(Double value){
     //System.out.println("we did it");
-    levelEnded = true;
-    success = (value!=0);
+    myInformation.put(LEVEL_ENDED, value);
+    levelEnded = (value!=PLAYING);
+    checkForSuccess();
+  }
+
+  private void checkForSuccess(){
+    success = (levelEnded && !this.isDead());
+    myInformation.put(LEVEL_COMPLETION_SUCCESS, success?1.0:0.0); //convert boolean to a double
   }
 
   //used for reflection DO NOT DELETE
@@ -426,6 +437,8 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
       movement.update(this);
     }
     dead = health.isDead();
+    levelEnd(dead?1.0:0.0); //convert boolean to a double
+    checkForSuccess();
   }
 
   //used for reflection DO NOT DELETE
@@ -445,7 +458,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    * @return success
    */
   public boolean isSuccess(){
-    return success;
+    return success; //convert double to a boolean
   }
 
   //used for reflection DO NOT DELETE
@@ -454,7 +467,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    * set the score of an entity to an incoming value
    * @param newScore new score to set the entity to
    */
-  public void setScore(double newScore){
+  private void setScore(double newScore){
     score = newScore;
     myInformation.put(SCORE, score);
   }
