@@ -1,4 +1,4 @@
-package ooga.controller.data;
+package ooga.controller.users;
 
 import java.util.ArrayList;
 import java.util.Iterator;

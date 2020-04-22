@@ -1,7 +1,11 @@
-package ooga.controller.data;
+package ooga.controller.users;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -12,21 +16,25 @@ import ooga.model.entity.Entity;
 public class User {
 
   private static final int POINTS_TO_LIFE_RATIO = 100;
+  private static final List<String> ALL_GAME_TYPES = Arrays.asList("mario", "flappy", "doodle");
+
   private String myName;
   private String myImageFileName;
-  private Set<Integer> myLevelsCompleted;
+  Map<String, Set<Integer>> myAllGameLevels;
   private int myLives;
   private IntegerProperty livesProperty;
   private int myPoints = 0;
   private IntegerProperty pointsProperty;
   private String myPower = "none";
   private String mySize = "small";
+  private Set<String> myGames = new HashSet<>(ALL_GAME_TYPES);
 
   public User(String name, String imageFileName){
     myName = name;
     myImageFileName = imageFileName;
-    myLevelsCompleted = new HashSet<>();
+    myAllGameLevels = new HashMap<>();
     myLives = 0;
+    myPoints = 0;
     livesProperty = new SimpleIntegerProperty(myLives);
     pointsProperty = new SimpleIntegerProperty(myPoints);
 
@@ -35,10 +43,6 @@ public class User {
   public void saveUser(){
     UserSaver.saveUser(this);
   };
-
-  public void saveUserToFile(String fileName){
-    UserSaver.saveUser(this);
-  }
 
   public Entity asEntity(){
     //return EntityBuilder.getEntity();
@@ -57,20 +61,16 @@ public class User {
     return new Image(myImageFileName);
   }
 
-  public String getImageFileName() {
-    return myImageFileName;
-  }
-
   public void setImage(String imageFileName) {
     myImageFileName = imageFileName;
   }
 
-  public Set<Integer> getLevelsCompleted() {
-    return myLevelsCompleted;
+  public Set<Integer> getLevelsCompleted(String gameType) {
+    return myAllGameLevels.get(gameType);
   }
 
-  public void unlockNextLevel(int currentLevel) {
-    myLevelsCompleted.add(currentLevel);
+  public void unlockNextLevel(String gameType, int currentLevel) {
+    myAllGameLevels.get(gameType).add(currentLevel);
   }
 
   public int getLives() {
@@ -79,12 +79,12 @@ public class User {
 
   public void addLife(){
     myLives += 1;
-    livesProperty.add(1);
+    livesProperty.setValue(livesProperty.getValue() + 1);
   }
 
   public void adjustLives(int lives) {
     myLives += lives;
-    livesProperty.add(lives);
+    livesProperty.setValue(livesProperty.getValue() + lives);
   }
 
   public int getPoints() {
@@ -125,7 +125,7 @@ public class User {
     mySize = size;
   }
 
-  public boolean checkPointsToLife() {
+  public boolean canConvertPointsToLife() {
     if (myPoints > POINTS_TO_LIFE_RATIO){
       addLife();
       adjustPoints(-1 * POINTS_TO_LIFE_RATIO);
@@ -134,11 +134,23 @@ public class User {
     return false;
   }
 
-  public void setLevelsUnlocked(Set<Integer> levelsUnlocked) {
-    myLevelsCompleted = levelsUnlocked;
+  public void setGameLevels(String gameType, Set<Integer> levelsUnlocked) {
+    myAllGameLevels.put(gameType, levelsUnlocked);
+  }
+
+  public void setAllGameLevels(Map<String, Set<Integer>> allLevels){
+    myAllGameLevels = allLevels;
   }
 
   public void setLives(int lives) {
     myLives = lives;
+  }
+
+  public Set<String> getAllGames() {
+    return myGames;
+  }
+
+  public void addGame(String game) {
+    myGames.add(game);
   }
 }

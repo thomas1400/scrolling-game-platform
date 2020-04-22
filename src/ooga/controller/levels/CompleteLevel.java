@@ -1,4 +1,4 @@
-package ooga.controller.data;
+package ooga.controller.levels;
 
 import java.util.Map;
 import ooga.model.entity.Entity;

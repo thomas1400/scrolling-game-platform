@@ -6,11 +6,10 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collections;
-import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
-import ooga.controller.data.User;
+import ooga.controller.users.User;
 
 public final class UserSaver {
 
@@ -57,8 +56,10 @@ public final class UserSaver {
   }
 
   private static void setUnlockedLevelsProperty(User user, Properties userProperties) {
-    String unlockedLevelsString = buildStringFromList(user.getLevelsCompleted());
-    userProperties.setProperty("levelsUnlocked", unlockedLevelsString);
+    for (String game : user.getAllGames()) {
+      String unlockedLevelsString = buildStringFromList(user.getLevelsCompleted(game));
+      userProperties.setProperty(game + "Levels", unlockedLevelsString);
+    }
   }
 
   private static String buildStringFromList(Set<Integer> userPropertyList) {

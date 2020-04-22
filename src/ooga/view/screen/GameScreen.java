@@ -1,19 +1,15 @@
 package ooga.view.screen;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 import ooga.controller.LevelController;
 import ooga.controller.ScreenController;
-import ooga.controller.data.BasicLevel;
-import ooga.controller.data.User;
+import ooga.controller.levels.BasicLevel;
+import ooga.controller.users.User;
 
 public class GameScreen extends Screen {
 
