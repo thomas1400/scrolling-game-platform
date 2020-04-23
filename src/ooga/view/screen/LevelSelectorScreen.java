@@ -13,21 +13,16 @@ import ooga.view.dynamicUI.LevelSelectorTool;
 
 public class LevelSelectorScreen extends Screen {
 
-  private static final String GAME_TYPE = "mario";
+  private static final String LEVEL_GRAPH_FILE = "data/gamedata/mario/levels/resources/LevelGraph"
+      + ".txt";
+  private static final String LEVEL_MAP_FILE = "data/gamedata/mario/levels/resources/LevelMap.txt";
 
-  private static final String LEVEL_GRAPH_FILE = "data/gamedata/"+GAME_TYPE+"/levels/resources/LevelGraph.txt";
-  private static final String LEVEL_MAP_FILE = "data/gamedata/"+GAME_TYPE+"/levels/resources"
-      + "/LevelMap.txt";
-
-  private static final double FADE_DURATION = 0.5;
-  private static final int MIN_FADE = 0;
-  private static final int MAX_FADE = 1;
-  private static final int FADE_CYCLES = 1;
-
+  private BasicLevelList myLevels;
   private LevelSelectorTool lst;
 
   public LevelSelectorScreen(ScreenController controller, BasicLevelList levels) {
     super(controller);
+    myLevels = levels;
 
     if (controller.getUsers() != null) {
       User user = controller.getUsers().getSelectedUser();
@@ -41,7 +36,7 @@ public class LevelSelectorScreen extends Screen {
       // their string level type. Lmk what you think -from Grant
       final String GAME_TYPE = "mario";
       LevelProgressBar lpb = new LevelProgressBar(resources.getString("progress"),
-          user.getLevelsCompleted(GAME_TYPE).size(), levels.size());
+          user.getLevelsCompleted(GAME_TYPE).size(), myLevels.size());
       lst = new LevelSelectorTool(levels, LEVEL_GRAPH_FILE, LEVEL_MAP_FILE,
           new ArrayList<>(user.getLevelsCompleted(GAME_TYPE)));
 
@@ -59,10 +54,10 @@ public class LevelSelectorScreen extends Screen {
     Pane loadingPane = new LoadingScreen(this, lst.getSelected());
     this.getChildren().add(loadingPane);
 
-    FadeTransition fadeIn = new FadeTransition(Duration.seconds(FADE_DURATION), loadingPane);
-    fadeIn.setFromValue(MIN_FADE);
-    fadeIn.setToValue(MAX_FADE);
-    fadeIn.setCycleCount(FADE_CYCLES);
+    FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), loadingPane);
+    fadeIn.setFromValue(0);
+    fadeIn.setToValue(1);
+    fadeIn.setCycleCount(1);
 
     fadeIn.play();
 

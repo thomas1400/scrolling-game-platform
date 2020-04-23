@@ -20,25 +20,21 @@ public class LevelLoop implements Loopable {
   private CameraManager myCameraManager;
   private InputManager myInputManager;
   private CollisionManager myCollisionManager;
-  //private EntityList myEntities;
   private EntityList myVisibleEntities;
   private static final int FRAMES_PER_SECOND = 600;
   private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
   private Timeline myTimeline;
-  private Object KeyEvent;
   private Entity mainEntity;
 
   public LevelLoop(GameLevel levelController, CompleteLevel level, double screenHeight, double screenWidth) {
-    //System.out.println(screenWidth + " " + screenHeight);
     myLevelController = levelController;
-    EntityList myEntities = level.getEntities();
-    myEntityManager = new EntityManager(myEntities, level.getMainEntity());
-    myCameraManager = new CameraManager(level.getMainEntity(), screenHeight, screenWidth, level.getScrollType(), myEntities);
-    myInputManager = new InputManager(level.getMainEntity());
-    myCollisionManager = new CollisionManager();
-    EntityList entitiesOnScreen = myCameraManager.initializeActiveEntities(myEntities);
-    myVisibleEntities =  entitiesOnScreen;
     mainEntity = level.getMainEntity();
+    EntityList initialEntities = level.getEntities();
+    myEntityManager = new EntityManager(initialEntities);
+    myCameraManager = new CameraManager(screenHeight, screenWidth, level.getScrollType(), initialEntities);
+    myInputManager = new InputManager(mainEntity);
+    myCollisionManager = new CollisionManager();
+    myVisibleEntities = myCameraManager.initializeActiveEntities(initialEntities);
     myEntityManager.initializeEntityLists();
     createTimeline();
   }
@@ -53,66 +49,83 @@ public class LevelLoop implements Loopable {
   }
 
   private void loop() {
-    reinitializeEntities();
-    //System.out.println(myEntityManager.getAddedEntities());
+    initializeEntityList();
     updateEntities();
-    // tell the entities to update gravity and stuff
     processInput();
     updateCamera();
     manageCollisions();
-    updateScoreAndLives();
-    sendEntities();
+    updateGameStatsAndStatus();
+    sendEntities();;
   }
 
-  public void reinitializeEntities(){
+  public void initializeEntityList(){
     myEntityManager.initializeEntityLists();
     myCameraManager.initializeActivationStorage();
-
   }
-
-  public void processKeyPress(KeyEvent keyEvent) {
-    myInputManager.handleKeyPress(keyEvent);
-  }
-  public void processKeyRelease(KeyEvent keyEvent) { myInputManager.handleKeyRelease(keyEvent);
+  private void updateEntities() {
+    for(Entity entity: myCameraManager.getOnScreenEntities()){
+      entity.updateVisualization();
+    }
   }
 
   public void processInput(){
     myInputManager.processInput();
   }
 
-  private void manageCollisions() {
-    myCollisionManager.manageCollisions(myCameraManager.getOnScreenEntities());
-    //myCollisionManager.manageCollisions(myEntityManager.getEntities());
-    myEntityManager.manageEntities(myCollisionManager.getEntitiesReceived());
+  public void processKeyPress(KeyEvent keyEvent) {
+    myInputManager.handleKeyPress(keyEvent);
   }
 
-  private void updateEntities() {
-    for(Entity entity: myCameraManager.getOnScreenEntities()){
-      entity.updateVisualization();
-      //is this the correct method?
-    }
+  public void processKeyRelease(KeyEvent keyEvent) { myInputManager.handleKeyRelease(keyEvent);
   }
 
   private void updateCamera() {
     myCameraManager.updateCamera(myEntityManager.getEntities());
     if(myCameraManager.getActivatedEntities().size()!=0) {
-      myEntityManager.addNewEntities(myCameraManager.getActivatedEntities());
+      myEntityManager.entityMovedOnScreen(myCameraManager.getActivatedEntities());
     }
     if(myCameraManager.getDeactivatedEntities().size()!=0) {
-      myEntityManager.removeOldEntities(myCameraManager.getDeactivatedEntities());
+      myEntityManager.entityMovedOffScreen(myCameraManager.getDeactivatedEntities());
     }
   }
 
-  private void updateScoreAndLives(){
-    //myLevelController.adjustPoints(mainEntity.getScore);
+  private void manageCollisions() {
+    myCollisionManager.manageCollisions(myCameraManager.getOnScreenEntities());
+    myEntityManager.manageEntitiesFromCollisions(myCollisionManager.getEntitiesReceived());
+  }
+
+  private void updateGameStatsAndStatus() {
+    checkForPointUpdates();
+    checkForLifeUpdates();
+    checkIfLevelShouldEnd();
+  }
+
+  private void checkIfLevelShouldEnd() {
+    if (mainEntity.endedLevel()) {
+      if (mainEntity.isSuccess()) {
+        myLevelController.handleWin();
+      } else {
+        System.out.println("DEAD");
+        myLevelController.adjustLives(-1);
+      }
+    }
+  }
+
+  private void checkForLifeUpdates() {
+    if (mainEntity.isDead()) {
+      myLevelController.adjustLives(-1);
+      mainEntity.revive();
+    }
+  }
+
+  private void checkForPointUpdates() {
     if (mainEntity.getScore() > 0) {
-      //System.out.println("mainpoints");
       myLevelController.adjustPoints((int) mainEntity.getScore());
       mainEntity.setScore(0);
     }
   }
 
-//
+
   private void sendEntities(){
     if(myEntityManager.getAddedEntities().size()!=0) {
       myLevelController.addAllEntities(myEntityManager.getAddedEntities());
@@ -120,11 +133,7 @@ public class LevelLoop implements Loopable {
     if(myEntityManager.getRemovedEntities().size()!=0){
       myLevelController.removeAllEntities(myEntityManager.getRemovedEntities());
     }
-    /*for(Entity entity: myEntityManager.getRemovedEntities()){
-      System.out.println(entity.debug());
-    }*/
   }
-
 
   public void begin() {
     myTimeline.play();
@@ -140,10 +149,6 @@ public class LevelLoop implements Loopable {
 
   public void resume() {
     myTimeline.play();
-  }
-
-  public void exit() {
-    myTimeline.stop();
   }
 
   public EntityList getInitialVisibleEntityList() { return myVisibleEntities; }

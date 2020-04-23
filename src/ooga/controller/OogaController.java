@@ -11,9 +11,7 @@ import ooga.controller.users.UserList;
 public class OogaController {
 
   private static final String USER_FILE_EXTENSION = ".user";
-  public static final String USERS_PATH_NAME = "resources/users";
-  private static final String LEVEL_FILE_EXTENSION = ".level";
-  public static final String LEVEL_PATH_NAME = "resources/levels";
+  public static final String USERS_PATH_NAME = "data/userdata";
   private static final String GAME_TYPE = "mario";
 
   private UserList myUsers = new UserList();
