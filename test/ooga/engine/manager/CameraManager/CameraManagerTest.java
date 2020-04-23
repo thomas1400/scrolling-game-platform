@@ -19,13 +19,6 @@ class CameraManagerTest extends ApplicationTest {
   private Entity entity;
   private EntityList entities;
   private CameraManager cm;
-  private double screenHeight;
-  private double screenWidth;
-  private EntityList activatedEntities;
-  private EntityList deactivatedEntities;
-  private EntityList onScreenEntities;
-  private static final String directionControllerResources = "directioncontrollers/directioncontrollers";
-  private DirectionController myDirectionController;
 
   @Override
   public void start(Stage stage) throws Exception {
@@ -75,9 +68,6 @@ class CameraManagerTest extends ApplicationTest {
     EntityList activated= cm.initializeActiveEntities(entities);
     assertTrue(activated.contains(mainEntity));
     assertFalse(activated.contains(entity));
-
-
-
   }
 
   @Test
