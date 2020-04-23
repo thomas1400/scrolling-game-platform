@@ -27,7 +27,6 @@ public class CameraManager {
     String directionType = myDirectionControllerResources.getString(direction);
     try {
       myDirectionController = (DirectionController) Class.forName(directionControllerOptionsLocation + directionType).newInstance();
-      System.out.println("initwidth" + width);
       myDirectionController.initialize(entities, height, width, mainEntity);
     } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
       ExceptionFeedback.throwBreakingException(e, ERROR_MESSAGE);

@@ -40,8 +40,6 @@ public class EntityManager implements Communicable {
         entitiesToRemove.addEntity(entity);
       }
     }
-    System.out.println("main" + myEntityList.contains(myMainEntity));
-    System.out.println("dead" + myMainEntity.isDead());
     removeAllEntities(entitiesToRemove);
   }
 

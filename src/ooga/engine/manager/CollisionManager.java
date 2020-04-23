@@ -24,7 +24,6 @@ public class CollisionManager {
 
   public CollisionManager(){
     myCollisionLocationResources = ResourceBundle.getBundle(CollisionLocationResources);
-
   }
 
   public void manageCollisions(EntityList entities) {
@@ -34,8 +33,6 @@ public class CollisionManager {
       for (Entity entity2 : entities) {
         if (isaValidAndNewCollision(entity, entity2)) {
           trackCollision(entity, entity2);
-          System.out.println(entity.debug() + " " + entity.getY());
-          System.out.println(entity2.debug() + " " + entity2.getY());
           double d = calculateDistances(entity, entity2);
           min = map.get(d);
           results = myCollisionLocationResources.getString(min).split(",");
@@ -50,6 +47,7 @@ public class CollisionManager {
   private void initializeCollisionTracking(EntityList entities){
     entitiesReceived = new EntityList();
     collision = new HashMap<>();
+    collision.clear();
     for (Entity entity: entities){
       collision.put(entity, new EntityList());
     }
@@ -74,9 +72,9 @@ public class CollisionManager {
     map.put(minY1maxY2, MINY_MAXY);
     double maxY1minY2 = entity.getBoundsInLocal().getMaxY() - entity2.getBoundsInLocal().getMinY();
     map.put(maxY1minY2, MAXY_MINY);
-    double min = minY1maxY2;
+    double min = Math.abs(minY1maxY2);
     for (double d : map.keySet()) {
-      if (Math.abs(d) <= min) {
+      if (Math.abs(d) <= Math.abs(min)) {
           min = d;
       }
     }
@@ -87,10 +85,9 @@ public class CollisionManager {
     if(results[0].equals(SIDE_COLLISION)){
       entity.setX(entity.getX() - d);
     }
-    /*else{
+    else{
       entity.setY(entity.getY() - d);
-      System.out.println(entity.getY());
-    }*/
+    }
   }
 
   private void createAndSendCollision(String typeOfCollision, String attack, Entity entityToHandle, Entity other) {

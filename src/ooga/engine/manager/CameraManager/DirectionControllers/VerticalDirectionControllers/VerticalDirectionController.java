@@ -21,6 +21,7 @@ abstract public class VerticalDirectionController extends DirectionController {
   }
 
   private void resetMainEntity(int offset) {
+    yCenter = myScreenHeight / 2 - myMainEntity.getBoundsInLocal().getHeight() / 2 - offset;
     myMainEntity.setY(yCenter + offset);
   }
 

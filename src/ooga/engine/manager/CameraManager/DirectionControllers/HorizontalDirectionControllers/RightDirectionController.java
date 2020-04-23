@@ -13,10 +13,8 @@ public class RightDirectionController extends HorizontalDirectionController {
     double xCenter = myScreenWidth / 2 - mainEntity.getBoundsInLocal().getWidth() / 2;
     if (mainEntity.getX() > xCenter) {
       setToCenter(entities, 0);
-      System.out.println("1");
     } else if (mainEntity.getX() <= 0) {
       mainEntity.setX(0);
-      System.out.println("2");
     }
     checkIfMarioTouchesTopOrBottomOfScreen();
   }

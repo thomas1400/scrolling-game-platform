@@ -87,14 +87,10 @@ public class LevelLoop implements Loopable {
     if(myCameraManager.getDeactivatedEntities().size()!=0) {
       myEntityManager.entityMovedOffScreen(myCameraManager.getDeactivatedEntities());
     }
-    System.out.println("de" + myCameraManager.getDeactivatedEntities().contains(mainEntity));
-    System.out.println(mainEntity.getX() + " " + mainEntity.getY());
-    //System.out.println(mainEntity.getX() + " " + mainEntity.getY());
   }
 
   private void manageCollisions() {
     myCollisionManager.manageCollisions(myCameraManager.getOnScreenEntities());
-    System.out.println(myCameraManager.getOnScreenEntities().contains(mainEntity));
     myEntityManager.manageEntitiesFromCollisions(myCollisionManager.getEntitiesReceived());
   }
 
