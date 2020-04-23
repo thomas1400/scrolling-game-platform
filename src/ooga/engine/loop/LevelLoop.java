@@ -125,7 +125,7 @@ public class LevelLoop implements Loopable {
     }
   }
 
-
+//
   private void sendEntities(){
     if(myEntityManager.getAddedEntities().size()!=0) {
       myLevelController.addAllEntities(myEntityManager.getAddedEntities());
