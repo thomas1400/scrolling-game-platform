@@ -16,12 +16,15 @@ public class LevelSelectorScreen extends Screen {
   private static final String LEVEL_GRAPH_FILE = "resources/levels/resources/LevelGraph.txt";
   private static final String LEVEL_MAP_FILE = "resources/levels/resources/LevelMap.txt";
 
-  private BasicLevelList myLevels;
+  private static final double FADE_DURATION = 0.5;
+  private static final int MIN_FADE = 0;
+  private static final int MAX_FADE = 1;
+  private static final int FADE_CYCLES = 1;
+
   private LevelSelectorTool lst;
 
   public LevelSelectorScreen(ScreenController controller, BasicLevelList levels) {
     super(controller);
-    myLevels = levels;
 
     if (controller.getUsers() != null) {
       User user = controller.getUsers().getSelectedUser();
@@ -33,9 +36,9 @@ public class LevelSelectorScreen extends Screen {
       // this in a loop for all level types, which I envision being passed to you slightly
       // differently in your constructor... possibly a Map of levels with keys corresponding to
       // their string level type. Lmk what you think -from Grant
-      final String GAME_TYPE = "gamedata/mario";
+      final String GAME_TYPE = "mario";
       LevelProgressBar lpb = new LevelProgressBar(resources.getString("progress"),
-          user.getLevelsCompleted(GAME_TYPE).size(), myLevels.size());
+          user.getLevelsCompleted(GAME_TYPE).size(), levels.size());
       lst = new LevelSelectorTool(levels, LEVEL_GRAPH_FILE, LEVEL_MAP_FILE,
           new ArrayList<>(user.getLevelsCompleted(GAME_TYPE)));
 
@@ -53,10 +56,10 @@ public class LevelSelectorScreen extends Screen {
     Pane loadingPane = new LoadingScreen(this, lst.getSelected());
     this.getChildren().add(loadingPane);
 
-    FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), loadingPane);
-    fadeIn.setFromValue(0);
-    fadeIn.setToValue(1);
-    fadeIn.setCycleCount(1);
+    FadeTransition fadeIn = new FadeTransition(Duration.seconds(FADE_DURATION), loadingPane);
+    fadeIn.setFromValue(MIN_FADE);
+    fadeIn.setToValue(MAX_FADE);
+    fadeIn.setCycleCount(FADE_CYCLES);
 
     fadeIn.play();
 

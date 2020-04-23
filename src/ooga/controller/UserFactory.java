@@ -63,9 +63,9 @@ public final class UserFactory {
   public static User getDefaultUser() {
     //TODO: eventually just have this call getUser(new File("Default.user"));
     User defaultUser = new User("Default User", "Mario.png");
-    defaultUser.setGameLevels("gamedata/mario", getSetWithLevelZero());
-    defaultUser.setGameLevels("gamedata/flappy", getSetWithLevelZero());
-    defaultUser.setGameLevels("gamedata/doodle", getSetWithLevelZero());
+    defaultUser.setGameLevels("mario", getSetWithLevelZero());
+    defaultUser.setGameLevels("flappy", getSetWithLevelZero());
+    defaultUser.setGameLevels("doodle", getSetWithLevelZero());
     defaultUser.setLives(3);
 
     return defaultUser;

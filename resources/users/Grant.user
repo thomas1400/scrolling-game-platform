@@ -1,6 +1,6 @@
 #User properties file for user: Grant
 #Wed Apr 22 18:32:40 EDT 2020
-marioLevels=0,1,2,3
+marioLevels=0
 image=users/images/grant.jpeg
 lives=23
 size=large
