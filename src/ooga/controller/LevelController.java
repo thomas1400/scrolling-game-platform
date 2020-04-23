@@ -126,7 +126,7 @@ public class LevelController implements GameLevel{
   }
 
   public void adjustPoints(int pointsAdjustment) {
-    System.out.println("POINTS: " + pointsAdjustment);
+    //System.out.println("POINTS: " + pointsAdjustment);
     myUser.adjustPoints(pointsAdjustment);
     checkNewLife();
   }
