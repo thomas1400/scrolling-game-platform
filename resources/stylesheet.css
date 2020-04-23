@@ -76,7 +76,7 @@
  ********************************************************/
 
 .home-screen-splash {
-  -fx-background-image: url(images/gameBackground.png);
+  -fx-background-image: url(/gamedata/mario/gameBackground.png);
   -fx-background-size: cover;
   -fx-border-color: -fx-accent;
   -fx-border-width: 2px;

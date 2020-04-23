@@ -4,7 +4,7 @@ subTitle:Climb on Up!
 gameType:mario
 scrollType:up
 deathsAllowed:1
-backgroundImage:images/TeamLogo.png
+backgroundImage:levelBackground.png
 levelWidth:20
 levelHeight:50
 #ENTITIES
