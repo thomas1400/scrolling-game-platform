@@ -528,7 +528,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    * used for unit testing.
    * @return lives of the entity
    */
-  public double debugHealth(){
+  public double getLives(){
     return health.getLives();
   }
 }
