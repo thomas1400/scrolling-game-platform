@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import ooga.exceptions.ExceptionFeedback;
 import ooga.view.screen.Screen;
 
 /**
@@ -41,9 +42,9 @@ public class FXLRParser {
   private static final char PACKAGE_CLOSE_CHAR = '>';
   private static final String STYLECLASS_ATTR_TAG = "style";
   private static final String ACTION_EVENT_TAG = "actionTag";
-  private static final char RELATIVE_SIZE_CHAR = '%';
-  private static final String WIDTH_STRING = "width";
-  private static final String HEIGHT_STRING = "height";
+  static final char RELATIVE_SIZE_CHAR = '%';
+  static final String WIDTH_STRING = "width";
+  static final String HEIGHT_STRING = "height";
   private static final String DYNAMIC_UI_PACKAGE = "ooga.view.dynamicUI";
 
 
@@ -131,11 +132,10 @@ public class FXLRParser {
 
         return;
       } catch (InvocationTargetException e) {
-        //FIXME
-        e.printStackTrace();
+        ExceptionFeedback.throwHandledException(new FXLRException(), "Unknown exception in parsing FXLR.");
       } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException ignored) {}
     }
-    //FIXME TAKE OUT PRINTING THE STACK TRACE
+
     (new ClassNotFoundException("Class not found for classname " + className)).printStackTrace();
   }
 
@@ -147,40 +147,58 @@ public class FXLRParser {
       String attr = split[0].replace(" ", "");
       String[] argStrings = split[1].split("\\s+");
 
-      // special case for setting style class
-      if (attr.equals(STYLECLASS_ATTR_TAG)) {
-        node.getStyleClass().add(argStrings[0]);
+      if (specialCaseHandled(node, attr, argStrings)) {
         return;
       }
 
-      // special case for setting control action tags
-      if (attr.equals(ACTION_EVENT_TAG)) {
-        try {
-          node.addEventHandler(
-              ActionEvent.ACTION,
-              e -> gb.getRoot().handleButtonPress(argStrings[0])
-          );
-        } catch (Exception e) {
-          System.out.println("Node " + node.toString() + " has no event handler.");
-        }
-      }
-
       try {
-        String setterName =
-            "set" + attr.toUpperCase().substring(0, 1) + attr.substring(1);
-        Method[] methods = node.getClass().getMethods();
-        for (Method method : methods) {
-          if (method.getName().equals(setterName)) {
-            Object[] args = getArgsFromStrings(node, attr, argStrings, method.getParameterTypes());
-            method.invoke(node, args);
-          }
+        Method setter = getSetterForAttribute(node, attr);
+        if (setter != null) {
+          Object[] args = getArgsFromStrings(node, attr, argStrings, setter.getParameterTypes());
+          setter.invoke(node, args);
         }
       } catch (Exception e) {
-        //FIXME
-        e.printStackTrace();
-        System.out.println("Couldn't set attribute " + attr);
+        ExceptionFeedback.throwHandledException(new FXLRException(),
+            "Couldn't set attribute " + attr + " in " +
+                gb.getRoot().getClass().getSimpleName() + " layout.");
       }
     }
+  }
+
+  private Method getSetterForAttribute(Node node, String attr) {
+    String setterName =
+        "set" + attr.toUpperCase().substring(0, 1) + attr.substring(1);
+    Method[] methods = node.getClass().getMethods();
+    for (Method method : methods) {
+      if (method.getName().equals(setterName)) {
+        return method;
+      }
+    }
+    ExceptionFeedback.throwHandledException(new FXLRException(),
+        "Couldn't find setter for attribute " + attr);
+    return null;
+  }
+
+  private boolean specialCaseHandled(Node node, String attr, String[] argStrings) {
+    // special case for setting style class
+    if (attr.equals(STYLECLASS_ATTR_TAG)) {
+      node.getStyleClass().add(argStrings[0]);
+      return true;
+    }
+
+    // special case for setting control action tags
+    if (attr.equals(ACTION_EVENT_TAG)) {
+      try {
+        node.addEventHandler(
+            ActionEvent.ACTION,
+            e -> gb.getRoot().handleButtonPress(argStrings[0])
+        );
+      } catch (Exception e) {
+        System.out.println("Node " + node.toString() + " has no event handler.");
+      }
+      return true;
+    }
+    return false;
   }
 
   private Object[] getArgsFromStrings(Node node, String attr, String[] argStrings,
@@ -188,78 +206,106 @@ public class FXLRParser {
     Object[] args = new Object[argStrings.length];
 
     // Possible values of args include:
-    // Integer, Double, String, Pos.ALIGNMENT, Insets (need to create from Integer/Double if needed)
+    // Integer, Double, String, Pos.ALIGNMENT, Insets
 
     for (int i = 0; i < args.length; i++) {
       String argString = argStrings[i];
-      Object arg = null;
       if (parameterTypes[i].equals(double.class)) {
-        if (argString.charAt(argString.length()-1) == RELATIVE_SIZE_CHAR) {
-          double temp = Double.parseDouble(argString.substring(0, argString.length()-1));
-          if (isWidthWiseAttribute(node, attr)) {
-            arg = temp / 100.0 * gb.getRoot().getPrefWidth();
-          } else if (isHeightWiseAttribute(node, attr)) {
-            arg = temp / 100.0 * gb.getRoot().getPrefHeight();
-          }
-        } else {
-          arg = Double.parseDouble(argString);
-        }
+        args[i] = parseDoubleArgument(node, attr, argString);
       }
       if (parameterTypes[i].equals(int.class)) {
-        if (argString.charAt(argString.length()-1) == RELATIVE_SIZE_CHAR) {
-          int temp = Integer.parseInt(argString.substring(0, argString.length()-1));
-          if (isWidthWiseAttribute(node, attr)) {
-            arg = (int) (temp / 100.0 * gb.getRoot().getPrefWidth());
-          } else if (isHeightWiseAttribute(node, attr)) {
-            arg = (int) (temp / 100.0 * gb.getRoot().getPrefHeight());
-          }
-        } else {
-          arg = Integer.parseInt(argString);
-        }
+        args[i] = parseIntegerArgument(node, attr, argString);
       }
       if (parameterTypes[i].equals(Pos.class)) {
-        arg = Pos.valueOf(argString);
+        args[i] = Pos.valueOf(argString);
       }
       if (parameterTypes[i].equals(String.class)) {
-        if (isTextAttribute(node, attr)) {
-          arg = gb.getRoot().getResource(argString);
-        } else {
-          arg = argString;
-        }
+        args[i] = parseStringArgument(node, attr, argString);
       }
       if (parameterTypes[i].equals(Insets.class)) {
-        if (argStrings.length == 4) {
-          arg = new Insets(
-              Double.parseDouble(argStrings[0]),
-              Double.parseDouble(argStrings[1]),
-              Double.parseDouble(argStrings[2]),
-              Double.parseDouble(argStrings[3])
-          );
-        } else if (argStrings.length == 1) {
-          arg = new Insets(
-              Double.parseDouble(argStrings[0]));
-        }
+        args[i] = parseInsetsArgument(argStrings);
       }
       if (parameterTypes[i].equals(Node.class)) {
-        ImageView imageView = new ImageView(new Image(new File(gb.getRoot().getResource(argString)).toURI().toString()));
-        imageView.setFitWidth(20);
-        imageView.setFitHeight(20);
-        arg = imageView;
+        args[i] = parseNodeArgument(argString);
       }
-      args[i] = arg;
     }
 
     return args;
   }
 
+  private Object parseNodeArgument(String argString) {
+    Object arg;
+    ImageView imageView = new ImageView(new Image(new File(gb.getRoot().getResource(argString)).toURI().toString()));
+    imageView.setFitWidth(20);
+    imageView.setFitHeight(20);
+    arg = imageView;
+    return arg;
+  }
+
+  private Object parseInsetsArgument(String[] argStrings) {
+    Object arg = null;
+    if (argStrings.length == 4) {
+      arg = new Insets(
+          Double.parseDouble(argStrings[0]),
+          Double.parseDouble(argStrings[1]),
+          Double.parseDouble(argStrings[2]),
+          Double.parseDouble(argStrings[3])
+      );
+    } else if (argStrings.length == 1) {
+      arg = new Insets(
+          Double.parseDouble(argStrings[0]));
+    }
+    return arg;
+  }
+
+  private Object parseStringArgument(Node node, String attr, String argString) {
+    Object arg;
+    if (isTextAttribute(node, attr)) {
+      arg = gb.getRoot().getResource(argString);
+    } else {
+      arg = argString;
+    }
+    return arg;
+  }
+
+  private Object parseIntegerArgument(Node node, String attr, String argString) {
+    Object arg = null;
+    if (argString.charAt(argString.length()-1) == RELATIVE_SIZE_CHAR) {
+      int temp = Integer.parseInt(argString.substring(0, argString.length()-1));
+      if (isWidthWiseAttribute(node, attr)) {
+        arg = (int) (temp / 100.0 * gb.getRoot().getPrefWidth());
+      } else if (isHeightWiseAttribute(node, attr)) {
+        arg = (int) (temp / 100.0 * gb.getRoot().getPrefHeight());
+      }
+    } else {
+      arg = Integer.parseInt(argString);
+    }
+    return arg;
+  }
+
+  private Object parseDoubleArgument(Node node, String attr, String argString) {
+    Object arg = null;
+    if (argString.charAt(argString.length()-1) == RELATIVE_SIZE_CHAR) {
+      double temp = Double.parseDouble(argString.substring(0, argString.length()-1));
+      if (isWidthWiseAttribute(node, attr)) {
+        arg = temp / 100.0 * gb.getRoot().getPrefWidth();
+      } else if (isHeightWiseAttribute(node, attr)) {
+        arg = temp / 100.0 * gb.getRoot().getPrefHeight();
+      }
+    } else {
+      arg = Double.parseDouble(argString);
+    }
+    return arg;
+  }
+
   private boolean isWidthWiseAttribute(Node node, String attr) {
-    return attr.toLowerCase().contains(WIDTH_STRING) ||
+    return attr.toLowerCase().contains(FXLRParser.WIDTH_STRING) ||
         (node.getClass().getSimpleName().equals("HBox") && attr.contains("spacing")) ||
         attr.contains("X");
   }
 
   private boolean isHeightWiseAttribute(Node node, String attr) {
-    return attr.toLowerCase().contains(HEIGHT_STRING) ||
+    return attr.toLowerCase().contains(FXLRParser.HEIGHT_STRING) ||
         (node.getClass().getSimpleName().equals("VBox") && attr.contains("spacing")) ||
         attr.contains("Y");
   }
