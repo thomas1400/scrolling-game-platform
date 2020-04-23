@@ -11,7 +11,7 @@ import ooga.model.ability.Ability;
 public class EntityBuilder {
 
   private static final String ABILITY_PACKAGE = "ooga.model.ability.";
-  private static final String STATS_PACKAGE_NAME = "entities/";
+  private static final String STATS_PACKAGE_NAME = "gamedata/mario/entities/";
   public static final String IMAGE_KEY = "Image";
 
   //private ResourceBundle resources;
