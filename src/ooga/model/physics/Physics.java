@@ -106,7 +106,7 @@ public abstract class Physics {
   }
 
   public void stopHorizMotion() {
-    myInputAdjust[X] -= TINY_DISTANCE * getDirection(myVelocity[X]);
+    //myInputAdjust[X] -= TINY_DISTANCE * getDirection(myVelocity[X]);
     stopDirectionalMotion(X);
   }
 

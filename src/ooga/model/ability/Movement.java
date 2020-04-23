@@ -38,8 +38,9 @@ public class Movement extends Ability {
   }
 
   public void standX(){
-    bounceX();
-    standY();
+    phys.stopHorizMotion();
+    //bounceX();
+    //standY();
     //System.out.println("standX");
   }
 
