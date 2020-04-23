@@ -1,12 +1,12 @@
 #User properties file for user: Cayla
-#Fri Apr 17 03:05:28 EDT 2020
-image=images/creators/cayla.jpeg
-games=mario,flappy,doodle
+#Thu Apr 23 00:41:50 EDT 2020
 marioLevels=0,1,2,3
-flappyLevels=0,1
-doodleLevels=0
-lives=100
+image=images/creators/cayla.jpeg
+lives=99
 size=small
+doodleLevels=0
 name=Cayla
+games=flappy,mario,doodle
+flappyLevels=0,1
 power=none
-points=0
+points=100
