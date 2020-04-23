@@ -2,7 +2,7 @@
 id:0003
 mainTitle:Level 0-3
 subTitle:The Upper Pathway
-physics:land
+gameType:mario
 scrollType:left
 deathsAllowed:1
 backgroundImage:images/gameBackground.png

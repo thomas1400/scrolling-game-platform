@@ -2,7 +2,7 @@
 #Fri Apr 17 03:05:28 EDT 2020
 image=images/creators/cayla.jpeg
 games=mario,flappy,doodle
-marioLevels=0,1,2,3
+marioLevels=1
 flappyLevels=0,1
 doodleLevels=0
 lives=100

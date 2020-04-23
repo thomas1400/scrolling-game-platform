@@ -2,7 +2,7 @@
 id:0001
 mainTitle:Flappy
 subTitle:Tutorial
-physics:land
+gameType:flappy
 scrollType:horizontal
 deathsAllowed:1
 backgroundImage:images/gameBackground.png

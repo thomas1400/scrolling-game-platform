@@ -99,6 +99,7 @@ public class LevelController implements GameLevel{
     myLevelLoop.end();
     UserSaver.saveUser(myUser);
     deleteLevelLoop();
+    myGS.quit();
   }
 
   //In Game Adjustments
@@ -111,7 +112,7 @@ public class LevelController implements GameLevel{
 
   private void checkEndLevel() {
     if (myLivesRemaining == 0){
-      myGS.quit();
+      endLevel();
     } else if (myLivesRemaining < 0){
       ExceptionFeedback.throwHandledException(new RuntimeException(), "Negative Lives Left in Level");
     }
@@ -127,7 +128,7 @@ public class LevelController implements GameLevel{
   public void handleWin() {
     //TODO: display some cool win screen?
     myUser.unlockNextLevel(myGameType, myLevelNumber);
-    myGS.quit();
+    endLevel();
   }
 
   private void deleteLevelLoop() {

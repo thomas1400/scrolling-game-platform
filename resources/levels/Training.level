@@ -2,7 +2,7 @@
 id:0001
 mainTitle:Testing Level
 subTitle:Tutorial
-physics:MarioPhysics
+gameType:mario
 scrollType:horizontal
 deathsAllowed:1
 backgroundImage:images/gameBackground.png

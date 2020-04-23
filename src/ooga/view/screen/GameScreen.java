@@ -76,7 +76,7 @@ public class GameScreen extends Screen {
   }
 
   public void quit() {
-    levelController.endLevel();
+    //levelController.endLevel();
     handleButtonPress("exit");
   }
 

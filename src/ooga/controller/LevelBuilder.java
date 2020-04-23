@@ -137,11 +137,11 @@ public final class LevelBuilder {
   private static void setEntityCoordinates(int j, int i, Entity myEntity,
       double scaleFactor) {
     myEntity.setX(getRelativeX(i, scaleFactor));
-    myEntity.setY(getRelativeY(j, scaleFactor));
+    myEntity.setY(getRelativeY(myEntity.getBoundsInLocal().getHeight(), j, scaleFactor));
   }
 
-  private static double getRelativeY(int j, double scaleFactor) {
-    return (j*scaleFactor) + PADDING/2;
+  private static double getRelativeY(double entityHeight, int j, double scaleFactor) {
+    return (j*scaleFactor) - entityHeight + scaleFactor + PADDING/2;
   }
 
   private static double getRelativeX(int i, double scaleFactor) {
