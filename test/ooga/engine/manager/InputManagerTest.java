@@ -24,7 +24,7 @@ class InputManagerTest extends ApplicationTest {
 
   @BeforeEach
   void setUp(){
-    mainEntity = EntityBuilder.getEntity("Player");
+    mainEntity = EntityBuilder.getEntity("Player", "mario");
   }
 
   @Test

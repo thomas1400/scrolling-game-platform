@@ -99,7 +99,7 @@ public class ScreenController{
   private Scene getScene(String screenName) {
     Screen nextScreen = myScreens.get(screenName);
     Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
-    File file = new File("resources/stylesheet.css");
+    File file = new File("data/stylesheet.css");
     nextScene.getStylesheets().add(file.toURI().toString());
     return nextScene;
   }
@@ -115,7 +115,7 @@ public class ScreenController{
 
     Screen nextScreen = myScreens.get("GameScreen");
     Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
-    File file = new File("resources/stylesheet.css");
+    File file = new File("data/stylesheet.css");
     nextScene.getStylesheets().add(file.toURI().toString());
     nextScene.setOnKeyPressed(myLevelController::handleKeyPressed);
     nextScene.setOnKeyReleased(myLevelController::handleKeyReleased);

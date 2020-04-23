@@ -16,8 +16,7 @@ public class LevelSelectorScreen extends Screen {
   private static final String GAME_TYPE = "mario";
 
   private static final String LEVEL_GRAPH_FILE = "data/gamedata/"+GAME_TYPE+"/levels/resources"
-      + "/LevelGraph"
-      + ".txt";
+      + "/LevelGraph.txt";
   private static final String LEVEL_MAP_FILE = "data/gamedata/"+GAME_TYPE+"/levels/resources/LevelMap.txt";
 
   private BasicLevelList myLevels;
@@ -32,12 +31,6 @@ public class LevelSelectorScreen extends Screen {
 
       DynamicUserLabel username = new DynamicUserLabel();
       username.setText(resources.getString("user") + " : " + user.getName());
-      //FIXME: The "mario" should load in only the level selector for Mario levels, using
-      // "flappy" or "doodle" should load in the other levels. I assume eventually you'll call
-      // this in a loop for all level types, which I envision being passed to you slightly
-      // differently in your constructor... possibly a Map of levels with keys corresponding to
-      // their string level type. Lmk what you think -from Grant
-      final String GAME_TYPE = "mario";
       LevelProgressBar lpb = new LevelProgressBar(resources.getString("progress"),
           user.getLevelsCompleted(GAME_TYPE).size(), myLevels.size());
       lst = new LevelSelectorTool(levels, LEVEL_GRAPH_FILE, LEVEL_MAP_FILE,

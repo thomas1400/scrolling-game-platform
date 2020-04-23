@@ -22,7 +22,7 @@ public class FxlrTester extends Application {
       ScreenController sc = new ScreenController(primaryStage, new UserList(), new BasicLevelList());
       Screen root = new HomeScreen(sc);
       new FXLRParser().loadFXLRLayout(new HomeScreen(sc), new File("resources/view/LevelSelectorScreen.fxlr"));
-      root.getStylesheets().add(new File("resources/stylesheet.css").toURI().toString());
+      root.getStylesheets().add(new File("data/stylesheet.css").toURI().toString());
       primaryStage.setScene(new Scene(root));
     } catch (Exception e) {
       //todo GET RID OF THIS PRINT STACK TRACE

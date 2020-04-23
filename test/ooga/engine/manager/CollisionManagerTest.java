@@ -26,9 +26,9 @@ class CollisionManagerTest extends ApplicationTest {
   @BeforeEach
   void setUp() {
     entities = new EntityList();
-    mainEntity = EntityBuilder.getEntity("Player");
+    mainEntity = EntityBuilder.getEntity("Player", "mario");
     entities.addEntity(mainEntity);
-    entity = EntityBuilder.getEntity("Brick");
+    entity = EntityBuilder.getEntity("Brick", "mario");
     entities.addEntity(entity);
     collisionManager = new CollisionManager();
   }
