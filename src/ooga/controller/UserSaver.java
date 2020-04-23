@@ -10,6 +10,7 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
 import ooga.controller.users.User;
+import ooga.exceptions.ExceptionFeedback;
 
 public final class UserSaver {
 
@@ -29,8 +30,8 @@ public final class UserSaver {
         userProperties.store(output, "User properties file for user: " + user.getName());
 
       } catch (IOException io) {
-        //FIXME GET RID OF PRINTING THE STACK TRACK
-        io.printStackTrace();
+        ExceptionFeedback.throwHandledException(io, "User saving for user " + user.getName() + " "
+            + "has failed. Be aware that changes from the previous level may not have been saved.");
       }
     }
   }
@@ -51,12 +52,10 @@ public final class UserSaver {
           Method m = user.getClass().getDeclaredMethod(methodName);
           userProperties.setProperty(userProperty, m.invoke(user) + "");
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-          //FIXME TAKE OUT PRINTING THE STACK TRACE
-          e.printStackTrace();
+          ExceptionFeedback.throwBreakingException(e, "Reflection Error when accessing User "
+              + "Properties during save. (Check users.properties file)");
         }
-      } catch (SecurityException e) {
-        //FIXME TAKE OUT PRINTING THE STACK TRACE
-        e.printStackTrace();
+      } catch (SecurityException ignore) {
       }
     }
   }

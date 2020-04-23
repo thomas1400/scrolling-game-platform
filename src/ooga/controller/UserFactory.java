@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import ooga.controller.users.User;
+import ooga.exceptions.ExceptionFeedback;
 
 public final class UserFactory {
 
@@ -30,8 +31,7 @@ public final class UserFactory {
       return createdUser;
 
     } catch (IOException ex) {
-      //FIXME. LET'S NOT FAIL THE CLASS :))
-      ex.printStackTrace();
+      ExceptionFeedback.throwHandledException(ex, "User File " + userFile + " does not exist.");
       return null;
     }
   }
@@ -59,11 +59,6 @@ public final class UserFactory {
     }
     return levelsUnlocked;
   }
-
-  public User makeUser(){
-    return null;
-  }
-
 
   public static User getDefaultUser() {
     //TODO: eventually just have this call getUser(new File("Default.user"));

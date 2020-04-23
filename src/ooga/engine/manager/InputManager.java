@@ -6,14 +6,17 @@ import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
 import javafx.scene.input.KeyEvent;
+import ooga.exceptions.ExceptionFeedback;
 import ooga.model.entity.Entity;
 
 public class InputManager {
-
   Entity myMainEntity;
   private ResourceBundle myUserInputsResources;
   private static final String UserInputResources = "userinput/userinput";
   private Set<String> keysCurrentlyPressed;
+  private static final String REPEAT_ACTION = "ONREPEAT";
+  private static final String REPEAT = "repeat";
+  private static final String EXCEPTION_MESSAGE = "Incorrect method associated with this key";
 
   public InputManager(Entity mainEntity) {
     myMainEntity = mainEntity;
@@ -21,49 +24,25 @@ public class InputManager {
     keysCurrentlyPressed = new HashSet<>();
   }
 
-  public void handleKeyPress(KeyEvent keyEvent) {
-    if (!keysCurrentlyPressed.contains(keyEvent.getCode().toString()) && myUserInputsResources.containsKey(keyEvent.getCode().toString())) {
-      keysCurrentlyPressed.add(keyEvent.getCode().toString());
-      invokeMethod(keyEvent.getCode().toString());
-    }
-    /*else {
-      if (myUserInputsResources.getString(keyEvent.getCode().toString() + "ONREPEAT")
-          .equals("repeat")) {
-        invokeMethod(keyEvent.getCode().toString());
-      }*/
-  }
-
   public void processInput() {
     for (String str : keysCurrentlyPressed) {
-      if (myUserInputsResources.getString(str + "ONREPEAT")
-          .equals("repeat")) {
+      if (myUserInputsResources.getString(str + REPEAT_ACTION)
+          .equals(REPEAT)) {
         invokeMethod(str);
       }
     }
   }
 
-  public void handleKeyRelease(KeyEvent keyEvent) {
-    keysCurrentlyPressed.remove(keyEvent.getCode().toString());
-
+  public void handleKeyPress(KeyEvent keyEvent) {
+    String keyCode = keyEvent.getCode().toString();
+    if (!keysCurrentlyPressed.contains(keyCode) && myUserInputsResources.containsKey(keyCode)) {
+      keysCurrentlyPressed.add(keyCode);
+      invokeMethod(keyCode);
+    }
   }
 
-  public void invokeMethods() {
-    for (String keyPressed : keysCurrentlyPressed) {
-      try {
-        String methodName = myUserInputsResources.getString(keyPressed);
-        try {
-          Method m = myMainEntity.getClass().getDeclaredMethod(methodName);
-          m.invoke(myMainEntity);
-        } catch (NoSuchMethodException | IllegalAccessException e) {
-          //FIXME
-          e.printStackTrace();
-        } catch (InvocationTargetException e) {
-          //FIXME
-          e.printStackTrace();
-        }
-      } catch (SecurityException e) {
-      }
-    }
+  public void handleKeyRelease(KeyEvent keyEvent) {
+    keysCurrentlyPressed.remove(keyEvent.getCode().toString());
   }
 
   public void invokeMethod(String keyPressed) {
@@ -75,8 +54,7 @@ public class InputManager {
           Method m = myMainEntity.getClass().getDeclaredMethod(methodName);
           m.invoke(myMainEntity);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-          //FIXME
-          e.printStackTrace();
+          ExceptionFeedback.throwBreakingException(e, EXCEPTION_MESSAGE);
         }
       }
     } catch (SecurityException ignored) {

@@ -13,8 +13,9 @@ import ooga.view.dynamicUI.LevelSelectorTool;
 
 public class LevelSelectorScreen extends Screen {
 
-  private static final String LEVEL_GRAPH_FILE = "resources/levels/resources/LevelGraph.txt";
-  private static final String LEVEL_MAP_FILE = "resources/levels/resources/LevelMap.txt";
+  private static final String LEVEL_GRAPH_FILE = "data/gamedata/mario/levels/resources/LevelGraph"
+      + ".txt";
+  private static final String LEVEL_MAP_FILE = "data/gamedata/mario/levels/resources/LevelMap.txt";
 
   private BasicLevelList myLevels;
   private LevelSelectorTool lst;

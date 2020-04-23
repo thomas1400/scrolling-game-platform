@@ -30,13 +30,9 @@ public final class LevelBuilder {
   private static final String LEVEL_HEIGHT_SPECIFIER = "levelHeight";
   private static final String LEVEL_WIDTH_SPECIFIER = "levelWidth";
 
-  public static BasicLevel buildBasicLevel(File levelFile) throws FileNotFoundException {
+  public static BasicLevel buildBasicLevel(int levelNumber, File levelFile) throws FileNotFoundException {
     Map<String,String> headerInfo = getMapFromFile(levelFile, HEADER_TAG);
 
-    ResourceBundle myLevelsBundle = ResourceBundle.getBundle("levels/resources/levelOrder");
-    myLevelsBundle.getString(levelFile.getName());
-
-    int levelNumber = Integer.parseInt(myLevelsBundle.getString(levelFile.getName()));
     return new BasicLevel(levelNumber, levelFile, headerInfo);
   }
 
@@ -61,6 +57,7 @@ public final class LevelBuilder {
 
     Map<String, String> sectionMap = new HashMap<>();
 
+    System.out.println(levelFile);
     Scanner sc = new Scanner(levelFile);
     moveToSection(sectionTag, sc);
 
@@ -137,11 +134,11 @@ public final class LevelBuilder {
   private static void setEntityCoordinates(int j, int i, Entity myEntity,
       double scaleFactor) {
     myEntity.setX(getRelativeX(i, scaleFactor));
-    myEntity.setY(getRelativeY(j, scaleFactor));
+    myEntity.setY(getRelativeY(myEntity.getBoundsInLocal().getHeight(), j, scaleFactor));
   }
 
-  private static double getRelativeY(int j, double scaleFactor) {
-    return (j*scaleFactor) + PADDING/2;
+  private static double getRelativeY(double entityHeight, int j, double scaleFactor) {
+    return (j*scaleFactor) - entityHeight + scaleFactor + PADDING/2;
   }
 
   private static double getRelativeX(int i, double scaleFactor) {
