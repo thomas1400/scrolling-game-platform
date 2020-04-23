@@ -39,10 +39,6 @@ public class CompleteLevel {
     return myEntities;
   }
 
-  public String getPhysicsType() {
-    return myPhysicsType;
-  }
-
   public String getScrollType() {
     return myScrollType;
   }

@@ -2,7 +2,7 @@
 id:0005
 mainTitle:Level 0-5
 subTitle:Check Your Fall
-physics:land
+gameType:mario
 scrollType:up
 deathsAllowed:1
 backgroundImage:images/TeamLogo.png

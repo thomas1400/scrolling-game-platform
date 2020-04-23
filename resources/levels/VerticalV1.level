@@ -2,7 +2,7 @@
 id:0004
 mainTitle:Level 0-4
 subTitle:Climb on Up!
-physics:land
+gameType:mario
 scrollType:up
 deathsAllowed:1
 backgroundImage:images/TeamLogo.png

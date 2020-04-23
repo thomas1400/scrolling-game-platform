@@ -1,6 +1,5 @@
 package ooga.controller.users;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,14 +15,15 @@ import ooga.model.entity.Entity;
 public class User {
 
   private static final int POINTS_TO_LIFE_RATIO = 100;
-  private static final List<String> ALL_GAME_TYPES = Arrays.asList("mario", "flappy", "doodle");
+  private static final List<String> ALL_GAME_TYPES = Arrays.asList("gamedata/mario",
+      "gamedata/flappy", "gamedata/doodle");
 
   private String myName;
   private String myImageFileName;
   Map<String, Set<Integer>> myAllGameLevels;
   private int myLives;
   private IntegerProperty livesProperty;
-  private int myPoints = 0;
+  private int myPoints;
   private IntegerProperty pointsProperty;
   private String myPower = "none";
   private String mySize = "small";
@@ -42,7 +42,7 @@ public class User {
 
   public void saveUser(){
     UserSaver.saveUser(this);
-  };
+  }
 
   public Entity asEntity(){
     //return EntityBuilder.getEntity();
@@ -89,11 +89,6 @@ public class User {
 
   public int getPoints() {
     return myPoints;
-  }
-
-  public void addPoint(){
-    myPoints += 1;
-    pointsProperty.setValue(pointsProperty.getValue() + 1);
   }
 
   public void adjustPoints(int points) {

@@ -29,10 +29,7 @@ public class OogaController {
 
   private void handleCloseEvent(Stage primaryStage) {
     primaryStage.setOnCloseRequest(event -> {
-      for (User user : myUsers){
-        UserSaver.saveUser(user);
-      }
-      System.out.println("Users Saved Successfully");
+      //CAN ADD CLOSE EVENTS HERE
     });
   }
 
@@ -41,8 +38,6 @@ public class OogaController {
 
     if (listOfFiles != null) {
       for (File userFile : listOfFiles) {
-        //FIXME: Remove print statement
-        System.out.println("Loading User in File: " + userFile.getName());
         myUsers.addUser(UserFactory.getUser(userFile));
       }
     } else {
@@ -55,8 +50,6 @@ public class OogaController {
 
     if (listOfFiles != null) {
       for (File levelFile : listOfFiles) {
-        //FIXME: Remove print statement
-        System.out.println("Loading Level from File: " + levelFile.getName());
         myLevels.addBasicLevel(LevelBuilder.buildBasicLevel(levelFile));
       }
     }

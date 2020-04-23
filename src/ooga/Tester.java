@@ -2,6 +2,7 @@ package ooga;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import ooga.controller.ScreenController;
 import ooga.controller.levels.BasicLevelList;
@@ -17,9 +18,7 @@ public class Tester extends Application{
   @Override
   public void start(Stage primaryStage) {
     ScreenController sc = new ScreenController(primaryStage, new UserList(), new BasicLevelList());
-
-    LevelBuilderScreen root = new LevelBuilderScreen(sc);
-
+    Pane root = null;
     primaryStage.setScene(new Scene(root, 800, 600));
     primaryStage.show();
   }

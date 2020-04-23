@@ -27,7 +27,10 @@ public class LevelController implements GameLevel{
 
   public LevelController(GameScreen gs, User user, BasicLevel basicLevel) {
     myGS = gs;
+
     myUser = user;
+    ifDeadGiveThreeLives();
+
     myLevelNumber = basicLevel.getLevelIndex();
     myGameType = basicLevel.getGameType();
     CompleteLevel myCompleteLevel = getCompleteLevel(basicLevel);
@@ -41,6 +44,12 @@ public class LevelController implements GameLevel{
     myVisualGroup.getChildren().addAll(visibleEntityList.getAsList());
 
     gs.setVisibleGroup(myVisualGroup);
+  }
+
+  private void ifDeadGiveThreeLives() {
+    if (myUser.getLives() <= 0){
+      myUser.setLives(3);
+    }
   }
 
   private LevelLoop createLevelLoop(CompleteLevel level) {
@@ -97,11 +106,12 @@ public class LevelController implements GameLevel{
     myLevelLoop.end();
     UserSaver.saveUser(myUser);
     deleteLevelLoop();
+    myGS.exit();
   }
 
   //In Game Adjustments
   public void adjustLives(int lifeAdjustment) {
-    System.out.println("LIFE ADJUST: " + lifeAdjustment);
+    //System.out.println("LIFE ADJUST: " + lifeAdjustment);
     myLivesRemaining += lifeAdjustment;
     myUser.adjustLives(lifeAdjustment);
     checkEndLevel();
@@ -109,7 +119,7 @@ public class LevelController implements GameLevel{
 
   private void checkEndLevel() {
     if (myLivesRemaining == 0){
-      myGS.quit();
+      endLevel();
     } else if (myLivesRemaining < 0){
       ExceptionFeedback.throwHandledException(new RuntimeException(), "Negative Lives Left in Level");
     }
@@ -125,7 +135,7 @@ public class LevelController implements GameLevel{
   public void handleWin() {
     //TODO: display some cool win screen?
     myUser.unlockNextLevel(myGameType, myLevelNumber);
-    myGS.quit();
+    endLevel();
   }
 
   private void deleteLevelLoop() {

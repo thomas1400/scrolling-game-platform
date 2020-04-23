@@ -89,17 +89,6 @@ public abstract class Physics {
     myVelocity[Y]*=-1;
   }
 
-  private double tempCheckLandJump() {
-    double groundHeight = 300;
-    if (myPosition[Y] < groundHeight) {
-      myPosition[Y] += myVelocity[Y]*dt;
-    } else {
-      stopVerticalMotion();
-      myPosition[Y] -= TINY_DISTANCE;
-    }
-    return myPosition[Y];
-  }
-
   private double getLimitedVelocity(double velocity, double maxVelocity) {
     if (velocity > 0){
       return Math.min(velocity, maxVelocity);

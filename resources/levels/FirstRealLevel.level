@@ -2,7 +2,7 @@
 id:0001
 mainTitle:Level 0-1
 subTitle:Tutorial
-physics:land
+gameType:mario
 scrollType:right
 deathsAllowed:1
 backgroundImage:images/gameBackground.png
