@@ -13,7 +13,7 @@ import ooga.controller.UserSaver;
 import ooga.model.entity.Entity;
 
 public class User {
-
+//testing
   private static final int POINTS_TO_LIFE_RATIO = 100;
   private static final List<String> ALL_GAME_TYPES = Arrays.asList("mario",
       "flappy", "doodle");
