@@ -13,7 +13,6 @@ import ooga.controller.UserSaver;
 import ooga.model.entity.Entity;
 
 public class User {
-//testing
   private static final int POINTS_TO_LIFE_RATIO = 100;
   private static final List<String> ALL_GAME_TYPES = Arrays.asList("mario",
       "flappy", "doodle");
@@ -58,7 +57,9 @@ public class User {
   }
 
   public Image getImage() {
-    return new Image(myImageFileName);
+    //FIXME
+    //return new Image(myImageFileName);
+    return null;
   }
 
   public void setImage(String imageFileName) {
