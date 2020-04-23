@@ -90,8 +90,12 @@ public class CameraManager {
   }
 
   private boolean entityIsOnScreen(Entity entity){
-    //return entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX() < screenWidth && entity.getBoundsInLocal().getMinY() > 0 && entity.getBoundsInLocal().getMaxY()< screenHeight;
-    return !entity.isDead() && entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX() < screenWidth && entity.getBoundsInLocal().getMinY() > 0 && entity.getBoundsInLocal().getMinY()< screenHeight;
+    return entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX() < screenWidth && entity.getBoundsInLocal().getMinY() > 0 && entity.getBoundsInLocal().getMinY()< screenHeight;
+  }
+
+  private void entityMovesOffScreen(Entity entity) {
+    onScreenEntities.removeEntity(entity);
+    deactivatedEntities.addEntity(entity);
   }
 
   public EntityList getActivatedEntities(){
