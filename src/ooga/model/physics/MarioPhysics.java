@@ -2,7 +2,7 @@ package ooga.model.physics;
 
 public class MarioPhysics extends Physics {
 
-  private static final double myDt = 1/60.0;
+  private static final double myDt = 1/70.0;
   private static final double mySizeScale = 50.0;
 
   private static final double MY_JUMP_HEIGHT = 3.75 * mySizeScale;
@@ -11,10 +11,10 @@ public class MarioPhysics extends Physics {
   private static final double MY_INITIAL_JUMP_VELOCITY = -1 * Math.sqrt(2*MY_GRAVITY*MY_JUMP_HEIGHT);
 
   private static final double MY_MAX_VERT_VELOCITY = -1 * MY_INITIAL_JUMP_VELOCITY;
-  private static final double MY_MAX_HORIZ_VELOCITY = 0.3 * mySizeScale;
+  private static final double MY_MAX_HORIZ_VELOCITY = 0.5 * mySizeScale;
 
-  private static final double MY_RUN_ACCELERATION = 2.5 * mySizeScale;
-  private static final double MY_FRICTION_DAMPING = 0.2;
+  private static final double MY_RUN_ACCELERATION = 3 * mySizeScale;
+  private static final double MY_FRICTION_DAMPING = 0.6;
   private static final double MY_REACTIVITY_PERCENT = 3.5;
   private static final double MY_TINY_DISTANCE = MY_MAX_VERT_VELOCITY*myDt;
 
