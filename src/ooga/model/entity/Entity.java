@@ -162,6 +162,13 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   /**
+   * marks an entity as dead if it leaves the bounds of the screen it can move it
+   */
+  public void fellToDeath(){
+    dead = true;
+  }
+
+  /**
    * revives the entity if the entity dies
    */
   public void revive(){
