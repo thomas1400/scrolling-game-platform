@@ -29,7 +29,7 @@ class EntityManagerTest extends ApplicationTest {
     entities.addEntity(mainEntity);
     entity = EntityBuilder.getEntity("Brick");
     entities.addEntity(entity);
-    entityManager = new EntityManager(entities);
+    entityManager = new EntityManager(entities, mainEntity);
     entityManager.initializeEntityLists();
 
   }
@@ -39,6 +39,8 @@ class EntityManagerTest extends ApplicationTest {
     entityManager.initializeEntityLists();
     assertEquals(0, entityManager.getAddedEntities().size());
     assertEquals(0, entityManager.getRemovedEntities().size());
+
+
   }
 
   private Entity createNewEntity(){
@@ -57,7 +59,7 @@ class EntityManagerTest extends ApplicationTest {
     entitiesReceived.addAllEntities(entities);
     Entity newEntity = createNewEntity();
     entitiesReceived.addEntity(newEntity);
-    entityManager.manageEntitiesFromCollisions(entitiesReceived);
+    entityManager.manageEntities(entitiesReceived);
     assertTrue(entityManager.getAddedEntities().contains(newEntity));
     assertTrue(entityManager.getEntities().contains(newEntity));
   }
@@ -67,7 +69,7 @@ class EntityManagerTest extends ApplicationTest {
     CollisionEvent sideDamage = new CollisionEvent("Side", "Damage", EntityBuilder.getEntity("Goomba"));
     mainEntity.handleCollision(sideDamage);
     assertTrue(mainEntity.isDead());
-    entityManager.manageEntitiesFromCollisions(entities);
+    entityManager.manageEntities(entities);
     assertFalse(entityManager.getRemovedEntities().contains(mainEntity));
     assertTrue(entityManager.getEntities().contains(mainEntity));
   }
@@ -77,7 +79,7 @@ class EntityManagerTest extends ApplicationTest {
     CollisionEvent bottomDamage = new CollisionEvent("Bottom", "Break", EntityBuilder.getEntity("Player"));
     entity.handleCollision(bottomDamage);
     assertTrue(entity.isDead());
-    entityManager.manageEntitiesFromCollisions(entities);
+    entityManager.manageEntities(entities);
     assertTrue(entityManager.getRemovedEntities().contains(entity));
     assertFalse(entityManager.getEntities().contains(entity));
   }
@@ -91,14 +93,14 @@ class EntityManagerTest extends ApplicationTest {
   void addNewEntities() {
     Entity goomba = createNewEntity();
     EntityList newEntities = createNewEntityListWithEntity(goomba);
-    entityManager.entityMovedOnScreen(newEntities);
+    entityManager.addNewEntities(newEntities);
     assertTrue(entityManager.getAddedEntities().contains(goomba));
   }
 
   @Test
   void removeOldEntities() {
     EntityList newEntities = createNewEntityListWithEntity(entity);
-    entityManager.entityMovedOffScreen(newEntities);
+    entityManager.removeOldEntities(newEntities);
     assertTrue(entityManager.getRemovedEntities().contains(entity));
   }
 
@@ -124,6 +126,7 @@ class EntityManagerTest extends ApplicationTest {
     entityManager.addAllEntities(newEntities);
     assertTrue(entityManager.getAddedEntities().contains(goomba));
     assertTrue(entityManager.getEntities().contains(goomba));
+
   }
 
   @Test
@@ -132,5 +135,6 @@ class EntityManagerTest extends ApplicationTest {
     entityManager.removeAllEntities(newEntities);
     assertTrue(entityManager.getRemovedEntities().contains(entity));
     assertFalse(entityManager.getEntities().contains(entity));
+
   }
 }

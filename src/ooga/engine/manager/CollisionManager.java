@@ -1,11 +1,13 @@
 package ooga.engine.manager;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 import ooga.utility.event.CollisionEvent;
+import ooga.utility.observer.Observer;
 
 
 public class CollisionManager {
@@ -15,12 +17,13 @@ public class CollisionManager {
   private static final String MINY_MAXY = "minYmaxY";
   private static final String MAXX_MINX = "maxXminX";
   private static final String MAXY_MINY = "maxYminY";
-  private static final String SIDE_COLLISION = "Side";
   private String min;
   private static Map<Double, String> map = new HashMap<>();
   private String[] results;
+
+
+  private List<Observer> observers;
   private EntityList entitiesReceived;
-  private Map<Entity, EntityList> collision;
 
   public CollisionManager(){
     myCollisionLocationResources = ResourceBundle.getBundle(CollisionLocationResources);
@@ -28,69 +31,75 @@ public class CollisionManager {
 
   public void manageCollisions(EntityList entities) {
     map = new HashMap<>();
-    initializeCollisionTracking(entities);
+    entitiesReceived = new EntityList();
+    Map<Entity, EntityList> collision = new HashMap<>();
     for (Entity entity : entities) {
+      collision.putIfAbsent(entity, new EntityList());
       for (Entity entity2 : entities) {
-        if (isaValidAndNewCollision(entity, entity2)) {
-          trackCollision(entity, entity2);
-          double d = calculateDistances(entity, entity2);
-          min = map.get(d);
-          results = myCollisionLocationResources.getString(min).split(",");
-          adjustImpactFromGravityAndMultipleDetections(entity, d);
-          createAndSendCollision(results[0], entity2.getAttack(results[1]), entity, entity2);
-          createAndSendCollision(results[1], entity.getAttack(results[0]), entity2, entity);
+        collision.putIfAbsent(entity2, new EntityList());
+        if (!entity.equals(entity2) && !collision.get(entity).contains(entity2) && !collision.get(entity2).contains(entity)) {
+          if (entity.getBoundsInLocal().intersects(entity2.getBoundsInLocal())) {
+            collision.get(entity).addEntity(entity2);
+            collision.get(entity2).addEntity(entity);
+            double d = calculateDistances(entity, entity2);
+            min = map.get(d);
+            if(min.equals("maxYminY")){
+              entity.setY(entity.getY() - d);
+            }
+            if(min.equals("minXmaxX")){
+              entity.setX(entity.getX() + d);
+            }
+            if(min.equals("maxXminX")){
+              entity.setX(entity.getX()-d);
+            }
+            /*if(entity2.debug().equals("GroundCenter.png")){
+              min = "minXmaxX";
+
+            }*/
+            results = myCollisionLocationResources.getString(min).split(",");
+            createAndSendCollision(results[0], entity2.getAttack(results[1]), entity, entity2);
+            createAndSendCollision(results[1], entity.getAttack(results[0]), entity2, entity);
+          }
         }
       }
     }
   }
 
-  private void initializeCollisionTracking(EntityList entities){
-    entitiesReceived = new EntityList();
-    collision = new HashMap<>();
-    collision.clear();
-    for (Entity entity: entities){
-      collision.put(entity, new EntityList());
-    }
-  }
-
-  private boolean isaValidAndNewCollision(Entity entity, Entity entity2) {
-    return !entity.equals(entity2) && !collision.get(entity).contains(entity2) && !collision.get(entity2).contains(entity) && entity.getBoundsInLocal().intersects(entity2.getBoundsInLocal());
-  }
-
-  private void trackCollision(Entity entity, Entity entity2) {
-    collision.get(entity).addEntity(entity2);
-    collision.get(entity2).addEntity(entity);
-  }
-
   private double calculateDistances(Entity entity, Entity entity2) {
     map.clear();
-    double minX1maxX2 = entity.getBoundsInLocal().getMinX() - entity2.getBoundsInLocal().getMaxX();
+    double minX1maxX2 = Math
+        .abs(entity.getBoundsInLocal().getMinX() - entity2.getBoundsInLocal().getMaxX());
     map.put(minX1maxX2, MINX_MAXX);
-    double maxX1minX2 = entity.getBoundsInLocal().getMaxX() - entity2.getBoundsInLocal().getMinX();
+    double maxX1minX2 = Math
+        .abs(entity.getBoundsInLocal().getMaxX() - entity2.getBoundsInLocal().getMinX());
     map.put(maxX1minX2, MAXX_MINX);
-    double minY1maxY2 = entity.getBoundsInLocal().getMinY() - entity2.getBoundsInLocal().getMaxY();
+    double minY1maxY2 = Math
+        .abs(entity.getBoundsInLocal().getMinY() - entity2.getBoundsInLocal().getMaxY());
     map.put(minY1maxY2, MINY_MAXY);
-    double maxY1minY2 = entity.getBoundsInLocal().getMaxY() - entity2.getBoundsInLocal().getMinY();
+    double maxY1minY2 = Math
+        .abs(entity.getBoundsInLocal().getMaxY() - entity2.getBoundsInLocal().getMinY());
     map.put(maxY1minY2, MAXY_MINY);
-    double min = Math.abs(minY1maxY2);
+    double min = minY1maxY2;
     for (double d : map.keySet()) {
-      if (Math.abs(d) <= Math.abs(min)) {
+      if (d <= min) {
+        //System.out.println("entity max y:" + entity.getBoundsInLocal().getMaxY());
+        //System.out.println("entity 2 min y: " + entity2.getBoundsInLocal().getMinY());
+        /*if((map.get(d).equals("maxXminX") || map.get(d).equals("minXmaxX")) && (entity.getBoundsInLocal().getMaxY()-.4<entity2.getBoundsInLocal().getMinY())){
+          //System.out.println("hi");
+          continue;
+        }*/
+        /*else if((map.get(d).equals("maxYminY") || map.get(d).equals("minYmaxY")) && (entity.getBoundsInLocal().getMaxX()-.4<entity2.getBoundsInLocal().getMinX())){
+          continue;
+        }*/
+
           min = d;
       }
     }
     return min;
   }
 
-  private void adjustImpactFromGravityAndMultipleDetections(Entity entity, double d) {
-    if(results[0].equals(SIDE_COLLISION)){
-      entity.setX(entity.getX() - d);
-    }
-    else{
-      entity.setY(entity.getY() - d);
-    }
-  }
-
   private void createAndSendCollision(String typeOfCollision, String attack, Entity entityToHandle, Entity other) {
+    //receive an entity object from the entity
     entitiesReceived.addEntity(entityToHandle.handleCollision(new CollisionEvent(typeOfCollision, attack, other)));
   }
 
