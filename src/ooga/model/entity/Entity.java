@@ -287,10 +287,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     dead = health.isDead();
   }
   
-  private void bounce(){
-      //todo
-  }
-
   //used for reflection DO NOT DELETE
   /**
    * chooses which bounce method to use based on which speed is greater; x or y
