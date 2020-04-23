@@ -235,40 +235,37 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     String otherAttack = ce.getAttackType();
     String myAttack = this.getAttack(location);
     Collidible otherEntity = ce.getOther();
-
-    if(!otherEntity.isDead()) { //fixme remove if the entities are removed later
-      try {
-        ResourceBundle myAttackSpecificResponseBundle = ResourceBundle
-            .getBundle(COLLISIONS_HANDLING_PATH + otherAttack.toString());
-        String[] methodsToCall = myAttackSpecificResponseBundle.getString(myAttack).split(" ");
-        for (String s : methodsToCall) {
-          if (s.equals("collect")) {
-            otherEntity.otherCollectMe();
-            updateMeAfterCollecting(otherEntity);
-            //setScaleOfImage();
-            otherEntity.otherResetAfterCollect();
-          } else {
-            Method method = Entity.class.getDeclaredMethod(s);
-            method.invoke(Entity.this);
-          }
+    try {
+      ResourceBundle myAttackSpecificResponseBundle = ResourceBundle
+          .getBundle(COLLISIONS_HANDLING_PATH + otherAttack.toString());
+      String[] methodsToCall = myAttackSpecificResponseBundle.getString(myAttack).split(" ");
+      for (String s : methodsToCall) {
+        if (s.equals("collect")) {
+          otherEntity.otherCollectMe();
+          updateMeAfterCollecting(otherEntity);
+          //setScaleOfImage();
+          otherEntity.otherResetAfterCollect();
+        } else {
+          Method method = Entity.class.getDeclaredMethod(s);
+          method.invoke(Entity.this);
         }
-      } catch (MissingResourceException e) {
-        //ExceptionFeedback.throwHandledException(e, "Couldn't find key in bundle");
-        System.out.println("Couldn't find key in bundle I'm:"+ debuggingName+"; we're at: "+location);
-        throw new RuntimeException(e);
-      } catch (NoSuchMethodException e) {
-        ExceptionFeedback
-            .throwHandledException(e, "Method name was incorrect in trying to make the entity");
-        //throw new RuntimeException(e);
-      } catch (IllegalAccessException e) {
-        ExceptionFeedback
-            .throwHandledException(e, "You don't have access to that method, try again");
-        //throw new RuntimeException(e);
-      } catch (InvocationTargetException e) {
-        ExceptionFeedback
-            .throwHandledException(e, "Couldn't invoke the method when creating the entity");
-        //throw new RuntimeException(e);
       }
+    } catch (MissingResourceException e) {
+      //ExceptionFeedback.throwHandledException(e, "Couldn't find key in bundle");
+      System.out.println("Couldn't find key in bundle I'm:"+ debuggingName+"; we're at: "+location);
+      throw new RuntimeException(e);
+    } catch (NoSuchMethodException e) {
+      ExceptionFeedback
+          .throwHandledException(e, "Method name was incorrect in trying to make the entity");
+      //throw new RuntimeException(e);
+    } catch (IllegalAccessException e) {
+      ExceptionFeedback
+          .throwHandledException(e, "You don't have access to that method, try again");
+      //throw new RuntimeException(e);
+    } catch (InvocationTargetException e) {
+      ExceptionFeedback
+          .throwHandledException(e, "Couldn't invoke the method when creating the entity");
+      //throw new RuntimeException(e);
     }
     return this;
   }
@@ -305,7 +302,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    * be shown within that entity in order to hide other objects
    */
   private void openPackage(){
-    //todo create a bonus ability that can change score, height, etc. have that happen here as the entity is collected
     String methodToCall = myPackage.toString();
     double value = myPackage.getPackageValue();
     if(!dead && !levelEnded){
@@ -339,7 +335,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   @Override
   public void otherResetAfterCollect(){
     resetScore();
-    //size(DEFAULT_SCALE);
     health(0.0);
   }
 
