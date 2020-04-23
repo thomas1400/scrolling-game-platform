@@ -93,12 +93,12 @@ public class User {
 
   public void addPoint(){
     myPoints += 1;
-    pointsProperty.add(1);
+    pointsProperty.setValue(pointsProperty.getValue() + 1);
   }
 
   public void adjustPoints(int points) {
     myPoints += points;
-    pointsProperty.add(points);
+    pointsProperty.setValue(pointsProperty.getValue() + points);
   }
 
   public IntegerProperty getLivesProperty() {
