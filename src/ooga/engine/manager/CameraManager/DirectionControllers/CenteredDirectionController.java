@@ -1,6 +1,5 @@
-package ooga.engine.manager.CameraManager.DirectionControllers.CenteredDirectionControllers;
+package ooga.engine.manager.CameraManager.DirectionControllers;
 
-import ooga.engine.manager.CameraManager.DirectionControllers.DirectionController;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 
@@ -15,8 +14,7 @@ public class CenteredDirectionController extends DirectionController {
 
   public CenteredDirectionController() {
   }
-  public void updateCameraPosition(EntityList entities, double myScreenHeight, double myScreenWidth) {
-    Entity mainEntity = entities.getMainEntity();
+  public void updateCameraPosition(EntityList entities, Entity mainEntity) {
     xCenter = myScreenWidth / 2 - mainEntity.getBoundsInLocal().getWidth() / 2;
     yCenter = myScreenHeight/2- mainEntity.getBoundsInLocal().getHeight()/2;
     if (mainEntity.getX() != xCenter | mainEntity.getY() != yCenter){
@@ -25,8 +23,11 @@ public class CenteredDirectionController extends DirectionController {
   }
 
   public void setToCenter(EntityList entities, Entity mainEntity) {
+    xCenter = myScreenWidth / 2 - mainEntity.getBoundsInLocal().getWidth() / 2;
+    yCenter = myScreenHeight/2- mainEntity.getBoundsInLocal().getHeight()/2;
     xChange = mainEntity.getX() - xCenter;
     yChange = mainEntity.getY() - yCenter;
+    System.out.println(yChange);
     resetMainEntity(mainEntity);
     updateCoordinates(entities, mainEntity);
   }
@@ -36,14 +37,12 @@ public class CenteredDirectionController extends DirectionController {
       Entity mainEntity) {
     myScreenHeight = screenHeight;
     myScreenWidth = screenWidth;
-    xCenter = myScreenWidth / 2 - mainEntity.getBoundsInLocal().getWidth() / 2;
-    yCenter = myScreenHeight/2- mainEntity.getBoundsInLocal().getHeight()/2;
     setToCenter(entities, mainEntity);
   }
 
 
   private void updateCoordinates(EntityList entities, Entity mainEntity) {
-    entities.changeAllCoordinates(xChange, yChange);
+    entities.changeAllCoordinates(xChange, yChange, mainEntity);
   }
 
   private void resetMainEntity(Entity mainEntity) {

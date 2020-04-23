@@ -1,8 +1,13 @@
 package ooga.model.entity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+import javafx.event.Event;
+import ooga.utility.observer.Observer;
 
 public class EntityList implements Iterable<Entity> {
   private List<Entity> myEntities;
@@ -40,8 +45,10 @@ public class EntityList implements Iterable<Entity> {
   public Iterator<Entity> iterator() {
     return myEntities.iterator();
   }
+  public void clear(){
+    myEntities.clear();
 
-  public void clear(){ myEntities.clear(); }
+  }
 
   public Entity getMainEntity() {
     return myMainEntity;
@@ -55,9 +62,9 @@ public class EntityList implements Iterable<Entity> {
     return myEntities;
   }
 
-  public void changeAllCoordinates(double xChange, double yChange){
+  public void changeAllCoordinates(double xChange, double yChange, Entity myEntity){
     for(Entity entity : myEntities) {
-      if (!entity.equals(myMainEntity)) {
+      if (entity != myEntity) {
         entity.setX(entity.getX() - xChange);
         entity.setY(entity.getY()- yChange);
       }
