@@ -2,48 +2,40 @@ package ooga.engine.manager.CameraManager;
 
 import java.util.ResourceBundle;
 import ooga.engine.manager.CameraManager.DirectionControllers.DirectionController;
+import ooga.exceptions.ExceptionFeedback;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 
 public class CameraManager {
 
-  private Entity mainEntity;
   private double screenHeight;
   private double screenWidth;
   private EntityList activatedEntities;
   private EntityList deactivatedEntities;
   private EntityList onScreenEntities;
-  private static final String directionControllerResources = "directioncontrollers/directioncontrollers";
+  private static final String directionControllerResources = "cameramanager/directioncontrollers";
   private DirectionController myDirectionController;
+  private static final String directionControllerOptionsLocation =  "ooga.engine.manager.CameraManager.DirectionControllers.";
+  private static final String ERROR_MESSAGE = "No DirectionController associated with this scroll type";
 
-  public CameraManager(Entity character, double height, double width, String direction, EntityList entities) {
-    mainEntity = character;
-    ResourceBundle myDirectionControllerResources = ResourceBundle
-        .getBundle(directionControllerResources);
+  public CameraManager(double height, double width, String direction,
+      EntityList entities) {
+    Entity mainEntity = entities.getMainEntity();
+    ResourceBundle myDirectionControllerResources = ResourceBundle.getBundle(directionControllerResources);
     screenHeight = height;
     screenWidth = width;
     String directionType = myDirectionControllerResources.getString(direction);
     try {
-      myDirectionController = (DirectionController) Class
-          .forName("ooga.engine.manager.CameraManager.DirectionControllers." + directionType).newInstance();
-      myDirectionController.initialize(entities, height, width, character);
-    } catch (InstantiationException e) {
-      //FIXME
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
-      //FIXME
-      e.printStackTrace();
-    } catch (ClassNotFoundException e) {
-      //FIXME
-      e.printStackTrace();
+      myDirectionController = (DirectionController) Class.forName(directionControllerOptionsLocation + directionType).newInstance();
+      myDirectionController.initialize(entities, height, width, mainEntity);
+    } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+      ExceptionFeedback.throwBreakingException(e, ERROR_MESSAGE);
     }
   }
 
   public void updateCamera(EntityList entities ){
-    //System.out.println(mainEntity.getX() + " " + mainEntity.getY());
-    myDirectionController.updateCameraPosition(entities, mainEntity);
+    myDirectionController.updateCameraPosition(entities, screenHeight, screenWidth);
     determineEntitiesOnScreen(entities);
-    determinedead();
   }
 
 
@@ -54,31 +46,34 @@ public class CameraManager {
 
   public EntityList initializeActiveEntities(EntityList entities) {
     initializeActivationStorage();
-    myDirectionController.updateCameraPosition(entities, mainEntity);
+    myDirectionController.updateCameraPosition(entities, screenHeight, screenWidth);
     onScreenEntities = new EntityList();
     for (Entity entity : entities) {
-      if (entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX()< screenWidth && entity.getBoundsInLocal().getMaxY() < screenHeight) {
-        activatedEntities.addEntity(entity);
-        onScreenEntities.addEntity(entity);
+      if (entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX()< screenWidth && entity.getBoundsInLocal().getMinY() < screenHeight) {
+        newEntityMovesOnScreen(entity);
       }
     }
     return activatedEntities;
   }
 
+  private void newEntityMovesOnScreen(Entity entity) {
+    activatedEntities.addEntity(entity);
+    onScreenEntities.addEntity(entity);
+  }
+
   protected void determineEntitiesOnScreen(EntityList entities) {
     initializeActivationStorage();
+    removeDeadEntities();
     for (Entity entity : entities) {
       if (entityIsOnScreen(entity) && !onScreenEntities.contains(entity)) {
-        activatedEntities.addEntity(entity);
-        onScreenEntities.addEntity(entity);
+        newEntityMovesOnScreen(entity);
       } else if ((!entityIsOnScreen(entity)) && onScreenEntities.contains(entity)) {
-        onScreenEntities.removeEntity(entity);
-        deactivatedEntities.addEntity(entity);
+        entityMovesOffScreen(entity);
       }
     }
   }
 
-  public void determinedead(){
+  public void removeDeadEntities(){
     EntityList entitiesToRemove = new EntityList();
     for (Entity entity : onScreenEntities) {
       if (entity.isDead()) {
@@ -86,12 +81,15 @@ public class CameraManager {
       }
     }
     onScreenEntities.removeAllEntities(entitiesToRemove);
-    //removeAllEntities(entitiesToRemove);
   }
 
   private boolean entityIsOnScreen(Entity entity){
-    //return entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX() < screenWidth && entity.getBoundsInLocal().getMinY() > 0 && entity.getBoundsInLocal().getMaxY()< screenHeight;
-    return !entity.isDead() && entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX() < screenWidth && entity.getBoundsInLocal().getMinY() > 0 && entity.getBoundsInLocal().getMinY()< screenHeight;
+    return entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX() < screenWidth && entity.getBoundsInLocal().getMinY() > 0 && entity.getBoundsInLocal().getMaxY()< screenHeight;
+  }
+
+  private void entityMovesOffScreen(Entity entity) {
+    onScreenEntities.removeEntity(entity);
+    deactivatedEntities.addEntity(entity);
   }
 
   public EntityList getActivatedEntities(){
