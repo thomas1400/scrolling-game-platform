@@ -15,7 +15,8 @@ import ooga.model.entity.Entity;
 public class User {
 
   private static final int POINTS_TO_LIFE_RATIO = 100;
-  private static final List<String> ALL_GAME_TYPES = Arrays.asList("mario", "flappy", "doodle");
+  private static final List<String> ALL_GAME_TYPES = Arrays.asList("gamedata/mario",
+      "gamedata/flappy", "gamedata/doodle");
 
   private String myName;
   private String myImageFileName;

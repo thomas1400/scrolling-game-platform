@@ -73,14 +73,12 @@ public class ScreenController{
     Screen myUserCreationScreen = new UserCreationScreen(this);
     Screen myUserSelectorScreen = new UserSelectorScreen(this, myUsers);
     Screen myHomeScreen = new HomeScreen(this);
-    Screen myLevelBuilderScreen = new LevelBuilderScreen(this);
     Screen myHelpScreen = new HelpScreen(this);
 
     myScreens.put("HomeScreen", myHomeScreen);
     myScreens.put("UserSelectorScreen", myUserSelectorScreen);
     myScreens.put("LevelSelectorScreen", myLevelSelectorScreen);
     myScreens.put("UserCreationScreen", myUserCreationScreen);
-    myScreens.put("LevelBuilderScreen", myLevelBuilderScreen);
     myScreens.put("HelpScreen", myHelpScreen);
   }
 

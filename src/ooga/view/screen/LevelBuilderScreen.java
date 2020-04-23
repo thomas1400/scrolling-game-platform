@@ -2,32 +2,21 @@ package ooga.view.screen;
 
 import java.io.File;
 import java.io.IOException;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import ooga.controller.ScreenController;
-import ooga.view.factory.ControlFactory;
 
 public class LevelBuilderScreen extends Screen {
 
-  private static final String CHECK_URL = "images/greenCheck.png";
-  private static final String EX_URL = "images/redX.png";
-  private static final String DEFAULT_URL = "images/grayAsterisk.png";
+  private static final String CHECK_URL = "artwork/greenCheck.png";
+  private static final String EX_URL = "artwork/redX.png";
+  private static final String DEFAULT_URL = "artwork/grayAsterisk.png";
 
   private TextField levelTitle = new TextField();
   private ImageView levelTitleValidated = new ImageView(DEFAULT_URL);
