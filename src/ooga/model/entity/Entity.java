@@ -531,4 +531,12 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   public double getLives(){
     return health.getLives();
   }
+
+  /**
+   * set the number of lives to a new value
+   * @param newNumLives
+   */
+  public void setLives(double newNumLives){
+    health.setLives(newNumLives);
+  }
 }

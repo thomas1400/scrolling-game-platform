@@ -53,6 +53,14 @@ public class Health extends Ability {
   }
 
   /**
+   * Set the lives to the incoming value
+   * @param newLivesNum new number of total lives
+   */
+  public void setLives(double newLivesNum){
+    myLives=newLivesNum;
+  }
+
+  /**
    * Decreases the number of lives by one if the object is not dead
    */
   public void hit(){
