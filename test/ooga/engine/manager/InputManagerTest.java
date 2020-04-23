@@ -1,11 +1,6 @@
 package ooga.engine.manager;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.security.Key;
-import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityBuilder;
@@ -29,7 +24,7 @@ class InputManagerTest extends ApplicationTest {
 
   @Test
   void handleKeyPress() {
-    InputManager im = new InputManager(mainEntity);
+    InputManager im = new InputManager(mainEntity, "mario");
     press(KeyCode.RIGHT);
     //im.handleKeyPress(press(KeyCode.RIGHT));
   }

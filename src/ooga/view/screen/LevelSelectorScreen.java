@@ -13,18 +13,13 @@ import ooga.view.dynamicUI.LevelSelectorTool;
 
 public class LevelSelectorScreen extends Screen {
 
-  private static final String GAME_TYPE = "mario";
-
-  private static final String LEVEL_GRAPH_FILE = "data/gamedata/"+GAME_TYPE+"/levels/resources"
-      + "/LevelGraph.txt";
-  private static final String LEVEL_MAP_FILE = "data/gamedata/"+GAME_TYPE+"/levels/resources/LevelMap.txt";
-
-  private BasicLevelList myLevels;
   private LevelSelectorTool lst;
 
   public LevelSelectorScreen(ScreenController controller, BasicLevelList levels) {
     super(controller);
-    myLevels = levels;
+    String gameType = levels.getGameType();
+    String myLevelGraphFile = "data/gamedata/" + gameType + "/levels/resources/LevelGraph.txt";
+    String myLevelMapFile = "data/gamedata/" + gameType + "/levels/resources/LevelMap.txt";
 
     if (controller.getUsers() != null) {
       User user = controller.getUsers().getSelectedUser();
@@ -32,9 +27,9 @@ public class LevelSelectorScreen extends Screen {
       DynamicUserLabel username = new DynamicUserLabel();
       username.setText(resources.getString("user") + " : " + user.getName());
       LevelProgressBar lpb = new LevelProgressBar(resources.getString("progress"),
-          user.getLevelsCompleted(GAME_TYPE).size(), myLevels.size());
-      lst = new LevelSelectorTool(levels, LEVEL_GRAPH_FILE, LEVEL_MAP_FILE,
-          new ArrayList<>(user.getLevelsCompleted(GAME_TYPE)));
+          user.getLevelsCompleted(gameType).size(), levels.size());
+      lst = new LevelSelectorTool(levels, myLevelGraphFile, myLevelMapFile,
+          new ArrayList<>(user.getLevelsCompleted(gameType)));
 
 
       dynamicNodes.put("username-label", username);
