@@ -16,12 +16,11 @@ public class GameScreen extends Screen {
   private LevelController levelController;
   private Group gameGroup;
   private Rectangle gameBackground;
-  private User user;
   private Button pause, resume;
 
   public GameScreen(ScreenController controller, BasicLevel level) {
     super(controller);
-    user = controller.getUsers().getSelectedUser();
+    User user = controller.getUsers().getSelectedUser();
 
     gameGroup = new Group();
     gameBackground = new Rectangle();
@@ -57,12 +56,6 @@ public class GameScreen extends Screen {
     gameGroup.getChildren().addAll(visibleGroup);
   }
 
-  public void openSettings() {
-    pause();
-    SettingsScreen settings = new SettingsScreen(controller, this);
-    this.getChildren().add(settings);
-  }
-
   public void pause() {
     levelController.pauseLevel();
     pause.setDisable(true);
@@ -75,13 +68,26 @@ public class GameScreen extends Screen {
     resume.setDisable(true);
   }
 
-  public void quit() {
-    //levelController.endLevel();
+  public void exit() {
     handleButtonPress("exit");
   }
 
+  //NEEDED FOR REFLECTION, DON'T DELETE
+  public void quit() {
+    levelController.endLevel();
+    exit();
+  }
+
+  //NEEDED FOR REFLECTION, DON'T DELETE
   public void reset() {
     controller.restartLevel();
+  }
+
+  //NEEDED FOR REFLECTION, DON'T DELETE
+  public void openSettings() {
+    pause();
+    SettingsScreen settings = new SettingsScreen(controller, this);
+    this.getChildren().add(settings);
   }
 
   public double getGameWidth() {

@@ -27,7 +27,10 @@ public class LevelController implements GameLevel{
 
   public LevelController(GameScreen gs, User user, BasicLevel basicLevel) {
     myGS = gs;
+
     myUser = user;
+    ifDeadGiveThreeLives();
+
     myLevelNumber = basicLevel.getLevelIndex();
     myGameType = basicLevel.getGameType();
     CompleteLevel myCompleteLevel = getCompleteLevel(basicLevel);
@@ -41,6 +44,12 @@ public class LevelController implements GameLevel{
     myVisualGroup.getChildren().addAll(visibleEntityList.getAsList());
 
     gs.setVisibleGroup(myVisualGroup);
+  }
+
+  private void ifDeadGiveThreeLives() {
+    if (myUser.getLives() <= 0){
+      myUser.setLives(3);
+    }
   }
 
   private LevelLoop createLevelLoop(CompleteLevel level) {
@@ -99,7 +108,7 @@ public class LevelController implements GameLevel{
     myLevelLoop.end();
     UserSaver.saveUser(myUser);
     deleteLevelLoop();
-    myGS.quit();
+    myGS.exit();
   }
 
   //In Game Adjustments
