@@ -3,7 +3,6 @@ package ooga.model.entity;
 import static org.junit.jupiter.api.Assertions.*;
 
 import javafx.stage.Stage;
-import ooga.model.ability.attacktypes.Attack;
 import ooga.utility.event.CollisionEvent;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
@@ -15,13 +14,8 @@ class EntityTest extends ApplicationTest {
     super.start(stage);
   }
 
-  private Entity buildEntity(String filename){
-    EntityBuilder eb = new EntityBuilder();
-    return eb.getEntity(filename);
-  }
-
-  private CollisionEvent buildCollisionEvent(String location, String attack, Entity entity){
-    return new CollisionEvent(location, attack, entity);
+  private CollisionEvent buildCollisionEvent(String location, String otherLocation, Entity entity){
+    return new CollisionEvent(location, entity.getAttack(otherLocation), entity);
   }
 
   @Test
@@ -144,7 +138,7 @@ class EntityTest extends ApplicationTest {
 
     player.handleCollision(lifeMushroomSideCE);
     lifeMushroom.handleCollision(playerSideCE);
-    assertEquals(2, player.debugHealth());
+    assertEquals(2, player.getLives());
     assertTrue(lifeMushroom.isDead());
 
     lifeMushroom = EntityBuilder.getEntity("LifeMushroom");
@@ -152,7 +146,7 @@ class EntityTest extends ApplicationTest {
     CollisionEvent playerBottomCE = new CollisionEvent("Bottom", player.getAttack("Top"), player);
     player.handleCollision(lifeMushroomTopCE);
     lifeMushroom.handleCollision(playerBottomCE);
-    assertEquals(3, player.debugHealth());
+    assertEquals(3, player.getLives());
     assertTrue(lifeMushroom.isDead());
 
     lifeMushroom = EntityBuilder.getEntity("LifeMushroom");
@@ -160,7 +154,7 @@ class EntityTest extends ApplicationTest {
     CollisionEvent playerTopCE = new CollisionEvent("Top", player.getAttack("Bottom"), player);
     player.handleCollision(lifeMushroomBottomCE);
     lifeMushroom.handleCollision(playerTopCE);
-    assertEquals(4, player.debugHealth());
+    assertEquals(4, player.getLives());
     assertTrue(lifeMushroom.isDead());
   }
 
@@ -188,5 +182,32 @@ class EntityTest extends ApplicationTest {
     player.updateVisualization();
     assertTrue(player.endedLevel());
     assertFalse(player.isSuccess());
+  }
+
+  @Test
+  void testHandleCollisionBounce(){
+    Entity player = EntityBuilder.getEntity("Player");
+    Entity goomba = EntityBuilder.getEntity("Goomba");
+    Entity brick = EntityBuilder.getEntity("Brick");
+    Entity coin = EntityBuilder.getEntity("Coin");
+
+    CollisionEvent brickSideCE = new CollisionEvent("Side", brick.getAttack("Side"), brick);
+    CollisionEvent brickTopCE = new CollisionEvent("Top", brick.getAttack("Bottom"), brick);
+    CollisionEvent brickBottomCE = new CollisionEvent("Bottom", brick.getAttack("Top"), brick);
+
+    CollisionEvent playerSideCE = new CollisionEvent("Side", player.getAttack("Side"), player);
+    CollisionEvent playerTopCE = new CollisionEvent("Top", player.getAttack("Bottom"), player);
+    CollisionEvent playerBottomCE = new CollisionEvent("Bottom", player.getAttack("Top"), player);
+
+    CollisionEvent goombaSideCE = new CollisionEvent("Side", goomba.getAttack("Side"), goomba);
+    CollisionEvent goombaTopCE = new CollisionEvent("Top", goomba.getAttack("Bottom"), goomba);
+    CollisionEvent goombaBottomCE = new CollisionEvent("Bottom", goomba.getAttack("Top"), goomba);
+
+    CollisionEvent coinSideCE = new CollisionEvent("Side", coin.getAttack("Side"), coin);
+    CollisionEvent coinTopCE = new CollisionEvent("Top", coin.getAttack("Bottom"), coin);
+    CollisionEvent coinBottomCE = new CollisionEvent("Bottom", coin.getAttack("Top"), coin);
+
+    player.handleCollision(brickTopCE);
+
   }
 }
