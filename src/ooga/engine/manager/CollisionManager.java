@@ -17,7 +17,9 @@ public class CollisionManager {
   private static final String MINY_MAXY = "minYmaxY";
   private static final String MAXX_MINX = "maxXminX";
   private static final String MAXY_MINY = "maxYminY";
+  private String min;
   private static Map<Double, String> map = new HashMap<>();
+  private String[] results;
 
 
   private List<Observer> observers;
@@ -40,7 +42,7 @@ public class CollisionManager {
             collision.get(entity).addEntity(entity2);
             collision.get(entity2).addEntity(entity);
             double d = calculateDistances(entity, entity2);
-            String min = map.get(d);
+            min = map.get(d);
             if(min.equals("maxYminY")){
               entity.setY(entity.getY() - d);
             }
@@ -54,7 +56,7 @@ public class CollisionManager {
               min = "minXmaxX";
 
             }*/
-            String[] results = myCollisionLocationResources.getString(min).split(",");
+            results = myCollisionLocationResources.getString(min).split(",");
             createAndSendCollision(results[0], entity2.getAttack(results[1]), entity, entity2);
             createAndSendCollision(results[1], entity.getAttack(results[0]), entity2, entity);
           }
@@ -96,9 +98,6 @@ public class CollisionManager {
     return min;
   }
 
-
-
-
   private void createAndSendCollision(String typeOfCollision, String attack, Entity entityToHandle, Entity other) {
     //receive an entity object from the entity
     entitiesReceived.addEntity(entityToHandle.handleCollision(new CollisionEvent(typeOfCollision, attack, other)));
@@ -106,5 +105,13 @@ public class CollisionManager {
 
   public EntityList getEntitiesReceived() {
     return entitiesReceived;
+  }
+
+  public String getMin(){
+    return min;
+  }
+
+  public String[] getResults(){
+    return results;
   }
 }
