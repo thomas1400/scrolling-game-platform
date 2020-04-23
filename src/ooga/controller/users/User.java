@@ -1,6 +1,5 @@
 package ooga.controller.users;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,7 +22,7 @@ public class User {
   Map<String, Set<Integer>> myAllGameLevels;
   private int myLives;
   private IntegerProperty livesProperty;
-  private int myPoints = 0;
+  private int myPoints;
   private IntegerProperty pointsProperty;
   private String myPower = "none";
   private String mySize = "small";
@@ -42,7 +41,7 @@ public class User {
 
   public void saveUser(){
     UserSaver.saveUser(this);
-  };
+  }
 
   public Entity asEntity(){
     //return EntityBuilder.getEntity();
@@ -89,11 +88,6 @@ public class User {
 
   public int getPoints() {
     return myPoints;
-  }
-
-  public void addPoint(){
-    myPoints += 1;
-    pointsProperty.setValue(pointsProperty.getValue() + 1);
   }
 
   public void adjustPoints(int points) {

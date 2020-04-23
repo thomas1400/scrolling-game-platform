@@ -120,13 +120,13 @@ public class LevelLoop implements Loopable {
       myLevelController.adjustLives(-1);
       //setmainEntitytoalive
     }
-    for(Entity entity: myEntityManager.getEntities()){
-      if(entity.endedLevel()|| mainEntity.endedLevel()) {
+    //for(Entity entity: myEntityManager.getEntities()){
+      if(mainEntity.endedLevel()) {
         System.out.println("we did it yay");
-        end();
-        if (entity.isSuccess()) {
+        //end();
+        if (mainEntity.isSuccess()) {
           myLevelController.handleWin();
-          end();
+          //end();
         }
         else{
           System.out.println("DEAD");
@@ -134,7 +134,7 @@ public class LevelLoop implements Loopable {
           System.out.println("end");
         }
       }
-    }
+    //}
 
   }
   private void sendEntities(){
