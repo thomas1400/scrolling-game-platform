@@ -4,10 +4,13 @@ import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import javafx.scene.Camera;
+import ooga.engine.manager.CameraManager.DirectionControllers.DirectionController;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityBuilder;
 import ooga.model.entity.EntityList;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
 class CameraManagerTest extends ApplicationTest {
@@ -31,7 +34,7 @@ class CameraManagerTest extends ApplicationTest {
     entities.addEntity(mainEntity);
     entity = EntityBuilder.getEntity("Brick");
     entities.addEntity(entity);
-    cm = new CameraManager(400, 600, "right", entities);
+    cm = new CameraManager(mainEntity,400, 600, "right", entities);
     cm.initializeActivationStorage();
     cm.initializeActiveEntities(entities);
   }
