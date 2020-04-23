@@ -11,17 +11,9 @@ public class BasicLevelList {
     myLevels.put(basicLevel.getLevelIndex(), basicLevel);
   }
 
-  public void addAllBasicLevels(Iterable<BasicLevel> basicLevels){
-    for (BasicLevel basicLevel : basicLevels) {
-      myLevels.put(basicLevel.getLevelIndex(), basicLevel);
-    }
-  }
-
   public int size() {
     return myLevels.keySet().size();
   }
-
-
 
   public BasicLevel getBasicLevel(int levelIndex){
     return myLevels.get(levelIndex);

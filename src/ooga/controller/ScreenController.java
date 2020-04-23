@@ -82,7 +82,7 @@ public class ScreenController{
     myScreens.put("UserCreationScreen", myUserCreationScreen);
     myScreens.put("LevelBuilderScreen", myLevelBuilderScreen);
     myScreens.put("HelpScreen", myHelpScreen);
-  };
+  }
 
   public void switchToScreen(String screenName){
     Scene nextScene = getScene(screenName);
@@ -145,9 +145,7 @@ public class ScreenController{
 
     FadeTransition fade = new FadeTransition(Duration.seconds(0.5), loadingPane);
     doFade(fade);
-    fade.setOnFinished((e) -> {
-      initializeNewLevel(myCurrentLevel);
-    });
+    fade.setOnFinished((e) -> initializeNewLevel(myCurrentLevel));
 
   }
 

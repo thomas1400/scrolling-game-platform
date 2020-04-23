@@ -8,12 +8,10 @@ import ooga.controller.UserFactory;
 public class UserList implements Iterable<User>{
 
   private List<User> myUsers = new ArrayList<>();
-  private User defaultUser;
   private User mySelectedUser;
 
   public UserList(){
-    defaultUser = UserFactory.getDefaultUser();
-    mySelectedUser = defaultUser;
+    mySelectedUser = UserFactory.getDefaultUser();
   }
 
   public void addUser(User newUser){
