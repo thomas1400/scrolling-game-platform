@@ -31,7 +31,7 @@ public class ScreenController{
 
   private static final int INITIAL_WINDOW_WIDTH = 800;
   private static final int INITIAL_WINDOW_HEIGHT = 600;
-  public static final String ARTWORK_GOOMBA_PNG = "artwork/goomba.png";
+  public static final String ARTWORK_GOOMBA_PNG = "resources/images/goomba.png";
 
   private Stage myStage;
   private UserList myUsers;

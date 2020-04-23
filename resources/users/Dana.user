@@ -1,7 +1,7 @@
 #User properties file for user: Dana
 #Wed Apr 22 18:44:43 EDT 2020
 marioLevels=0,1,2,3
-image=images/creators/dana.jpeg
+image=users/images/dana.jpeg
 lives=72
 size=small
 doodleLevels=0
