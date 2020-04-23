@@ -1,7 +1,7 @@
 #User properties file for user: Cayla
 #Thu Apr 23 00:46:03 EDT 2020
 marioLevels=1
-image=users/images/cayla.jpeg
+image=data/userdata/images/cayla.jpeg
 lives=97
 size=small
 doodleLevels=0

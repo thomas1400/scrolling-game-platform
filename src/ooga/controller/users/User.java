@@ -58,7 +58,10 @@ public class User {
   }
 
   public Image getImage() {
-    return new Image(myImageFileName);
+    //FIXME
+    String imagePath = "resources/images/entityimages/" + myImageFileName;
+    System.out.println(imagePath);
+    return new Image(imagePath);
   }
 
   public void setImage(String imageFileName) {
