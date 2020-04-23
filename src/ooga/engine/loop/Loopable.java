@@ -10,7 +10,7 @@ public interface Loopable {
 
   void resume();
 
-  void pause();
+  void exit();
 
 
 

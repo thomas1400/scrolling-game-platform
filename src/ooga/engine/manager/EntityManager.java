@@ -6,14 +6,16 @@ import ooga.model.entity.EntityList;
 
 public class EntityManager implements Communicable {
 
+  //Entity entityReceived;
   private EntityList myEntityList;
   private EntityList addedEntities;
   private EntityList removedEntities;
   private Entity myMainEntity;
+  private CollisionManager myCollisionManager;
 
-  public EntityManager(EntityList entities) {
+  public EntityManager(EntityList entities, Entity mainEntity) {
     myEntityList = entities;
-    myMainEntity = entities.getMainEntity();
+    myMainEntity = mainEntity;
     initializeEntityLists();
   }
 
@@ -24,16 +26,16 @@ public class EntityManager implements Communicable {
     removedEntities.clear();
   }
 
-  public void manageEntitiesFromCollisions(EntityList entitiesReceived) {
+  public void manageEntities(EntityList entitiesReceived) {
     for (Entity entity : entitiesReceived) {
       if (!myEntityList.contains(entity)) {
         addEntity(entity);
       }
     }
-    removeDeadEntities();
+    checkForDeadEntities();
   }
 
-  private void removeDeadEntities() {
+  private void checkForDeadEntities() {
     EntityList entitiesToRemove = new EntityList();
     for (Entity entity : myEntityList) {
       if (entity.isDead() && !entity.equals(myMainEntity)) {
@@ -55,13 +57,16 @@ public class EntityManager implements Communicable {
     return removedEntities;
   }
 
-  public void entityMovedOnScreen(EntityList entities) {
+  public void addNewEntities(EntityList entities) {
     addedEntities.addAllEntities(entities);
+    //needs to be reset somewhere
   }
 
-  public void entityMovedOffScreen(EntityList entities) {
+  public void removeOldEntities(EntityList entities) {
     removedEntities.addAllEntities(entities);
+    //needs to be reset somewhere
   }
+
 
   @Override
   public void addEntity(Entity entity) {
@@ -79,11 +84,13 @@ public class EntityManager implements Communicable {
   public void addAllEntities(EntityList entities) {
     addedEntities.addAllEntities(entities);
     myEntityList.addAllEntities(entities);
+    //needs to be reset somewhere
   }
 
   @Override
   public void removeAllEntities(EntityList entities) {
     removedEntities.addAllEntities(entities);
     myEntityList.removeAllEntities(entities);
+    // needs to be reset somewhere
   }
 }
