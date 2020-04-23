@@ -103,14 +103,6 @@ public class User {
     return pointsProperty;
   }
 
-  public String getPower() {
-    return myPower;
-  }
-
-  public void setPower(String power) {
-    myPower = power;
-  }
-
   public String getSize() {
     return mySize;
   }
