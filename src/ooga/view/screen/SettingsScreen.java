@@ -1,10 +1,8 @@
 package ooga.view.screen;
 
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 import ooga.controller.ScreenController;
 
 public class SettingsScreen extends Screen {
