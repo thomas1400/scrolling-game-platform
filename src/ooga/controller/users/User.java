@@ -70,9 +70,6 @@ public class User {
   }
 
   public void unlockNextLevel(String gameType, int currentLevel) {
-    System.out.println(gameType);
-    System.out.println(currentLevel);
-    System.out.println(myAllGameLevels.keySet());
     myAllGameLevels.get(gameType).add(currentLevel);
   }
 

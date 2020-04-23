@@ -3,6 +3,7 @@ package ooga.controller;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
+import java.util.ResourceBundle;
 import javafx.stage.Stage;
 import ooga.controller.levels.BasicLevelList;
 import ooga.controller.users.User;
@@ -46,12 +47,15 @@ public class OogaController {
   }
 
   private void loadLevels() throws FileNotFoundException {
-    File[] listOfFiles = getFilteredListOfFiles(LEVEL_FILE_EXTENSION, LEVEL_PATH_NAME);
+    ResourceBundle myLevelsBundle = ResourceBundle.getBundle("levels/resources/levelOrder");
 
-    if (listOfFiles != null) {
-      for (File levelFile : listOfFiles) {
-        myLevels.addBasicLevel(LevelBuilder.buildBasicLevel(levelFile));
-      }
+    String[] levelNumbers = myLevelsBundle.getString("levelNumbers").split(",");
+
+    for (String levelNumberString : levelNumbers) {
+      int levelNumber = Integer.parseInt(levelNumberString);
+      File levelFile = new File("resources/levels/" + myLevelsBundle.getString(levelNumberString) +
+          ".level");
+      myLevels.addBasicLevel(LevelBuilder.buildBasicLevel(levelNumber, levelFile));
     }
   }
 
