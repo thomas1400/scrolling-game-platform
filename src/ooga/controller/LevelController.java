@@ -113,7 +113,7 @@ public class LevelController implements GameLevel{
 
   //In Game Adjustments
   public void adjustLives(int lifeAdjustment) {
-    System.out.println("LIFE ADJUST: " + lifeAdjustment);
+    //System.out.println("LIFE ADJUST: " + lifeAdjustment);
     myLivesRemaining += lifeAdjustment;
     myUser.adjustLives(lifeAdjustment);
     checkEndLevel();
