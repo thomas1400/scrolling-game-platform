@@ -12,7 +12,8 @@ import ooga.model.entity.Entity;
 public class InputManager {
   Entity myMainEntity;
   private ResourceBundle myUserInputsResources;
-  private static final String UserInputResources = "gamedata/mario/userinput/userinput";
+  private static final String GAME_TYPE = "mario";
+  private static final String UserInputResources = "gamedata/"+GAME_TYPE+"/userinput/userinput";
   private Set<String> keysCurrentlyPressed;
   private static final String REPEAT_ACTION = "ONREPEAT";
   private static final String REPEAT = "repeat";

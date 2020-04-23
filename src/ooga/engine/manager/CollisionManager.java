@@ -10,7 +10,10 @@ import ooga.utility.event.CollisionEvent;
 
 public class CollisionManager {
   private ResourceBundle myCollisionLocationResources;
-  private static final String CollisionLocationResources = "gamedata/mario/entities/collisions/CollisionLocation";
+
+  private static final String GAME_TYPE = "mario";
+  private static final String CollisionLocationResources = "gamedata/"+GAME_TYPE+"/entities"
+      + "/collisions/CollisionLocation";
   private static final String MINX_MAXX = "minXmaxX";
   private static final String MINY_MAXY = "minYmaxY";
   private static final String MAXX_MINX = "maxXminX";

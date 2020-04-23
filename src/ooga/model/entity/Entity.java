@@ -21,7 +21,9 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
 
   private static final String HARMLESS = "Harmless";
   private static final String DEFAULT_PACKAGE_CONTENT = "empty 0";
-  private static final String COLLISIONS_HANDLING_PATH = "gamedata/mario/entities/collisions/";
+  private static final String GAME_TYPE = "mario";
+  private static final String COLLISIONS_HANDLING_PATH = "gamedata/"+GAME_TYPE+"/entities"
+      + "/collisions/";
   private static final String ADD = "add";
   private static final String SCORE = "score";
   private static final String HEALTH = "health";
