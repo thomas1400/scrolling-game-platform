@@ -102,16 +102,15 @@ public class LevelLoop implements Loopable {
 
   private void checkIfLevelShouldEnd() {
     if (mainEntity.endedLevel()) {
-      if (mainEntity.isSuccess()) {
-        myLevelController.handleWin();
-      } else {
-        System.out.println("DEAD");
-        myLevelController.adjustLives(-1);
-      }
+      myLevelController.handleWin();
     }
   }
 
   private void checkForLifeUpdates() {
+    if(mainEntity.getLives()>0){
+      myLevelController.adjustLives((int) mainEntity.getLives());
+      //set lives to zero
+    }
     if (mainEntity.isDead()) {
       myLevelController.adjustLives(-1);
       mainEntity.revive();
@@ -124,7 +123,6 @@ public class LevelLoop implements Loopable {
       mainEntity.setScore(0);
     }
   }
-
 
   private void sendEntities(){
     if(myEntityManager.getAddedEntities().size()!=0) {
