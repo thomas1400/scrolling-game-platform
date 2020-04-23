@@ -129,15 +129,12 @@ public class LevelSelectorTool extends Pane {
     // for each level in myLevels
     // only show the level if completedLevels contains a level that connects to it
     for (int i = 0; i < numLevels; i++) {
-      int levelNum = i+1;
       if (myCompletedLevels.contains(i) || i == 0) {
         myUnlockedLevels.add(i);
       }
       for (int completed : myCompletedLevels) {
-        if (completed < numLevels) {
-          if (adjacency[completed][i]) {
-            myUnlockedLevels.add(i);
-          }
+        if (completed < numLevels && adjacency[completed][i]) {
+          myUnlockedLevels.add(i);
         }
       }
     }

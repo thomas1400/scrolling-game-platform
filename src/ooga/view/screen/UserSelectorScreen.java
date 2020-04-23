@@ -6,12 +6,10 @@ import ooga.view.dynamicUI.UserSelector;
 
 public class UserSelectorScreen extends Screen {
 
-  private UserList myUsers;
   private UserSelector us;
 
   public UserSelectorScreen(ScreenController controller, UserList users) {
     super(controller);
-    myUsers = users;
     us = new UserSelector(controller.getUsers());
 
     dynamicNodes.put("user-selector", us);
