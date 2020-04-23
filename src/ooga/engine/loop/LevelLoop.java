@@ -112,9 +112,9 @@ public class LevelLoop implements Loopable {
       myLevelController.adjustLives(-1);
       mainEntity.revive();
     }
-    if(mainEntity.getLives()>0){
-      myLevelController.adjustLives((int) mainEntity.getLives());
-      //mainEntity.setlives(0);
+    if(mainEntity.getLives()>1){
+      myLevelController.adjustLives((int) mainEntity.getLives()-1);
+      mainEntity.setLives(1);
     }
   }
 
