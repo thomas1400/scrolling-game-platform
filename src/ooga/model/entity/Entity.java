@@ -21,7 +21,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
 
   private static final String HARMLESS = "Harmless";
   private static final String DEFAULT_PACKAGE_CONTENT = "empty 0";
-  private static final String COLLISIONS_HANDLING_PATH = "entities/collisions/";
+  private static final String COLLISIONS_HANDLING_PATH = "gamedata/mario/entities/collisions/";
   private static final String ADD = "add";
   private static final String SCORE = "score";
   private static final String HEALTH = "health";
@@ -283,7 +283,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     health.hit();
     dead = health.isDead();
   }
-
+  
   //used for reflection DO NOT DELETE
   /**
    * chooses which bounce method to use based on which speed is greater; x or y

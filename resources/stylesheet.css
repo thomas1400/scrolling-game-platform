@@ -76,7 +76,7 @@
  ********************************************************/
 
 .home-screen-splash {
-  -fx-background-image: url(images/gameBackground.png);
+  -fx-background-image: url(/gamedata/mario/gameBackground.png);
   -fx-background-size: cover;
   -fx-border-color: -fx-accent;
   -fx-border-width: 2px;
@@ -208,6 +208,29 @@
 }
 
 .user-selector .scroll-pane {
+  -fx-font-size: 16pt;
+}
+
+
+/********************************************************
+ *                                                      *
+ *            Game Selection Screen Styling             *
+ *                                                      *
+ ********************************************************/
+
+.game-selector .label {
+  -fx-font-size: 16pt;
+}
+
+.game-selection-screen .label .text {
+  -fx-font-size: 16pt;
+}
+
+.game-selector .scroll-pane .games {
+  -fx-padding: 5 5 10 5;
+}
+
+.game-selector .scroll-pane {
   -fx-font-size: 16pt;
 }
 
