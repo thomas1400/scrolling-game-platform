@@ -57,9 +57,7 @@ public class User {
   }
 
   public Image getImage() {
-    //FIXME
-    //return new Image(myImageFileName);
-    return null;
+    return new Image("userdata/images/" + myImageFileName);
   }
 
   public void setImage(String imageFileName) {
