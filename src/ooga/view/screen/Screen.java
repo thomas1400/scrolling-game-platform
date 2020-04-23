@@ -7,29 +7,23 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import ooga.controller.ScreenController;
+import ooga.exceptions.ExceptionFeedback;
 import ooga.view.fxlr.FXLRParser;
 
 public abstract class Screen extends Pane {
 
   private static final int PREF_WIDTH = 800, PREF_HEIGHT = 600;
-  static final String FONT_FAMILY = "Cambria";
-  static final int TITLE_FONT_SIZE = 40;
-  static final int BUTTON_FONT_SIZE = 20;
-  static final int DETAIL_FONT_SIZE = 14;
-  static final double PADDING = 10.0;
 
   private static final String RESOURCES_PATH = "ooga.view.resources.";
   private static final String RESOURCES_SUFFIX = "Text";
   private static final String BUTTON_ACTIONS_SUFFIX = "Buttons";
 
-  protected double workingHeight, workingWidth;
   protected ScreenController controller;
-  protected ResourceBundle buttonActions;
+  private ResourceBundle buttonActions;
   protected ResourceBundle resources;
-  protected Map<String, Node> dynamicNodes;
+  Map<String, Node> dynamicNodes;
 
   public Screen(ScreenController controller) {
     this.controller = controller;
@@ -38,7 +32,7 @@ public abstract class Screen extends Pane {
     initializeScreen();
   }
 
-  protected void initializeResources() {
+  private void initializeResources() {
     resources = ResourceBundle.getBundle(
         RESOURCES_PATH + this.getClass().getSimpleName() + RESOURCES_SUFFIX
     );
@@ -47,7 +41,7 @@ public abstract class Screen extends Pane {
     );
   }
 
-  protected void initializeScreen() {
+  private void initializeScreen() {
     this.setPrefSize(PREF_WIDTH, PREF_HEIGHT);
   }
 
@@ -56,14 +50,11 @@ public abstract class Screen extends Pane {
       new FXLRParser().loadFXLRLayout(this,
           new File("resources/view/" + this.getClass().getSimpleName() + ".fxlr"));
     } catch (FileNotFoundException e) {
-      // FIXME : remove
-      e.printStackTrace();
+      ExceptionFeedback.throwBreakingException(e,
+          "Resources file not found for screen " + this.getClass().getSimpleName() + ". " +
+              "Unable to display application."
+      );
     }
-  }
-
-  protected void setWorkingDimensions(int vPanels, int hPanels) {
-    workingHeight = this.getPrefHeight() - (vPanels+1) * PADDING;
-    workingWidth = this.getPrefWidth() - (hPanels+1) * PADDING;
   }
 
   public void handleButtonPress(String tag) {
@@ -78,8 +69,8 @@ public abstract class Screen extends Pane {
             // invoke named method with null parameters for button action
             this.getClass().getDeclaredMethod(method).invoke(this);
           } catch (Exception e) {
-            // FIXME : remove printStackTrace()
-            e.printStackTrace();
+            ExceptionFeedback.throwBreakingException(e,
+                "Unable to perform button action for button tag " + tag + ".");
           }
         }
       }
