@@ -18,6 +18,7 @@ import ooga.controller.users.User;
 import ooga.controller.users.UserList;
 import ooga.exceptions.ExceptionFeedback;
 import ooga.view.screen.GameScreen;
+import ooga.view.screen.GameSelectionScreen;
 import ooga.view.screen.HelpScreen;
 import ooga.view.screen.HomeScreen;
 import ooga.view.screen.LevelBuilderScreen;
@@ -74,12 +75,14 @@ public class ScreenController{
     Screen myUserSelectorScreen = new UserSelectorScreen(this, myUsers);
     Screen myHomeScreen = new HomeScreen(this);
     Screen myHelpScreen = new HelpScreen(this);
+    Screen myGameSelectionScreen = new GameSelectionScreen(this);
 
     myScreens.put("HomeScreen", myHomeScreen);
     myScreens.put("UserSelectorScreen", myUserSelectorScreen);
     myScreens.put("LevelSelectorScreen", myLevelSelectorScreen);
     myScreens.put("UserCreationScreen", myUserCreationScreen);
     myScreens.put("HelpScreen", myHelpScreen);
+    myScreens.put("GameSelectionScreen", myGameSelectionScreen);
   }
 
   public void switchToScreen(String screenName){
@@ -170,5 +173,9 @@ public class ScreenController{
 
   public void setPhysicsOption(String selected) {
     // TODO : set physics option
+  }
+
+  public void setGame(String selected) {
+    // TODO : set the game option here!
   }
 }
