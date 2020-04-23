@@ -3,27 +3,33 @@ id:0001
 mainTitle:Flappy
 subTitle:Tutorial
 gameType:flappy
-scrollType:horizontal
+scrollType:right
 deathsAllowed:1
-backgroundImage:images/gameBackground.png
+backgroundImage:images/FlappyBackground.png
 levelWidth:50
 levelHeight:12
 #ENTITIES
-F:Flag
-P:Brick
-X:Player
+X:Birdie
+L:LeftPipe
+R:RightPipe
+0:UpperRightPipe
+1:UpperLeftPipe
+2:LowerLeftPipe
+3:LowerRightPipe
+C:Coin
 G:Ground
+E:EndLevelLine
 #LEVEL
-. . . . . . . . . . P P . . . . . . . . P P . . . . . . . . P P . . . . . . . . P P . . . . . . . .
-. . . . . . . . . . P P . . . . . . . . P P . . . . . . . . . . . . . . . . . . P P . . . . . . . .
-. . . . . . . . . . . . . . . . . . . . P P . . . . . . . . . . . . . . . . . . P P . . . . . . . .
-. . . . . . . . . . . . . . . . . . . . P P . . . . . . . . . . . . . . . . . . P P . . . . . . . .
-. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . P P . . . . . . . .
-. . X . . . . . . . . . . . . . . . . . . . . . . . . . . . P P . . . . . . . . P P . . . . . . . .
-. . . . . . . . . . P P . . . . . . . . . . . . . . . . . . P P . . . . . . . . P P . . . . . . . .
-. . . . . . . . . . P P . . . . . . . . . . . . . . . . . . P P . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . P P . . . . . . . . P P . . . . . . . . P P . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . P P . . . . . . . . P P . . . . . . . . P P . . . . . . . . . . . . . . . . . .
-. . . . . . . . . . P P . . . . . . . . P P . . . . . . . . P P . . . . . . . . . . . . . . . F . .
-G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6
+. . . . . . . . . . L R . . . . . . . . L R . . . . . . . . 1 0 . . . . . . . . L R . . . . . E . .
+. . . . . . . . . . 1 0 . . . . . . . . L R . . . . C . . . . . . . . . . C . . L R . . . C . E . .
+. . . . . . . . . . . . . . . . . . . . L R . . . . . . . . . . . . . . . . . . L R . C . . . E . .
+. . . . . . . . . . . . . . . . . . . . 1 0 . . . . . . . . . . . . . . . . . . L R . . . C . E . .
+. . . . . . . . . . . . . . . . C . . . . . . . . . . . . . . . . . . . . . . . L R . C . . . E . .
+. . X . . . . . . . . . . . . . . . . . . . . . . . . . . . 2 3 . . . . . . . . L R . . . . . E . .
+. . . . . . . . . . 2 3 . . . . . . . . . . . . . . . . . . L R . . . . . . . . L R . . . . . E . .
+. . . . . . . . . . L R . . . . . . . . . . . . . . . . . . L R . . . . . . . . . . . . . . . E . .
+. . . . . . . . . . L R . . . . . . . . 2 3 . . . . . . . . L R . . . C . . . . . . . . . . . E . .
+. . . . . . . . . . L R . . . . . . . . L R . . . C . . . . L R . . . . . . . . . . . . . . . E . .
+. . . . . . . . . . L R . . . . . . . . L R . . . . . . . . L R . . . . . . . . . . . . . . . E . .
+G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G
 #END
