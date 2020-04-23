@@ -1,10 +1,18 @@
 package ooga.exceptions;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import javafx.application.Platform;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class ExceptionFeedback {
 
@@ -17,26 +25,20 @@ public class ExceptionFeedback {
    * @param message message to include
    */
   public static void throwBreakingException(Exception e, String message) {
-    ButtonType quit = new ButtonType("QUIT", ButtonData.OK_DONE);
-    showAlert(e.getClass().getSimpleName(), message, quit, true);
-
-    //todo GET RID OF THIS PRINT OF STACK TRACE!!!
-    e.printStackTrace();
+    JOptionPane.showConfirmDialog(new JFrame(),
+        message,
+        e.getClass().getSimpleName(), JOptionPane.DEFAULT_OPTION);
+    System.exit(0);
   }
 
   public static void throwHandledException(Exception e, String message) {
     ButtonType close = new ButtonType("CLOSE", ButtonData.OK_DONE);
-    showAlert(e.getClass().getSimpleName(), message, close, false);
+    showAlert(e.getClass().getSimpleName(), message, close);
   }
 
-  private static void showAlert(String header, String message, ButtonType buttonType, boolean breaking) {
+  private static void showAlert(String header, String message, ButtonType buttonType) {
     Alert alert = new Alert(AlertType.ERROR, "", buttonType);
     alert.setHeaderText(header);
-    if (breaking) {
-      alert.setOnCloseRequest(e -> {
-        System.exit(-1);
-      });
-    }
 
     StringBuilder sb = new StringBuilder(message);
     for (int i = 0; i < message.length(); i += MESSAGE_LINE_LENGTH) {
@@ -45,6 +47,7 @@ public class ExceptionFeedback {
 
     Label t = new Label(sb.toString());
     alert.getDialogPane().setContent(t);
+
     alert.show();
   }
 }
