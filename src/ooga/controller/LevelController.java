@@ -95,9 +95,7 @@ public class LevelController implements GameLevel{
   public void handleKeyReleased(KeyEvent keyEvent) { myLevelLoop.processKeyRelease(keyEvent); }
 
   //LevelLoop State Handling
-  public void beginLevel() {
-    myLevelLoop.begin();
-  }
+  public void beginLevel() { myLevelLoop.begin(); }
   public void pauseLevel() {
     myLevelLoop.pause();
   }
