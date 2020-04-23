@@ -33,7 +33,7 @@ public class LevelSelectorScreen extends Screen {
       // this in a loop for all level types, which I envision being passed to you slightly
       // differently in your constructor... possibly a Map of levels with keys corresponding to
       // their string level type. Lmk what you think -from Grant
-      final String GAME_TYPE = "gamedata/mario";
+      final String GAME_TYPE = "mario";
       LevelProgressBar lpb = new LevelProgressBar(resources.getString("progress"),
           user.getLevelsCompleted(GAME_TYPE).size(), myLevels.size());
       lst = new LevelSelectorTool(levels, LEVEL_GRAPH_FILE, LEVEL_MAP_FILE,

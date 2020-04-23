@@ -15,8 +15,8 @@ import ooga.model.entity.Entity;
 public class User {
 
   private static final int POINTS_TO_LIFE_RATIO = 100;
-  private static final List<String> ALL_GAME_TYPES = Arrays.asList("gamedata/mario",
-      "gamedata/flappy", "gamedata/doodle");
+  private static final List<String> ALL_GAME_TYPES = Arrays.asList("mario",
+      "flappy", "doodle");
 
   private String myName;
   private String myImageFileName;
@@ -72,6 +72,7 @@ public class User {
   public void unlockNextLevel(String gameType, int currentLevel) {
     System.out.println(gameType);
     System.out.println(currentLevel);
+    System.out.println(myAllGameLevels.keySet());
     myAllGameLevels.get(gameType).add(currentLevel);
   }
 
