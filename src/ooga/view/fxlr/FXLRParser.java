@@ -42,26 +42,27 @@ public class FXLRParser {
   private static final char PACKAGE_CLOSE_CHAR = '>';
   private static final String STYLECLASS_ATTR_TAG = "style";
   private static final String ACTION_EVENT_TAG = "actionTag";
-  private static final char RELATIVE_SIZE_CHAR = '%';
-  private static final String WIDTH_STRING = "width";
-  private static final String HEIGHT_STRING = "height";
+  static final char RELATIVE_SIZE_CHAR = '%';
+  static final String WIDTH_STRING = "width";
+  static final String HEIGHT_STRING = "height";
   private static final String DYNAMIC_UI_PACKAGE = "ooga.view.dynamicUI";
+
 
   private FXGraphBuilder gb;
   private List<String> packages;
 
-  public FXLRParser() {
-    gb = new FXGraphBuilder();
-  }
+  public FXLRParser() { }
 
-  public void loadFXLRLayout(Screen root, File file) throws FileNotFoundException {
+  public Screen loadFXLRLayout(Screen root, File file) throws FileNotFoundException {
     packages = new ArrayList<>();
+    gb = new FXGraphBuilder();
     gb.setRoot(root);
 
     Scanner s = new Scanner(file);
 
     while (s.hasNextLine()) {
       String line = s.nextLine().strip().trim();
+      String[] words = line.split("\\s+");
 
       // skip empty lines
       if (line.length() <= 0) {
@@ -91,6 +92,7 @@ public class FXLRParser {
     }
 
     s.close();
+    return gb.getRoot();
   }
 
   private void loadPackage(String line) {
@@ -99,48 +101,42 @@ public class FXLRParser {
 
   private void instantiateNode(String line) {
     String className = line.split("\\s+")[0]
-            .replace(Character.toString(NODE_CLOSE_CHAR), "")
-            .replace(Character.toString(NODE_OPEN_CHAR), "");
+        .replace(Character.toString(NODE_CLOSE_CHAR), "")
+        .replace(Character.toString(NODE_OPEN_CHAR), "");
 
     for (String packageName : packages) {
       try {
-        if (loadNodeFromPackage(line, className, packageName)) return;
+        Node node;
+        if (packageName.equals(DYNAMIC_UI_PACKAGE)) {
+          node = gb.getRoot()
+              .getDynamicUIElement(className);
+          if (node == null) {
+            continue;
+          }
+        } else {
+          node = (Node) Class.forName(packageName + "." + className).getDeclaredConstructor()
+              .newInstance();
+        }
+
+        // set attributes
+        if (line.indexOf(' ') != -1 && line.indexOf(' ') < line.indexOf(NODE_CLOSE_CHAR)) {
+          String attrLine = line.substring(line.indexOf(' ') + 1, line.indexOf(NODE_CLOSE_CHAR));
+          setAttributes(node, attrLine);
+        }
+
+        gb.addChild(node);
+
+        if (line.charAt(line.length() - 1) == CHILDREN_OPEN_CHAR) {
+          gb.branchOn(node);
+        }
+
+        return;
       } catch (InvocationTargetException e) {
         ExceptionFeedback.throwHandledException(new FXLRException(), "Unknown exception in parsing FXLR.");
       } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException ignored) {}
     }
 
     (new ClassNotFoundException("Class not found for classname " + className)).printStackTrace();
-  }
-
-  private boolean loadNodeFromPackage(String line, String className, String packageName)
-      throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-
-    Node node;
-    if (packageName.equals(DYNAMIC_UI_PACKAGE)) {
-      node = gb.getRoot()
-          .getDynamicUIElement(className);
-      if (node == null) {
-        return false;
-      }
-    } else {
-      node = (Node) Class.forName(packageName + "." + className).getDeclaredConstructor()
-          .newInstance();
-    }
-
-    // set attributes
-    if (line.indexOf(' ') != -1 && line.indexOf(' ') < line.indexOf(NODE_CLOSE_CHAR)) {
-      String attrLine = line.substring(line.indexOf(' ') + 1, line.indexOf(NODE_CLOSE_CHAR));
-      setAttributes(node, attrLine);
-    }
-
-    gb.addChild(node);
-
-    if (line.charAt(line.length() - 1) == CHILDREN_OPEN_CHAR) {
-      gb.branchOn(node);
-    }
-
-    return true;
   }
 
   private void setAttributes(Node node, String attrLine) {
@@ -238,7 +234,12 @@ public class FXLRParser {
   }
 
   private Object parseNodeArgument(String argString) {
-    return new ImageView(new Image(new File(gb.getRoot().getResource(argString)).toURI().toString()));
+    Object arg;
+    ImageView imageView = new ImageView(new Image(new File(gb.getRoot().getResource(argString)).toURI().toString()));
+    imageView.setFitWidth(20);
+    imageView.setFitHeight(20);
+    arg = imageView;
+    return arg;
   }
 
   private Object parseInsetsArgument(String[] argStrings) {

@@ -1,6 +1,6 @@
 #User properties file for user: Thoooomas
 #Fri Apr 17 03:05:28 EDT 2020
-image=users/images/thomas.jpeg
+image=thomas.jpeg
 games=mario,flappy,doodle
 marioLevels=0,1,2,3
 flappyLevels=0,1

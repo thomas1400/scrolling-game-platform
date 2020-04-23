@@ -57,7 +57,6 @@ public final class LevelBuilder {
 
     Map<String, String> sectionMap = new HashMap<>();
 
-    System.out.println(levelFile);
     Scanner sc = new Scanner(levelFile);
     moveToSection(sectionTag, sc);
 

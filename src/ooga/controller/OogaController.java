@@ -6,15 +6,13 @@ import java.io.FilenameFilter;
 import java.util.ResourceBundle;
 import javafx.stage.Stage;
 import ooga.controller.levels.BasicLevelList;
-import ooga.controller.users.User;
 import ooga.controller.users.UserList;
 
 public class OogaController {
 
   private static final String USER_FILE_EXTENSION = ".user";
-  public static final String USERS_PATH_NAME = "resources/users";
-  private static final String LEVEL_FILE_EXTENSION = ".level";
-  public static final String LEVEL_PATH_NAME = "resources/levels";
+  public static final String USERS_PATH_NAME = "data/userdata";
+  private static final String GAME_TYPE = "mario";
 
   private UserList myUsers = new UserList();
   private BasicLevelList myLevels = new BasicLevelList();
@@ -47,13 +45,15 @@ public class OogaController {
   }
 
   private void loadLevels() throws FileNotFoundException {
-    ResourceBundle myLevelsBundle = ResourceBundle.getBundle("levels/resources/levelOrder");
+    ResourceBundle myLevelsBundle = ResourceBundle.getBundle(
+        "gamedata/mario/levels/resources/levelOrder");
 
     String[] levelNumbers = myLevelsBundle.getString("levelNumbers").split(",");
 
     for (String levelNumberString : levelNumbers) {
       int levelNumber = Integer.parseInt(levelNumberString);
-      File levelFile = new File("resources/levels/" + myLevelsBundle.getString(levelNumberString) +
+      File levelFile =
+          new File("data/gamedata/"+GAME_TYPE+"/levels/" + myLevelsBundle.getString(levelNumberString) +
           ".level");
       myLevels.addBasicLevel(LevelBuilder.buildBasicLevel(levelNumber, levelFile));
     }
