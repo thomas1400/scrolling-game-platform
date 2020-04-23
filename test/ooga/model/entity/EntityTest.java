@@ -20,11 +20,11 @@ class EntityTest extends ApplicationTest {
 
   @Test
   void testHandleCollisionHealth() {
-    Entity mario = EntityBuilder.getEntity("Player");
-    Entity brick = EntityBuilder.getEntity("Brick");
-    Entity goomba = EntityBuilder.getEntity("Goomba");
-    Entity ground = EntityBuilder.getEntity("Ground");
-    Entity coin = EntityBuilder.getEntity("Coin");
+    Entity mario = EntityBuilder.getEntity("Player", "mario");
+    Entity brick = EntityBuilder.getEntity("Brick", "mario");
+    Entity goomba = EntityBuilder.getEntity("Goomba", "mario");
+    Entity ground = EntityBuilder.getEntity("Ground", "mario");
+    Entity coin = EntityBuilder.getEntity("Coin", "mario");
 
     CollisionEvent sideDamage = new CollisionEvent("Side", "Damage", goomba);
     CollisionEvent topDamage = new CollisionEvent("Top", "Damage", goomba);
@@ -45,55 +45,55 @@ class EntityTest extends ApplicationTest {
     mario.handleCollision(sideDamage);
     assertEquals(true, mario.isDead());
 
-    mario = EntityBuilder.getEntity("Player");
+    mario = EntityBuilder.getEntity("Player", "mario");
     mario.handleCollision(topDamage);
     assertEquals(true, mario.isDead());
 
-    mario = EntityBuilder.getEntity("Player");
+    mario = EntityBuilder.getEntity("Player", "mario");
     mario.handleCollision(bottomDamage);
     assertEquals(false, mario.isDead());
 
-    mario = EntityBuilder.getEntity("Player");
+    mario = EntityBuilder.getEntity("Player", "mario");
     mario.handleCollision(sideBounce);
     assertEquals(false, mario.isDead());
 
-    mario = EntityBuilder.getEntity("Player");
+    mario = EntityBuilder.getEntity("Player", "mario");
     mario.handleCollision(topBounce);
     assertEquals(false, mario.isDead());
 
-    mario = EntityBuilder.getEntity("Player");
+    mario = EntityBuilder.getEntity("Player", "mario");
     mario.handleCollision(bottomBounce);
     assertEquals(false, mario.isDead());
 
-    mario = EntityBuilder.getEntity("Player");
+    mario = EntityBuilder.getEntity("Player", "mario");
     mario.handleCollision(sideSupport);
     assertEquals(false, mario.isDead());
 
-    mario = EntityBuilder.getEntity("Player");
+    mario = EntityBuilder.getEntity("Player", "mario");
     mario.handleCollision(bottomSupport);
     assertEquals(false, mario.isDead());
 
-    mario = EntityBuilder.getEntity("Player");
+    mario = EntityBuilder.getEntity("Player", "mario");
     mario.handleCollision(topSupport);
     assertEquals(false, mario.isDead());
 
-    mario = EntityBuilder.getEntity("Player");
+    mario = EntityBuilder.getEntity("Player", "mario");
     mario.handleCollision(sideCollectible);
     assertEquals(false, mario.isDead());
 
-    mario = EntityBuilder.getEntity("Player");
+    mario = EntityBuilder.getEntity("Player", "mario");
     mario.handleCollision(bottomCollectible);
     assertEquals(false, mario.isDead());
 
-    mario = EntityBuilder.getEntity("Player");
+    mario = EntityBuilder.getEntity("Player", "mario");
     mario.handleCollision(topCollectible);
     assertEquals(false, mario.isDead());
   }
 
   @Test
   void testCollectionPoints(){
-    Entity player = EntityBuilder.getEntity("Player");
-    Entity coin = EntityBuilder.getEntity("Coin");
+    Entity player = EntityBuilder.getEntity("Player", "mario");
+    Entity coin = EntityBuilder.getEntity("Coin", "mario");
 
     CollisionEvent coinSideCE = new CollisionEvent("Side", coin.getAttack("Side"), coin);
     CollisionEvent playerSideCE = new CollisionEvent("Side", player.getAttack("Side"), player);
@@ -102,8 +102,8 @@ class EntityTest extends ApplicationTest {
     assertEquals(100, player.getScore());
     assertEquals(0, coin.getScore());
 
-    player = EntityBuilder.getEntity("Player");
-    coin = EntityBuilder.getEntity("Coin");
+    player = EntityBuilder.getEntity("Player", "mario");
+    coin = EntityBuilder.getEntity("Coin", "mario");
     CollisionEvent coinTopCE = new CollisionEvent("Top", coin.getAttack("Bottom"), coin);
     CollisionEvent playerBottomCE = new CollisionEvent("Bottom", player.getAttack("Top"), player);
     player.handleCollision(coinTopCE);
@@ -112,8 +112,8 @@ class EntityTest extends ApplicationTest {
     assertEquals(0, coin.getScore());
 
 
-    player = EntityBuilder.getEntity("Player");
-    coin = EntityBuilder.getEntity("Coin");
+    player = EntityBuilder.getEntity("Player", "mario");
+    coin = EntityBuilder.getEntity("Coin", "mario");
     CollisionEvent coinBottomCE = new CollisionEvent("Bottom", coin.getAttack("Top"), coin);
     CollisionEvent playerTopCE = new CollisionEvent("Top", player.getAttack("Bottom"), player);
     player.handleCollision(coinBottomCE);
@@ -121,7 +121,7 @@ class EntityTest extends ApplicationTest {
     assertEquals(100, player.getScore());
     assertEquals(0, coin.getScore());
 
-    coin = EntityBuilder.getEntity("Coin");
+    coin = EntityBuilder.getEntity("Coin", "mario");
     coinBottomCE = new CollisionEvent("Bottom", coin.getAttack("Top"), coin);
     player.handleCollision(coinBottomCE);
     coin.handleCollision(playerTopCE);
@@ -131,8 +131,8 @@ class EntityTest extends ApplicationTest {
 
   @Test
   void testCollectionLife(){
-    Entity player = EntityBuilder.getEntity("Player");
-    Entity lifeMushroom = EntityBuilder.getEntity("LifeMushroom");
+    Entity player = EntityBuilder.getEntity("Player", "mario");
+    Entity lifeMushroom = EntityBuilder.getEntity("LifeMushroom", "mario");
     CollisionEvent lifeMushroomSideCE = new CollisionEvent("Side", lifeMushroom.getAttack("Side"), lifeMushroom);
     CollisionEvent playerSideCE = new CollisionEvent("Side", player.getAttack("Side"), player);
 
@@ -141,7 +141,7 @@ class EntityTest extends ApplicationTest {
     assertEquals(2, player.getLives());
     assertTrue(lifeMushroom.isDead());
 
-    lifeMushroom = EntityBuilder.getEntity("LifeMushroom");
+    lifeMushroom = EntityBuilder.getEntity("LifeMushroom", "mario");
     CollisionEvent lifeMushroomTopCE = new CollisionEvent("Top", lifeMushroom.getAttack("Bottom"), lifeMushroom);
     CollisionEvent playerBottomCE = new CollisionEvent("Bottom", player.getAttack("Top"), player);
     player.handleCollision(lifeMushroomTopCE);
@@ -149,7 +149,7 @@ class EntityTest extends ApplicationTest {
     assertEquals(3, player.getLives());
     assertTrue(lifeMushroom.isDead());
 
-    lifeMushroom = EntityBuilder.getEntity("LifeMushroom");
+    lifeMushroom = EntityBuilder.getEntity("LifeMushroom", "mario");
     CollisionEvent lifeMushroomBottomCE = new CollisionEvent("Bottom", lifeMushroom.getAttack("Top"), lifeMushroom);
     CollisionEvent playerTopCE = new CollisionEvent("Top", player.getAttack("Bottom"), player);
     player.handleCollision(lifeMushroomBottomCE);
@@ -160,8 +160,8 @@ class EntityTest extends ApplicationTest {
 
   @Test
   void testLevelEndAndSuccess(){
-    Entity player = EntityBuilder.getEntity("Player");
-    Entity flag = EntityBuilder.getEntity("Flag");
+    Entity player = EntityBuilder.getEntity("Player", "mario");
+    Entity flag = EntityBuilder.getEntity("Flag", "mario");
 
     CollisionEvent playerSideCE = new CollisionEvent("Side", player.getAttack("Side"), player);
     CollisionEvent flagSideCE = new CollisionEvent("Side", flag.getAttack("Side"), flag);
@@ -172,8 +172,8 @@ class EntityTest extends ApplicationTest {
     assertTrue(player.endedLevel());
     assertTrue(player.isSuccess());
 
-    player = EntityBuilder.getEntity("Player");
-    Entity goomba = EntityBuilder.getEntity("Goomba");
+    player = EntityBuilder.getEntity("Player", "mario");
+    Entity goomba = EntityBuilder.getEntity("Goomba", "mario");
 
     CollisionEvent sideDamage = new CollisionEvent("Side", "Damage", goomba);
 
@@ -186,10 +186,10 @@ class EntityTest extends ApplicationTest {
 
   @Test
   void testHandleCollisionBounce(){
-    Entity player = EntityBuilder.getEntity("Player");
-    Entity goomba = EntityBuilder.getEntity("Goomba");
-    Entity brick = EntityBuilder.getEntity("Brick");
-    Entity coin = EntityBuilder.getEntity("Coin");
+    Entity player = EntityBuilder.getEntity("Player", "mario");
+    Entity goomba = EntityBuilder.getEntity("Goomba", "mario");
+    Entity brick = EntityBuilder.getEntity("Brick", "mario");
+    Entity coin = EntityBuilder.getEntity("Coin", "mario");
 
     CollisionEvent brickSideCE = new CollisionEvent("Side", brick.getAttack("Side"), brick);
     CollisionEvent brickTopCE = new CollisionEvent("Top", brick.getAttack("Bottom"), brick);

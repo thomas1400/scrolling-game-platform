@@ -46,7 +46,7 @@ public class OogaController {
 
   private void loadLevels() throws FileNotFoundException {
     ResourceBundle myLevelsBundle = ResourceBundle.getBundle(
-        "gamedata/mario/levels/resources/levelOrder");
+        "gamedata/"+GAME_TYPE+"/levels/resources/levelOrder");
 
     String[] levelNumbers = myLevelsBundle.getString("levelNumbers").split(",");
 

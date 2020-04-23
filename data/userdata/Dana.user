@@ -8,5 +8,4 @@ doodleLevels=0
 name=Dana
 games=flappy,mario,doodle
 flappyLevels=0,1
-power=fire
 points=96

@@ -10,10 +10,7 @@ import ooga.model.ability.Ability;
 
 public class EntityBuilder {
 
-  private static final String GAME_TYPE = "mario";
-
   private static final String ABILITY_PACKAGE = "ooga.model.ability.";
-  private static final String STATS_PACKAGE_NAME = "gamedata/" + GAME_TYPE + "/entities/behavior/";
   public static final String IMAGE_KEY = "Image";
 
 
@@ -56,13 +53,16 @@ public class EntityBuilder {
    * @param statsFilename file name for the entity stat resource file
    * @return created entity
    */
-  public static Entity getEntity(String statsFilename) {
+  public static Entity getEntity(String statsFilename, String gameType) {
     try {
-      ResourceBundle resources = ResourceBundle.getBundle(STATS_PACKAGE_NAME + statsFilename);
-      //System.out.println(resources.getString(IMAGE_KEY));
+      String gameSpecificFilePath = "gamedata/" + gameType + "/entities/";
+
+      ResourceBundle resources =
+          ResourceBundle.getBundle(gameSpecificFilePath + "behavior/" + statsFilename);
+
       Image image =
-          new Image("gamedata/" + GAME_TYPE + "/entities/images/" + resources.getString(IMAGE_KEY));
-      Entity entity = new Entity(image, resources.getString("Image"));
+          new Image(gameSpecificFilePath + "images/" + resources.getString(IMAGE_KEY));
+      Entity entity = new Entity(image, resources.getString("Image"), gameType);
 
       for (String s : Collections.list(resources.getKeys())) {
         //todo remove this if?
@@ -82,10 +82,5 @@ public class EntityBuilder {
       //todo add which type it is
       throw new RuntimeException(e);
     }
-  }
-
-  public static void main(String[] args) {
-    EntityBuilder eb = new EntityBuilder();
-    eb.getEntity("Player");
   }
 }
