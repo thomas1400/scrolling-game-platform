@@ -1,18 +1,17 @@
-/*
+
 package view;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import javafx.scene.control.RadioButton;
-import model.ModelApplicationTest;
 import ooga.Main;
-import ooga.controller.data.BasicLevel;
+import ooga.controller.levels.BasicLevel;
 import ooga.view.dynamicUI.LevelSelectorTool;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
-public class UITest extends ModelApplicationTest {
+public class UITest extends ApplicationTest {
 
   private LevelSelectorTool myLevelSelectorTool;
   private RadioButton myRadioButton;
@@ -38,4 +37,4 @@ public class UITest extends ModelApplicationTest {
 
 
 }
- */
+

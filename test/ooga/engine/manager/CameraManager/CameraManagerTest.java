@@ -4,13 +4,10 @@ import javafx.stage.Stage;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import javafx.scene.Camera;
-import ooga.engine.manager.CameraManager.DirectionControllers.DirectionController;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityBuilder;
 import ooga.model.entity.EntityList;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
 class CameraManagerTest extends ApplicationTest {
@@ -19,13 +16,6 @@ class CameraManagerTest extends ApplicationTest {
   private Entity entity;
   private EntityList entities;
   private CameraManager cm;
-  private double screenHeight;
-  private double screenWidth;
-  private EntityList activatedEntities;
-  private EntityList deactivatedEntities;
-  private EntityList onScreenEntities;
-  private static final String directionControllerResources = "directioncontrollers/directioncontrollers";
-  private DirectionController myDirectionController;
 
   @Override
   public void start(Stage stage) throws Exception {
@@ -41,7 +31,7 @@ class CameraManagerTest extends ApplicationTest {
     entities.addEntity(mainEntity);
     entity = EntityBuilder.getEntity("Brick");
     entities.addEntity(entity);
-    cm = new CameraManager(mainEntity,400, 600, "right", entities);
+    cm = new CameraManager(400, 600, "right", entities);
     cm.initializeActivationStorage();
     cm.initializeActiveEntities(entities);
   }
@@ -75,9 +65,6 @@ class CameraManagerTest extends ApplicationTest {
     EntityList activated= cm.initializeActiveEntities(entities);
     assertTrue(activated.contains(mainEntity));
     assertFalse(activated.contains(entity));
-
-
-
   }
 
   @Test

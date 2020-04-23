@@ -31,7 +31,7 @@ public class ScreenController{
 
   private static final int INITIAL_WINDOW_WIDTH = 800;
   private static final int INITIAL_WINDOW_HEIGHT = 600;
-  public static final String ARTWORK_GOOMBA_PNG = "artwork/goomba.png";
+  public static final String ARTWORK_GOOMBA_PNG = "resources/images/goomba.png";
 
   private Stage myStage;
   private UserList myUsers;
@@ -73,16 +73,14 @@ public class ScreenController{
     Screen myUserCreationScreen = new UserCreationScreen(this);
     Screen myUserSelectorScreen = new UserSelectorScreen(this, myUsers);
     Screen myHomeScreen = new HomeScreen(this);
-    Screen myLevelBuilderScreen = new LevelBuilderScreen(this);
     Screen myHelpScreen = new HelpScreen(this);
 
     myScreens.put("HomeScreen", myHomeScreen);
     myScreens.put("UserSelectorScreen", myUserSelectorScreen);
     myScreens.put("LevelSelectorScreen", myLevelSelectorScreen);
     myScreens.put("UserCreationScreen", myUserCreationScreen);
-    myScreens.put("LevelBuilderScreen", myLevelBuilderScreen);
     myScreens.put("HelpScreen", myHelpScreen);
-  };
+  }
 
   public void switchToScreen(String screenName){
     Scene nextScene = getScene(screenName);
@@ -145,9 +143,7 @@ public class ScreenController{
 
     FadeTransition fade = new FadeTransition(Duration.seconds(0.5), loadingPane);
     doFade(fade);
-    fade.setOnFinished((e) -> {
-      initializeNewLevel(myCurrentLevel);
-    });
+    fade.setOnFinished((e) -> initializeNewLevel(myCurrentLevel));
 
   }
 

@@ -1,0 +1,39 @@
+#HEADER
+mainTitle:Testing Level
+subTitle:Tutorial
+gameType:mario
+scrollType:horizontal
+deathsAllowed:1
+backgroundImage:images/gameBackground.png
+levelWidth:50
+levelHeight:12
+#ENTITIES
+F:Flag
+1:Goomba
+?:QuestionBrick
+B:Brick
+0:Koopa
+T:Brick
+X:Player
+G:Ground
+L:GroundLeft
+R:GroundRight
+C:Coin
+6:GroundCenter
+M:BigMushroom
+I:LifeMushroom
+S:MiniMushroom
+#LEVEL
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+. . X . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+. . . . . . . I . S . M . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+. . . . . B B B B B B B B . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . . . . B B B B B B . . . . . . . . . . . . . . . . L G R . . . . . . . .
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . L G G G 6 6 6 G R . . F . . .
+. . . . . . . C . C . C . . . . . . . . 0 . . . . . . . . . . L G G G 6 6 6 6 6 6 6 6 6 G G G G G G
+G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G G 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6
+#END
