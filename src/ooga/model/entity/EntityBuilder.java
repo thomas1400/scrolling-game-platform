@@ -10,12 +10,11 @@ import ooga.model.ability.Ability;
 
 public class EntityBuilder {
 
-  private static final String ABILITY_PACKAGE = "ooga.model.ability.";
-  private static final String STATS_PACKAGE_NAME = "gamedata/mario/entities/";
-  public static final String IMAGE_KEY = "Image";
+  private static final String GAME_TYPE = "mario";
 
-  //private ResourceBundle resources;
-  //private Entity entity;
+  private static final String ABILITY_PACKAGE = "ooga.model.ability.";
+  private static final String STATS_PACKAGE_NAME = "gamedata/" + GAME_TYPE + "/entities/behavior/";
+  public static final String IMAGE_KEY = "Image";
 
 
   //TODO take out throwing runtime exceptions, throw actual ones
@@ -61,7 +60,8 @@ public class EntityBuilder {
     try {
       ResourceBundle resources = ResourceBundle.getBundle(STATS_PACKAGE_NAME + statsFilename);
       //System.out.println(resources.getString(IMAGE_KEY));
-      Image image = new Image("images/entityimages/marioimages/" + resources.getString(IMAGE_KEY));
+      Image image =
+          new Image("gamedata/" + GAME_TYPE + "/entities/images/" + resources.getString(IMAGE_KEY));
       Entity entity = new Entity(image, resources.getString("Image"));
 
       for (String s : Collections.list(resources.getKeys())) {

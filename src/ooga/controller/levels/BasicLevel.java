@@ -11,6 +11,8 @@ import java.util.Map;
  */
 public class BasicLevel {
 
+  private static final String GAME_TYPE = "mario";
+
   private int myLevelIndex;
   private File myLevelFile;
   private String myGameType;
@@ -26,7 +28,8 @@ public class BasicLevel {
     myGameType = myHeaderInfo.get("gameType");
     myMainTitle = myHeaderInfo.get("mainTitle");
     mySubTitle = myHeaderInfo.get("subTitle");
-    myBackgroundImage = myHeaderInfo.get("backgroundImage");
+    myBackgroundImage = "gamedata/" + GAME_TYPE + "/levels/backgrounds/" + myHeaderInfo.get(
+        "backgroundImage");
   }
 
   public int getLevelIndex() {
