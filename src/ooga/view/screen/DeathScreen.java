@@ -6,15 +6,15 @@ import javafx.scene.paint.Color;
 import ooga.controller.ScreenController;
 import ooga.controller.levels.BasicLevel;
 
-public class LoadingScreen extends Screen {
+public class DeathScreen extends Screen {
 
-  public LoadingScreen(ScreenController controller, Node parent, BasicLevel level) {
+  public DeathScreen(ScreenController controller, Node parent, int livesRemaining) {
     super(controller);
     this.setPrefSize(parent.getLayoutBounds().getWidth(), parent.getLayoutBounds().getHeight());
 
     this.getStyleClass().add("loading-screen");
 
-    dynamicNodes.put("level-label", new Label(level.getMainTitle()));
+    dynamicNodes.put("lives-label", new Label(getResource("lives") + " " + livesRemaining));
 
     loadLayout();
   }
