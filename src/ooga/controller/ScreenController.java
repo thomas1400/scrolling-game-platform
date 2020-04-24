@@ -134,6 +134,9 @@ public class ScreenController{
     Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
     File file = new File("data/stylesheet.css");
     nextScene.getStylesheets().add(file.toURI().toString());
+    File gameSpecificStyle = new File("data/gamedata/" + myGameType + "/gameStyle.css");
+    nextScene.getStylesheets().add(gameSpecificStyle.toURI().toString());
+
     nextScene.setOnKeyPressed(myLevelController::handleKeyPressed);
     nextScene.setOnKeyReleased(myLevelController::handleKeyReleased);
 
