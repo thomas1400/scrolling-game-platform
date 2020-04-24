@@ -119,7 +119,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   private void addHealth(Ability h){
     health = (Health) h;
     myAbilities.put("Health", health);
-    health(0.0);//todo remove magic num
+    health(DEAD);//todo remove magic num
   }
 
   //used for reflection DO NOT DELETE
