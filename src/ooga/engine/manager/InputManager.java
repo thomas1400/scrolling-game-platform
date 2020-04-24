@@ -12,14 +12,14 @@ import ooga.model.entity.Entity;
 public class InputManager {
   Entity myMainEntity;
   private ResourceBundle myUserInputsResources;
+  private static final String UserInputResources = "userinput/userinput";
   private Set<String> keysCurrentlyPressed;
   private static final String REPEAT_ACTION = "ONREPEAT";
   private static final String REPEAT = "repeat";
   private static final String EXCEPTION_MESSAGE = "Incorrect method associated with this key";
 
-  public InputManager(Entity mainEntity, String gameType) {
+  public InputManager(Entity mainEntity) {
     myMainEntity = mainEntity;
-    String UserInputResources = "gamedata/"+gameType+"/userinput/userinput";
     myUserInputsResources = ResourceBundle.getBundle(UserInputResources);
     keysCurrentlyPressed = new HashSet<>();
   }

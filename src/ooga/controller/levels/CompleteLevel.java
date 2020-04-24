@@ -11,7 +11,6 @@ public class CompleteLevel {
   public static final String DEATHS_ALLOWED_IDENTIFIER = "deathsAllowed";
   public static final String LIFE_GAIN_IDENTIFIER = "lifeGain";
   private String myPhysicsType;
-  private String myGameType;
   private String myScrollType;
   private int myDeathsAllowed;
   private boolean lifeGainAllowed;
@@ -20,8 +19,6 @@ public class CompleteLevel {
   private EntityList myEntities;
 
   public CompleteLevel(BasicLevel basicLevel, EntityList levelEntities) {
-
-    myGameType = basicLevel.getGameType();
 
     Map<String, String> headerInfo = basicLevel.getHeaderInfo();
     myPhysicsType = headerInfo.get(PHYSICS_IDENTIFIER);
@@ -44,10 +41,6 @@ public class CompleteLevel {
 
   public String getScrollType() {
     return myScrollType;
-  }
-
-  public String getGameType() {
-    return myGameType;
   }
 
   public int getDeathsAllowed() { return myDeathsAllowed; }

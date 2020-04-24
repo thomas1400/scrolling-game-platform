@@ -4,7 +4,7 @@ subTitle:Tutorial
 gameType:mario
 scrollType:horizontal
 deathsAllowed:1
-backgroundImage:levelBackground.png
+backgroundImage:images/gameBackground.png
 levelWidth:50
 levelHeight:12
 #ENTITIES

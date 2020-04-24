@@ -38,6 +38,7 @@ public final class UserFactory {
 
   private static void addAdditionalProperties(Properties prop, User createdUser,
       Map<String, Set<Integer>> allGameLevels) {
+    createdUser.setPower(prop.getProperty("power"));
     createdUser.setSize(prop.getProperty("size"));
     createdUser.adjustPoints(Integer.parseInt(prop.getProperty("points")));
     createdUser.setAllGameLevels(allGameLevels);
