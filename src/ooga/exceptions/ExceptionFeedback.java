@@ -22,13 +22,13 @@ public class ExceptionFeedback {
     JOptionPane.showConfirmDialog(new JFrame(),
         message,
         e.getClass().getSimpleName(), JOptionPane.DEFAULT_OPTION);
-    e.printStackTrace();
     System.exit(0);
   }
 
   public static void throwHandledException(Exception e, String message) {
-    ButtonType close = new ButtonType("CLOSE", ButtonData.OK_DONE);
-    showAlert(e.getClass().getSimpleName(), message, close);
+    JOptionPane.showConfirmDialog(new JFrame(),
+        message,
+        e.getClass().getSimpleName(), JOptionPane.DEFAULT_OPTION);
   }
 
   private static void showAlert(String header, String message, ButtonType buttonType) {

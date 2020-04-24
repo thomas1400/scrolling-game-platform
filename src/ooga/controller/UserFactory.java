@@ -64,6 +64,7 @@ public final class UserFactory {
     defaultUser.setGameLevels("mario", getSetWithLevelZero());
     defaultUser.setGameLevels("flappy", getSetWithLevelZero());
     defaultUser.setGameLevels("doodlejump", getSetWithLevelZero());
+    defaultUser.setGameLevels("dinorun", getSetWithLevelZero());
     defaultUser.setLives(3);
 
     return defaultUser;
