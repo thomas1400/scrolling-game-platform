@@ -21,7 +21,6 @@ import ooga.view.screen.GameScreen;
 import ooga.view.screen.GameSelectionScreen;
 import ooga.view.screen.HelpScreen;
 import ooga.view.screen.HomeScreen;
-import ooga.view.screen.LevelBuilderScreen;
 import ooga.view.screen.LevelSelectorScreen;
 import ooga.view.screen.LoadingScreen;
 import ooga.view.screen.Screen;
@@ -32,12 +31,14 @@ public class ScreenController{
 
   private static final int INITIAL_WINDOW_WIDTH = 800;
   private static final int INITIAL_WINDOW_HEIGHT = 600;
+  public static final File MAIN_STYLESHEET = new File("data/stylesheet.css");
   public static final String ARTWORK_GOOMBA_PNG = "resources/applicationIcon.png";
 
   private Stage myStage;
   private UserList myUsers;
   private User mySelectedUser;
   private BasicLevelList myBasicLevels;
+  private String myGameType;
   private BasicLevel myCurrentLevel;
 
   private Map<String, Screen> myScreens = new HashMap<>();
@@ -52,6 +53,7 @@ public class ScreenController{
     myUsers = users;
     mySelectedUser = users.getSelectedUser();
     myBasicLevels = levels;
+    myGameType = levels.getGameType();
 
     addApplicationIcon();
     initializeScreens();
@@ -102,8 +104,9 @@ public class ScreenController{
   private Scene getScene(String screenName) {
     Screen nextScreen = myScreens.get(screenName);
     Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
-    File file = new File("resources/stylesheet.css");
-    nextScene.getStylesheets().add(file.toURI().toString());
+    nextScene.getStylesheets().add(MAIN_STYLESHEET.toURI().toString());
+    File gameSpecificStyle = new File("data/gamedata/" + myGameType + "/gameStyle.css");
+    nextScene.getStylesheets().add(gameSpecificStyle.toURI().toString());
     return nextScene;
   }
 
@@ -118,7 +121,7 @@ public class ScreenController{
 
     Screen nextScreen = myScreens.get("GameScreen");
     Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
-    File file = new File("resources/stylesheet.css");
+    File file = new File("data/stylesheet.css");
     nextScene.getStylesheets().add(file.toURI().toString());
     nextScene.setOnKeyPressed(myLevelController::handleKeyPressed);
     nextScene.setOnKeyReleased(myLevelController::handleKeyReleased);

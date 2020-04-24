@@ -8,5 +8,4 @@ doodleLevels=0
 name=Grant
 games=flappy,mario,doodle
 flappyLevels=0,1
-power=star
 points=100

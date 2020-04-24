@@ -21,8 +21,7 @@ import ooga.utility.event.CollisionEvent;
 public class Entity extends ImageView implements Collidible, Manageable, Renderable {
 
   private static final String HARMLESS = "Harmless";
-  private static final String DEFAULT_PACKAGE_CONTENT = "empty 0";
-  private static final String COLLISIONS_HANDLING_PATH = "gamedata/mario/entities/collisions/";
+  private static final String DEFAULT_PACKAGE_CONTENT = "nothing 0";
   private static final String ADD = "add";
   private static final String SCORE = "score";
   private static final String HEALTH = "health";
@@ -37,6 +36,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   private static final double SINGLE_LIFE = 1;
   private static final double PLAYING = 0;
 
+  private String myGameType;
   private Health health;
   private Movement movement;
   private Physics physics;
@@ -53,9 +53,10 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    * Create default health and attacks, which can be overwritten later
    * using the addAbility method
    */
-  public Entity(Image image, String name){
+  public Entity(Image image, String name, String gameType){
     super(image);
     debuggingName = name;
+    myGameType = gameType;
     myAbilities = new HashMap<>();
     myAttacks = new HashMap<>();
     myInformation = new HashMap<>();
@@ -198,8 +199,9 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     String myAttack = this.getAttack(location);
     Collidible otherEntity = ce.getOther();
     try {
+      String gameSpecificFilePath = "gamedata/"+myGameType+"/entities/";
       ResourceBundle myAttackSpecificResponseBundle = ResourceBundle
-          .getBundle(COLLISIONS_HANDLING_PATH + otherAttack.toString());
+          .getBundle(gameSpecificFilePath + "collisions/" + otherAttack);
       String[] methodsToCall = myAttackSpecificResponseBundle.getString(myAttack).split(" ");
       for (String s : methodsToCall) {
         if (s.equals("collect")) {

@@ -8,5 +8,4 @@ doodleLevels=0
 name=Cayla
 games=flappy,mario,doodle
 flappyLevels=0,1
-power=none
 points=40

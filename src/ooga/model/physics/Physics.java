@@ -1,4 +1,3 @@
-
 package ooga.model.physics;
 
 import ooga.model.ability.Ability;
