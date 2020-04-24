@@ -47,7 +47,7 @@ public final class LevelBuilder {
     Map<String,String> entityInfo = getMapFromFile(levelFile, ENTITIES_TAG);
 
     EntityList levelEntities = buildEntities(levelFile, entityInfo, levelHeight, levelWidth,
-        basicLevel.getGameType(), gameWindowHeight, gameWindowWidth);
+        gameWindowHeight, gameWindowWidth);
 
     return new CompleteLevel(basicLevel, levelEntities);
   }
@@ -57,6 +57,7 @@ public final class LevelBuilder {
 
     Map<String, String> sectionMap = new HashMap<>();
 
+    System.out.println(levelFile);
     Scanner sc = new Scanner(levelFile);
     moveToSection(sectionTag, sc);
 
@@ -87,8 +88,8 @@ public final class LevelBuilder {
   }
 
   private static EntityList buildEntities(File levelFile, Map<String, String> entityInfo,
-      int levelHeight, int levelWidth, String gameType, double gameWindowHeight,
-      double gameWindowWidth) throws FileNotFoundException {
+      int levelHeight, int levelWidth, double gameWindowHeight, double gameWindowWidth)
+      throws FileNotFoundException {
     EntityList myEntities = new EntityList();
 
     Scanner sc = new Scanner(levelFile);
@@ -102,7 +103,7 @@ public final class LevelBuilder {
         String entityCode = levelLine[i];
         if (!entityCode.equals(EMPTY_SPACE_SYMBOL)){
           String entityName = entityInfo.get(entityCode);
-          Entity myEntity = EntityBuilder.getEntity(entityName, gameType);
+          Entity myEntity = EntityBuilder.getEntity(entityName);
           setEntitySize(myEntity, scaleFactor);
           setEntityCoordinates(j, i, myEntity, scaleFactor);
           addNewEntityToEntitiesList(myEntities, entityCode, myEntity);

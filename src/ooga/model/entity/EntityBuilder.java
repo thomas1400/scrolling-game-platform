@@ -11,7 +11,11 @@ import ooga.model.ability.Ability;
 public class EntityBuilder {
 
   private static final String ABILITY_PACKAGE = "ooga.model.ability.";
+  private static final String STATS_PACKAGE_NAME = "entities/";
   public static final String IMAGE_KEY = "Image";
+
+  //private ResourceBundle resources;
+  //private Entity entity;
 
 
   //TODO take out throwing runtime exceptions, throw actual ones
@@ -53,23 +57,19 @@ public class EntityBuilder {
    * @param statsFilename file name for the entity stat resource file
    * @return created entity
    */
-  public static Entity getEntity(String statsFilename, String gameType) {
+  public static Entity getEntity(String statsFilename) {
     try {
-      String gameSpecificFilePath = "gamedata/" + gameType + "/entities/";
-
-      ResourceBundle resources =
-          ResourceBundle.getBundle(gameSpecificFilePath + "behavior/" + statsFilename);
-
-      Image image =
-          new Image(gameSpecificFilePath + "images/" + resources.getString(IMAGE_KEY));
-      Entity entity = new Entity(image, resources.getString("Image"), gameType);
+      ResourceBundle resources = ResourceBundle.getBundle(STATS_PACKAGE_NAME + statsFilename);
+      //System.out.println(resources.getString(IMAGE_KEY));
+      Image image = new Image("images/entityimages/marioimages/" + resources.getString(IMAGE_KEY));
+      Entity entity = new Entity(image, resources.getString("Image"));
 
       for (String s : Collections.list(resources.getKeys())) {
         //todo remove this if?
         if (!s.equals("Image")) {
           //reflection!
           if (s.contains("Attack")) {
-            entity.updateAttack(s.split("Attack")[0], resources.getString(s));
+            entity.updateAttack(s, resources.getString(s));
           } else {
             Ability a = makeAbility(s, resources.getString(s));
             entity.addAbility(s, a);
@@ -82,5 +82,10 @@ public class EntityBuilder {
       //todo add which type it is
       throw new RuntimeException(e);
     }
+  }
+
+  public static void main(String[] args) {
+    EntityBuilder eb = new EntityBuilder();
+    eb.getEntity("Player");
   }
 }

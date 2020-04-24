@@ -18,9 +18,9 @@ import ooga.controller.users.User;
 import ooga.controller.users.UserList;
 import ooga.exceptions.ExceptionFeedback;
 import ooga.view.screen.GameScreen;
-import ooga.view.screen.GameSelectionScreen;
 import ooga.view.screen.HelpScreen;
 import ooga.view.screen.HomeScreen;
+import ooga.view.screen.LevelBuilderScreen;
 import ooga.view.screen.LevelSelectorScreen;
 import ooga.view.screen.LoadingScreen;
 import ooga.view.screen.Screen;
@@ -31,14 +31,12 @@ public class ScreenController{
 
   private static final int INITIAL_WINDOW_WIDTH = 800;
   private static final int INITIAL_WINDOW_HEIGHT = 600;
-  public static final File MAIN_STYLESHEET = new File("data/stylesheet.css");
-  public static final String ARTWORK_GOOMBA_PNG = "resources/applicationIcon.png";
+  public static final String ARTWORK_GOOMBA_PNG = "resources/images/goomba.png";
 
   private Stage myStage;
   private UserList myUsers;
   private User mySelectedUser;
   private BasicLevelList myBasicLevels;
-  private String myGameType;
   private BasicLevel myCurrentLevel;
 
   private Map<String, Screen> myScreens = new HashMap<>();
@@ -53,7 +51,6 @@ public class ScreenController{
     myUsers = users;
     mySelectedUser = users.getSelectedUser();
     myBasicLevels = levels;
-    myGameType = levels.getGameType();
 
     addApplicationIcon();
     initializeScreens();
@@ -77,14 +74,12 @@ public class ScreenController{
     Screen myUserSelectorScreen = new UserSelectorScreen(this, myUsers);
     Screen myHomeScreen = new HomeScreen(this);
     Screen myHelpScreen = new HelpScreen(this);
-    Screen myGameSelectionScreen = new GameSelectionScreen(this);
 
     myScreens.put("HomeScreen", myHomeScreen);
     myScreens.put("UserSelectorScreen", myUserSelectorScreen);
     myScreens.put("LevelSelectorScreen", myLevelSelectorScreen);
     myScreens.put("UserCreationScreen", myUserCreationScreen);
     myScreens.put("HelpScreen", myHelpScreen);
-    myScreens.put("GameSelectionScreen", myGameSelectionScreen);
   }
 
   public void switchToScreen(String screenName){
@@ -104,9 +99,8 @@ public class ScreenController{
   private Scene getScene(String screenName) {
     Screen nextScreen = myScreens.get(screenName);
     Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
-    nextScene.getStylesheets().add(MAIN_STYLESHEET.toURI().toString());
-    File gameSpecificStyle = new File("data/gamedata/" + myGameType + "/gameStyle.css");
-    nextScene.getStylesheets().add(gameSpecificStyle.toURI().toString());
+    File file = new File("resources/stylesheet.css");
+    nextScene.getStylesheets().add(file.toURI().toString());
     return nextScene;
   }
 
@@ -121,7 +115,7 @@ public class ScreenController{
 
     Screen nextScreen = myScreens.get("GameScreen");
     Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
-    File file = new File("data/stylesheet.css");
+    File file = new File("resources/stylesheet.css");
     nextScene.getStylesheets().add(file.toURI().toString());
     nextScene.setOnKeyPressed(myLevelController::handleKeyPressed);
     nextScene.setOnKeyReleased(myLevelController::handleKeyReleased);
@@ -176,9 +170,5 @@ public class ScreenController{
 
   public void setPhysicsOption(String selected) {
     // TODO : set physics option
-  }
-
-  public void setGame(String selected) {
-    // TODO : set the game option here!
   }
 }

@@ -26,7 +26,7 @@ public class BasicLevel {
     myGameType = myHeaderInfo.get("gameType");
     myMainTitle = myHeaderInfo.get("mainTitle");
     mySubTitle = myHeaderInfo.get("subTitle");
-    myBackgroundImage = "gamedata/" + myGameType + "/levels/backgrounds/" + myHeaderInfo.get("backgroundImage");
+    myBackgroundImage = myHeaderInfo.get("backgroundImage");
   }
 
   public int getLevelIndex() {
