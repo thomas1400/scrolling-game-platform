@@ -79,22 +79,22 @@ class CollisionManagerTest extends ApplicationTest {
   @Test
   void checkVerticalResults() {
     minYMaxYCollision();
-    String[] results = collisionManager.getResults();
+    String[] results = collisionManager.getCollisionLocation();
     assertEquals("Top", results[0]);
     assertEquals("Bottom", results[1]);
     maxYMinYCollision();
-    String[] results2 = collisionManager.getResults();
+    String[] results2 = collisionManager.getCollisionLocation();
     assertEquals("Bottom", results2[0]);
     assertEquals("Top", results2[1]);
   }
   @Test
   void checkHorizontalResults() {
     minXMaxXCollision();
-    String[] results = collisionManager.getResults();
+    String[] results = collisionManager.getCollisionLocation();
     assertEquals("Side", results[0]);
     assertEquals("Side", results[1]);
     maxXMinXCollision();
-    String[] results2 = collisionManager.getResults();
+    String[] results2 = collisionManager.getCollisionLocation();
     assertEquals("Side", results2[0]);
     assertEquals("Side", results2[1]);
   }
