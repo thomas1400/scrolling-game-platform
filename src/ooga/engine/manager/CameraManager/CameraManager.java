@@ -34,12 +34,12 @@ public class CameraManager {
   public CameraManager(double height, double width, String direction, EntityList entities) {
     Entity mainEntity = entities.getMainEntity();
     ResourceBundle myDirectionControllerResources = ResourceBundle.getBundle(directionControllerResources);
-    screenHeight = height;
+    screenHeight = height + 1;
     screenWidth = width;
     String directionType = myDirectionControllerResources.getString(direction);
     try {
       myDirectionController = (DirectionController) Class.forName(directionControllerOptionsLocation + directionType).newInstance();
-      myDirectionController.initialize(entities, height, width);
+      myDirectionController.initialize(entities, screenHeight, screenWidth);
     } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
       ExceptionFeedback.throwBreakingException(e, ERROR_MESSAGE);
     }

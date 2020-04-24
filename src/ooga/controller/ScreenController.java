@@ -55,18 +55,6 @@ public class ScreenController{
 
     addApplicationIcon();
 
-    //FIXME: Should remove this game type line and load levels line when game selector screen works
-    myGameType = "mario";
-    try {
-      myBasicLevels = new BasicLevelList();
-      loadLevels(myGameType);
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-      ExceptionFeedback.throwBreakingException(new RuntimeException(),
-          "Game type " + myGameType + " is invalid.");
-    }
-
-    //switchToScreen("HomeScreen");
     switchToScreen("GameSelectionScreen");
   }
 
