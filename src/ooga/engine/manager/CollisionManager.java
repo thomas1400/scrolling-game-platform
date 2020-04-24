@@ -25,16 +25,11 @@ public class CollisionManager {
   private String[] collisionLocation;
   private EntityList entitiesReceived;
   private Map<Entity, EntityList> collision;
-  private static final String GAME_DATA_FOLDER = "gamedata/";
-  private static final String COLLISION_DATA_FOLDER = "/entities/collisions/CollisionLocation";
+  private static final String COLLISION_DATA_FOLDER = "collisionmanagement/CollisionLocation";
 
 
-  /**
-   * @param gameType identifies the type of game that is being played so that entities can be handled appropiately
-   */
-  public CollisionManager(String gameType){
-    String CollisionLocationResources = GAME_DATA_FOLDER +gameType+COLLISION_DATA_FOLDER;
-    myCollisionLocationResources = ResourceBundle.getBundle(CollisionLocationResources);
+  public CollisionManager(){
+    myCollisionLocationResources = ResourceBundle.getBundle(COLLISION_DATA_FOLDER);
   }
 
   /**
