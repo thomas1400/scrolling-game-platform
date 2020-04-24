@@ -8,7 +8,7 @@ import ooga.model.entity.EntityList;
  * specifies movement of entity so that screen is only able to move up as the main entity's Y position moves up
  * @author Cayla Schuval
  */
-public class UpDirectionController extends VerticalDirectionController {
+public class UpHorizontalDirectionController extends VerticalDirectionController {
   private static final int BOUNDARY_EXTENSION = 150;
 
   /**
@@ -20,13 +20,17 @@ public class UpDirectionController extends VerticalDirectionController {
   public void updateCameraPosition(EntityList entities, double myScreenHeight, double myScreenWidth) {
     Entity mainEntity = entities.getMainEntity();
     double yCenter = myScreenHeight / 2 - mainEntity.getBoundsInLocal().getHeight() / 2-BOUNDARY_EXTENSION;
-    if (mainEntity.getY() < yCenter) {
+    if (mainEntity.getY() < 0) {
       setToCenter(entities, 0);
     }
     else if(mainEntity.getY()>=myScreenHeight){
       mainEntity.setLives(0);
     }
-    checkIfMarioTouchesSidesOfScreen();
+    if (mainEntity.getBoundsInLocal().getMinX() > myScreenWidth) {
+      mainEntity.setX(0);
+    } else if (mainEntity.getBoundsInLocal().getMaxX() < 0) {
+      mainEntity.setX(myScreenWidth-mainEntity.getBoundsInLocal().getWidth());
+    }
   }
 
   /**

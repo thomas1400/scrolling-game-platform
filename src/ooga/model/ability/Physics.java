@@ -199,6 +199,12 @@ public class Physics extends Ability {
     myVelocity[Y] += myConstants.get(INIT_JUMP_VELOCITY);
   }
 
+  public void jumpUp(){
+    if(myVelocity[Y]>0){
+      jump();
+    }
+  }
+
   public void moveLeft() {
     if (myVelocity[X] < 0) {
       myVelocity[X] = myVelocity[X] - myConstants.get(RUN_ACCELERATION)* myConstants.get(DT);
