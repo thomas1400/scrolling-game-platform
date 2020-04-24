@@ -27,9 +27,9 @@ class CameraManagerTest extends ApplicationTest {
   @BeforeEach
   void setUp () {
     entities = new EntityList();
-    mainEntity = EntityBuilder.getEntity("Player", "mario");
+    mainEntity = EntityBuilder.getEntity("Player");
     entities.addEntity(mainEntity);
-    entity = EntityBuilder.getEntity("Brick", "mario");
+    entity = EntityBuilder.getEntity("Brick");
     entities.addEntity(entity);
     cm = new CameraManager(400, 600, "right", entities);
     cm.initializeActivationStorage();

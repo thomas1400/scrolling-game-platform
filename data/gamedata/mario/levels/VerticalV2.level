@@ -4,7 +4,7 @@ subTitle:Check Your Fall
 gameType:mario
 scrollType:up
 deathsAllowed:1
-backgroundImage:levelBackground.png
+backgroundImage:images/TeamLogo.png
 levelWidth:20
 levelHeight:50
 #ENTITIES

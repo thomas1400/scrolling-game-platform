@@ -10,7 +10,7 @@ import ooga.utility.event.CollisionEvent;
 
 public class CollisionManager {
   private ResourceBundle myCollisionLocationResources;
-
+  private static final String CollisionLocationResources = "entities/collisions/CollisionLocation";
   private static final String MINX_MAXX = "minXmaxX";
   private static final String MINY_MAXY = "minYmaxY";
   private static final String MAXX_MINX = "maxXminX";
@@ -22,9 +22,7 @@ public class CollisionManager {
   private EntityList entitiesReceived;
   private Map<Entity, EntityList> collision;
 
-  public CollisionManager(String gameType){
-    String CollisionLocationResources = "gamedata/"+gameType+"/entities"
-        + "/collisions/CollisionLocation";
+  public CollisionManager(){
     myCollisionLocationResources = ResourceBundle.getBundle(CollisionLocationResources);
   }
 
@@ -93,8 +91,7 @@ public class CollisionManager {
   }
 
   private void createAndSendCollision(String typeOfCollision, String attack, Entity entityToHandle, Entity other) {
-    entitiesReceived.addEntity(entityToHandle.handleCollision(new CollisionEvent(typeOfCollision,
-        attack, other)));
+    entitiesReceived.addEntity(entityToHandle.handleCollision(new CollisionEvent(typeOfCollision, attack, other)));
   }
 
   public EntityList getEntitiesReceived() {
