@@ -5,6 +5,6 @@ image=grant.jpeg
 lives=23
 doodlejumpLevels=0
 name=Grant
-games=flappy,mario,doodlejump
+games=flappy,mario,doodlejump,dinorun
 flappyLevels=0,1
 points=100

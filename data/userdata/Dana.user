@@ -5,6 +5,6 @@ image=dana.jpeg
 lives=75
 doodlejumpLevels=0
 name=Dana
-games=flappy,mario,doodlejump
+games=flappy,mario,doodlejump,dinorun
 flappyLevels=0,1
 points=26
