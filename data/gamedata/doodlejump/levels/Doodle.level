@@ -1,14 +1,14 @@
 #HEADER
-mainTitle: DoodleJump
+mainTitle:DoodleJump
 subTitle:Tutorial
 gameType:doodle
 scrollType:up
 deathsAllowed:1
-backgroundImage: backgroundVert.png
+backgroundImage:levelBackground.png
 levelWidth:20
 levelHeight:50
 #ENTITIES
-D:DoodleBoi
+X:DoodleBoi
 E:Enemy
 S:Spring
 L:BreakableStepLeft
@@ -16,9 +16,7 @@ R:BreakableStepRight
 1:UnbreakableStepLeft
 2:UnbreakableStepRight
 T:Trampoline
-X: LevelEnd
 #LEVEL
-
 . . . . . . . . . . . . . . . . . . . .
 . . . . . . . . . . . . 1 2 . . . . . .
 . . . . . . . . . . . . . . . . . . . .
@@ -66,6 +64,6 @@ X: LevelEnd
 . . . . . . . . . . . . . . . . . . . .
 . . . . . . . . . . . . 1 2 . . . . . .
 . . . 1 2 . . . . . . . . . . . . . . .
-. . . . . . . . . D . . . . . . . . . .
+. . . . . . . . . X . . . . . . . . . .
 . . . . . . . . . 1 2 . . . . . . . . .
 #END
