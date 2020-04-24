@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import javafx.scene.image.Image;
+import ooga.exceptions.ExceptionFeedback;
 import ooga.model.ability.Ability;
 
 public class EntityBuilder {
@@ -66,14 +67,8 @@ public class EntityBuilder {
     String imageFile = entityInformation[1];
     try {
       String gameSpecificFilePath = "gamedata/" + gameType + "/entities/";
-
-      ResourceBundle resources =
-          ResourceBundle.getBundle(gameSpecificFilePath + "behavior/" + entityType);
-
-      Image image =
-          new Image(gameSpecificFilePath + "images/" + imageFile);
-
-
+      ResourceBundle resources = ResourceBundle.getBundle(gameSpecificFilePath + "behavior/" + entityType);
+      Image image = new Image(gameSpecificFilePath + "images/" + imageFile);
       Entity entity = new Entity(image, imageFile, gameType);
 
       for (String s : Collections.list(resources.getKeys())) {
@@ -90,9 +85,8 @@ public class EntityBuilder {
       }
       return entity;
     } catch (MissingResourceException e){
-      System.out.println("You didn't edit the level file correctly. Can't find the properties file for a type! Either add the file or remove the type from the level");
-      //todo add which type it is
-      throw new RuntimeException(e);
+      ExceptionFeedback.throwHandledException(new RuntimeException(), "You didn't edit the level file correctly. Can't find the properties file for a type! Either add the file or remove the type from the level");
+      throw new RuntimeException();
     }
   }
 

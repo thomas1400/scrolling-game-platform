@@ -120,13 +120,6 @@ class EntityTest extends ApplicationTest {
     coin.handleCollision(playerTopCE);
     assertEquals(10, player.getScore());
     assertEquals(0, coin.getScore());
-
-    coin = EntityBuilder.getEntity("Coin", "mario");
-    coinBottomCE = new CollisionEvent("Bottom", coin.getAttack("Top"), coin);
-    player.handleCollision(coinBottomCE);
-    coin.handleCollision(playerTopCE);
-    assertEquals(20, player.getScore());
-    assertEquals(0, coin.getScore());
   }
 
   @Test

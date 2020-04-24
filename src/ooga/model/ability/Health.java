@@ -74,4 +74,9 @@ public class Health extends Ability {
   public double getLives(){
     return myLives;
   }
+
+  @Override
+  public String toString(){
+    return "Health";
+  }
 }
