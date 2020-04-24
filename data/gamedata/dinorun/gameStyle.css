@@ -1,0 +1,198 @@
+/********************************************************
+ *                                                      *
+ *                      Root Styling                    *
+ *                                                      *
+ ********************************************************/
+
+.root {
+  -fx-base: #2d2327;
+  -fx-background: white;
+  -fx-accent: #62466b;
+  -fx-dark-fill: #2d2327;
+}
+
+
+/********************************************************
+ *                                                      *
+ *                    Control Styling                   *
+ *                                                      *
+ ********************************************************/
+
+.button .text {
+  -fx-stroke: -fx-base;
+  -fx-stroke-weight: 0.01;
+  -fx-font-weight: bolder;
+}
+
+/********************************************************
+ *                                                      *
+ *                 Home Screen Styling                  *
+ *                                                      *
+ ********************************************************/
+
+.home-screen-splash {
+  -fx-background-image: url(/gamedata/dinorun/view/images/gameBackground.png);
+}
+
+/********************************************************
+ *                                                      *
+ *                 Help Screen Styling                  *
+ *                                                      *
+ ********************************************************/
+
+.help-screen .background {
+  -fx-background-color: -fx-base;
+}
+
+.help-screen .directions .label {
+  -fx-wrap-text: true;
+}
+
+.help-screen .directions .text {
+  -fx-font-size: 15pt;
+}
+
+
+/********************************************************
+ *                                                      *
+ *            Level Selector Screen Styling             *
+ *                                                      *
+ ********************************************************/
+
+/********************************************************
+ *                   Level Progress Bar                 *
+ ********************************************************/
+
+.level-progress-bar {
+  -fx-background-color: derive(-fx-background, 50%);
+  -fx-border-width: 2px;
+  -fx-border-style: solid;
+  -fx-border-color: -fx-accent;
+  -fx-border-radius: 5px;
+  -fx-background-radius: 5px;
+}
+
+.level-progress-bar .bar {
+  -fx-background-color: #000;
+  -fx-background-radius: 5px;
+}
+
+.level-progress-bar .label {
+  -fx-font-size: 15pt;
+  -fx-text-fill: white;
+}
+
+
+/********************************************************
+ *                     Level Selector                   *
+ ********************************************************/
+
+.level-selector-tool {
+  -fx-background-color: -fx-base;
+  -fx-background-radius: 10px;
+  -fx-border-color: -fx-accent;
+  -fx-border-radius: 10px;
+}
+
+.level-selector-tool .radio-button .text {
+  -fx-font-size: 15pt;
+  -fx-font-weight: bolder;
+  -fx-stroke: -fx-base;
+  -fx-stroke-weight: 0.01;
+}
+
+.level-selector-tool .radio-button {
+   -fx-text-fill: white;
+}
+
+.level-selector-tool > .level-connection {
+  -fx-stroke: white;
+  -fx-stroke-weight: 0.5px;
+}
+
+
+/********************************************************
+ *                                                      *
+ *                 Game Screen Styling                  *
+ *                                                      *
+ ********************************************************/
+
+.user-data-display {
+  -fx-font-size: 20pt;
+  -fx-padding: 5px;
+  -fx-background-color: derive(-fx-background, 25%);
+  -fx-border-width: 2px;
+  -fx-border-style: solid;
+  -fx-border-color: -fx-accent;
+  -fx-border-radius: 10px;
+  -fx-background-radius: 10px;
+}
+
+
+/********************************************************
+ *                                                      *
+ *            User Selector Screen Styling              *
+ *                                                      *
+ ********************************************************/
+
+.user-selector .label {
+  -fx-font-size: 16pt;
+}
+
+.user-creation-screen .label .text {
+  -fx-font-size: 16pt;
+}
+
+.user-selector .scroll-pane .users {
+  -fx-padding: 5 5 10 5;
+}
+
+.user-selector .scroll-pane {
+  -fx-font-size: 16pt;
+}
+
+
+/********************************************************
+ *                                                      *
+ *            Game Selection Screen Styling             *
+ *                                                      *
+ ********************************************************/
+
+.game-selector .label {
+  -fx-font-size: 16pt;
+}
+
+.game-selection-screen .label .text {
+  -fx-font-size: 16pt;
+}
+
+.game-selector .scroll-pane .games {
+  -fx-padding: 5 5 10 5;
+}
+
+.game-selector .scroll-pane {
+  -fx-font-size: 16pt;
+}
+
+/********************************************************
+ *                                                      *
+ *                Loading Screen Styling                *
+ *                                                      *
+ ********************************************************/
+
+.loading-screen {
+  -fx-background-color: -fx-dark-fill;
+}
+
+.loading-screen .label {
+  -fx-text-fill: white;
+}
+
+.loading-screen .subtitle .text {
+  -fx-stroke: -fx-accent;
+  -fx-stroke-width: 1px;
+}
+
+.loading-screen .level-label {
+  -fx-font-size: 20pt;
+}
