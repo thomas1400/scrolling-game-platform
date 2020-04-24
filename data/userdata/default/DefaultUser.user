@@ -1,0 +1,6 @@
+#User properties file for user: Default User
+name=Default User
+games=flappy,mario,doodlejump
+points=0
+lives=3
+
