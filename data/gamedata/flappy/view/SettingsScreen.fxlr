@@ -1,0 +1,29 @@
+### Settings Screen FXLR
+
+<package ooga.view>
+<package ooga.view.dynamicUI>
+<package javafx.scene.control>
+<package javafx.scene.layout>
+
+(VBox alignment=CENTER, prefWidth=100%, prefHeight=100%, spacing=5%, style=translucent) {
+  (HBox alignment=CENTER, prefHeight=100%, prefWidth=100%, spacing=5%) {
+    (VBox alignment=CENTER, maxHeight=50%, prefWidth=50%, spacing=5%, style=opaque) {
+      (Label text=settings, alignment=CENTER, style=subtitle, prefHeight=25%, prefWidth=100%)
+      (VBox alignment=CENTER, prefWidth=100%, spacing=2%) {
+        (HBox alignment=CENTER, spacing=2%) {
+          (Label text=select-camera-manager)
+          (camera-manager-selector)
+        }
+        (HBox alignment=CENTER, spacing=2%) {
+          (Label text=select-physics)
+          (physics-selector)
+        }
+      }
+      (HBox alignment=CENTER, prefWidth=100%, spacing=2%) {
+        (Button text=back, actionTag=back)
+        (Button text=apply, actionTag=apply)
+      }
+    }
+  }
+}
+

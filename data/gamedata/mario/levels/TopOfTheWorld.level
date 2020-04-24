@@ -17,7 +17,7 @@ T:Brick
 X:Player
 G:Ground
 6:GroundCenter
-5:GroundFloating
+5:GroundFloatingGrass
 C:Coin
 #LEVEL
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .

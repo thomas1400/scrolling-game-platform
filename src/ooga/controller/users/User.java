@@ -13,7 +13,11 @@ import ooga.controller.UserSaver;
 import ooga.model.entity.Entity;
 
 public class User {
+
   private static final int POINTS_TO_LIFE_RATIO = 100;
+  public static final int ADDITIONAL_LIFE = 1;
+  public static final int NEGATIVE = -1;
+  //FIXME: This should be loaded in from the game file
   private static final List<String> ALL_GAME_TYPES = Arrays.asList("mario",
       "flappy", "doodlejump");
 
@@ -24,8 +28,6 @@ public class User {
   private IntegerProperty livesProperty;
   private int myPoints;
   private IntegerProperty pointsProperty;
-  private String myPower = "none";
-  private String mySize = "small";
   private Set<String> myGames = new HashSet<>(ALL_GAME_TYPES);
 
   public User(String name, String imageFileName){
@@ -36,7 +38,6 @@ public class User {
     myPoints = 0;
     livesProperty = new SimpleIntegerProperty(myLives);
     pointsProperty = new SimpleIntegerProperty(myPoints);
-
   }
 
   public void saveUser(){
@@ -77,8 +78,8 @@ public class User {
   }
 
   public void addLife(){
-    myLives += 1;
-    livesProperty.setValue(livesProperty.getValue() + 1);
+    myLives += ADDITIONAL_LIFE;
+    livesProperty.setValue(livesProperty.getValue() + ADDITIONAL_LIFE);
   }
 
   public void adjustLives(int lives) {
@@ -103,18 +104,10 @@ public class User {
     return pointsProperty;
   }
 
-  public String getSize() {
-    return mySize;
-  }
-
-  public void setSize(String size) {
-    mySize = size;
-  }
-
   public boolean canConvertPointsToLife() {
     if (myPoints > POINTS_TO_LIFE_RATIO){
       addLife();
-      adjustPoints(-1 * POINTS_TO_LIFE_RATIO);
+      adjustPoints(NEGATIVE * POINTS_TO_LIFE_RATIO);
       return true;
     }
     return false;
@@ -130,6 +123,7 @@ public class User {
 
   public void setLives(int lives) {
     myLives = lives;
+    livesProperty.setValue(lives);
   }
 
   public Set<String> getAllGames() {

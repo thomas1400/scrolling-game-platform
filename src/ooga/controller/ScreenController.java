@@ -152,9 +152,9 @@ public class ScreenController{
   }
 
   public void restartLevel(){
-    myLevelController.endLevel();
+    myLevelController.endLevel(false);
 
-    Pane loadingPane = new LoadingScreen(myGameScreen, myCurrentLevel);
+    Pane loadingPane = new LoadingScreen(this, myGameScreen, myCurrentLevel);
     myGameScreen.getChildren().add(loadingPane);
 
     FadeTransition fade = new FadeTransition(Duration.seconds(0.5), loadingPane);
@@ -213,6 +213,10 @@ public class ScreenController{
               ".level");
       myBasicLevels.addBasicLevel(LevelBuilder.buildBasicLevel(levelNumber, levelFile));
     }
+  }
+
+  public String getGameType() {
+    return myGameType;
   }
 
 }

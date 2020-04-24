@@ -2,17 +2,13 @@ package ooga.model.ability;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 import ooga.exceptions.ExceptionFeedback;
 import ooga.model.entity.Entity;
 
 public class Physics extends Ability {
 
   private static final String DT = "DT";
-  private static final String SCALE_SIZE = "SCALE_SIZE";
-  private static final String JUMP_HEIGHT = "JUMP_HEIGHT";
   private static final String GRAVITY = "GRAVITY";
   private static final String MAX_VERT_VELOCITY = "MAX_VERT_VELOCITY";
   private static final String MAX_HORIZ_VELOCITY = "MAX_HORIZ_VELOCITY";
@@ -26,7 +22,7 @@ public class Physics extends Ability {
   private static final String INIT_JUMP_VELOCITY = "INIT_JUMP_VELOCITY";
   private static final String TINY_DISTANCE = "TINY_DISTANCE";
 
-  private Map<String, Double> myConstants = new HashMap<>();
+  private Map<String, Double> myConstants;
 
   private static final int X = 0;
   private static final int Y = 1;
@@ -37,61 +33,12 @@ public class Physics extends Ability {
   private double[] myInputAdjust = new double[] {0,0};
 
   public Physics(String gameAndPhysicsType) {
-    String gameType = "mario";
     initializeConstants(gameAndPhysicsType);
   }
 
   private void initializeConstants(String gameType) {
-    setDefaultConstants();
-    setGameSpecificConstants(gameType);
-    scaleAppropriateConstants();
-    setDerivedConstants();
+    myConstants = PhysicsInitializer.getConstantsMap(gameType);
     setInitialVelocityAndAcceleration();
-
-    //printDebug(myConstants);
-  }
-
-  private void printDebug(Map<String, Double> myConstants) {
-    for (String constant : myConstants.keySet()){
-      System.out.println(constant + " = " + myConstants.get(constant));
-    }
-  }
-
-  private void setDefaultConstants() {
-    ResourceBundle defaultPhysicsBundle = ResourceBundle.getBundle("gamedata/defaultphysics");
-    for (String constant : defaultPhysicsBundle.keySet()){
-      double constantValue = Double.parseDouble(defaultPhysicsBundle.getString(constant));
-      myConstants.put(constant, constantValue);
-    }
-  }
-
-  private void setGameSpecificConstants(String gameType) {
-    ResourceBundle gamePhysicsBundle = ResourceBundle.getBundle("gamedata/" + gameType +
-        "/physics/physicsconstants");
-    for (String constant : gamePhysicsBundle.keySet()){
-      double constantValue = Double.parseDouble(gamePhysicsBundle.getString(constant));
-      myConstants.replace(constant, constantValue);
-    }
-  }
-
-  private void scaleAppropriateConstants() {
-    String[] constantsToScale = new String[]{JUMP_HEIGHT, MAX_HORIZ_VELOCITY, MAX_VERT_VELOCITY,
-        RUN_ACCELERATION};
-    for (String constant : constantsToScale){
-      double scaledValue = myConstants.get(constant) * myConstants.get(SCALE_SIZE);
-      myConstants.replace(constant, scaledValue);
-    }
-  }
-
-  private void setDerivedConstants() {
-    if (myConstants.containsKey(INIT_JUMP_VELOCITY)){
-      myConstants.replace(INIT_JUMP_VELOCITY, -1* myConstants.get(INIT_JUMP_VELOCITY));
-    } else {
-      myConstants.put(INIT_JUMP_VELOCITY,
-          -1 * Math.sqrt(2 * myConstants.get(GRAVITY) * myConstants.get(JUMP_HEIGHT)));
-    }
-    myConstants.putIfAbsent(TINY_DISTANCE,
-        myConstants.get(MAX_VERT_VELOCITY) * myConstants.get(DT));
   }
 
   private void setInitialVelocityAndAcceleration() {
@@ -105,29 +52,39 @@ public class Physics extends Ability {
   }
 
   public void update(Entity myEntity) {
-    //Update to use on screen position
-    myPosition[X] = myEntity.getX();
-    myPosition[Y] = myEntity.getY();
+    setPositionFromImageView(myEntity);
+    adjustPositionFromUserInput();
+    updateToNextVelocity();
+    updateToNextPosition(myEntity);
+    resetGravity();
+  }
 
-    //Adjust based on inputs
+  private void adjustPositionFromUserInput() {
     myPosition[X] += getInputAdjust(X);
     myPosition[Y] += getInputAdjust(Y);
+  }
 
-    //Velocity Updates
+  private void setPositionFromImageView(Entity myEntity) {
+    myPosition[X] = myEntity.getX();
+    myPosition[Y] = myEntity.getY();
+  }
+
+  private void updateToNextVelocity() {
     myVelocity[X] += myAcceleration[X]*myConstants.get(DT);
     myVelocity[Y] += myAcceleration[Y]*myConstants.get(DT);
     limitVelocities();
     adjustForFriction();
+  }
 
-    //Position Updates
+  private void updateToNextPosition(Entity myEntity) {
     myPosition[X] += myVelocity[X]*myConstants.get(DT);
     myPosition[Y] += myVelocity[Y]*myConstants.get(DT);
 
-    //Update Image Position
     myEntity.setX(myPosition[X]);
     myEntity.setY(myPosition[Y]);
+  }
 
-    //Reset Gravity
+  private void resetGravity() {
     myAcceleration[Y] = myConstants.get(GRAVITY);
   }
 
@@ -143,12 +100,12 @@ public class Physics extends Ability {
   }
 
   private void adjustForFriction() {
-    //Horiz Velocity Damping b/c of Friction if not in air
     if (myAcceleration[Y] == 0) {
       myVelocity[X] = myVelocity[X] / (1 + myConstants.get(FRICTION) * myConstants.get(DT));
     }
   }
 
+  //USED FOR REFLECTION
   private void bounce(){
     if(Math.abs(getYVelocity()) >= Math.abs(getXVelocity())){
       bounceY();

@@ -17,7 +17,7 @@ import ooga.model.behavior.Collidible;
 import ooga.model.ability.Physics;
 import ooga.utility.event.CollisionEvent;
 
-
+//im crying -dana
 public class Entity extends ImageView implements Collidible, Manageable, Renderable {
 
   private static final String HARMLESS = "Harmless";
@@ -199,6 +199,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
         }
       }
     } catch (MissingResourceException e) {
+      e.printStackTrace();
       ExceptionFeedback.throwHandledException(e, "Couldn't find key"+myAttack+" in "+ce.getAttackType()+".properties");
     } catch (NoSuchMethodException e) {
       ExceptionFeedback

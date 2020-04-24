@@ -26,8 +26,9 @@ public class ExceptionFeedback {
   }
 
   public static void throwHandledException(Exception e, String message) {
-    ButtonType close = new ButtonType("CLOSE", ButtonData.OK_DONE);
-    showAlert(e.getClass().getSimpleName(), message, close);
+    JOptionPane.showConfirmDialog(new JFrame(),
+        message,
+        e.getClass().getSimpleName(), JOptionPane.DEFAULT_OPTION);
   }
 
   private static void showAlert(String header, String message, ButtonType buttonType) {

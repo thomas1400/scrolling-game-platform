@@ -15,9 +15,9 @@ import ooga.view.dynamicUI.GameSelector;
 public class GameSelectionScreen extends Screen {
 
   private static final String RESOURCES_PATH = "games";
-  private static final char RESOURCE_DIVIDER = ',';
   private GameSelector gs;
 
+  //CALLED WITH REFLECTION
   public GameSelectionScreen(ScreenController controller) {
     super(controller);
 
@@ -31,15 +31,14 @@ public class GameSelectionScreen extends Screen {
     ResourceBundle resources = ResourceBundle.getBundle(RESOURCES_PATH);
     Map<String, Pair<String, Image>> pairs = new HashMap<>();
 
-    for (String key : Collections.list(resources.getKeys())) {
+    for (String gameType : Collections.list(resources.getKeys())) {
       try {
-        String resourceLine = resources.getString(key);
-        String title = resourceLine.substring(0, resourceLine.indexOf(RESOURCE_DIVIDER));
-        String imagePath = resourceLine.substring(resourceLine.indexOf(RESOURCE_DIVIDER) + 1);
-        pairs.put(key, new Pair<>(title, new Image(new FileInputStream(imagePath))));
+        String title = resources.getString(gameType);
+        String imagePath = "data/gamedata/"+gameType+"/gameIcon.png";
+        pairs.put(gameType, new Pair<>(title, new Image(new FileInputStream(imagePath))));
       } catch (FileNotFoundException e) {
         ExceptionFeedback.throwHandledException(e,
-            "Game icon not found for game: " + key + ".");
+            "Game icon not found for game: " + gameType + ".");
       }
     }
 

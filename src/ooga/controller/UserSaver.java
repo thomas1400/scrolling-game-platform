@@ -14,10 +14,12 @@ import ooga.exceptions.ExceptionFeedback;
 
 public final class UserSaver {
 
+  private static final String USER_PACKAGE = "data/userdata/";
+
   public static void saveUser(User user) {
     if (!user.getName().equals("Default User")) {
       try (OutputStream output = new FileOutputStream(
-          "resources/users/" + user.getName() + ".user")) {
+          USER_PACKAGE + user.getName() + ".user")) {
 
         Properties userProperties = new Properties();
 
@@ -42,8 +44,7 @@ public final class UserSaver {
   }
 
   private static void setSimpleProperties(User user, Properties userProperties) {
-    String UserSaverResources = "users/users";
-    ResourceBundle myUserSaverResources = ResourceBundle.getBundle(UserSaverResources);
+    ResourceBundle myUserSaverResources = ResourceBundle.getBundle("userdata/users");
 
     for (String userProperty : Collections.list(myUserSaverResources.getKeys())) {
       try {

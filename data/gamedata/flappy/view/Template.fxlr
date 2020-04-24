@@ -1,0 +1,19 @@
+### comments start with a '###'
+
+<package javafx.scene.control>
+<package javafx.scene.layout>
+<package ooga.view>
+
+(root) {
+  (layout) {
+    (control)
+    (control)
+    (layout) {
+      (control attribute=value);
+    }
+  }
+  (layout attribute=value, attribute=value, attribute = value1 value2 value3 value4) {
+    # attribute values for size can be in px (default) or percent (xx%)
+    (control)
+  }
+}
