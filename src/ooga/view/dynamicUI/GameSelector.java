@@ -1,11 +1,8 @@
 package ooga.view.dynamicUI;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Toggle;
@@ -17,7 +14,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
-import ooga.controller.users.User;
 
 public class GameSelector extends Pane {
 

@@ -36,11 +36,9 @@ abstract public class HorizontalDirectionController extends DirectionController 
     if (myMainEntity.getY()<=0){
       myMainEntity.setY(0.1);
     }
-    /*if (myMainEntity.getY()>=myScreenHeight){
-      System.out.println("reset");
-     resetMainEntity(getOffset());
-    }*/
-    //add touching bottom of screen
+    if (myMainEntity.getY()>=myScreenHeight){
+     myMainEntity.fellToDeath();
+    }
   }
 
   /**
