@@ -49,7 +49,7 @@ public final class UserFactory {
 
   private static Set<Integer> getUnlockedLevelsSet(String gameType, Properties prop) {
     Set<Integer> levelsUnlocked = new HashSet<>();
-    if (prop.getProperty(gameType + "Levels").equals("")) {
+    if (prop.getProperty(gameType + "Levels") == null || prop.getProperty(gameType + "Levels").equals("")) {
       return new HashSet<>();
     }
     for (String unlockedLevel : prop.getProperty(gameType + "Levels").split(",")){
