@@ -19,7 +19,7 @@ public class FxlrTester extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     try {
-      ScreenController sc = new ScreenController(primaryStage, new UserList(), new BasicLevelList());
+      ScreenController sc = new ScreenController(primaryStage, new UserList());
       Screen root = new HomeScreen(sc);
       new FXLRParser().loadFXLRLayout(new HomeScreen(sc), new File("resources/view/LevelSelectorScreen.fxlr"));
       root.getStylesheets().add(new File("data/stylesheet.css").toURI().toString());

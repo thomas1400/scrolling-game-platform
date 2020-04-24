@@ -11,7 +11,7 @@ public class ScreenTester extends Application {
 
   @Override
   public void start(Stage primaryStage) {
-    new ScreenController(primaryStage, new UserList(), new BasicLevelList());
+    new ScreenController(primaryStage, new UserList());
   }
 
   public static void main(String[] args) {
