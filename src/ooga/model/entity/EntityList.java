@@ -3,12 +3,22 @@ package ooga.model.entity;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import ooga.exceptions.ExceptionFeedback;
 
+/**
+ * Custom data structure that is used to store and access entities
+ * Implements Iterable<Entity></Entity> so that a for each loop can be used to iterate through the entities
+ * @author Cayla Schuval
+ */
 public class EntityList implements Iterable<Entity> {
   private List<Entity> myEntities;
   private Entity myMainEntity;
+  private static final String EXCEPTION_MESSAGE = "No main entity set";
 
 
+  /**
+   * Creates a new instance of an EntityList
+   */
   public EntityList(){
     myEntities = new ArrayList<>();
   }
@@ -44,7 +54,14 @@ public class EntityList implements Iterable<Entity> {
   public void clear(){ myEntities.clear(); }
 
   public Entity getMainEntity() {
-    return myMainEntity;
+    try {
+      return myMainEntity;
+    }
+    //fix
+    catch (Exception e){
+      ExceptionFeedback.throwBreakingException(e, EXCEPTION_MESSAGE);
+      return myMainEntity;
+    }
   }
 
   public void setMainEntity(Entity mainEntity) {
