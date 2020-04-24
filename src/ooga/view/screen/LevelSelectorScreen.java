@@ -17,11 +17,12 @@ public class LevelSelectorScreen extends Screen {
 
   public LevelSelectorScreen(ScreenController controller, BasicLevelList levels) {
     super(controller);
-    String gameType = levels.getGameType();
-    String myLevelGraphFile = "data/gamedata/" + gameType + "/levels/resources/LevelGraph.txt";
-    String myLevelMapFile = "data/gamedata/" + gameType + "/levels/resources/LevelMap.txt";
+    if (levels != null && controller.getUsers() != null) {
 
-    if (controller.getUsers() != null) {
+      String gameType = levels.getGameType();
+      String myLevelGraphFile = "data/gamedata/" + gameType + "/levels/resources/LevelGraph.txt";
+      String myLevelMapFile = "data/gamedata/" + gameType + "/levels/resources/LevelMap.txt";
+
       User user = controller.getUsers().getSelectedUser();
 
       DynamicUserLabel username = new DynamicUserLabel();
@@ -31,13 +32,12 @@ public class LevelSelectorScreen extends Screen {
       lst = new LevelSelectorTool(levels, myLevelGraphFile, myLevelMapFile,
           new ArrayList<>(user.getLevelsCompleted(gameType)));
 
-
       dynamicNodes.put("username-label", username);
       dynamicNodes.put("level-selector-tool", lst);
       dynamicNodes.put("level-progress-bar", lpb);
-    }
 
-    loadLayout();
+      loadLayout();
+    }
   }
 
   public void loadLevel() {

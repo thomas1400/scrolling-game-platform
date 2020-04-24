@@ -9,9 +9,10 @@
   (Label text=title, style=title, prefHeight=25%, prefWidth=96%)
   (Region prefWidth=96%, prefHeight=66%, style=home-screen-splash)
   (HBox alignment=TOP_CENTER, prefHeight=10%, spacing=1%) {
-    (Button text=start, prefWidth=25%, actionTag=start)
-    (Button text=help, prefWidth=25%, actionTag=help);
+    (Button text=start, prefWidth=15%, actionTag=start)
     (Button text=user-select, prefWidth=25%, actionTag=user-select)
+    (Button text=help, prefWidth=15%, actionTag=help)
+    (Button text=back, prefWidth=15%, actionTag=game-select)
   }
 }
 
