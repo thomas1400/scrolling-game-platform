@@ -17,7 +17,7 @@ public class Tester extends Application{
 
   @Override
   public void start(Stage primaryStage) {
-    ScreenController sc = new ScreenController(primaryStage, new UserList(), new BasicLevelList());
+    ScreenController sc = new ScreenController(primaryStage, new UserList());
     Pane root = null;
     primaryStage.setScene(new Scene(root, 800, 600));
     primaryStage.show();

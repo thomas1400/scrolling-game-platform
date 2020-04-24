@@ -2,10 +2,8 @@ package ooga.view.screen;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.scene.image.Image;
@@ -20,6 +18,7 @@ public class GameSelectionScreen extends Screen {
   private static final char RESOURCE_DIVIDER = ',';
   private GameSelector gs;
 
+  //CALLED REFLEXIVELY
   public GameSelectionScreen(ScreenController controller) {
     super(controller);
 
@@ -48,7 +47,7 @@ public class GameSelectionScreen extends Screen {
     return pairs;
   }
 
-  public void select() {
+  public void select() throws FileNotFoundException {
     controller.setGame(gs.getSelected());
   }
 

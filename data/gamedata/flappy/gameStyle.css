@@ -1,0 +1,9 @@
+/********************************************************
+ *                                                      *
+ *                 Home Screen Styling                  *
+ *                                                      *
+ ********************************************************/
+
+.home-screen-splash {
+  -fx-background-image: url(/gamedata/flappy/gameBackground.png);
+}
