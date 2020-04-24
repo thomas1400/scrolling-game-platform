@@ -18,13 +18,13 @@ import javafx.scene.shape.Rectangle;
 
 public class LevelProgressBar extends Pane {
 
-  private static final int BAR_LAYOUT_OFFSET = 1;
+  public static final int BAR_LAYOUT_OFFSET = 1;
   private double levelProgressFraction;
   private Region bar;
   private Label label;
 
   public LevelProgressBar(String text, int levelProgress, int totalLevels) {
-    levelProgressFraction = (float) Math.min(levelProgress, totalLevels) / totalLevels;
+    levelProgressFraction = (float) levelProgress / totalLevels;
     bar = new Region();
     bar.setLayoutX(BAR_LAYOUT_OFFSET);
     bar.setLayoutY(BAR_LAYOUT_OFFSET);

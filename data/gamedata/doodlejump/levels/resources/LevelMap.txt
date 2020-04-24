@@ -1,9 +1,0 @@
-# number of levels
-# (basicLevel number) (x coordinate) (y coordinate)
-6
-1 10 10
-2 80 100
-3 150 140
-4 280 120
-5 170 350
-6 300 280
