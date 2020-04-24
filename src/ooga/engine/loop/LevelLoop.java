@@ -13,6 +13,12 @@ import ooga.engine.manager.InputManager;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 
+/**
+ * Creates a timeline for the game
+ * Loops through anything that could impact the entities in the game including handling user input from the keyboard, handling collisions, adding and removing entities that result from a change in the camera view or the death or creation of a character, and communicating with the specific entities and the basicLevel controller
+ * This class depends on receiving initial entities from the LevelController and depends on the entities to update properly to understand when points or lives should be altered and when the level should end
+ * @author Cayla Schuval
+ */
 public class LevelLoop implements Loopable {
 
   private GameLevel myLevelController;
@@ -26,6 +32,14 @@ public class LevelLoop implements Loopable {
   private Timeline myTimeline;
   private Entity mainEntity;
 
+  /**
+   * Creates instances of each manager class which are later used in the level loop
+   * @param levelController GameLevel object that is used to communicate score updates, life updates, and status of level
+   * @param level contains information regarding the scrolltype of the level and then main entity of the level
+   * @param screenHeight height of the screen used to determine when entities move on and off the screen
+   * @param screenWidth width of the screen used to determine wen entities move on and off the screen
+   *
+   */
   public LevelLoop(GameLevel levelController, CompleteLevel level, double screenHeight, double screenWidth) {
     myLevelController = levelController;
     mainEntity = level.getMainEntity();
@@ -58,7 +72,7 @@ public class LevelLoop implements Loopable {
     sendEntities();;
   }
 
-  public void initializeEntityList(){
+  private void initializeEntityList(){
     myEntityManager.initializeEntityLists();
     myCameraManager.initializeActivationStorage();
   }
@@ -68,14 +82,22 @@ public class LevelLoop implements Loopable {
     }
   }
 
-  public void processInput(){
+  private void processInput(){
     myInputManager.processInput();
   }
 
+  /**
+   * Processes when a key is pressed that impacts the main entity
+   * @param keyEvent event containing information regarding which key was pressed
+   */
   public void processKeyPress(KeyEvent keyEvent) {
     myInputManager.handleKeyPress(keyEvent);
   }
 
+  /**
+   * Processes when a key is released that impacts the main entity
+   * @param keyEvent event containing information regarding which key was released
+   */
   public void processKeyRelease(KeyEvent keyEvent) { myInputManager.handleKeyRelease(keyEvent);
   }
 
@@ -135,21 +157,37 @@ public class LevelLoop implements Loopable {
     }
   }
 
+  /**
+   * Method is called to begin the level and start the timeline
+   */
   public void begin() {
     myTimeline.play();
   }
 
+  /**
+   * Method is called by LevelController to stop the timeline
+   */
   public void end() {
     myTimeline.stop();
   }
 
+  /**
+   * Method is called by LevelController to pause the timeline
+   */
   public void pause() {
     myTimeline.pause();
   }
 
+  /**
+   * Method is called by LevelController to resume the timeline
+   */
   public void resume() {
     myTimeline.play();
   }
 
+  /**
+   * Method is called by LevelController to get the initial entities on the screen
+   * After these initial entities are sent, only new entities are sent to the LevelController or entities that need to be removed
+   */
   public EntityList getInitialVisibleEntityList() { return myVisibleEntities; }
 }
