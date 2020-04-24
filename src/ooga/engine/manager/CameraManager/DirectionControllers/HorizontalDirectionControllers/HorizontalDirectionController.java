@@ -37,7 +37,7 @@ abstract public class HorizontalDirectionController extends DirectionController 
       myMainEntity.setY(0.1);
     }
     if (myMainEntity.getY()>=myScreenHeight){
-     myMainEntity.fellToDeath();
+     myMainEntity.setLives(0);
     }
   }
 

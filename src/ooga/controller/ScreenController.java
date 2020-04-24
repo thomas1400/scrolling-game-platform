@@ -194,8 +194,8 @@ public class ScreenController{
       myBasicLevels = new BasicLevelList();
       loadLevels(gameType);
     } else {
-      ExceptionFeedback.throwBreakingException(new RuntimeException(), "Game type not received.\n"
-          + "Screen creation cannot continue :(");
+      ExceptionFeedback.throwHandledException(new RuntimeException(), "Game type not received.\n"
+          + "Screen creation cannot continue :(\nPlease choose a game!");
     }
     switchToScreen("HomeScreen");
   }

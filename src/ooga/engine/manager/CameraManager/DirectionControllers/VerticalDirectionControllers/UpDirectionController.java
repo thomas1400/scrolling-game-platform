@@ -24,7 +24,7 @@ public class UpDirectionController extends VerticalDirectionController {
       setToCenter(entities, 0);
     }
     else if(mainEntity.getY()>=myScreenHeight){
-      mainEntity.fellToDeath();
+      mainEntity.setLives(0);
     }
     checkIfMarioTouchesSidesOfScreen();
   }
