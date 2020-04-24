@@ -1,3 +1,4 @@
+/*
 package ooga.model.physics;
 
 public class MarioPhysics extends Physics {
@@ -42,3 +43,4 @@ public class MarioPhysics extends Physics {
     super.TINY_DISTANCE = MY_TINY_DISTANCE;
   }
 }
+*/
