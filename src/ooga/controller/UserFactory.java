@@ -64,7 +64,7 @@ public final class UserFactory {
     User defaultUser = new User("Default User", "Mario.png");
     defaultUser.setGameLevels("mario", getSetWithLevelZero());
     defaultUser.setGameLevels("flappy", getSetWithLevelZero());
-    defaultUser.setGameLevels("doodle", getSetWithLevelZero());
+    defaultUser.setGameLevels("doodlejump", getSetWithLevelZero());
     defaultUser.setLives(3);
 
     return defaultUser;
