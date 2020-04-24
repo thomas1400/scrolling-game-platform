@@ -105,7 +105,8 @@ public class CollisionManager {
   }
 
   private void createAndSendCollision(String typeOfCollision, String attack, Entity entityToHandle, Entity other) {
-    entitiesReceived.addEntity(entityToHandle.handleCollision(new CollisionEvent(typeOfCollision, attack, other)));
+    entitiesReceived.addEntity(entityToHandle.handleCollision(new CollisionEvent(typeOfCollision,
+        attack, other)));
   }
 
   /**

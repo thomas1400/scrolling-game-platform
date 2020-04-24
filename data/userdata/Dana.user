@@ -1,12 +1,11 @@
 #User properties file for user: Dana
 #Thu Apr 23 12:55:57 EDT 2020
 marioLevels=0
-image=data/userdata/images/dana.jpeg
+image=dana.jpeg
 lives=75
 size=small
 doodleLevels=0
 name=Dana
 games=flappy,mario,doodle
 flappyLevels=0,1
-power=fire
 points=96

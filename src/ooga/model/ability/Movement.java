@@ -1,7 +1,6 @@
 package ooga.model.ability;
 
 import ooga.model.entity.Entity;
-import ooga.model.physics.Physics;
 
 //todo what is the point of this class
 public class Movement extends Ability {
@@ -13,8 +12,9 @@ public class Movement extends Ability {
   public Movement(String physicsType){
     //reflection to set the physics Type
     //my idea here is that physics will have enums? maybe?
-    phys = (Physics) super.reflect(PHYSICS_PACKAGE, physicsType);//fixme change the empty string to
+    //phys = (Physics) super.reflectClass(PHYSICS_PACKAGE, physicsType);//fixme change the empty string to
     // physicsType
+    phys = new Physics(physicsType);
   }
 
   //todo this one is only used by the user interactable interfaces
@@ -38,8 +38,9 @@ public class Movement extends Ability {
   }
 
   public void standX(){
-    bounceX();
-    standY();
+    phys.stopHorizMotion();
+    //bounceX();
+    //standY();
     //System.out.println("standX");
   }
 

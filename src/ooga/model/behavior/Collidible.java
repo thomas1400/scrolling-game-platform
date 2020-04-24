@@ -15,6 +15,8 @@ public interface Collidible {
 
   void otherCollectMe();
 
+  void size(Double value);
+
   String getAttack(String location);
 
   //double getScore();
