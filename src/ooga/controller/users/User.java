@@ -57,9 +57,7 @@ public class User {
   }
 
   public Image getImage() {
-    //FIXME
-    //return new Image(myImageFileName);
-    return null;
+    return new Image("userdata/images/" + myImageFileName);
   }
 
   public void setImage(String imageFileName) {
@@ -103,14 +101,6 @@ public class User {
 
   public IntegerProperty getPointsProperty() {
     return pointsProperty;
-  }
-
-  public String getPower() {
-    return myPower;
-  }
-
-  public void setPower(String power) {
-    myPower = power;
   }
 
   public String getSize() {
