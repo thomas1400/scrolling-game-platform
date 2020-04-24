@@ -215,4 +215,8 @@ public class ScreenController{
     }
   }
 
+  public String getGameType() {
+    return myGameType;
+  }
+
 }
