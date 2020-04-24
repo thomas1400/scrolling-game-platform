@@ -13,7 +13,7 @@ public class Movement extends Ability {
   public Movement(String physicsType){
     //reflection to set the physics Type
     //my idea here is that physics will have enums? maybe?
-    phys = (Physics) super.reflect(PHYSICS_PACKAGE, physicsType);//fixme change the empty string to
+    phys = (Physics) super.reflectClass(PHYSICS_PACKAGE, physicsType);//fixme change the empty string to
     // physicsType
   }
 

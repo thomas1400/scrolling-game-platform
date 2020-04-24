@@ -1,9 +1,10 @@
 
 package ooga.model.physics;
 
+import ooga.model.ability.Ability;
 import ooga.model.entity.Entity;
 
-public abstract class Physics {
+public class Physics extends Ability {
 
   protected double dt;
   protected double sizeScale;
