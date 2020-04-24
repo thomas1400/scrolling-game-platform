@@ -154,7 +154,7 @@ public class ScreenController{
   public void restartLevel(){
     myLevelController.endLevel();
 
-    Pane loadingPane = new LoadingScreen(myGameScreen, myCurrentLevel);
+    Pane loadingPane = new LoadingScreen(this, myGameScreen, myCurrentLevel);
     myGameScreen.getChildren().add(loadingPane);
 
     FadeTransition fade = new FadeTransition(Duration.seconds(0.5), loadingPane);

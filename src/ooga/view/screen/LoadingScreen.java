@@ -3,6 +3,7 @@ package ooga.view.screen;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
+import ooga.controller.ScreenController;
 import ooga.controller.levels.BasicLevel;
 
 public class LoadingScreen extends Screen {
@@ -15,8 +16,8 @@ public class LoadingScreen extends Screen {
   private static final String RESOURCES_PATH = "ooga.view.resources.";
   private static final String RESOURCES_SUFFIX = "Text";
 
-  public LoadingScreen(Node parent, BasicLevel level) {
-    super(null);
+  public LoadingScreen(ScreenController controller, Node parent, BasicLevel level) {
+    super(controller);
     this.setPrefSize(parent.getLayoutBounds().getWidth(), parent.getLayoutBounds().getHeight());
 
     this.getStyleClass().add("loading-screen");

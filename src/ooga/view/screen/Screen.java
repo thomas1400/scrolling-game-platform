@@ -2,7 +2,11 @@ package ooga.view.screen;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -10,26 +14,24 @@ import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import ooga.controller.ScreenController;
+import ooga.exceptions.ExceptionFeedback;
 import ooga.view.fxlr.FXLRParser;
 
 public abstract class Screen extends Pane {
 
   private static final int PREF_WIDTH = 800, PREF_HEIGHT = 600;
-  static final String FONT_FAMILY = "Cambria";
-  static final int TITLE_FONT_SIZE = 40;
-  static final int BUTTON_FONT_SIZE = 20;
-  static final int DETAIL_FONT_SIZE = 14;
-  static final double PADDING = 10.0;
 
-  private static final String RESOURCES_PATH = "ooga.view.resources.";
+  private static final String RESOURCES_PATH_PREFIX = "data/gamedata/";
+  private static final String RESOURCES_RELATIVE_PATH = "resources/";
   private static final String RESOURCES_SUFFIX = "Text";
   private static final String BUTTON_ACTIONS_SUFFIX = "Buttons";
+  public static final String FXLR_SUFFIX = ".fxlr";
+  public static final String VIEW_PACKAGE = "/view/";
 
-  protected double workingHeight, workingWidth;
   protected ScreenController controller;
-  protected ResourceBundle buttonActions;
+  private ResourceBundle buttonActions;
   protected ResourceBundle resources;
-  protected Map<String, Node> dynamicNodes;
+  Map<String, Node> dynamicNodes;
 
   public Screen(ScreenController controller) {
     this.controller = controller;
@@ -38,13 +40,21 @@ public abstract class Screen extends Pane {
     initializeScreen();
   }
 
-  protected void initializeResources() {
-    resources = ResourceBundle.getBundle(
-        RESOURCES_PATH + this.getClass().getSimpleName() + RESOURCES_SUFFIX
-    );
-    buttonActions = ResourceBundle.getBundle(
-        RESOURCES_PATH + this.getClass().getSimpleName() + BUTTON_ACTIONS_SUFFIX
-    );
+  private void initializeResources() {
+    try {
+      File file = new File(RESOURCES_PATH_PREFIX + controller.getGameType() + VIEW_PACKAGE
+          + RESOURCES_RELATIVE_PATH);
+      URL[] urls = {file.toURI().toURL()};
+      ClassLoader loader = new URLClassLoader(urls);
+
+      resources = ResourceBundle.getBundle(this.getClass().getSimpleName() + RESOURCES_SUFFIX,
+          Locale.getDefault(), loader);
+      buttonActions = ResourceBundle.getBundle(this.getClass().getSimpleName() + BUTTON_ACTIONS_SUFFIX,
+          Locale.getDefault(), loader);
+    } catch (MalformedURLException e) {
+      ExceptionFeedback.throwBreakingException(e, "Unable to load resources at path: " +
+          RESOURCES_PATH_PREFIX + controller.getGameType() + VIEW_PACKAGE + RESOURCES_RELATIVE_PATH);
+    }
   }
 
   protected void initializeScreen() {
@@ -54,16 +64,13 @@ public abstract class Screen extends Pane {
   protected void loadLayout() {
     try {
       new FXLRParser().loadFXLRLayout(this,
-          new File("resources/view/" + this.getClass().getSimpleName() + ".fxlr"));
+          new File(RESOURCES_PATH_PREFIX + controller.getGameType() + VIEW_PACKAGE + this.getClass().getSimpleName() + FXLR_SUFFIX));
     } catch (FileNotFoundException e) {
-      // FIXME : remove
-      e.printStackTrace();
+      ExceptionFeedback.throwBreakingException(e, "Could not load layout for path: \n + "
+          + RESOURCES_PATH_PREFIX + controller.getGameType() + VIEW_PACKAGE +
+          this.getClass().getSimpleName() + FXLR_SUFFIX
+      );
     }
-  }
-
-  protected void setWorkingDimensions(int vPanels, int hPanels) {
-    workingHeight = this.getPrefHeight() - (vPanels+1) * PADDING;
-    workingWidth = this.getPrefWidth() - (hPanels+1) * PADDING;
   }
 
   public void handleButtonPress(String tag) {
