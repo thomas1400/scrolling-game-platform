@@ -88,7 +88,6 @@ public class Physics extends Ability {
       myConstants.put(INIT_JUMP_VELOCITY,
           -1 * Math.sqrt(2 * myConstants.get(GRAVITY) * myConstants.get(JUMP_HEIGHT)));
     }
-    myConstants.replace(MAX_VERT_VELOCITY, -1 * myConstants.get(MAX_VERT_VELOCITY));
     myConstants.putIfAbsent(TINY_DISTANCE,
         myConstants.get(MAX_VERT_VELOCITY) * myConstants.get(DT));
   }
@@ -121,7 +120,6 @@ public class Physics extends Ability {
     //Position Updates
     myPosition[X] += myVelocity[X]*myConstants.get(DT);
     myPosition[Y] += myVelocity[Y]*myConstants.get(DT);
-    //myPosition[Y] = tempCheckLandJump();
 
     //Update Image Position
     myEntity.setX(myPosition[X]);
@@ -198,6 +196,7 @@ public class Physics extends Ability {
       myVelocity[X] = myVelocity[X] - (myConstants.get(RUN_ACCELERATION) * myConstants.get(REACTIVITY_PERCENT)) * myConstants.get(DT);
     }
   }
+
   public void moveRight() {
     if (myVelocity[X] > 0) {
       myVelocity[X] = myVelocity[X] + myConstants.get(RUN_ACCELERATION) * myConstants.get(DT);
