@@ -93,10 +93,10 @@ public class CollisionManager {
 
   private void adjustImpactFromGravityAndMultipleDetections(Entity entity, double d) {
     if(collisionLocation[0].equals(SIDE_COLLISION)){
-      entity.setX(entity.getX() - d);
+      //entity.setX(entity.getX() - d);
     }
     else if (collisionLocation[0].equals(BOTTOM_COLLISION)){
-      entity.setY(entity.getY() - d);
+      //entity.setY(entity.getY() - d);
     }
   }
 
