@@ -5,6 +5,7 @@ games=mario,flappy,doodlejump,dinorun
 marioLevels=0,1,2,3,4,5,6,7,8,9,10
 flappyLevels=0,1,2,3,4,5,6,7,8,9,10
 doodlejumpLevels=0,1
+dinorunLevels=0
 lives=1000
 name=ALL UNLOCKED
 points=73
