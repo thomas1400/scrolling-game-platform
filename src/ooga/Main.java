@@ -15,6 +15,11 @@ public class Main extends Application {
         launch(args);
     }
 
+    /**
+     * start! :D
+     * @param primaryStage
+     * @throws FileNotFoundException
+     */
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {
         new OogaController(primaryStage);
