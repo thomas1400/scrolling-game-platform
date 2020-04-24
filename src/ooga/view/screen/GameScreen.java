@@ -24,7 +24,7 @@ public class GameScreen extends Screen {
 
     gameGroup = new Group();
     gameBackground = new Rectangle();
-    //gameBackground.setFill(new ImagePattern(new Image(level.getBackgroundImage())));
+    gameBackground.setFill(new ImagePattern(new Image(level.getBackgroundImage())));
 
     Label lives = new Label();
     lives.textProperty().bind(user.getLivesProperty().asString(resources.getString("lives") + ": %d"));

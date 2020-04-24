@@ -1,9 +1,8 @@
-package ooga.model.physics;
+package ooga.model.ability;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import ooga.model.ability.Ability;
 import ooga.model.entity.Entity;
 
 public class Physics extends Ability {
@@ -34,9 +33,9 @@ public class Physics extends Ability {
   private double[] myPosition = new double[]{0, 0};
   private double[] myInputAdjust = new double[] {0,0};
 
-  public Physics() {
+  public Physics(String gameAndPhysicsType) {
     String gameType = "mario";
-    initializeConstants(gameType);
+    initializeConstants(gameAndPhysicsType);
   }
 
   private void initializeConstants(String gameType) {
