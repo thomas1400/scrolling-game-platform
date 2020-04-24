@@ -6,6 +6,5 @@ marioLevels=0,1,2,3
 flappyLevels=0,1
 doodlejumpLevels=0
 lives=44
-size=mini
 name=Thomas
 points=73
