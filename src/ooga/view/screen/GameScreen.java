@@ -75,7 +75,7 @@ public class GameScreen extends Screen {
   //NEEDED FOR REFLECTION, DON'T DELETE
   public void quit() {
     levelController.endLevel(false);
-    exit(winState);
+    exit(false);
   }
 
   //NEEDED FOR REFLECTION, DON'T DELETE
