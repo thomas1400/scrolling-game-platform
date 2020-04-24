@@ -1,7 +1,7 @@
 #HEADER
 mainTitle:DoodleJump
 subTitle:Tutorial
-gameType:doodle
+gameType:doodlejump
 scrollType:up
 deathsAllowed:1
 backgroundImage:levelBackground.png
