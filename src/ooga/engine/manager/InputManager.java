@@ -17,7 +17,6 @@ import ooga.model.entity.Entity;
 public class InputManager {
   Entity myMainEntity;
   private ResourceBundle myUserInputsResources;
-  private static final String UserInputResources = "userinput/userinput";
   private Set<String> keysCurrentlyPressed;
   private static final String REPEAT_ACTION = "ONREPEAT";
   private static final String REPEAT = "repeat";

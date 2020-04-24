@@ -25,9 +25,9 @@ class EntityManagerTest extends ApplicationTest {
   @BeforeEach
   void setUp(){
     entities = new EntityList();
-    mainEntity = EntityBuilder.getEntity("Player");
+    mainEntity = EntityBuilder.getEntity("Player", "mario");
     entities.addEntity(mainEntity);
-    entity = EntityBuilder.getEntity("Brick");
+    entity = EntityBuilder.getEntity("Brick", "mario");
     entities.addEntity(entity);
     entityManager = new EntityManager(entities);
     entityManager.initializeEntityLists();
@@ -42,7 +42,7 @@ class EntityManagerTest extends ApplicationTest {
   }
 
   private Entity createNewEntity(){
-    return EntityBuilder.getEntity("Goomba");
+    return EntityBuilder.getEntity("Goomba", "mario");
   }
 
   private EntityList createNewEntityListWithEntity(Entity entity){
@@ -64,7 +64,7 @@ class EntityManagerTest extends ApplicationTest {
 
   @Test
   void mainEntityDies(){
-    CollisionEvent sideDamage = new CollisionEvent("Side", "Damage", EntityBuilder.getEntity("Goomba"));
+    CollisionEvent sideDamage = new CollisionEvent("Side", "Damage", EntityBuilder.getEntity("Goomba", "mario"));
     mainEntity.handleCollision(sideDamage);
     assertTrue(mainEntity.isDead());
     entityManager.manageEntitiesFromCollisions(entities);
@@ -74,7 +74,7 @@ class EntityManagerTest extends ApplicationTest {
 
   @Test
   void entityDies(){
-    CollisionEvent bottomDamage = new CollisionEvent("Bottom", "Break", EntityBuilder.getEntity("Player"));
+    CollisionEvent bottomDamage = new CollisionEvent("Bottom", "Break", EntityBuilder.getEntity("Player", "mario"));
     entity.handleCollision(bottomDamage);
     assertTrue(entity.isDead());
     entityManager.manageEntitiesFromCollisions(entities);
