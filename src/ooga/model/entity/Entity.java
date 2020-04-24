@@ -14,6 +14,7 @@ import ooga.model.ability.CollectiblePackage;
 import ooga.model.ability.Health;
 import ooga.model.ability.Movement;
 import ooga.model.behavior.Collidible;
+import ooga.model.physics.Physics;
 import ooga.utility.event.CollisionEvent;
 
 
@@ -26,6 +27,9 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   private static final String SCORE = "score";
   private static final String HEALTH = "health";
   private static final String SCALE = "scale";
+  private static final String SIDE = "Side";
+  private static final String TOP = "Top";
+  private static final String BOTTOM = "Bottom";
   private static final String LEVEL_ENDED = "levelEnd";
   private static final String LEVEL_COMPLETION_SUCCESS = "success";
   private static final double INITIAL_SCORE = 0;
@@ -35,8 +39,10 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
 
   private Health health;
   private Movement movement;
+  private Physics physics;
   private CollectiblePackage myPackage;
   private String side, top, bottom;
+  private Map<String, String> myAttacks;
   private Map<String, Ability> myAbilities;
   private Map<String, Double> myInformation;
   private String debuggingName;
@@ -51,11 +57,15 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     super(image);
     debuggingName = name;
     myAbilities = new HashMap<>();
+    myAttacks = new HashMap<>();
     myInformation = new HashMap<>();
     addHealth(new Health());
-    addSideAttack(HARMLESS);
+    updateAttack(SIDE+"Attack", HARMLESS);
+    updateAttack(TOP+"Attack", HARMLESS);
+    updateAttack(BOTTOM+"Attack", HARMLESS);
+    /*addSideAttack(HARMLESS);
     addTopAttack(HARMLESS);
-    addBottomAttack(HARMLESS);
+    addBottomAttack(HARMLESS);*/
     haveMovement = false;
     addCollectiblePackage(new CollectiblePackage(DEFAULT_PACKAGE_CONTENT));
     setScore(INITIAL_SCORE);
@@ -69,6 +79,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    * @param attackType new type to replace old one at location
    */
   public void updateAttack(String location, String attackType) {
+    //myAttacks.put(location, attackType);
     try {
       Method method = Entity.class.getDeclaredMethod(ADD+location, String.class);
       method.invoke(Entity.this, attackType);
@@ -79,6 +90,37 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     } catch (InvocationTargetException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  @Override
+  /**
+   * Get the attack of the specific side
+   * @param location
+   * @return call method to get the attack of the specific location
+   */
+  public String getAttack(String location){
+    /*if(myAttacks.containsKey(location)){
+      return myAttacks.get(location);
+    } else {
+      ExceptionFeedback.throwHandledException(new NullPointerException(),
+          "We're looking for the "+location+" attack, but this entity doesn't seem to have one. "
+              + "Check that you're looking for either \"side\", \"top\", or \"bottom\"");
+    }
+    return HARMLESS;*/
+    try {
+      Method method = Entity.class.getDeclaredMethod("get"+location+"Attack");
+      return (String) method.invoke(Entity.this);
+    } catch (NoSuchMethodException e) {
+      //ExceptionFeedback.throwHandledException(e, "No such method used when trying to to get the "+location+" attack");
+      throw new RuntimeException(e);
+    } catch (IllegalAccessException e) {
+      ExceptionFeedback.throwHandledException(e, "No access to method used when trying to get the "+location+" attack");
+      //throw new RuntimeException(e);
+    } catch (InvocationTargetException e) {
+      ExceptionFeedback.throwHandledException(e, "Failed to invoke method called when trying to get the "+location+" attack");
+      //throw new RuntimeException(e);
+    }
+    return HARMLESS;
   }
 
 
@@ -120,6 +162,15 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     myAbilities.put("Movement", movement);
     haveMovement = true;
   }
+
+  private void addPhysics(Ability p){
+    physics = (Physics) p;
+  }
+
+  private void callPhysics(String methodName){
+    physics.reflectMethod(methodName);
+  }
+
 
   //used for reflection DO NOT DELETE
   private void addSideAttack(String a){
@@ -178,36 +229,14 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     }
   }
 
+  /*
   //todo delete when finished
   public String debug(){
     if(debuggingName.equals("Mario.png")){
      // System.out.println("Side: "+side.toString()+" Bottom: "+bottom.toString()+" top: "+top.toString());
     }
     return debuggingName;
-  }
-
-  @Override
-  /**
-   * Get the attack of the specific side
-   * @param location
-   * @return call method to get the attack of the specific location
-   */
-  public String getAttack(String location){
-    try {
-      Method method = Entity.class.getDeclaredMethod("get"+location+"Attack");
-      return (String) method.invoke(Entity.this);
-    } catch (NoSuchMethodException e) {
-      //ExceptionFeedback.throwHandledException(e, "No such method used when trying to to get the "+location+" attack");
-      throw new RuntimeException(e);
-    } catch (IllegalAccessException e) {
-      ExceptionFeedback.throwHandledException(e, "No access to method used when trying to get the "+location+" attack");
-      //throw new RuntimeException(e);
-    } catch (InvocationTargetException e) {
-      ExceptionFeedback.throwHandledException(e, "Failed to invoke method called when trying to get the "+location+" attack");
-      //throw new RuntimeException(e);
-    }
-    return HARMLESS;
-  }
+  }*/
 
   //used for reflection DO NOT DELETE
   private String getSideAttack(){
