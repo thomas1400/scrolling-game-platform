@@ -14,10 +14,6 @@ class EntityTest extends ApplicationTest {
     super.start(stage);
   }
 
-  private CollisionEvent buildCollisionEvent(String location, String otherLocation, Entity entity){
-    return new CollisionEvent(location, entity.getAttack(otherLocation), entity);
-  }
-
   @Test
   void testHandleCollisionHealth() {
     Entity mario = EntityBuilder.getEntity("Player", "mario");
@@ -200,5 +196,36 @@ class EntityTest extends ApplicationTest {
 
     player.handleCollision(brickTopCE);
 
+  }
+
+  @Test
+  void testRevive(){
+    Entity mario = EntityBuilder.getEntity("Player", "mario");
+    Entity goomba = EntityBuilder.getEntity("Goomba", "mario");
+    CollisionEvent goombaSide = new CollisionEvent("Side", goomba.getAttack("Side"), goomba);
+    CollisionEvent marioSide = new CollisionEvent("Side", mario.getAttack("Side"), mario);
+
+    assertFalse(mario.isDead());
+
+    mario.handleCollision(goombaSide);
+    goomba.handleCollision(marioSide);
+
+    assertTrue(mario.isDead());
+    mario.revive();
+    assertFalse(mario.isDead());
+
+    mario = EntityBuilder.getEntity("Player", "mario");
+    assertFalse(mario.isDead());
+
+    Entity lifeMushroom = EntityBuilder.getEntity("LifeMushroom", "mario");
+    CollisionEvent lifeMushroomSideCE = new CollisionEvent("Side", lifeMushroom.getAttack("Side"), lifeMushroom);
+
+    mario.handleCollision(lifeMushroomSideCE);
+    assertEquals(2, mario.getLives());
+
+    mario.handleCollision(goombaSide);
+    assertFalse(mario.isDead());
+    mario.revive();
+    assertEquals(1, mario.getLives());
   }
 }
