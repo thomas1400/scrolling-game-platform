@@ -66,8 +66,8 @@ public class ScreenController{
           "Game type " + myGameType + " is invalid.");
     }
 
-    switchToScreen("HomeScreen");
-    //switchToScreen("GameSelectionScreen");
+    //switchToScreen("HomeScreen");
+    switchToScreen("GameSelectionScreen");
   }
 
   private void addApplicationIcon() {

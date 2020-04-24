@@ -18,7 +18,6 @@ public class GameSelectionScreen extends Screen {
   private static final char RESOURCE_DIVIDER = ',';
   private GameSelector gs;
 
-  //CALLED REFLEXIVELY
   public GameSelectionScreen(ScreenController controller) {
     super(controller);
 
