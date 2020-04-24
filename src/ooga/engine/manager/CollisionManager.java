@@ -20,6 +20,7 @@ public class CollisionManager {
   private static final String MAXX_MINX = "maxXminX";
   private static final String MAXY_MINY = "maxYminY";
   private static final String SIDE_COLLISION = "Side";
+  private static final String BOTTOM_COLLISION = "Bottom";
   private String min;
   private static Map<Double, String> map = new HashMap<>();
   private String[] collisionLocation;
@@ -94,8 +95,8 @@ public class CollisionManager {
     if(collisionLocation[0].equals(SIDE_COLLISION)){
       entity.setX(entity.getX() - d);
     }
-    else{
-      //entity.setY(entity.getY() - d);
+    else if (collisionLocation[0].equals(BOTTOM_COLLISION)){
+      entity.setY(entity.getY() - d);
     }
   }
 
