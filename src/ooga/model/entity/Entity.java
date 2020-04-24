@@ -17,7 +17,7 @@ import ooga.model.behavior.Collidible;
 import ooga.model.ability.Physics;
 import ooga.utility.event.CollisionEvent;
 
-//im crying -dana
+
 public class Entity extends ImageView implements Collidible, Manageable, Renderable {
 
   private static final String HARMLESS = "Harmless";
@@ -31,7 +31,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   private static final String TOP = "top";
   private static final String BOTTOM = "bottom";
   private static final String LEVEL_ENDED = "levelEnd";
-  private static final String LEVEL_COMPLETION_SUCCESS = "success";
   private static final double INITIAL_SCORE = 0;
   private static final double DEFAULT_SCALE = 1;
   private static final double SINGLE_LIFE = 1;
@@ -44,7 +43,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   private Physics physics;
   private CollectiblePackage myPackage;
   private Map<String, String> myAttacks;
-  //private Map<String, Ability> myAbilities;
   private Map<String, Double> myInformation;
   private boolean haveMovement, levelEnded;
 
@@ -289,7 +287,8 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     //do nothing, intentionally empty
   }
 
-  private void empty(){
+  //used for reflection DO NOT DELETE
+  private void empty(Double value){
     //intentionally empty
   }
 
