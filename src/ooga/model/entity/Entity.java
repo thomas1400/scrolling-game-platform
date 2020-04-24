@@ -43,13 +43,10 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   private Movement movement;
   private Physics physics;
   private CollectiblePackage myPackage;
-  private String side, top, bottom;
   private Map<String, String> myAttacks;
   private Map<String, Ability> myAbilities;
   private Map<String, Double> myInformation;
-  private String debuggingName;
-  private double scale;
-  private boolean dead, haveMovement, levelEnded, success;
+  private boolean haveMovement, levelEnded;
 
   /**
    * Create default health and attacks, which can be overwritten later
@@ -57,7 +54,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    */
   public Entity(Image image, String name, String gameType){
     super(image);
-    debuggingName = name;
     myGameType = gameType;
     myAbilities = new HashMap<>();
     myAttacks = new HashMap<>();
@@ -159,9 +155,8 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     if(myInformation.containsKey(informationType))
       return myInformation.get(informationType);
     else{
-      ExceptionFeedback.throwHandledException(new RuntimeException(), "You're looking for information (\""+informationType+"\" in the data map that isn't there");
-      return 0;
-      //todo get rid of magic val
+      ExceptionFeedback.throwHandledException(new NullPointerException(), "You're looking for information (\""+informationType+"\" in the data map that isn't there");
+      return PLAYING;
     }
   }
 
@@ -171,24 +166,15 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    * @return boolean tracking health status
    */
   public boolean isDead(){
-    return dead;
-  }
-
-  /**
-   * marks an entity as dead if it leaves the bounds of the screen it can move it
-   */
-  public void fellToDeath(){
-    health.setLives(DEAD);
-    dead = true;
+    return health.isDead();
   }
 
   /**
    * revives the entity if the entity dies
    */
   public void revive(){
-    if(dead) {
+    if(health.isDead()) {
       health.addLives(SINGLE_LIFE);
-      dead = health.isDead();
     }
   }
 
@@ -199,20 +185,16 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    * that should be executed based on this.attackType, then execute those methods
    */
   public Entity handleCollision(CollisionEvent ce) {
-    String location = ce.getCollisionLocation();
-    String otherAttack = ce.getAttackType();
-    String myAttack = this.getAttack(location);
+    String myAttack = this.getAttack(ce.getCollisionLocation());
     Collidible otherEntity = ce.getOther();
-    String debug = "";
     try {
       String gameSpecificFilePath = "gamedata/"+myGameType+"/entities/";
-      ResourceBundle myAttackSpecificResponseBundle = ResourceBundle
-          .getBundle(gameSpecificFilePath + "collisions/" + otherAttack);
-      String[] methodsToCall = myAttackSpecificResponseBundle.getString(myAttack).split(" ");
+      ResourceBundle response = ResourceBundle
+          .getBundle(gameSpecificFilePath + "collisions/" + ce.getAttackType());
+      String[] methodsToCall = response.getString(myAttack).split(" ");
       for (String s : methodsToCall) {
-        debug = s;
         if (s.equals("collect")) {
-          otherEntity.size(myInformation.get(SCALE));
+          otherEntity.size(myInformation.get(SCALE)); //stops the overwriting of scale back to 1 when reading from the other guy
           otherEntity.otherCollectMe();
           updateMeAfterCollecting(otherEntity);
           otherEntity.otherResetAfterCollect();
@@ -222,21 +204,16 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
         }
       }
     } catch (MissingResourceException e) {
-      //ExceptionFeedback.throwHandledException(e, "Couldn't find key in bundle");
-      System.out.println("Couldn't find key in bundle I'm:"+ debuggingName+"; we're at: "+location);
-      throw new RuntimeException(e);
+      ExceptionFeedback.throwHandledException(e, "Couldn't find key"+myAttack+" in "+ce.getAttackType()+".properties");
     } catch (NoSuchMethodException e) {
       ExceptionFeedback
-          .throwHandledException(e, "Method name "+debug+" was incorrect in trying to handle the collision");
-      //throw new RuntimeException(e);
+          .throwHandledException(e, "Method name was incorrect in trying to handle the collision, check "+ce.getAttackType()+".properties");
     } catch (IllegalAccessException e) {
       ExceptionFeedback
           .throwHandledException(e, "You don't have access to that method, try again");
-      //throw new RuntimeException(e);
     } catch (InvocationTargetException e) {
       ExceptionFeedback
-          .throwHandledException(e, "Couldn't invoke the method when creating the entity");
-      //throw new RuntimeException(e);
+          .throwHandledException(e, "Couldn't invoke the method when handling the collision");
     }
     return this;
   }
@@ -252,7 +229,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   //used for reflection DO NOT DELETE
   private void damage(){
     health.damage();
-    dead = health.isDead();
   }
   
   //used for reflection DO NOT DELETE
@@ -275,7 +251,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   private void openPackage(){
     String methodToCall = myPackage.toString();
     double value = myPackage.getPackageValue();
-    if(!dead && !levelEnded){
+    if(!health.isDead() && !levelEnded){
       try {
         Method method = Entity.class.getDeclaredMethod(methodToCall, Double.class);
         method.invoke(Entity.this, value);
@@ -314,23 +290,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   @Override
   //used for reflection DO NOT DELETE
   public void size(Double value){
-    scale = value;
-    myInformation.put(SCALE, scale);
-  }
-
-  private void setScaleOfImage(){
-    //Scale sc = new Scale(scale, scale);
-    //System.out.println(this.getFitHeight());
-    //System.out.println(getBoundsInParent());
-    //System.out.println(this.getScaleX());
-    System.out.println("scale: "+scale);
-    this.setFitHeight(this.getFitHeight()*scale);
-    this.setScaleX(this.getScaleX()*scale);
-    this.setFitWidth(this.getFitWidth()*scale);
-    this.setScaleY(this.getScaleY()*scale);
-    //System.out.println(this.getFitHeight());
-    //System.out.println(this.getFitWidth());
-    //System.out.println(this.getFitWidth());
+    myInformation.put(SCALE, value);
   }
 
   //used for reflection DO NOT DELETE
@@ -341,7 +301,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
 
   //used for reflection DO NOT DELETE
   private void collect(){
-    //do nothing
+    //not actually being used atm
   }
 
   //used for reflection DO NOT DELETE
@@ -374,7 +334,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
 
   //used for reflection DO NOT DELETE
   private void nothing(){
-    //do nothing
+    //do nothing, intentionally empty
   }
 
   @Override
@@ -385,8 +345,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     if (haveMovement) {
       movement.update(this);
     }
-    dead = health.isDead();
-    levelEnd(dead?1.0:0.0); //convert boolean to a double
+    levelEnd(health.isDead()?1.0:0.0); //convert boolean to a double
   }
 
   //used for reflection DO NOT DELETE
@@ -420,7 +379,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    * Move the entity to the right if it can do so
    */
   public void moveRight(){
-    setScaleX(scale);
+    setScaleX(myInformation.get(SCALE));
     //physics.moveRight();
     movement.right();
   }
@@ -430,7 +389,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    * Move the entity to the left if it can do so
    */
   public void moveLeft(){
-    setScaleX(-1*scale);
+    setScaleX(-1*myInformation.get(SCALE));
     movement.left();
   }
 
@@ -444,7 +403,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   /**
-   * used for unit testing.
    * @return lives of the entity
    */
   public double getLives(){
