@@ -199,6 +199,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
         }
       }
     } catch (MissingResourceException e) {
+      e.printStackTrace();
       ExceptionFeedback.throwHandledException(e, "Couldn't find key"+myAttack+" in "+ce.getAttackType()+".properties");
     } catch (NoSuchMethodException e) {
       ExceptionFeedback
