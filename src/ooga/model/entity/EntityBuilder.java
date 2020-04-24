@@ -69,7 +69,7 @@ public class EntityBuilder {
         if (!s.equals("Image")) {
           //reflection!
           if (s.contains("Attack")) {
-            entity.updateAttack(s, resources.getString(s));
+            entity.updateAttack(s.split("Attack")[0], resources.getString(s));
           } else {
             Ability a = makeAbility(s, resources.getString(s));
             entity.addAbility(s, a);

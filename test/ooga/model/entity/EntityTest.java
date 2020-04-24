@@ -99,7 +99,7 @@ class EntityTest extends ApplicationTest {
     CollisionEvent playerSideCE = new CollisionEvent("Side", player.getAttack("Side"), player);
     player.handleCollision(coinSideCE);
     coin.handleCollision(playerSideCE);
-    assertEquals(100, player.getScore());
+    assertEquals(10, player.getScore());
     assertEquals(0, coin.getScore());
 
     player = EntityBuilder.getEntity("Player");
@@ -108,7 +108,7 @@ class EntityTest extends ApplicationTest {
     CollisionEvent playerBottomCE = new CollisionEvent("Bottom", player.getAttack("Top"), player);
     player.handleCollision(coinTopCE);
     coin.handleCollision(playerBottomCE);
-    assertEquals(100, player.getScore());
+    assertEquals(10, player.getScore());
     assertEquals(0, coin.getScore());
 
 
@@ -118,14 +118,14 @@ class EntityTest extends ApplicationTest {
     CollisionEvent playerTopCE = new CollisionEvent("Top", player.getAttack("Bottom"), player);
     player.handleCollision(coinBottomCE);
     coin.handleCollision(playerTopCE);
-    assertEquals(100, player.getScore());
+    assertEquals(10, player.getScore());
     assertEquals(0, coin.getScore());
 
     coin = EntityBuilder.getEntity("Coin");
     coinBottomCE = new CollisionEvent("Bottom", coin.getAttack("Top"), coin);
     player.handleCollision(coinBottomCE);
     coin.handleCollision(playerTopCE);
-    assertEquals(200, player.getScore());
+    assertEquals(20, player.getScore());
     assertEquals(0, coin.getScore());
   }
 
@@ -170,7 +170,6 @@ class EntityTest extends ApplicationTest {
     flag.handleCollision(playerSideCE);
     assertFalse(player.isDead());
     assertTrue(player.endedLevel());
-    assertTrue(player.isSuccess());
 
     player = EntityBuilder.getEntity("Player");
     Entity goomba = EntityBuilder.getEntity("Goomba");
@@ -181,7 +180,6 @@ class EntityTest extends ApplicationTest {
     assertTrue(player.isDead());
     player.updateVisualization();
     assertTrue(player.endedLevel());
-    assertFalse(player.isSuccess());
   }
 
   @Test

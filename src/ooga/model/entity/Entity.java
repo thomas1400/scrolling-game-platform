@@ -27,9 +27,9 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   private static final String SCORE = "score";
   private static final String HEALTH = "health";
   private static final String SCALE = "scale";
-  private static final String SIDE = "Side";
-  private static final String TOP = "Top";
-  private static final String BOTTOM = "Bottom";
+  private static final String SIDE = "side";
+  private static final String TOP = "top";
+  private static final String BOTTOM = "bottom";
   private static final String LEVEL_ENDED = "levelEnd";
   private static final String LEVEL_COMPLETION_SUCCESS = "success";
   private static final double INITIAL_SCORE = 0;
@@ -60,12 +60,9 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     myAttacks = new HashMap<>();
     myInformation = new HashMap<>();
     addHealth(new Health());
-    updateAttack(SIDE+"Attack", HARMLESS);
-    updateAttack(TOP+"Attack", HARMLESS);
-    updateAttack(BOTTOM+"Attack", HARMLESS);
-    /*addSideAttack(HARMLESS);
-    addTopAttack(HARMLESS);
-    addBottomAttack(HARMLESS);*/
+    updateAttack(SIDE, HARMLESS);
+    updateAttack(TOP, HARMLESS);
+    updateAttack(BOTTOM, HARMLESS);
     haveMovement = false;
     addCollectiblePackage(new CollectiblePackage(DEFAULT_PACKAGE_CONTENT));
     setScore(INITIAL_SCORE);
@@ -79,17 +76,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    * @param attackType new type to replace old one at location
    */
   public void updateAttack(String location, String attackType) {
-    //myAttacks.put(location, attackType);
-    try {
-      Method method = Entity.class.getDeclaredMethod(ADD+location, String.class);
-      method.invoke(Entity.this, attackType);
-    } catch (NoSuchMethodException e) {
-      throw new RuntimeException(e);
-    } catch (IllegalAccessException e) {
-      throw new RuntimeException(e);
-    } catch (InvocationTargetException e) {
-      throw new RuntimeException(e);
-    }
+    myAttacks.put(location.toLowerCase(), attackType);
   }
 
   @Override
@@ -99,26 +86,12 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    * @return call method to get the attack of the specific location
    */
   public String getAttack(String location){
-    /*if(myAttacks.containsKey(location)){
-      return myAttacks.get(location);
+    if(myAttacks.containsKey(location.toLowerCase())){
+      return myAttacks.get(location.toLowerCase());
     } else {
-      ExceptionFeedback.throwHandledException(new NullPointerException(),
-          "We're looking for the "+location+" attack, but this entity doesn't seem to have one. "
+      ExceptionFeedback.throwBreakingException(new NullPointerException(),
+          "We're looking for the "+location.toLowerCase()+" attack, but this entity doesn't seem to have one. "
               + "Check that you're looking for either \"side\", \"top\", or \"bottom\"");
-    }
-    return HARMLESS;*/
-    try {
-      Method method = Entity.class.getDeclaredMethod("get"+location+"Attack");
-      return (String) method.invoke(Entity.this);
-    } catch (NoSuchMethodException e) {
-      //ExceptionFeedback.throwHandledException(e, "No such method used when trying to to get the "+location+" attack");
-      throw new RuntimeException(e);
-    } catch (IllegalAccessException e) {
-      ExceptionFeedback.throwHandledException(e, "No access to method used when trying to get the "+location+" attack");
-      //throw new RuntimeException(e);
-    } catch (InvocationTargetException e) {
-      ExceptionFeedback.throwHandledException(e, "Failed to invoke method called when trying to get the "+location+" attack");
-      //throw new RuntimeException(e);
     }
     return HARMLESS;
   }
@@ -171,22 +144,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     physics.reflectMethod(methodName);
   }
 
-
-  //used for reflection DO NOT DELETE
-  private void addSideAttack(String a){
-    side = a;
-  }
-
-  //used for reflection DO NOT DELETE
-  private void addTopAttack(String a){
-    top = a;
-  }
-
-  //used for reflection DO NOT DELETE
-  private void addBottomAttack(String a){
-    bottom = a;
-  }
-
   @Override
   public Map<String, Ability> getAbilities() {
     return myAbilities;
@@ -227,30 +184,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
       health.addLives(SINGLE_LIFE);
       dead = health.isDead();
     }
-  }
-
-  /*
-  //todo delete when finished
-  public String debug(){
-    if(debuggingName.equals("Mario.png")){
-     // System.out.println("Side: "+side.toString()+" Bottom: "+bottom.toString()+" top: "+top.toString());
-    }
-    return debuggingName;
-  }*/
-
-  //used for reflection DO NOT DELETE
-  private String getSideAttack(){
-    return side;
-  }
-
-  //used for reflection DO NOT DELETE
-  private String getTopAttack(){
-    return top;
-  }
-
-  //used for reflection DO NOT DELETE
-  private String getBottomAttack(){
-    return bottom;
   }
 
   /**
