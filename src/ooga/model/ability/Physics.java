@@ -1,10 +1,8 @@
-/*
-package ooga.model.physics;
+package ooga.model.ability;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import ooga.model.ability.Ability;
 import ooga.model.entity.Entity;
 
 public class Physics extends Ability {
@@ -35,9 +33,9 @@ public class Physics extends Ability {
   private double[] myPosition = new double[]{0, 0};
   private double[] myInputAdjust = new double[] {0,0};
 
-  public REFACTORED_PHYSICS() {
+  public Physics(String gameAndPhysicsType) {
     String gameType = "mario";
-    initializeConstants(gameType);
+    initializeConstants(gameAndPhysicsType);
   }
 
   private void initializeConstants(String gameType) {
@@ -89,7 +87,6 @@ public class Physics extends Ability {
       myConstants.put(INIT_JUMP_VELOCITY,
           -1 * Math.sqrt(2 * myConstants.get(GRAVITY) * myConstants.get(JUMP_HEIGHT)));
     }
-    myConstants.replace(MAX_VERT_VELOCITY, -1 * myConstants.get(MAX_VERT_VELOCITY));
     myConstants.putIfAbsent(TINY_DISTANCE,
         myConstants.get(MAX_VERT_VELOCITY) * myConstants.get(DT));
   }
@@ -122,7 +119,6 @@ public class Physics extends Ability {
     //Position Updates
     myPosition[X] += myVelocity[X]*myConstants.get(DT);
     myPosition[Y] += myVelocity[Y]*myConstants.get(DT);
-    //myPosition[Y] = tempCheckLandJump();
 
     //Update Image Position
     myEntity.setX(myPosition[X]);
@@ -199,6 +195,7 @@ public class Physics extends Ability {
       myVelocity[X] = myVelocity[X] - (myConstants.get(RUN_ACCELERATION) * myConstants.get(REACTIVITY_PERCENT)) * myConstants.get(DT);
     }
   }
+
   public void moveRight() {
     if (myVelocity[X] > 0) {
       myVelocity[X] = myVelocity[X] + myConstants.get(RUN_ACCELERATION) * myConstants.get(DT);
@@ -208,4 +205,3 @@ public class Physics extends Ability {
   }
 
 }
- */

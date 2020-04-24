@@ -14,7 +14,7 @@ import ooga.model.ability.CollectiblePackage;
 import ooga.model.ability.Health;
 import ooga.model.ability.Movement;
 import ooga.model.behavior.Collidible;
-import ooga.model.physics.Physics;
+import ooga.model.ability.Physics;
 import ooga.utility.event.CollisionEvent;
 
 
