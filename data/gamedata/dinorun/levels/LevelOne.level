@@ -3,7 +3,7 @@ id:0001
 mainTitle:Level 1
 subTitle:The Beginning
 gameType:dinorun
-scrollType:horizontalCentered
+scrollType:right
 deathsAllowed:1
 backgroundImage:white.jpg
 levelWidth:100

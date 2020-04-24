@@ -3,7 +3,7 @@ id:0002
 mainTitle:Level 2
 subTitle:Beginning 2 - The Rebeginning
 gameType:dinorun
-scrollType:horizontalCentered
+scrollType:right
 deathsAllowed:1
 backgroundImage:white.jpg
 levelWidth:100
