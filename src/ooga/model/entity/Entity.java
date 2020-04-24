@@ -2,6 +2,7 @@ package ooga.model.entity;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -12,7 +13,6 @@ import ooga.exceptions.ExceptionFeedback;
 import ooga.model.ability.Ability;
 import ooga.model.ability.CollectiblePackage;
 import ooga.model.ability.Health;
-import ooga.model.ability.Movement;
 import ooga.model.behavior.Collidible;
 import ooga.model.ability.Physics;
 import ooga.utility.event.CollisionEvent;
@@ -21,10 +21,11 @@ import ooga.utility.event.CollisionEvent;
 public class Entity extends ImageView implements Collidible, Manageable, Renderable {
 
   private static final String HARMLESS = "Harmless";
-  private static final String DEFAULT_PACKAGE_CONTENT = "nothing 0";
+  private static final String DEFAULT_PACKAGE_CONTENT = "empty 0";
   private static final String ADD = "add";
   private static final String SCORE = "score";
   private static final String HEALTH = "health";
+  private static final String PHYSICS = "physics";
   private static final String SCALE = "scale";
   private static final String SIDE = "side";
   private static final String TOP = "top";
@@ -40,11 +41,10 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
 
   private String myGameType;
   private Health health;
-  private Movement movement;
   private Physics physics;
   private CollectiblePackage myPackage;
   private Map<String, String> myAttacks;
-  private Map<String, Ability> myAbilities;
+  //private Map<String, Ability> myAbilities;
   private Map<String, Double> myInformation;
   private boolean haveMovement, levelEnded;
 
@@ -55,7 +55,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   public Entity(Image image, String name, String gameType){
     super(image);
     myGameType = gameType;
-    myAbilities = new HashMap<>();
     myAttacks = new HashMap<>();
     myInformation = new HashMap<>();
     addHealth(new Health());
@@ -65,8 +64,13 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     haveMovement = false;
     addCollectiblePackage(new CollectiblePackage(DEFAULT_PACKAGE_CONTENT));
     resetScore();
-    size(DEFAULT_SCALE);
+    //size(DEFAULT_SCALE);
+    setInfo(SCALE, DEFAULT_SCALE);
     levelEnd(PLAYING);
+  }
+
+  private void setInfo(String type, double value){
+    myInformation.put(type.toLowerCase(), value);
   }
 
   /**
@@ -95,7 +99,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     return HARMLESS;
   }
 
-
   /**
    * Add abilities to the entity. This is a general method that allows all
    * ability objects to be added to the entity
@@ -107,47 +110,35 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
       Method method = Entity.class.getDeclaredMethod(ADD+abilityType, Ability.class);
       method.invoke(Entity.this, ability);
     } catch (NoSuchMethodException e) {
-      throw new RuntimeException(e);
+      ExceptionFeedback.throwHandledException(e, "No method to create the "+abilityType+" ability for the entity");
     } catch (IllegalAccessException e) {
-      throw new RuntimeException(e);
+      ExceptionFeedback.throwHandledException(e, "Can't make that "+abilityType+"ability");
     } catch (InvocationTargetException e) {
-      throw new RuntimeException(e);
+      ExceptionFeedback.throwHandledException(e, "Can't invoke method to make "+abilityType);
     }
   }
 
   //used for reflection DO NOT DELETE
   private void addHealth(Ability h){
     health = (Health) h;
-    myAbilities.put("Health", health);
-    health(DEAD);//todo remove magic num
+    health(DEAD);
+    setInfo(HEALTH, DEAD); //THIS IS INTENTIONAL. THIS STORES THE DELTA HEALTH
   }
 
   //used for reflection DO NOT DELETE
   public void addCollectiblePackage(Ability p){
     myPackage = (CollectiblePackage) p;
-    myAbilities.put("Package", myPackage);
-  }
-
-  //used for reflection DO NOT DELETE
-  private void addMovement(Ability m){
-    movement = (Movement) m;
-    myAbilities.put("Movement", movement);
-    haveMovement = true;
   }
 
   private void addPhysics(Ability p){
     physics = (Physics) p;
-    myAbilities.put("Physics", physics);
     haveMovement = true;
   }
 
   private void callPhysics(String methodName){
-    physics.reflectMethod(methodName);
-  }
-
-  @Override
-  public Map<String, Ability> getAbilities() {
-    return myAbilities;
+    if(haveMovement) {
+      physics.reflectMethod(methodName);
+    }
   }
 
   @Override
@@ -187,27 +178,31 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   public Entity handleCollision(CollisionEvent ce) {
     String myAttack = this.getAttack(ce.getCollisionLocation());
     Collidible otherEntity = ce.getOther();
+    boolean done = false;
+    String debug = "";
     try {
       String gameSpecificFilePath = "gamedata/"+myGameType+"/entities/";
-      ResourceBundle response = ResourceBundle
-          .getBundle(gameSpecificFilePath + "collisions/" + ce.getAttackType());
+      ResourceBundle response = ResourceBundle.getBundle(gameSpecificFilePath + "collisions/" + ce.getAttackType());
       String[] methodsToCall = response.getString(myAttack).split(" ");
       for (String s : methodsToCall) {
-        if (s.equals("collect")) {
-          otherEntity.size(myInformation.get(SCALE)); //stops the overwriting of scale back to 1 when reading from the other guy
-          otherEntity.otherCollectMe();
-          updateMeAfterCollecting(otherEntity);
-          otherEntity.otherResetAfterCollect();
-        } else {
-          Method method = Entity.class.getDeclaredMethod(s);
-          method.invoke(Entity.this);
+        debug=s;
+        ResourceBundle methodHolder = ResourceBundle.getBundle("entitymethods/MethodHosts");
+        for(String key : Collections.list(methodHolder.getKeys())) {
+          if (key.contains(s) && methodHolder.getString(key).toLowerCase().equals(PHYSICS)) {
+            done = true;
+            callPhysics(s);
+          }
+        }
+        if(!done){
+          Method method = Entity.class.getDeclaredMethod(s, Collidible.class);
+          method.invoke(Entity.this, otherEntity);
         }
       }
     } catch (MissingResourceException e) {
       ExceptionFeedback.throwHandledException(e, "Couldn't find key"+myAttack+" in "+ce.getAttackType()+".properties");
     } catch (NoSuchMethodException e) {
       ExceptionFeedback
-          .throwHandledException(e, "Method name was incorrect in trying to handle the collision, check "+ce.getAttackType()+".properties");
+          .throwHandledException(e, "Method name"+debug+" was incorrect in trying to handle the collision, check "+ce.getAttackType()+".properties");
     } catch (IllegalAccessException e) {
       ExceptionFeedback
           .throwHandledException(e, "You don't have access to that method, try again");
@@ -227,28 +222,17 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   //used for reflection DO NOT DELETE
-  private void damage(){
+  private void damage(Collidible otherEntity){
     health.damage();
   }
-  
-  //used for reflection DO NOT DELETE
-  /**
-   * chooses which bounce method to use based on which speed is greater; x or y
-   */
-  private void bounce(){
-    if(haveMovement && (Math.abs(movement.getYVelocity()) >= Math.abs(movement.getXVelocity()))){
-      bounceY();
-    } else if (haveMovement && Math.abs(movement.getYVelocity()) < Math.abs(movement.getXVelocity())){
-      bounceX();
-    }
-  }
 
-  //used for reflection DO NOT DELETE
+  @Override
   /**
+   * Collect the package, buy calling the method specified in the package
    * note: the effects of a collectible entity will only
    * be shown within that entity in order to hide other objects
    */
-  private void openPackage(){
+  public void otherCollectMe(){
     String methodToCall = myPackage.toString();
     double value = myPackage.getPackageValue();
     if(!health.isDead() && !levelEnded){
@@ -266,20 +250,14 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   @Override
-  public void otherCollectMe(){
-    openPackage();
-  }
-
-  @Override
   public void otherResetAfterCollect(){
     resetScore();
-    health(0.0);
+    health(DEAD);
   }
 
   //used for reflection DO NOT DELETE. assumes it will be called only when collecting objects
   private void points(Double value){
-    double score = myInformation.get(SCORE); //there will always be a value for here, as it's put in the constructor
-    myInformation.put(SCORE, score+value);
+    myInformation.put(SCORE, value);
   }
 
   //used for reflection DO NOT DELETE
@@ -300,41 +278,20 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   //used for reflection DO NOT DELETE
-  private void collect(){
-    //not actually being used atm
+  private void collect(Collidible otherEntity){
+    otherEntity.size(myInformation.get(SCALE)); //stops the overwriting of scale back to 1 when reading from the other guy
+    otherEntity.otherCollectMe();
+    updateMeAfterCollecting(otherEntity);
+    otherEntity.otherResetAfterCollect();
   }
 
   //used for reflection DO NOT DELETE
-  private void supportY(){
-    if(haveMovement) {
-      movement.standY();
-    }
-  }
-
-  //used for reflection DO NOT DELETE
-  private void supportX(){
-    if(haveMovement) {
-      movement.standX();
-    }
-  }
-
-  //used for reflection DO NOT DELETE
-  private void bounceY(){
-    if(haveMovement) {
-      movement.bounceY();
-    }
-  }
-
-  //used for reflection DO NOT DELETE
-  private void bounceX(){
-    if(haveMovement) {
-      movement.bounceX();
-    }
-  }
-
-  //used for reflection DO NOT DELETE
-  private void nothing(){
+  private void nothing(Collidible collidible){
     //do nothing, intentionally empty
+  }
+
+  private void empty(){
+    //intentionally empty
   }
 
   @Override
@@ -343,7 +300,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    */
   public void updateVisualization() {
     if (haveMovement) {
-      movement.update(this);
+      physics.update(this);
     }
     levelEnd(health.isDead()?1.0:0.0); //convert boolean to a double
   }
@@ -354,7 +311,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    * @return levelEnded
    */
   public boolean endedLevel(){
-    return levelEnded;
+    return getData(LEVEL_ENDED)!=0;
   }
 
   /**
@@ -380,8 +337,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    */
   public void moveRight(){
     setScaleX(myInformation.get(SCALE));
-    //physics.moveRight();
-    movement.right();
+    physics.moveRight();
   }
 
   //used for reflection DO NOT DELETE
@@ -390,7 +346,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    */
   public void moveLeft(){
     setScaleX(-1*myInformation.get(SCALE));
-    movement.left();
+    physics.moveLeft();
   }
 
   //used for reflection DO NOT DELETE
@@ -399,7 +355,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
    */
   public void jump(){
     setY(getY()-TINY_DISTANCE);
-    movement.jump();
+    physics.jump();
   }
 
   /**
