@@ -61,10 +61,9 @@ public final class UserFactory {
   public static User getDefaultUser() {
     //TODO: eventually just have this call getUser(new File("Default.user"));
     User defaultUser = new User("Default User", null);
-    defaultUser.setGameLevels("mario", getSetWithLevelZero());
-    defaultUser.setGameLevels("flappy", getSetWithLevelZero());
-    defaultUser.setGameLevels("doodlejump", getSetWithLevelZero());
-    defaultUser.setGameLevels("dinorun", getSetWithLevelZero());
+    for (String gameType : defaultUser.getAllGames()) {
+      defaultUser.setGameLevels(gameType, getSetWithLevelZero());
+    }
     defaultUser.setLives(3);
 
     return defaultUser;
