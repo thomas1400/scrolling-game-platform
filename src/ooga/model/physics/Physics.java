@@ -28,7 +28,7 @@ public class Physics extends Ability {
   private double[] myAcceleration;
   private double[] myInputAdjust;
 
-  public Physics() {
+  public Physics(String gameType) {
     myPosition = new double[]{0, 0};
     myVelocity = new double[]{0, 0};
     myAcceleration = new double[]{0, 0};

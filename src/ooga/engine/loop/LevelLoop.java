@@ -121,7 +121,7 @@ public class LevelLoop implements Loopable {
   private void checkForPointUpdates() {
     if (mainEntity.getScore() > 0) {
       myLevelController.adjustPoints((int) mainEntity.getScore());
-      mainEntity.setScore(0);
+      mainEntity.resetScore();
     }
   }
 
