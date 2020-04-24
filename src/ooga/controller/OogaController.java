@@ -12,18 +12,15 @@ public class OogaController {
 
   private static final String USER_FILE_EXTENSION = ".user";
   public static final String USERS_PATH_NAME = "data/userdata";
-  private static final String GAME_TYPE = "mario";
 
   private UserList myUsers = new UserList();
-  private BasicLevelList myLevels = new BasicLevelList();
 
-  public OogaController(Stage primaryStage) throws FileNotFoundException {
+  public OogaController(Stage primaryStage) {
     loadUsers();
-    loadLevels();
 
     //handleCloseEvent(primaryStage);
 
-    new ScreenController(primaryStage, myUsers, myLevels);
+    new ScreenController(primaryStage, myUsers);
   }
 
   private void handleCloseEvent(Stage primaryStage) {
@@ -41,21 +38,6 @@ public class OogaController {
       }
     } else {
       myUsers.addUser(UserFactory.getDefaultUser());
-    }
-  }
-
-  private void loadLevels() throws FileNotFoundException {
-    ResourceBundle myLevelsBundle = ResourceBundle.getBundle(
-        "gamedata/"+GAME_TYPE+"/levels/resources/levelOrder");
-
-    String[] levelNumbers = myLevelsBundle.getString("levelNumbers").split(",");
-
-    for (String levelNumberString : levelNumbers) {
-      int levelNumber = Integer.parseInt(levelNumberString);
-      File levelFile =
-          new File("data/gamedata/"+GAME_TYPE+"/levels/" + myLevelsBundle.getString(levelNumberString) +
-          ".level");
-      myLevels.addBasicLevel(LevelBuilder.buildBasicLevel(levelNumber, levelFile));
     }
   }
 

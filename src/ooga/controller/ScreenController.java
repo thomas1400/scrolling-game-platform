@@ -2,8 +2,12 @@ package ooga.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,13 +22,9 @@ import ooga.controller.users.User;
 import ooga.controller.users.UserList;
 import ooga.exceptions.ExceptionFeedback;
 import ooga.view.screen.GameScreen;
-import ooga.view.screen.GameSelectionScreen;
-import ooga.view.screen.HelpScreen;
-import ooga.view.screen.HomeScreen;
 import ooga.view.screen.LevelSelectorScreen;
 import ooga.view.screen.LoadingScreen;
 import ooga.view.screen.Screen;
-import ooga.view.screen.UserCreationScreen;
 import ooga.view.screen.UserSelectorScreen;
 
 public class ScreenController{
@@ -46,20 +46,28 @@ public class ScreenController{
   private GameScreen myGameScreen;
   private LevelController myLevelController;
 
-  public ScreenController(Stage primaryStage, UserList users, BasicLevelList levels){
+  public ScreenController(Stage primaryStage, UserList users) {
     myStage = primaryStage;
     myStage.setResizable(false);
 
     myUsers = users;
     mySelectedUser = users.getSelectedUser();
-    myBasicLevels = levels;
-    myGameType = levels.getGameType();
 
     addApplicationIcon();
-    initializeScreens();
 
-    switchToScreen("HomeScreen");
-    //switchToScreen("LevelBuilderScreen");
+    //FIXME: Should remove this game type line and load levels line when game selector screen works
+    myGameType = "mario";
+    try {
+      myBasicLevels = new BasicLevelList();
+      loadLevels(myGameType);
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+      ExceptionFeedback.throwBreakingException(new RuntimeException(),
+          "Game type " + myGameType + " is invalid.");
+    }
+
+    //switchToScreen("HomeScreen");
+    switchToScreen("GameSelectionScreen");
   }
 
   private void addApplicationIcon() {
@@ -71,25 +79,29 @@ public class ScreenController{
     }
   }
 
-  private void initializeScreens(){
-    Screen myLevelSelectorScreen = new LevelSelectorScreen(this, myBasicLevels);
-    Screen myUserCreationScreen = new UserCreationScreen(this);
-    Screen myUserSelectorScreen = new UserSelectorScreen(this, myUsers);
-    Screen myHomeScreen = new HomeScreen(this);
-    Screen myHelpScreen = new HelpScreen(this);
-    Screen myGameSelectionScreen = new GameSelectionScreen(this);
-
-    myScreens.put("HomeScreen", myHomeScreen);
-    myScreens.put("UserSelectorScreen", myUserSelectorScreen);
-    myScreens.put("LevelSelectorScreen", myLevelSelectorScreen);
-    myScreens.put("UserCreationScreen", myUserCreationScreen);
-    myScreens.put("HelpScreen", myHelpScreen);
-    myScreens.put("GameSelectionScreen", myGameSelectionScreen);
+  public void switchToScreen(String screenName){
+    Screen nextScreen = null;
+    try {
+      nextScreen = getScreen(screenName);
+    } catch (IllegalAccessException | InvocationTargetException | InstantiationException | NoSuchMethodException | ClassNotFoundException e) {
+      ExceptionFeedback.throwBreakingException(e, "Screen " + screenName + " unable to be "
+          + "reflexively created!");
+    }
+    Scene nextScene = getScene(nextScreen);
+    showScene(nextScene);
   }
 
-  public void switchToScreen(String screenName){
-    Scene nextScene = getScene(screenName);
-    showScene(nextScene);
+  private Screen getScreen(String screenName)
+      throws IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException, ClassNotFoundException {
+    if (screenName.equals("LevelSelectorScreen")){
+      return new LevelSelectorScreen(this, myBasicLevels);
+    } else if (screenName.equals("UserSelectorScreen")){
+      return new UserSelectorScreen(this, myUsers);
+    } else {
+      Class screenClass = Class.forName("ooga.view.screen." + screenName);
+      Constructor screenClassConstructor = screenClass.getConstructor(ScreenController.class);
+      return (Screen) screenClassConstructor.newInstance(this);
+    }
   }
 
   private void showScene(Scene nextScene) {
@@ -101,8 +113,7 @@ public class ScreenController{
     myStage.show();
   }
 
-  private Scene getScene(String screenName) {
-    Screen nextScreen = myScreens.get(screenName);
+  private Scene getScene(Screen nextScreen) {
     Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
     nextScene.getStylesheets().add(MAIN_STYLESHEET.toURI().toString());
     File gameSpecificStyle = new File("data/gamedata/" + myGameType + "/gameStyle.css");
@@ -138,13 +149,12 @@ public class ScreenController{
   public void setSelectedUser(User user){
     mySelectedUser = user;
     myUsers.setSelectedUser(user);
-    initializeScreens();
   }
 
   public void restartLevel(){
     myLevelController.endLevel();
 
-    Pane loadingPane = new LoadingScreen(myGameScreen, myCurrentLevel);
+    Pane loadingPane = new LoadingScreen(this, myGameScreen, myCurrentLevel);
     myGameScreen.getChildren().add(loadingPane);
 
     FadeTransition fade = new FadeTransition(Duration.seconds(0.5), loadingPane);
@@ -178,7 +188,35 @@ public class ScreenController{
     // TODO : set physics option
   }
 
-  public void setGame(String selected) {
-    // TODO : set the game option here!
+  public void setGame(String gameType) throws FileNotFoundException {
+    if (gameType != null) {
+      myGameType = gameType;
+      myBasicLevels = new BasicLevelList();
+      loadLevels(gameType);
+    } else {
+      ExceptionFeedback.throwHandledException(new RuntimeException(), "Game type not received.\n"
+          + "Screen creation cannot continue :(\nPlease choose a game!");
+    }
+    switchToScreen("HomeScreen");
   }
+
+  private void loadLevels(String myGameType) throws FileNotFoundException {
+    ResourceBundle myLevelsBundle = ResourceBundle.getBundle(
+        "gamedata/"+myGameType+"/levels/resources/levelOrder");
+
+    String[] levelNumbers = myLevelsBundle.getString("levelNumbers").split(",");
+
+    for (String levelNumberString : levelNumbers) {
+      int levelNumber = Integer.parseInt(levelNumberString);
+      File levelFile =
+          new File("data/gamedata/"+myGameType+"/levels/" + myLevelsBundle.getString(levelNumberString) +
+              ".level");
+      myBasicLevels.addBasicLevel(LevelBuilder.buildBasicLevel(levelNumber, levelFile));
+    }
+  }
+
+  public String getGameType() {
+    return myGameType;
+  }
+
 }

@@ -7,7 +7,7 @@ import ooga.utility.event.CollisionEvent;
 
 public interface Collidible {
 
-  Map<String, Ability> getAbilities();
+  //Map<String, Ability> getAbilities();
 
   boolean isDead();
 

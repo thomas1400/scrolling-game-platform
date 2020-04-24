@@ -1,8 +1,11 @@
 package ooga.model.ability;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import ooga.exceptions.ExceptionFeedback;
 import ooga.model.entity.Entity;
 
 public class Physics extends Ability {
@@ -146,11 +149,19 @@ public class Physics extends Ability {
     }
   }
 
-  public void bounceX(){
+  private void bounce(){
+    if(Math.abs(getYVelocity()) >= Math.abs(getXVelocity())){
+      bounceY();
+    } else if (Math.abs(getYVelocity()) < Math.abs(getXVelocity())){
+      bounceX();
+    }
+  }
+
+  private void bounceX(){
     myVelocity[X]*=-1;
   }
 
-  public void bounceY(){
+  private void bounceY(){
     myVelocity[Y]*=-1;
   }
 
@@ -170,11 +181,11 @@ public class Physics extends Ability {
     return myVelocity[X];
   }
 
-  public void stopHorizMotion() {
+  public void supportX() {
     stopDirectionalMotion(X);
   }
 
-  public void stopVerticalMotion() {
+  public void supportY() {
     stopDirectionalMotion(Y);
   }
 
@@ -201,6 +212,19 @@ public class Physics extends Ability {
       myVelocity[X] = myVelocity[X] + myConstants.get(RUN_ACCELERATION) * myConstants.get(DT);
     } else {
       myVelocity[X] = myVelocity[X] + (myConstants.get(RUN_ACCELERATION) * myConstants.get(REACTIVITY_PERCENT)) * myConstants.get(DT);
+    }
+  }
+
+  public void reflectMethod(String methodName){
+    try {
+      Method method = Physics.class.getDeclaredMethod(methodName);
+      method.invoke(Physics.this);
+    } catch (NoSuchMethodException e) {
+      ExceptionFeedback.throwHandledException(e, "Physics doesn't have the "+methodName+" method, check collision files");
+    } catch (IllegalAccessException e) {
+      ExceptionFeedback.throwHandledException(e, "Can't call "+methodName+" in Physics class");
+    } catch (InvocationTargetException e) {
+      ExceptionFeedback.throwHandledException(e, "Failed to invoke "+methodName+" in Physics class");
     }
   }
 

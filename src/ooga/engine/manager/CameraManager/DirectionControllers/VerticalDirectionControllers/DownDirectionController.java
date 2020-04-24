@@ -22,6 +22,9 @@ public class DownDirectionController extends VerticalDirectionController {
     if (mainEntity.getY() > yCenter) {
       setToCenter(entities, 0);
     }
+    else if (mainEntity.getY() <= 0) {
+      mainEntity.setY(0.1);
+    }
     checkIfMarioTouchesSidesOfScreen();
   }
 

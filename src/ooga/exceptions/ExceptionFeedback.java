@@ -22,6 +22,7 @@ public class ExceptionFeedback {
     JOptionPane.showConfirmDialog(new JFrame(),
         message,
         e.getClass().getSimpleName(), JOptionPane.DEFAULT_OPTION);
+    e.printStackTrace();
     System.exit(0);
   }
 

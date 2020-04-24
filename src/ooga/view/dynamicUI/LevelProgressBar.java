@@ -51,4 +51,7 @@ public class LevelProgressBar extends Pane {
     label.setPrefHeight(height);
   }
 
+  double getBarWidth() {
+    return bar.getPrefWidth();
+  }
 }

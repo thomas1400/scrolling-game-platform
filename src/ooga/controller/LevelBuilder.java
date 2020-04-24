@@ -112,6 +112,8 @@ public final class LevelBuilder {
     return myEntities;
   }
 
+
+
   private static double getScaleFactor(int levelHeight, int levelWidth, double gameWindowHeight,
       double gameWindowWidth) {
     return Math.max(gameWindowHeight/levelHeight, gameWindowWidth/levelWidth);

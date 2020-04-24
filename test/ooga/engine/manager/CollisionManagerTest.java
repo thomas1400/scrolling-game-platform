@@ -30,7 +30,7 @@ class CollisionManagerTest extends ApplicationTest {
     entities.addEntity(mainEntity);
     entity = EntityBuilder.getEntity("Brick", "mario");
     entities.addEntity(entity);
-    collisionManager = new CollisionManager("mario");
+    collisionManager = new CollisionManager();
   }
 
   private void setPosition(double X1, double X2, double Y1, double Y2) {

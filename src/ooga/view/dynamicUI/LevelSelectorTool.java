@@ -48,15 +48,20 @@ public class LevelSelectorTool extends Pane {
   private void initializeLevelButtons(List<Integer> levelProgress) {
     levelToggles = new ToggleGroup();
     for (int i : myUnlockedLevels) {
-      RadioButton button = new RadioButton(myLevels.getBasicLevel(i+1).getMainTitle());
-      button.setToggleGroup(levelToggles);
-      button.setId(""+ (i + 1));
-      if (levelProgress.size() > 0 && i == levelProgress.get(levelProgress.size()-1)) {
-        button.setSelected(true);
+      try {
+        RadioButton button = new RadioButton(myLevels.getBasicLevel(i + 1).getMainTitle());
+        button.setToggleGroup(levelToggles);
+        button.setId("" + (i + 1));
+        if (levelProgress.size() > 0 && i == levelProgress.get(levelProgress.size() - 1)) {
+          button.setSelected(true);
+        }
+        button.setLayoutX(locations[i][0]);
+        button.setLayoutY(locations[i][1]);
+        this.getChildren().add(button);
+      } catch (NullPointerException e) {
+        ExceptionFeedback.throwHandledException(e,
+            "Warning: user data may be corrupted. Invalid unlocked levels detected.");
       }
-      button.setLayoutX(locations[i][0]);
-      button.setLayoutY(locations[i][1]);
-      this.getChildren().add(button);
     }
   }
 

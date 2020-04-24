@@ -27,13 +27,13 @@ class UserFactoryTest extends ApplicationTest {
     assertEquals(3, defaultUser.getLives());
     assertTrue(defaultUser.getAllGames().contains("gamedata/mario"));
     assertTrue(defaultUser.getAllGames().contains("gamedata/flappy"));
-    assertTrue(defaultUser.getAllGames().contains("gamedata/doodle"));
+    assertTrue(defaultUser.getAllGames().contains("gamedata/doodlejump"));
 
     HashSet<Integer> defaultLevelsUnlocked = new HashSet<>();
     defaultLevelsUnlocked.add(0);
 
     assertEquals(defaultLevelsUnlocked, defaultUser.getLevelsCompleted("gamedata/mario"));
     assertEquals(defaultLevelsUnlocked, defaultUser.getLevelsCompleted("gamedata/flappy"));
-    assertEquals(defaultLevelsUnlocked, defaultUser.getLevelsCompleted("gamedata/doodle"));
+    assertEquals(defaultLevelsUnlocked, defaultUser.getLevelsCompleted("gamedata/doodlejump"));
   }
 }
