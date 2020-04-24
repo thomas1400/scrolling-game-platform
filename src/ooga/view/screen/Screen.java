@@ -21,12 +21,13 @@ public abstract class Screen extends Pane {
 
   private static final int PREF_WIDTH = 800, PREF_HEIGHT = 600;
 
-  private static final String RESOURCES_PATH_PREFIX = "data/gamedata/";
-  private static final String RESOURCES_RELATIVE_PATH = "resources/";
+  private static final String DATA_PATH_PREFIX = "data/";
+  private static final String GAME_DATA_PATH = "gamedata/";
+  public static final String VIEW_PATH = "view/";
+  private static final String RESOURCES_PATH = "resources/";
   private static final String RESOURCES_SUFFIX = "Text";
   private static final String BUTTON_ACTIONS_SUFFIX = "Buttons";
   public static final String FXLR_SUFFIX = ".fxlr";
-  public static final String VIEW_PACKAGE = "/view/";
 
   protected ScreenController controller;
   private ResourceBundle buttonActions;
@@ -37,23 +38,58 @@ public abstract class Screen extends Pane {
     this.controller = controller;
     this.dynamicNodes = new HashMap<>();
     initializeResources();
+    initializeButtonActions();
     initializeScreen();
   }
 
   private void initializeResources() {
     try {
-      File file = new File(RESOURCES_PATH_PREFIX + controller.getGameType() + VIEW_PACKAGE
-          + RESOURCES_RELATIVE_PATH);
+      File file = new File(DATA_PATH_PREFIX + GAME_DATA_PATH + controller.getGameType() + "/" + VIEW_PATH
+          + RESOURCES_PATH);
       URL[] urls = {file.toURI().toURL()};
       ClassLoader loader = new URLClassLoader(urls);
 
       resources = ResourceBundle.getBundle(this.getClass().getSimpleName() + RESOURCES_SUFFIX,
           Locale.getDefault(), loader);
+
+    } catch (MalformedURLException | MissingResourceException e) {
+      try {
+        File file = new File(DATA_PATH_PREFIX + VIEW_PATH + RESOURCES_PATH);
+        URL[] urls = {file.toURI().toURL()};
+        ClassLoader loader = new URLClassLoader(urls);
+
+        resources = ResourceBundle.getBundle(this.getClass().getSimpleName() + RESOURCES_SUFFIX,
+            Locale.getDefault(), loader);
+      }
+      catch (MalformedURLException | MissingResourceException f) {
+        ExceptionFeedback.throwBreakingException(f, "Unable to load resources at path: " +
+            DATA_PATH_PREFIX + VIEW_PATH + RESOURCES_PATH);
+      }
+    }
+  }
+
+  private void initializeButtonActions() {
+    try {
+      File file = new File(DATA_PATH_PREFIX + GAME_DATA_PATH + controller.getGameType() + "/" + VIEW_PATH
+          + RESOURCES_PATH);
+      URL[] urls = {file.toURI().toURL()};
+      ClassLoader loader = new URLClassLoader(urls);
+
       buttonActions = ResourceBundle.getBundle(this.getClass().getSimpleName() + BUTTON_ACTIONS_SUFFIX,
           Locale.getDefault(), loader);
-    } catch (MalformedURLException e) {
-      ExceptionFeedback.throwBreakingException(e, "Unable to load resources at path: " +
-          RESOURCES_PATH_PREFIX + controller.getGameType() + VIEW_PACKAGE + RESOURCES_RELATIVE_PATH);
+    } catch (MalformedURLException | MissingResourceException e) {
+      try {
+        File file = new File(DATA_PATH_PREFIX + VIEW_PATH + RESOURCES_PATH);
+        URL[] urls = {file.toURI().toURL()};
+        ClassLoader loader = new URLClassLoader(urls);
+
+        buttonActions = ResourceBundle.getBundle(this.getClass().getSimpleName() + BUTTON_ACTIONS_SUFFIX,
+            Locale.getDefault(), loader);
+      }
+      catch (MalformedURLException | MissingResourceException f) {
+        ExceptionFeedback.throwBreakingException(f, "Unable to load button actions at path: " +
+            DATA_PATH_PREFIX + VIEW_PATH + RESOURCES_PATH);
+      }
     }
   }
 
@@ -64,12 +100,16 @@ public abstract class Screen extends Pane {
   protected void loadLayout() {
     try {
       new FXLRParser().loadFXLRLayout(this,
-          new File(RESOURCES_PATH_PREFIX + controller.getGameType() + VIEW_PACKAGE + this.getClass().getSimpleName() + FXLR_SUFFIX));
+          new File(DATA_PATH_PREFIX + GAME_DATA_PATH + controller.getGameType() + "/" + VIEW_PATH + this.getClass().getSimpleName() + FXLR_SUFFIX));
     } catch (FileNotFoundException e) {
-      ExceptionFeedback.throwBreakingException(e, "Could not load layout for path: \n + "
-          + RESOURCES_PATH_PREFIX + controller.getGameType() + VIEW_PACKAGE +
-          this.getClass().getSimpleName() + FXLR_SUFFIX
-      );
+      try {
+        new FXLRParser().loadFXLRLayout(this,
+            new File(DATA_PATH_PREFIX + VIEW_PATH + this.getClass().getSimpleName() + FXLR_SUFFIX));
+      } catch (FileNotFoundException f) {
+        ExceptionFeedback.throwBreakingException(e, "Could not load layout for path: \n + "
+            + DATA_PATH_PREFIX + VIEW_PATH + this.getClass().getSimpleName() + FXLR_SUFFIX
+        );
+      }
     }
   }
 

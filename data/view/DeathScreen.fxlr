@@ -1,4 +1,4 @@
-### Loading Screen FXLR
+### Death Screen FXLR
 
 <package ooga.view>
 <package ooga.view.dynamicUI>
@@ -6,7 +6,7 @@
 <package javafx.scene.layout>
 
 (VBox alignment=CENTER, prefWidth=100%, prefHeight=100%, spacing=5%) {
-  (Label text=loading, style=subtitle prefHeight=25%, prefWidth=100%)
-  (level-label style=level-label)
+  (Label text=death, style=subtitle prefHeight=25%, prefWidth=100%)
+  (lives-label style=level-label)
 }
 
