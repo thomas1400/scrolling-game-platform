@@ -107,8 +107,10 @@ public class ScreenController{
   private Scene getScene(Screen nextScreen) {
     Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
     nextScene.getStylesheets().add(MAIN_STYLESHEET.toURI().toString());
-    File gameSpecificStyle = new File(GAMEDATA_PATH + myGameType + GAME_STYLE_CSS);
-    nextScene.getStylesheets().add(gameSpecificStyle.toURI().toString());
+    if (myGameType != null) {
+      File gameSpecificStyle = new File(GAMEDATA_PATH + myGameType + GAME_STYLE_CSS);
+      nextScene.getStylesheets().add(gameSpecificStyle.toURI().toString());
+    }
     return nextScene;
   }
 
