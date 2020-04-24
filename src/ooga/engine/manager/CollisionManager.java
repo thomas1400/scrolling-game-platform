@@ -95,7 +95,7 @@ public class CollisionManager {
       entity.setX(entity.getX() - d);
     }
     else{
-      entity.setY(entity.getY() - d);
+      //entity.setY(entity.getY() - d);
     }
   }
 

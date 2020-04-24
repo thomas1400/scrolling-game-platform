@@ -73,7 +73,7 @@ public class CameraManager {
     myDirectionController.updateCameraPosition(entities, screenHeight, screenWidth);
     onScreenEntities = new EntityList();
     for (Entity entity : entities) {
-      if (entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX()< screenWidth && entity.getBoundsInLocal().getMinY() < screenHeight) {
+      if (entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX()< screenWidth && entity.getBoundsInLocal().getMaxY() < screenHeight) {
         newEntityMovesOnScreen(entity);
       }
     }
@@ -108,7 +108,7 @@ public class CameraManager {
   }
 
   private boolean entityIsOnScreen(Entity entity){
-    return entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX() < screenWidth && entity.getBoundsInLocal().getMinY() > 0 && entity.getBoundsInLocal().getMinY()< screenHeight;}
+    return entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX() < screenWidth && entity.getBoundsInLocal().getMinY() > 0 && entity.getBoundsInLocal().getMaxY()< screenHeight;}
 
   private void entityMovesOffScreen(Entity entity) {
     onScreenEntities.removeEntity(entity);
