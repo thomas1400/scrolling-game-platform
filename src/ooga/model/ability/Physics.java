@@ -158,6 +158,7 @@ public class Physics extends Ability {
 
   public void jumpUp(){
     if(myVelocity[Y]>0){
+      System.out.println("hi");
       jump();
     }
   }
