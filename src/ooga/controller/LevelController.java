@@ -1,6 +1,5 @@
 package ooga.controller;
 
-import java.io.FileNotFoundException;
 import javafx.scene.Group;
 import javafx.scene.input.KeyEvent;
 import ooga.engine.loop.LevelLoop;
@@ -58,14 +57,8 @@ public class LevelController implements GameLevel{
   }
 
   private CompleteLevel getCompleteLevel(BasicLevel basicLevel) {
-    CompleteLevel completeLevel = null;
-    try {
-      completeLevel = LevelBuilder.buildCompleteLevel(basicLevel, myGS.getGameHeight(),
+    return LevelBuilder.buildCompleteLevel(basicLevel, myGS.getGameHeight(),
           myGS.getGameWidth());
-    } catch (FileNotFoundException e) {
-      ExceptionFeedback.throwBreakingException(e, "File not found");
-    }
-    return completeLevel;
   }
 
   private void setLivesRemaining(int deathsAllowed) {
@@ -104,11 +97,11 @@ public class LevelController implements GameLevel{
   public void resumeLevel() {
     myLevelLoop.resume();
   }
-  public void endLevel() {
+  public void endLevel(boolean winState){
     myLevelLoop.end();
     UserSaver.saveUser(myUser);
     deleteLevelLoop();
-    myGS.exit();
+    myGS.exit(winState);
   }
 
   //In Game Adjustments
@@ -121,7 +114,7 @@ public class LevelController implements GameLevel{
 
   private void checkEndLevel() {
     if (myLivesRemaining == 0){
-      endLevel();
+      endLevel(false);
     } else if (myLivesRemaining < 0){
       ExceptionFeedback.throwHandledException(new RuntimeException(), "Negative Lives Left in Level");
     }
@@ -137,7 +130,7 @@ public class LevelController implements GameLevel{
   public void handleWin() {
     //TODO: display some cool win screen?
     myUser.unlockNextLevel(myGameType, myLevelNumber);
-    endLevel();
+    endLevel(true);
   }
 
   private void deleteLevelLoop() {

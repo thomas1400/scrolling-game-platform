@@ -152,7 +152,7 @@ public class ScreenController{
   }
 
   public void restartLevel(){
-    myLevelController.endLevel();
+    myLevelController.endLevel(false);
 
     Pane loadingPane = new LoadingScreen(this, myGameScreen, myCurrentLevel);
     myGameScreen.getChildren().add(loadingPane);

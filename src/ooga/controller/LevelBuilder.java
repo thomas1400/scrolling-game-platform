@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.nio.charset.MalformedInputException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Scanner;
 import ooga.exceptions.ExceptionFeedback;
 import ooga.controller.levels.BasicLevel;
@@ -30,39 +29,61 @@ public final class LevelBuilder {
   private static final String LEVEL_HEIGHT_SPECIFIER = "levelHeight";
   private static final String LEVEL_WIDTH_SPECIFIER = "levelWidth";
 
-  public static BasicLevel buildBasicLevel(int levelNumber, File levelFile) throws FileNotFoundException {
+  /**
+   * Returns a BasicLevel based off of a file containing pertinent information
+   * @param levelNumber the level number previously parsed, used to create the basic level
+   * @param levelFile the file to be parsed to create the level header map
+   * @return a new BasicLevel with the correct LevelHeader map
+   * location
+   */
+  public static BasicLevel buildBasicLevel(int levelNumber, File levelFile) {
     Map<String,String> headerInfo = getMapFromFile(levelFile, HEADER_TAG);
-
     return new BasicLevel(levelNumber, levelFile, headerInfo);
   }
 
+  /**
+   * Parses the level file from a basic level, and builds/positions the appropriate entities and
+   * other level attributes, placing them in a CompleteLevel to be used in the LevelLoop
+   * @param basicLevel needed to get the basic features of the complete level
+   * @param gameWindowHeight used to size the entities properly
+   * @param gameWindowWidth used to size the entities properly
+   * @return a CompleteLevel with the appropriate Entity
+   */
   public static CompleteLevel buildCompleteLevel(BasicLevel basicLevel, double gameWindowHeight,
-      double gameWindowWidth) throws FileNotFoundException {
+      double gameWindowWidth) {
 
     File levelFile = basicLevel.getLevelFile();
-    Map<String, String> headerInfo = basicLevel.getHeaderInfo();
-    int levelHeight = Integer.parseInt(headerInfo.get(LEVEL_HEIGHT_SPECIFIER));
-    int levelWidth = Integer.parseInt(headerInfo.get(LEVEL_WIDTH_SPECIFIER));
+    int levelHeight = Integer.parseInt(basicLevel.getHeaderInfo().get(LEVEL_HEIGHT_SPECIFIER));
+    int levelWidth = Integer.parseInt(basicLevel.getHeaderInfo().get(LEVEL_WIDTH_SPECIFIER));
 
-    Map<String,String> entityInfo = getMapFromFile(levelFile, ENTITIES_TAG);
-
-    EntityList levelEntities = buildEntities(levelFile, entityInfo, levelHeight, levelWidth,
+    EntityList levelEntities = buildEntities(levelFile, levelHeight, levelWidth,
         basicLevel.getGameType(), gameWindowHeight, gameWindowWidth);
 
     return new CompleteLevel(basicLevel, levelEntities);
   }
 
-  private static Map<String, String> getMapFromFile(File levelFile, String sectionTag)
-      throws FileNotFoundException {
+  private static Map<String, String> getMapFromFile(File levelFile, String sectionTag) {
 
     Map<String, String> sectionMap = new HashMap<>();
 
-    Scanner sc = new Scanner(levelFile);
-    moveToSection(sectionTag, sc);
+    Scanner sc = getScanner(levelFile);
 
+    moveToSection(sectionTag, sc);
     addDataToMap(sectionMap, sc);
 
     return sectionMap;
+  }
+
+  private static Scanner getScanner(File levelFile) {
+    Scanner sc = null;
+    try {
+      sc = new Scanner(levelFile);
+    } catch (FileNotFoundException e) {
+      ExceptionFeedback.throwBreakingException(e, "The level file " + levelFile.getName() + " "
+          + "cannot be found. Level Unable to be built. Please check to see if the file exists "
+          + "and is in the correct location");
+    }
+    return sc;
   }
 
   private static void moveToSection(String sectionTag, Scanner sc) {
@@ -86,33 +107,42 @@ public final class LevelBuilder {
     }
   }
 
-  private static EntityList buildEntities(File levelFile, Map<String, String> entityInfo,
-      int levelHeight, int levelWidth, String gameType, double gameWindowHeight,
-      double gameWindowWidth) throws FileNotFoundException {
-    EntityList myEntities = new EntityList();
+  private static EntityList buildEntities(File levelFile, int levelHeight, int levelWidth,
+      String gameType, double gameWindowHeight, double gameWindowWidth) {
 
-    Scanner sc = new Scanner(levelFile);
+    EntityList myEntities = new EntityList();
+    Map<String,String> entityInfo = getMapFromFile(levelFile, ENTITIES_TAG);
+
+    Scanner sc = getScanner(levelFile);
     moveToSection(LEVEL_TAG, sc);
 
     double scaleFactor = getScaleFactor(levelHeight, levelWidth, gameWindowHeight, gameWindowWidth);
+    createAllEntities(levelHeight, levelWidth, gameType, myEntities, entityInfo, sc, scaleFactor);
 
+    return myEntities;
+  }
+
+  private static void createAllEntities(int levelHeight, int levelWidth, String gameType,
+      EntityList myEntities, Map<String, String> entityInfo, Scanner sc, double scaleFactor) {
     for (int j = 0; j < levelHeight; j++){
       String[] levelLine = sc.nextLine().split(LEVEL_OBJ_SEPARATOR);
       for (int i = 0; i < levelWidth; i++){
         String entityCode = levelLine[i];
         if (!entityCode.equals(EMPTY_SPACE_SYMBOL)){
-          String entityName = entityInfo.get(entityCode);
-          Entity myEntity = EntityBuilder.getEntity(entityName, gameType);
-          setEntitySize(myEntity, scaleFactor);
-          setEntityCoordinates(j, i, myEntity, scaleFactor);
-          addNewEntityToEntitiesList(myEntities, entityCode, myEntity);
+          initializeEntity(gameType, myEntities, entityInfo, scaleFactor, j, i, entityCode);
         }
       }
     }
-    return myEntities;
   }
 
-
+  private static void initializeEntity(String gameType, EntityList myEntities,
+      Map<String, String> entityInfo, double scaleFactor, int j, int i, String entityCode) {
+    String entityName = entityInfo.get(entityCode);
+    Entity myEntity = EntityBuilder.getEntity(entityName, gameType);
+    setEntitySize(myEntity, scaleFactor);
+    setEntityCoordinates(j, i, myEntity, scaleFactor);
+    addNewEntityToEntitiesList(myEntities, entityCode, myEntity);
+  }
 
   private static double getScaleFactor(int levelHeight, int levelWidth, double gameWindowHeight,
       double gameWindowWidth) {

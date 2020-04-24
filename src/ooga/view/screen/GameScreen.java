@@ -68,14 +68,14 @@ public class GameScreen extends Screen {
     resume.setDisable(true);
   }
 
-  public void exit() {
+  public void exit(boolean winState) {
     handleButtonPress("exit");
   }
 
   //NEEDED FOR REFLECTION, DON'T DELETE
   public void quit() {
-    levelController.endLevel();
-    exit();
+    levelController.endLevel(false);
+    exit(winState);
   }
 
   //NEEDED FOR REFLECTION, DON'T DELETE
