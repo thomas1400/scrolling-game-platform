@@ -46,6 +46,14 @@ public class Physics extends Ability {
     scaleAppropriateConstants();
     setDerivedConstants();
     setInitialVelocityAndAcceleration();
+
+    //printDebug(myConstants);
+  }
+
+  private void printDebug(Map<String, Double> myConstants) {
+    for (String constant : myConstants.keySet()){
+      System.out.println(constant + " = " + myConstants.get(constant));
+    }
   }
 
   private void setDefaultConstants() {
@@ -75,8 +83,12 @@ public class Physics extends Ability {
   }
 
   private void setDerivedConstants() {
-    myConstants.putIfAbsent(INIT_JUMP_VELOCITY,
-        -1 * Math.sqrt(2*myConstants.get(GRAVITY)*myConstants.get(JUMP_HEIGHT)));
+    if (myConstants.containsKey(INIT_JUMP_VELOCITY)){
+      myConstants.replace(INIT_JUMP_VELOCITY, -1* myConstants.get(INIT_JUMP_VELOCITY));
+    } else {
+      myConstants.put(INIT_JUMP_VELOCITY,
+          -1 * Math.sqrt(2 * myConstants.get(GRAVITY) * myConstants.get(JUMP_HEIGHT)));
+    }
     myConstants.replace(MAX_VERT_VELOCITY, -1 * myConstants.get(MAX_VERT_VELOCITY));
     myConstants.putIfAbsent(TINY_DISTANCE,
         myConstants.get(MAX_VERT_VELOCITY) * myConstants.get(DT));
@@ -88,8 +100,8 @@ public class Physics extends Ability {
     myConstants.putIfAbsent(INIT_X_ACCEL, 0.0);
     myConstants.putIfAbsent(INIT_Y_ACCEL, 0.0);
 
-    myVelocity = new double[]{myConstants.get(INIT_X_VEL), myConstants.get(INIT_X_VEL)};
-    myAcceleration = new double[]{myConstants.get(INIT_Y_VEL), myConstants.get(INIT_Y_VEL)};
+    myVelocity = new double[]{myConstants.get(INIT_X_VEL), myConstants.get(INIT_Y_VEL)};
+    myAcceleration = new double[]{myConstants.get(INIT_X_ACCEL), myConstants.get(INIT_Y_ACCEL)};
   }
 
   public void update(Entity myEntity) {
