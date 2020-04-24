@@ -64,7 +64,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     haveMovement = false;
     addCollectiblePackage(new CollectiblePackage(DEFAULT_PACKAGE_CONTENT));
     resetScore();
-    //size(DEFAULT_SCALE);
     setInfo(SCALE, DEFAULT_SCALE);
     levelEnd(PLAYING);
   }
@@ -214,10 +213,10 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   private void updateMeAfterCollecting(Collidible other){
-    this.points(other.getData(SCORE));
-    this.health(other.getData(HEALTH));
+    this.setInfo(SCORE, other.getData(SCORE));
+    this.setInfo(HEALTH, other.getData(HEALTH));
     health.addLives(getData(HEALTH));
-    this.size(other.getData(SCALE));
+    this.setInfo(SCALE, other.getData(SCALE));
     this.levelEnd(other.getData(LEVEL_ENDED));
   }
 
@@ -240,11 +239,11 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
         Method method = Entity.class.getDeclaredMethod(methodToCall, Double.class);
         method.invoke(Entity.this, value);
       } catch (NoSuchMethodException e) {
-        ExceptionFeedback.throwBreakingException(e, "Method name was incorrect when trying to collect the entity");
+        ExceptionFeedback.throwBreakingException(e, "Method "+methodToCall+" was incorrect when trying to collect the entity");
       } catch (IllegalAccessException e) {
-        ExceptionFeedback.throwBreakingException(e, "No access to method used when trying to collect the entity");
+        ExceptionFeedback.throwBreakingException(e, "No access to method"+methodToCall+" used when trying to collect the entity");
       } catch (InvocationTargetException e) {
-        ExceptionFeedback.throwBreakingException(e, "Method can't be invoked when used when trying to collect the entity");
+        ExceptionFeedback.throwBreakingException(e, "Method "+methodToCall+"can't be invoked when used when trying to collect the entity");
       }
     }
   }
