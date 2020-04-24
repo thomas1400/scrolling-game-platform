@@ -12,6 +12,9 @@ public class EntityBuilder {
 
   private static final String ABILITY_PACKAGE = "ooga.model.ability.";
   public static final String IMAGE_KEY = "Image";
+  private static final String GAME_DATA_FOLDER = "gamedata/";
+  private static final String USER_INPUT_INFORMATION = "/entities/entities";
+  private static ResourceBundle myEntityResources;
 
 
   //TODO take out throwing runtime exceptions, throw actual ones
@@ -53,16 +56,25 @@ public class EntityBuilder {
    * @param statsFilename file name for the entity stat resource file
    * @return created entity
    */
+
+
   public static Entity getEntity(String statsFilename, String gameType) {
+    String UserInputResources = GAME_DATA_FOLDER+gameType+USER_INPUT_INFORMATION;
+    myEntityResources = ResourceBundle.getBundle(UserInputResources);
+    String[] entityInformation = getEntityInfo(statsFilename);
+    String entityType = entityInformation[0];
+    String imageFile = entityInformation[1];
     try {
       String gameSpecificFilePath = "gamedata/" + gameType + "/entities/";
 
       ResourceBundle resources =
-          ResourceBundle.getBundle(gameSpecificFilePath + "behavior/" + statsFilename);
+          ResourceBundle.getBundle(gameSpecificFilePath + "behavior/" + entityType);
 
       Image image =
-          new Image(gameSpecificFilePath + "images/" + resources.getString(IMAGE_KEY));
-      Entity entity = new Entity(image, resources.getString("Image"), gameType);
+          new Image(gameSpecificFilePath + "images/" + imageFile);
+
+
+      Entity entity = new Entity(image, imageFile, gameType);
 
       for (String s : Collections.list(resources.getKeys())) {
         //todo remove this if?
@@ -82,5 +94,9 @@ public class EntityBuilder {
       //todo add which type it is
       throw new RuntimeException(e);
     }
+  }
+
+  private static String[] getEntityInfo(String entityCode){
+    return myEntityResources.getString(entityCode).split(",");
   }
 }
