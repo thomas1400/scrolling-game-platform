@@ -3,9 +3,9 @@
 marioLevels=0
 image=grant.jpeg
 lives=23
-size=large
 doodlejumpLevels=0
 name=Grant
 games=flappy,mario,doodlejump
 flappyLevels=0,1
+dinorunLevels=0
 points=100

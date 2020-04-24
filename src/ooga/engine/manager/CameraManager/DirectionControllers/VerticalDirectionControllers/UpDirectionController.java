@@ -9,7 +9,7 @@ import ooga.model.entity.EntityList;
  * @author Cayla Schuval
  */
 public class UpDirectionController extends VerticalDirectionController {
-  private static final int BOUNDARY_EXTENSION = 100;
+  private static final int BOUNDARY_EXTENSION = 150;
 
   /**
    * @param entities EntityList containing all of the entities in the game whose positions update as the main entity moves

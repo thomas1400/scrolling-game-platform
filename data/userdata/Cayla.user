@@ -3,9 +3,9 @@
 marioLevels=1
 image=cayla.jpeg
 lives=97
-size=small
 doodlejumpLevels=0
 name=Cayla
 games=flappy,mario,doodlejump
 flappyLevels=0,1
+dinorunLevels=0
 points=40

@@ -1,5 +1,6 @@
 package ooga.view.screen;
 
+import java.io.File;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -32,7 +33,6 @@ public class GameScreen extends Screen {
     Label score = new Label();
     score.textProperty().bind(user.getPointsProperty().asString(resources.getString("score") + ": %d"));
     score.getStyleClass().add("user-data-display");
-
     pause = new Button();
     resume = new Button();
     resume.setDisable(true);
@@ -68,14 +68,13 @@ public class GameScreen extends Screen {
     resume.setDisable(true);
   }
 
-  public void exit() {
+  public void exit(boolean winState) {
     handleButtonPress("exit");
   }
 
   //NEEDED FOR REFLECTION, DON'T DELETE
   public void quit() {
-    levelController.endLevel();
-    exit();
+    levelController.endLevel(false);
   }
 
   //NEEDED FOR REFLECTION, DON'T DELETE

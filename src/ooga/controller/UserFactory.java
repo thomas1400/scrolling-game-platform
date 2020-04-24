@@ -38,7 +38,6 @@ public final class UserFactory {
 
   private static void addAdditionalProperties(Properties prop, User createdUser,
       Map<String, Set<Integer>> allGameLevels) {
-    createdUser.setSize(prop.getProperty("size"));
     createdUser.adjustPoints(Integer.parseInt(prop.getProperty("points")));
     createdUser.setAllGameLevels(allGameLevels);
     createdUser.setLives(Integer.parseInt(prop.getProperty("lives")));
@@ -50,7 +49,7 @@ public final class UserFactory {
 
   private static Set<Integer> getUnlockedLevelsSet(String gameType, Properties prop) {
     Set<Integer> levelsUnlocked = new HashSet<>();
-    if (prop.getProperty(gameType + "Levels").equals("")) {
+    if (prop.getProperty(gameType + "Levels") == null || prop.getProperty(gameType + "Levels").equals("")) {
       return new HashSet<>();
     }
     for (String unlockedLevel : prop.getProperty(gameType + "Levels").split(",")){
@@ -61,10 +60,10 @@ public final class UserFactory {
 
   public static User getDefaultUser() {
     //TODO: eventually just have this call getUser(new File("Default.user"));
-    User defaultUser = new User("Default User", "Mario.png");
-    defaultUser.setGameLevels("mario", getSetWithLevelZero());
-    defaultUser.setGameLevels("flappy", getSetWithLevelZero());
-    defaultUser.setGameLevels("doodlejump", getSetWithLevelZero());
+    User defaultUser = new User("Default User", null);
+    for (String gameType : defaultUser.getAllGames()) {
+      defaultUser.setGameLevels(gameType, getSetWithLevelZero());
+    }
     defaultUser.setLives(3);
 
     return defaultUser;

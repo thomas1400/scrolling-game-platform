@@ -55,18 +55,6 @@ public class ScreenController{
 
     addApplicationIcon();
 
-    //FIXME: Should remove this game type line and load levels line when game selector screen works
-    myGameType = "mario";
-    try {
-      myBasicLevels = new BasicLevelList();
-      loadLevels(myGameType);
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-      ExceptionFeedback.throwBreakingException(new RuntimeException(),
-          "Game type " + myGameType + " is invalid.");
-    }
-
-    //switchToScreen("HomeScreen");
     switchToScreen("GameSelectionScreen");
   }
 
@@ -134,6 +122,9 @@ public class ScreenController{
     Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
     File file = new File("data/stylesheet.css");
     nextScene.getStylesheets().add(file.toURI().toString());
+    File gameSpecificStyle = new File("data/gamedata/" + myGameType + "/gameStyle.css");
+    nextScene.getStylesheets().add(gameSpecificStyle.toURI().toString());
+
     nextScene.setOnKeyPressed(myLevelController::handleKeyPressed);
     nextScene.setOnKeyReleased(myLevelController::handleKeyReleased);
 
@@ -152,9 +143,9 @@ public class ScreenController{
   }
 
   public void restartLevel(){
-    myLevelController.endLevel();
+    myLevelController.endLevel(false);
 
-    Pane loadingPane = new LoadingScreen(myGameScreen, myCurrentLevel);
+    Pane loadingPane = new LoadingScreen(this, myGameScreen, myCurrentLevel);
     myGameScreen.getChildren().add(loadingPane);
 
     FadeTransition fade = new FadeTransition(Duration.seconds(0.5), loadingPane);
@@ -213,6 +204,10 @@ public class ScreenController{
               ".level");
       myBasicLevels.addBasicLevel(LevelBuilder.buildBasicLevel(levelNumber, levelFile));
     }
+  }
+
+  public String getGameType() {
+    return myGameType;
   }
 
 }
