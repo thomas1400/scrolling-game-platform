@@ -144,12 +144,4 @@ class HealthTest extends ApplicationTest { //so that error throwing can be seen
     h = immortal();
     assertEquals(0, h.getLives());
   }
-
-  //make sure to exit out of pop up error
-  @Test
-  void badHealthTest(){
-    assertThrows(FeedbackRuntimeException.class, () -> {
-      Health h = badHealth();
-    });
-  }
 }
