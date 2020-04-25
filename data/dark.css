@@ -5,10 +5,10 @@
  ********************************************************/
 
 .root {
-  -fx-base: #2d2327;
-  -fx-background: white;
-  -fx-accent: #62466b;
-  -fx-dark-fill: #2d2327;
+  -fx-base: #4f4e4e;
+  -fx-background: #222222;
+  -fx-accent: #aa22ff;
+  -fx-dark-fill: #3b1057;
 }
 
 
