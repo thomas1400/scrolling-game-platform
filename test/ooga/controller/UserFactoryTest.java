@@ -2,6 +2,7 @@ package ooga.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
 import java.util.HashSet;
 import javafx.stage.Stage;
 import ooga.controller.users.User;
@@ -17,6 +18,8 @@ class UserFactoryTest extends ApplicationTest {
 
   @Test
   void getUser() {
+    User testUser = UserFactory.getUser(new File("data/userdata/ALL UNLOCKED.user"));
+
   }
 
   @Test
@@ -25,15 +28,17 @@ class UserFactoryTest extends ApplicationTest {
 
     assertEquals("Default User", defaultUser.getName());
     assertEquals(3, defaultUser.getLives());
-    assertTrue(defaultUser.getAllGames().contains("gamedata/mario"));
-    assertTrue(defaultUser.getAllGames().contains("gamedata/flappy"));
-    assertTrue(defaultUser.getAllGames().contains("gamedata/doodlejump"));
+    assertTrue(defaultUser.getAllGames().contains("mario"));
+    assertTrue(defaultUser.getAllGames().contains("flappy"));
+    assertTrue(defaultUser.getAllGames().contains("doodlejump"));
+    assertTrue(defaultUser.getAllGames().contains("dinorun"));
 
     HashSet<Integer> defaultLevelsUnlocked = new HashSet<>();
     defaultLevelsUnlocked.add(0);
 
-    assertEquals(defaultLevelsUnlocked, defaultUser.getLevelsCompleted("gamedata/mario"));
-    assertEquals(defaultLevelsUnlocked, defaultUser.getLevelsCompleted("gamedata/flappy"));
-    assertEquals(defaultLevelsUnlocked, defaultUser.getLevelsCompleted("gamedata/doodlejump"));
+    assertEquals(defaultLevelsUnlocked, defaultUser.getLevelsCompleted("mario"));
+    assertEquals(defaultLevelsUnlocked, defaultUser.getLevelsCompleted("flappy"));
+    assertEquals(defaultLevelsUnlocked, defaultUser.getLevelsCompleted("doodlejump"));
+    assertEquals(defaultLevelsUnlocked, defaultUser.getLevelsCompleted("dinorun"));
   }
 }

@@ -44,6 +44,7 @@ public class Health extends Ability {
   }
   //todo if health suddenly stops working change <= to ==
 
+
   /**
    * Change number of lives by the incoming value
    * @param lives value to change lives by
@@ -58,6 +59,8 @@ public class Health extends Ability {
    */
   public void setLives(double newLivesNum){
     myLives=newLivesNum;
+    System.out.println(myLives);
+    System.out.println(isDead());
   }
 
   /**

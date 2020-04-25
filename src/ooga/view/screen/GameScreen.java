@@ -32,7 +32,6 @@ public class GameScreen extends Screen {
     Label score = new Label();
     score.textProperty().bind(user.getPointsProperty().asString(resources.getString("score") + ": %d"));
     score.getStyleClass().add("user-data-display");
-
     pause = new Button();
     resume = new Button();
     resume.setDisable(true);
@@ -57,25 +56,24 @@ public class GameScreen extends Screen {
   }
 
   public void pause() {
-    levelController.pauseLevel();
+    levelController.pause();
     pause.setDisable(true);
     resume.setDisable(false);
   }
 
   public void resume() {
-    levelController.resumeLevel();
+    levelController.resume();
     pause.setDisable(false);
     resume.setDisable(true);
   }
 
-  public void exit() {
+  public void exit(boolean winState) {
     handleButtonPress("exit");
   }
 
   //NEEDED FOR REFLECTION, DON'T DELETE
   public void quit() {
-    levelController.endLevel();
-    exit();
+    levelController.endLevel(false);
   }
 
   //NEEDED FOR REFLECTION, DON'T DELETE

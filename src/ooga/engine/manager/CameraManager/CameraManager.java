@@ -34,12 +34,12 @@ public class CameraManager {
   public CameraManager(double height, double width, String direction, EntityList entities) {
     Entity mainEntity = entities.getMainEntity();
     ResourceBundle myDirectionControllerResources = ResourceBundle.getBundle(directionControllerResources);
-    screenHeight = height;
+    screenHeight = height + 1;
     screenWidth = width;
     String directionType = myDirectionControllerResources.getString(direction);
     try {
       myDirectionController = (DirectionController) Class.forName(directionControllerOptionsLocation + directionType).newInstance();
-      myDirectionController.initialize(entities, height, width);
+      myDirectionController.initialize(entities, screenHeight, screenWidth);
     } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
       ExceptionFeedback.throwBreakingException(e, ERROR_MESSAGE);
     }
@@ -73,7 +73,7 @@ public class CameraManager {
     myDirectionController.updateCameraPosition(entities, screenHeight, screenWidth);
     onScreenEntities = new EntityList();
     for (Entity entity : entities) {
-      if (entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX()< screenWidth && entity.getBoundsInLocal().getMinY() < screenHeight) {
+      if (entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX()< screenWidth && entity.getBoundsInLocal().getMaxY() < screenHeight) {
         newEntityMovesOnScreen(entity);
       }
     }
@@ -108,7 +108,7 @@ public class CameraManager {
   }
 
   private boolean entityIsOnScreen(Entity entity){
-    return entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX() < screenWidth && entity.getBoundsInLocal().getMinY() > 0 && entity.getBoundsInLocal().getMinY()< screenHeight;}
+    return entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX() < screenWidth && entity.getBoundsInLocal().getMinY() > 0 && entity.getBoundsInLocal().getMaxY()< screenHeight;}
 
   private void entityMovesOffScreen(Entity entity) {
     onScreenEntities.removeEntity(entity);

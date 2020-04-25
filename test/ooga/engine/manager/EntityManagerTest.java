@@ -31,7 +31,6 @@ class EntityManagerTest extends ApplicationTest {
     entities.addEntity(entity);
     entityManager = new EntityManager(entities);
     entityManager.initializeEntityLists();
-
   }
 
   @Test
