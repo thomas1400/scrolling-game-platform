@@ -2,7 +2,9 @@ package ooga.model.ability;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.MissingResourceException;
 import javafx.stage.Stage;
+import ooga.exceptions.FeedbackRuntimeException;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
@@ -143,5 +145,12 @@ class HealthTest extends ApplicationTest { //so that error throwing can be seen
 
     h = immortal();
     assertEquals(0, h.getLives());
+  }
+
+  @Test
+  void badHealthTest(){
+    assertThrows(FeedbackRuntimeException.class, () -> {
+      Health h = badHealth();
+    });
   }
 }
