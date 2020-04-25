@@ -25,4 +25,5 @@
     (Button text=quit, prefWidth=20%, actionTag=quit)
   }
 }
+
 (game-group translateY=12%)

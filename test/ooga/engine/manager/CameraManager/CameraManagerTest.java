@@ -31,15 +31,15 @@ class CameraManagerTest extends ApplicationTest {
     entities.addEntity(entity);
   }
 
-  private void setUpCameraManager(String dc){
-    cm = new CameraManager(400, 600, dc, entities);
+  private void setUpCameraManager(String dc, int height, int width){
+    cm = new CameraManager(height, width, dc, entities);
     cm.initializeActivationStorage();
     cm.initializeActiveEntities(entities);
   }
 
-    @Test
-  void updateCamera() {
-    setUpCameraManager("right");
+  @Test
+  void moveRight() {
+    setUpCameraManager("right", 400, 600);
     mainEntity.setX(150);
     mainEntity.setY(150);
     entity.setX(100);
@@ -50,4 +50,52 @@ class CameraManagerTest extends ApplicationTest {
     assertEquals(150, mainEntity.getY());
     assertEquals(100, entity.getY());
   }
+  @Test
+  void moveDown(){
+    setUpCameraManager("down", 600, 600);
+    mainEntity.setX(150);
+    mainEntity.setY(150);
+    entity.setX(100);
+    entity.setY(100);
+    cm.updateCamera(entities);
+    assertEquals(300 - mainEntity.getBoundsInLocal().getHeight() / 2 +.5, mainEntity.getY());
+    assertEquals(250 - mainEntity.getBoundsInLocal().getHeight() / 2 + .5, entity.getY());
+  }
+  @Test
+  void moveHorizontal() {
+    setUpCameraManager("horizontal", 400, 600);
+    mainEntity.setX(150);
+    mainEntity.setY(150);
+    entity.setX(100);
+    entity.setY(100);
+    cm.updateCamera(entities);
+    assertEquals(400 - mainEntity.getBoundsInLocal().getWidth() / 2, mainEntity.getX());
+    assertEquals(350 - mainEntity.getBoundsInLocal().getWidth() / 2, entity.getX());
+    assertEquals(150, mainEntity.getY());
+    assertEquals(100, entity.getY());
+  }
+  @Test
+  void moveVertical(){
+    setUpCameraManager("vertical", 600, 600);
+    mainEntity.setX(150);
+    mainEntity.setY(150);
+    entity.setX(100);
+    entity.setY(100);
+    cm.updateCamera(entities);
+    assertEquals(400 - mainEntity.getBoundsInLocal().getHeight() / 2 +.5, mainEntity.getY());
+    assertEquals(350 - mainEntity.getBoundsInLocal().getHeight() / 2 + .5, entity.getY());
+  }
+
+  @Test
+  void moveCentered(){
+    setUpCameraManager("centered", 600, 600);
+    mainEntity.setX(150);
+    mainEntity.setY(150);
+    entity.setX(100);
+    entity.setY(100);
+    cm.updateCamera(entities);
+    assertEquals(300 - mainEntity.getBoundsInLocal().getHeight() / 2 + .5, mainEntity.getY());
+    assertEquals(250 - mainEntity.getBoundsInLocal().getHeight() / 2 + .5, entity.getY());
+  }
+
 }
