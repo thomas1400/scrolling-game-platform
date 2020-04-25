@@ -27,9 +27,11 @@ public class CollisionManager {
   private EntityList entitiesReceived;
   private Map<Entity, EntityList> collision;
   private static final String COLLISION_DATA_FOLDER = "collisionmanagement/CollisionLocation";
+  private Entity myMainEntity;
 
 
-  public CollisionManager(){
+  public CollisionManager(Entity mainEntity){
+    myMainEntity = mainEntity;
     myCollisionLocationResources = ResourceBundle.getBundle(COLLISION_DATA_FOLDER);
   }
 
@@ -92,10 +94,7 @@ public class CollisionManager {
   }
 
   private void adjustImpactFromGravityAndMultipleDetections(Entity entity, double d) {
-    if(collisionLocation[0].equals(SIDE_COLLISION)){
-      entity.setX(entity.getX() - d);
-    }
-    else if (collisionLocation[0].equals(BOTTOM_COLLISION)){
+    if (collisionLocation[0].equals(BOTTOM_COLLISION) && entity.equals(myMainEntity)){
       entity.setY(entity.getY() - d);
     }
   }

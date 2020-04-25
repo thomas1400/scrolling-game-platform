@@ -14,6 +14,10 @@ public final class LevelLoader {
   public static final String LEVEL_ORDER_RESOURCE_ROOT = "/levels/resources/levelOrder";
   public static final String REGEX = ",";
 
+  /**
+   * @param myGameType needed to determine the root for the
+   * @param myBasicLevels list to which the loaded levels are added
+   */
   public static void loadLevels(String myGameType, BasicLevelList myBasicLevels) {
     ResourceBundle myLevelsBundle = ResourceBundle.getBundle(
         GAMEDATA_PATH + myGameType + LEVEL_ORDER_RESOURCE_ROOT);

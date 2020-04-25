@@ -19,6 +19,7 @@ import ooga.controller.users.User;
 import ooga.controller.users.UserList;
 import ooga.exceptions.ExceptionFeedback;
 import ooga.view.screen.GameScreen;
+import ooga.view.screen.GameSelectionScreen;
 import ooga.view.screen.LevelSelectorScreen;
 import ooga.view.screen.LoadingScreen;
 import ooga.view.screen.Screen;
@@ -109,7 +110,11 @@ public class ScreenController{
     nextScene.getStylesheets().add(MAIN_STYLESHEET.toURI().toString());
     if (myGameType != null) {
       File gameSpecificStyle = new File(GAMEDATA_PATH + myGameType + GAME_STYLE_CSS);
-      nextScene.getStylesheets().add(gameSpecificStyle.toURI().toString());
+      if (nextScreen instanceof GameSelectionScreen) {
+        nextScene.getStylesheets().removeAll(gameSpecificStyle.toURI().toString());
+      } else {
+        nextScene.getStylesheets().add(gameSpecificStyle.toURI().toString());
+      }
     }
     return nextScene;
   }
@@ -139,7 +144,7 @@ public class ScreenController{
     nextScene.setOnKeyReleased(myLevelController::handleKeyReleased);
 
     showScene(nextScene);
-    myLevelController.beginLevel();
+    myLevelController.begin();
   }
 
   /**
