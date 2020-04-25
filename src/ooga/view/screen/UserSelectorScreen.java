@@ -23,7 +23,7 @@ public class UserSelectorScreen extends Screen {
   /**
    * Passes the selected user to the ScreenController. Called via REFLECTION.
    */
-  public void selectUser() {
+  protected void selectUser() {
     if (us.getSelected() != null) {
       controller.setSelectedUser(us.getSelected());
     }
