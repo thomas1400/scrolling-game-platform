@@ -11,12 +11,12 @@ levelHeight:50
 F:Flag
 1:Goomba
 ?:QuestionBrick
-B:Brick
+B:Ground
 0:Koopa
 S:SolidBrick
 X:Player
 G:Ground
-V:GroundOverhang
+V:Ground
 C:Coin
 #LEVEL
 . . . . . . . . . . . . . . . . . . . .
@@ -30,7 +30,7 @@ B B B . . . . . . . . . . . . . F . . .
 . . . . . . . . . . . . . . . B B B . .
 . . . . . . . . . . V G G G G G G G G G
 . . . C . . . . . . . . V G G G G G G G
-. . B B B . . . . . . . . . . V G G G G
+. . . B B B . . . . . . . . . V G G G G
 . . . . . . . . . . . . . . . . . V G G
 . . . . . . . . . . . . . . . . . . V G
 . . . . . . . B B ? B B . . . . . . . V
