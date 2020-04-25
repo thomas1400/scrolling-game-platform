@@ -1,11 +1,11 @@
 #User properties file for user: ALL UNLOCKED
-#Fri Apr 17 03:05:28 EDT 2020
-image=unlockedAll.jpg
-games=mario,flappy,doodlejump,dinorun
+#Fri Apr 24 23:32:29 EDT 2020
 marioLevels=0,1,2,3,4,5,6,7,8,9,10
-flappyLevels=0,1,2,3,4,5,6,7,8,9,10
+image=unlockedAll.jpg
+lives=1001
 doodlejumpLevels=0,1
-dinorunLevels=0,1,2,3,4,5,6,7,8,9,10
-lives=1000
 name=ALL UNLOCKED
+games=flappy,mario,dinorun,doodlejump
+flappyLevels=0,1,2,3,4,5,6,7,8,9,10
+dinorunLevels=0,1,2,3,4,5,6,7,8,9,10
 points=73
