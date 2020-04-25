@@ -116,13 +116,18 @@ public class Physics extends Ability {
    * I.e. makes the entity jump only if already falling
    */
   public void jumpUp(){
-    if(myVelocity[Y]>0){
+    if(myState.getVelocity(Y) > 0){
       jump();
     }
   }
 
+  /**
+   * Preforms the appropriate adjustments to the entity when a jumpHigh command is activated with
+   * use of Reflection
+   * I.e. makes the entity jump twice, also only if already falling
+   */
   public void jumpHigh(){
-    if(myVelocity[Y]>0){
+    if(myState.getVelocity(Y) > 0){
       jump();
       jump();
       System.out.println("Reached");

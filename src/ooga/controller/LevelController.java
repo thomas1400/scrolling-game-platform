@@ -120,7 +120,6 @@ public class LevelController implements GameLevel, Loopable, Handleable {
    */
   public void begin() {
     myLevelLoop.begin();
-    myLevelLoop.pause();
   }
 
   /**
