@@ -133,7 +133,9 @@ public class FXLRParser {
       } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException ignored) {}
     }
 
-    (new ClassNotFoundException("Class not found for classname " + className)).printStackTrace();
+    ExceptionFeedback.throwBreakingException(new ClassNotFoundException("Class not found for "
+        + "classname " + className),"Class " + className + " not found. Cannot continue FXLR "
+        + "parsing");
   }
 
   private Node getNodeForPackage(String className, String packageName)
@@ -204,7 +206,8 @@ public class FXLRParser {
             e -> gb.getRoot().handleButtonPress(argStrings[0])
         );
       } catch (Exception e) {
-        System.out.println("Node " + node.toString() + " has no event handler.");
+        ExceptionFeedback.throwBreakingException(e, "Node " + node.toString() + " has no event "
+            + "handler.");
       }
       return true;
     }

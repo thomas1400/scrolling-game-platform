@@ -38,14 +38,14 @@ public class UserCreationScreen extends Screen {
   /**
    * Choose an image for a new user. Public for REFLECTION.
    */
-  public void chooseImage() {
+  protected void chooseImage() {
     imageFile = imageChooser.showOpenDialog(new Stage());
   }
 
   /**
    * Save the newly created user to the ScreenController, checking for field completion.
    */
-  public void save() {
+  protected void save() {
     if (imageFile != null && !nameField.getText().equals("")) {
       User newUser = new User(nameField.getText(), imageFile.toURI().toString());
       UserSaver.saveUser(newUser);

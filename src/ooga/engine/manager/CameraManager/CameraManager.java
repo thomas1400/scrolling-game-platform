@@ -24,6 +24,7 @@ public class CameraManager {
   private DirectionController myDirectionController;
   private static final String directionControllerOptionsLocation =  "ooga.engine.manager.CameraManager.DirectionControllers.";
   private static final String ERROR_MESSAGE = "No DirectionController associated with this scroll type";
+  private static final int TINY_OFFSET = 1;
 
   /**
    * @param height double containing the height of the screen
@@ -34,7 +35,7 @@ public class CameraManager {
   public CameraManager(double height, double width, String direction, EntityList entities) {
     Entity mainEntity = entities.getMainEntity();
     ResourceBundle myDirectionControllerResources = ResourceBundle.getBundle(directionControllerResources);
-    screenHeight = height + 1;
+    screenHeight = height + TINY_OFFSET;
     screenWidth = width;
     String directionType = myDirectionControllerResources.getString(direction);
     try {
@@ -73,8 +74,8 @@ public class CameraManager {
     myDirectionController.updateCameraPosition(entities, screenHeight, screenWidth);
     onScreenEntities = new EntityList();
     for (Entity entity : entities) {
-      if (entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX()< screenWidth && entity.getBoundsInLocal().getMaxY() < screenHeight) {
-        newEntityMovesOnScreen(entity);
+      if(entityIsOnScreen(entity)){
+      newEntityMovesOnScreen(entity);
       }
     }
     return activatedEntities;
@@ -108,7 +109,7 @@ public class CameraManager {
   }
 
   private boolean entityIsOnScreen(Entity entity){
-    return entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX() < screenWidth && entity.getBoundsInLocal().getMinY() > 0 && entity.getBoundsInLocal().getMaxY()< screenHeight;}
+    return entity.getBoundsInLocal().getMaxX()> 0 && entity.getBoundsInLocal().getMinX() < screenWidth && entity.getBoundsInLocal().getMinY() > -TINY_OFFSET && entity.getBoundsInLocal().getMaxY()< screenHeight;}
 
   private void entityMovesOffScreen(Entity entity) {
     onScreenEntities.removeEntity(entity);

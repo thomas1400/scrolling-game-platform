@@ -14,6 +14,7 @@ public class UserSelectorScreen extends Screen {
   public UserSelectorScreen(ScreenController controller, UserList users) {
     super(controller);
     us = new UserSelector(controller.getUsers());
+    this.getStyleClass().add("user-select-screen");
 
     dynamicNodes.put("user-selector", us);
 
@@ -23,7 +24,7 @@ public class UserSelectorScreen extends Screen {
   /**
    * Passes the selected user to the ScreenController. Called via REFLECTION.
    */
-  public void selectUser() {
+  protected void selectUser() {
     if (us.getSelected() != null) {
       controller.setSelectedUser(us.getSelected());
     }
