@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.HashSet;
 import javafx.stage.Stage;
 import ooga.controller.users.User;
+import ooga.controller.users.UserFactory;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 

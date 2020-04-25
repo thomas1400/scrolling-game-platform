@@ -2,6 +2,7 @@ package ooga.controller;
 
 import javafx.scene.Group;
 import javafx.scene.input.KeyEvent;
+import ooga.controller.users.UserSaver;
 import ooga.engine.loop.LevelLoop;
 import ooga.engine.loop.Loopable;
 import ooga.exceptions.ExceptionFeedback;

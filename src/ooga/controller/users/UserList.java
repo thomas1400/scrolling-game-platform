@@ -3,7 +3,6 @@ package ooga.controller.users;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import ooga.controller.UserFactory;
 import ooga.exceptions.ExceptionFeedback;
 
 public class UserList implements Iterable<User>{

@@ -6,7 +6,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ooga.controller.ScreenController;
-import ooga.controller.UserSaver;
+import ooga.controller.users.UserSaver;
 import ooga.controller.users.User;
 import ooga.exceptions.ExceptionFeedback;
 
