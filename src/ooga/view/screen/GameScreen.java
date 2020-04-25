@@ -76,6 +76,7 @@ public class GameScreen extends Screen {
     } else {
       splash = new LevelFailedSplash(controller, this);
     }
+    splash.setOpacity(0.0);
     this.getChildren().add(splash);
 
     FadeTransition fadePause = new FadeTransition(Duration.seconds(0.5), splash);
@@ -88,7 +89,10 @@ public class GameScreen extends Screen {
     fadeHold.setFromValue(1);
     fadeHold.setToValue(1);
 
-    fadePause.setOnFinished(e->fadeIn.play());
+    fadePause.setOnFinished(e-> {
+      splash.setOpacity(1.0);
+      fadeIn.play();
+    });
     fadeIn.setOnFinished(e->fadeHold.play());
     fadeHold.setOnFinished(e->handleButtonPress("exit"));
 
