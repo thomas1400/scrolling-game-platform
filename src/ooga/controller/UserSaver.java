@@ -14,12 +14,22 @@ import ooga.exceptions.ExceptionFeedback;
 
 public final class UserSaver {
 
+  public static final String USERS_RESOURCE_PATH = "userdata/users";
   private static final String USER_PACKAGE = "data/userdata/";
+  public static final String REGX = ",";
+  public static final String LEVELS = "Levels";
+  public static final String GAMES = "games";
+  public static final String USER_EXTENSION = ".user";
+  public static final String DEFAULT_USER = "Default User";
 
+  /**
+   * Saves a user to a file when provided a User object
+   * @param user object to be saved into a user file
+   */
   public static void saveUser(User user) {
-    if (!user.getName().equals("Default User")) {
+    if (!user.getName().equals(DEFAULT_USER)) {
       try (OutputStream output = new FileOutputStream(
-          USER_PACKAGE + user.getName() + ".user")) {
+          USER_PACKAGE + user.getName() + USER_EXTENSION)) {
 
         Properties userProperties = new Properties();
 
@@ -40,11 +50,11 @@ public final class UserSaver {
 
   private static void setGamesProperty(User user, Properties userProperties) {
     String gamesString = buildStringFromList(user.getAllGames());
-    userProperties.setProperty("games", gamesString);
+    userProperties.setProperty(GAMES, gamesString);
   }
 
   private static void setSimpleProperties(User user, Properties userProperties) {
-    ResourceBundle myUserSaverResources = ResourceBundle.getBundle("userdata/users");
+    ResourceBundle myUserSaverResources = ResourceBundle.getBundle(USERS_RESOURCE_PATH);
 
     for (String userProperty : Collections.list(myUserSaverResources.getKeys())) {
       try {
@@ -64,7 +74,7 @@ public final class UserSaver {
   private static void setUnlockedLevelsProperty(User user, Properties userProperties) {
     for (String game : user.getAllGames()) {
       String unlockedLevelsString = buildStringFromList(user.getLevelsCompleted(game));
-      userProperties.setProperty(game + "Levels", unlockedLevelsString);
+      userProperties.setProperty(game + LEVELS, unlockedLevelsString);
     }
   }
 
@@ -74,7 +84,7 @@ public final class UserSaver {
     }
     StringBuilder newString = new StringBuilder();
     for (Object property : userPropertyList){
-      newString.append(property.toString()).append(",");
+      newString.append(property.toString()).append(REGX);
     }
     return newString.toString().substring(0,newString.length()-1);
   }

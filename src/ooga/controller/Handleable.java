@@ -1,4 +1,4 @@
-package ooga.controller.users;
+package ooga.controller;
 
 import javafx.scene.input.KeyEvent;
 

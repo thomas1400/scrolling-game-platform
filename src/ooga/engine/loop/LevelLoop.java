@@ -6,7 +6,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import ooga.controller.GameLevel;
 import ooga.controller.levels.CompleteLevel;
-import ooga.controller.users.Handleable;
+import ooga.controller.Handleable;
 import ooga.engine.manager.CameraManager.CameraManager;
 import ooga.engine.manager.CollisionManager;
 import ooga.engine.manager.EntityManager;
