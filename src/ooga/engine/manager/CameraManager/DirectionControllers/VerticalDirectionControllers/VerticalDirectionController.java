@@ -20,9 +20,7 @@ abstract public class VerticalDirectionController extends DirectionController {
     myMainEntity = entities.getMainEntity();
     yCenter = myScreenHeight / 2 - myMainEntity.getBoundsInLocal().getHeight() / 2;
     change = myMainEntity.getY() - yCenter - offset;
-    //change = myMainEntity.getY();
     resetMainEntity(offset);
-    //myMainEntity.setY(0.1);
     updateCoordinates(entities);
   }
 

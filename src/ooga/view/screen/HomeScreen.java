@@ -16,4 +16,11 @@ public class HomeScreen extends Screen {
     loadLayout();
   }
 
+  /**
+   * Toggle dark mode. Used for REFLECTION.
+   */
+  protected void darkMode() {
+    controller.toggleDarkMode();
+  }
+
 }
