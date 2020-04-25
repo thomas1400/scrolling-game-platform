@@ -173,12 +173,7 @@ public class ScreenController{
   public void restartLevel(){
     myLevelController.endLevel(false);
 
-    Screen loadingPane = new LoadingSplash(this, myGameScreen, myCurrentLevel);
-    myGameScreen.getChildren().add(loadingPane);
-
-    FadeTransition fade = new FadeTransition(Duration.seconds(0.5), loadingPane);
-    doFade(fade);
-    fade.setOnFinished((e) -> initializeNewLevel(myCurrentLevel));
+    initializeNewLevel(myCurrentLevel);
   }
 
   private void doFade(FadeTransition fadeIn) {

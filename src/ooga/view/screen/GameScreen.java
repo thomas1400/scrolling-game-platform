@@ -78,6 +78,9 @@ public class GameScreen extends Screen {
     }
     this.getChildren().add(splash);
 
+    FadeTransition fadePause = new FadeTransition(Duration.seconds(0.5), splash);
+    fadePause.setFromValue(0);
+    fadePause.setToValue(0);
     FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), splash);
     fadeIn.setFromValue(0);
     fadeIn.setToValue(1);
@@ -85,10 +88,11 @@ public class GameScreen extends Screen {
     fadeHold.setFromValue(1);
     fadeHold.setToValue(1);
 
+    fadePause.setOnFinished(e->fadeIn.play());
     fadeIn.setOnFinished(e->fadeHold.play());
     fadeHold.setOnFinished(e->handleButtonPress("exit"));
 
-    fadeIn.play();
+    fadePause.play();
   }
 
   //NEEDED FOR REFLECTION, DON'T DELETE
