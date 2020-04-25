@@ -1,10 +1,7 @@
 package ooga.view.screen;
 
 import java.util.ArrayList;
-import javafx.animation.FadeTransition;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
-import javafx.util.Duration;
 import ooga.controller.ScreenController;
 import ooga.controller.levels.BasicLevelList;
 import ooga.controller.users.User;
@@ -42,6 +39,7 @@ public class LevelSelectorScreen extends Screen {
       User user = controller.getUsers().getSelectedUser();
 
       Label username = new Label(resources.getString("user") + " : " + user.getName());
+      username.setId("usernameLabel");
       LevelProgressBar lpb = new LevelProgressBar(resources.getString("progress"),
           user.getLevelsCompleted(gameType).size(), levels.size());
       lst = new LevelSelectorTool(levels, myLevelGraphFile, myLevelMapFile,
@@ -58,7 +56,7 @@ public class LevelSelectorScreen extends Screen {
   /**
    * Called via REFLECTION, loads new level, passing selected level to controller.
    */
-  public void loadLevel() {
+  protected void loadLevel() {
     controller.initializeNewLevel(lst.getSelected());
   }
 

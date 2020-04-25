@@ -1,10 +1,8 @@
 package ooga.view.screen;
 
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 import ooga.controller.ScreenController;
 
 /**
@@ -44,7 +42,7 @@ public class SettingsScreen extends Screen {
   /**
    * Go back to the GameScreen. Public for REFLECTION.
    */
-  public void back() {
+  protected void back() {
     parent.getChildren().remove(this);
     parent.setOnMouseClicked(oldParentHandler);
     parent.resume();
@@ -53,7 +51,7 @@ public class SettingsScreen extends Screen {
   /**
    * Apply settings. Public for REFLECTION.
    */
-  public void apply() {
+  protected void apply() {
     controller.setCameraManagerOption(cameraManagerSelector.getValue());
     controller.setPhysicsOption(physicsSelector.getValue());
     back();
