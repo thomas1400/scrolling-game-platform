@@ -186,7 +186,6 @@ public class LevelLoop implements Loopable, Handleable {
    * Method is called by LevelController to resume the timeline
    */
   public void resume() {
-    myTimeline.play();
   }
 
   /**

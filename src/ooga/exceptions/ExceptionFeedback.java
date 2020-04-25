@@ -13,38 +13,32 @@ public class ExceptionFeedback {
   public static final int MESSAGE_LINE_LENGTH = 200;
 
   /**
-   * Throws an exception dialog to the user with a given type and message.
+   * Throws an exception dialog to the user with a given exception and message.
+   * Throws the exception, halting program execution with non-zero exit code.
    *
    * @param e       Exception to throw
    * @param message message to include
    */
   public static void throwBreakingException(Exception e, String message) {
-    JOptionPane.showConfirmDialog(new JFrame(),
-        message,
-        e.getClass().getSimpleName(), JOptionPane.DEFAULT_OPTION);
+    throwHandledException(e, message);
     throw new FeedbackRuntimeException(e);
   }
 
+  /**
+   * Throws an exception dialog to the user with a given exception and message.
+   *
+   * @param e Exception to throw
+   * @param message message to include
+   */
   public static void throwHandledException(Exception e, String message) {
     JOptionPane.showConfirmDialog(new JFrame(),
         message,
         e.getClass().getSimpleName(), JOptionPane.DEFAULT_OPTION);
   }
 
-  private static void showAlert(String header, String message, ButtonType buttonType) {
-    Alert alert = new Alert(AlertType.ERROR);
-    alert.setResult(buttonType);
-    alert.setHeaderText(header);
+  @Deprecated
+  public static void throwException() {
 
-    StringBuilder sb = new StringBuilder(message);
-    for (int i = 0; i < message.length(); i += MESSAGE_LINE_LENGTH) {
-      sb.insert(i, "\n");
-    }
-
-    Label t = new Label(sb.toString());
-    alert.getDialogPane().setContent(t);
-
-    alert.show();
   }
 
 }
