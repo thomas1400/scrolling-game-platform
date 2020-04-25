@@ -27,8 +27,6 @@ import ooga.view.screen.Screen;
  *
  * Note: FXLR does not represent styling. FXLR nodes should be styled with external CSS.
  *
- * TODO : clean up code
- * TODO : add package checking to class instantiation
  */
 public class FXLRParser {
 
@@ -40,37 +38,44 @@ public class FXLRParser {
   private static final int ATTR_EQUALITY_CHAR = '=';
   private static final char PACKAGE_OPEN_CHAR = '<';
   private static final char PACKAGE_CLOSE_CHAR = '>';
-  private static final String STYLECLASS_ATTR_TAG = "style";
+  private static final String STYLE_CLASS_ATTR_TAG = "style";
   private static final String ACTION_EVENT_TAG = "actionTag";
-  static final char RELATIVE_SIZE_CHAR = '%';
-  static final String WIDTH_STRING = "width";
-  static final String HEIGHT_STRING = "height";
+  private static final char RELATIVE_SIZE_CHAR = '%';
+  private static final String WIDTH_STRING = "width";
+  private static final String HEIGHT_STRING = "height";
   private static final String DYNAMIC_UI_PACKAGE = "ooga.view.dynamicUI";
 
 
   private FXGraphBuilder gb;
   private List<String> packages;
 
-  public FXLRParser() { }
-
-  public Screen loadFXLRLayout(Screen root, File file) throws FileNotFoundException {
-    packages = new ArrayList<>();
+  /**
+   * Initialize an FXLR parser.
+   */
+  public FXLRParser() {
     gb = new FXGraphBuilder();
+    packages = new ArrayList<>();
+  }
+
+  /**
+   * Load layout to a provided Screen from an FXLR file.
+   *
+   * @param root Screen for which to set layout
+   * @param file FXLR file
+   * @throws FileNotFoundException if FXLR not found
+   */
+  public void loadFXLRLayout(Screen root, File file) throws FileNotFoundException {
+    packages.clear();
     gb.setRoot(root);
 
     Scanner s = new Scanner(file);
 
     while (s.hasNextLine()) {
       String line = s.nextLine().strip().trim();
-      String[] words = line.split("\\s+");
 
-      // skip empty lines
-      if (line.length() <= 0) {
-        continue;
-      }
-
-      // Skip comments
-      if (line.length() >= 3 && line.substring(0, 3).equals(COMMENT_STRING)) {
+      // skip empty lines and comments
+      if (line.length() <= 0 ||
+          (line.length() >= 3 && line.substring(0, 3).equals(COMMENT_STRING))) {
         continue;
       }
 
@@ -82,7 +87,6 @@ public class FXLRParser {
 
       // instantiate nodes
       if (line.charAt(0) == NODE_OPEN_CHAR) {
-        // make new node
         instantiateNode(line);
       }
 
@@ -92,7 +96,6 @@ public class FXLRParser {
     }
 
     s.close();
-    return gb.getRoot();
   }
 
   private void loadPackage(String line) {
@@ -106,16 +109,10 @@ public class FXLRParser {
 
     for (String packageName : packages) {
       try {
-        Node node;
-        if (packageName.equals(DYNAMIC_UI_PACKAGE)) {
-          node = gb.getRoot()
-              .getDynamicUIElement(className);
-          if (node == null) {
-            continue;
-          }
-        } else {
-          node = (Node) Class.forName(packageName + "." + className).getDeclaredConstructor()
-              .newInstance();
+        Node node = getNodeForPackage(className, packageName);
+
+        if (node == null) {
+          continue;
         }
 
         // set attributes
@@ -137,6 +134,19 @@ public class FXLRParser {
     }
 
     (new ClassNotFoundException("Class not found for classname " + className)).printStackTrace();
+  }
+
+  private Node getNodeForPackage(String className, String packageName)
+      throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
+    Node node;
+    if (packageName.equals(DYNAMIC_UI_PACKAGE)) {
+      node = gb.getRoot()
+          .getDynamicUIElement(className);
+    } else {
+      node = (Node) Class.forName(packageName + "." + className).getDeclaredConstructor()
+          .newInstance();
+    }
+    return node;
   }
 
   private void setAttributes(Node node, String attrLine) {
@@ -181,7 +191,7 @@ public class FXLRParser {
 
   private boolean specialCaseHandled(Node node, String attr, String[] argStrings) {
     // special case for setting style class
-    if (attr.equals(STYLECLASS_ATTR_TAG)) {
+    if (attr.equals(STYLE_CLASS_ATTR_TAG)) {
       node.getStyleClass().add(argStrings[0]);
       return true;
     }
