@@ -51,10 +51,10 @@ public class InputManager {
   /**
    * Processes when a key is pressed that impacts the main entity
    * Adds the string associated with the key being pressed into a set if it is not already present and invokes the corresponding method
-   * @param keyEvent event containing information regarding which key was pressed
+   * @param keyCode String containing information regarding which key was pressed
    */
-  public void handleKeyPress(KeyEvent keyEvent) {
-    String keyCode = keyEvent.getCode().toString();
+  public void handleKeyPress(String keyCode) {
+    //String keyCode = keyEvent.getCode().toString();
     if (!keysCurrentlyPressed.contains(keyCode) && myUserInputsResources.containsKey(keyCode)) {
       keysCurrentlyPressed.add(keyCode);
       invokeMethod(keyCode);
@@ -64,10 +64,10 @@ public class InputManager {
   /**
    * Processes when a key is released that impacts the main entity
    * Removes the the string associated with the key that is released from the set
-   * @param keyEvent event containing information regarding which key was released
+   * @param keyCode String containing information regarding which key was released
    */
-  public void handleKeyRelease(KeyEvent keyEvent) {
-    keysCurrentlyPressed.remove(keyEvent.getCode().toString());
+  public void handleKeyRelease(String keyCode) {
+    keysCurrentlyPressed.remove(keyCode);
   }
 
   private void invokeMethod(String keyPressed) {
@@ -86,12 +86,6 @@ public class InputManager {
     }
   }
 
-
-
-  /**
-   * Gets the keyCurrentlyPressed Set
-   * Used for testing
-   */
   public Set<String> getKeysCurrentlyPressed(){
     return keysCurrentlyPressed;
   }
