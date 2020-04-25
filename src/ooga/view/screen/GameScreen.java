@@ -70,10 +70,7 @@ public class GameScreen extends Screen {
     gameGroup.getChildren().addAll(visibleGroup);
   }
 
-  /**
-   * Used by REFLECTION and pause button to pause the game.
-   */
-  public void pause() {
+  protected void pause() {
     levelController.pause();
     pause.setDisable(true);
     resume.setDisable(false);
@@ -82,7 +79,7 @@ public class GameScreen extends Screen {
   /**
    * Used by REFLECTION and resume button to resume the game.
    */
-  public void resume() {
+  protected void resume() {
     levelController.resume();
     pause.setDisable(false);
     resume.setDisable(true);
@@ -124,21 +121,21 @@ public class GameScreen extends Screen {
   /**
    * Used by REFLECTION and quit button to quit the game.
    */
-  public void quit() {
+  protected void quit() {
     levelController.endLevel(false);
   }
 
   /**
    * Used by REFLECTION and reset button to reset the game.
    */
-  public void reset() {
+  protected void reset() {
     controller.restartLevel();
   }
 
   /**
    * Used by REFLECTION and settings button to open the settings menu.
    */
-  public void openSettings() {
+  protected void openSettings() {
     pause();
     SettingsScreen settings = new SettingsScreen(controller, this);
     this.getChildren().add(settings);

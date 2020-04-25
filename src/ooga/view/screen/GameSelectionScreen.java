@@ -54,7 +54,7 @@ public class GameSelectionScreen extends Screen {
   /**
    * Passes the selected game to the ScreenController, called by REFLECTION.
    */
-  public void select() {
+  protected void select() {
     controller.setGame(gs.getSelected());
   }
 

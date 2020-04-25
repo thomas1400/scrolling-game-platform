@@ -15,10 +15,22 @@ public class EntityBuilder {
   private static final String ABILITY_PACKAGE = "ooga.model.ability.";
   private static final String IMAGE_KEY = "Image";
   private static final String GAME_DATA_FOLDER = "gamedata/";
+  private static final String ENTITY_FOLDER = "/entities/";
+  private static final String BEHAVIOR_FOLDER = "behavior/";
+  private static final String IMAGE_FOLDER = "images/";
+  private static final String SPLIT = ",";
   private static final String USER_INPUT_INFORMATION = "/entities/entities";
+  private static final String CLASS_ERROR = "Can't find the class to make the Ability";
+  private static final String ILLEGAL_ERROR = "Can't access the class to make the Ability";
+  private static final String INVOKE_ERROR = "Can't invoke the ability";
+  private static final String INSTANTIATION_ERROR = "Can't instantiate the ability";
+  private static final String CONSTRUCTOR_ERROR = "No constructor to make the ability";
+  private static final String MISSING_RESOURCE_ERROR = "You didn't edit the level file correctly. Can't find the properties file for a type! Either add the file or remove the type from the level";
   private static ResourceBundle myEntityResources;
   private static final String ATTACK = "Attack";
   private static final int ATTACK_LOCATION = 0;
+  private static final int ENTITY_LOCATION = 0;
+  private static final int IMAGE_LOCATION = 1;
 
   /**
    * reflection to create the Ability object. Assumes that the stats string is an integer
@@ -32,15 +44,15 @@ public class EntityBuilder {
        Constructor abilityClassConstructor = abilityClass.getConstructor(String.class);
       return (Ability) abilityClassConstructor.newInstance(stats);
     } catch (ClassNotFoundException e){
-      ExceptionFeedback.throwBreakingException(e, "Can't find the class to make the Ability");
+      ExceptionFeedback.throwBreakingException(e, CLASS_ERROR);
     } catch (IllegalAccessException e) {
-      ExceptionFeedback.throwBreakingException(e, "Can't access the class to make the Ability");
+      ExceptionFeedback.throwBreakingException(e, ILLEGAL_ERROR);
     } catch (NoSuchMethodException e) {
-      ExceptionFeedback.throwBreakingException(e, "No constructor to make the ability");
+      ExceptionFeedback.throwBreakingException(e, CONSTRUCTOR_ERROR);
     } catch (InstantiationException e) {
-      ExceptionFeedback.throwBreakingException(e, "Can't instantiate the ability");
+      ExceptionFeedback.throwBreakingException(e, INSTANTIATION_ERROR);
     } catch (InvocationTargetException e) {
-      ExceptionFeedback.throwBreakingException(e, "Can't invoke the ability");
+      ExceptionFeedback.throwBreakingException(e, INVOKE_ERROR);
     }
     return new Health(); //had to add because of how our exceptions are thrown
   }
@@ -57,20 +69,20 @@ public class EntityBuilder {
     String UserInputResources = GAME_DATA_FOLDER+gameType+USER_INPUT_INFORMATION;
     myEntityResources = ResourceBundle.getBundle(UserInputResources);
     String[] entityInformation = getEntityInfo(statsFilename);
-    String entityType = entityInformation[0];
-    String imageFile = entityInformation[1];
+    String entityType = entityInformation[ENTITY_LOCATION];
+    String imageFile = entityInformation[IMAGE_LOCATION];
     try {
       return createEntity(gameType, entityType, imageFile);
     } catch (MissingResourceException e){
-      ExceptionFeedback.throwHandledException(new RuntimeException(), "You didn't edit the level file correctly. Can't find the properties file for a type! Either add the file or remove the type from the level");
+      ExceptionFeedback.throwHandledException(new RuntimeException(), MISSING_RESOURCE_ERROR);
       throw new RuntimeException();
     }
   }
 
   private static Entity createEntity(String gameType, String entityType, String imageFile) {
-    String gameSpecificFilePath = "gamedata/" + gameType + "/entities/";
-    ResourceBundle resources = ResourceBundle.getBundle(gameSpecificFilePath + "behavior/" + entityType);
-    Image image = new Image(gameSpecificFilePath + "images/" + imageFile);
+    String gameSpecificFilePath = GAME_DATA_FOLDER + gameType + ENTITY_FOLDER;
+    ResourceBundle resources = ResourceBundle.getBundle(gameSpecificFilePath + BEHAVIOR_FOLDER + entityType);
+    Image image = new Image(gameSpecificFilePath + IMAGE_FOLDER + imageFile);
     Entity entity = new Entity(image, imageFile, gameType);
 
     updateEntity(resources, entity);
@@ -89,6 +101,6 @@ public class EntityBuilder {
   }
 
   private static String[] getEntityInfo(String entityCode){
-    return myEntityResources.getString(entityCode).split(",");
+    return myEntityResources.getString(entityCode).split(SPLIT);
   }
 }

@@ -17,7 +17,7 @@ import ooga.model.behavior.Collidible;
 import ooga.model.ability.Physics;
 import ooga.utility.event.CollisionEvent;
 
-public class Entity extends ImageView implements Collidible, Manageable, Renderable {
+public class Entity extends ImageView implements Collidible, Renderable {
 
   private static final String HARMLESS = "Harmless";
   private static final String METHOD_HOSTS = "entitymethods/MethodHosts";
@@ -296,10 +296,10 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     //intentionally empty
   }
 
-  @Override
   /**
    * called every cycle, move the entity, and check for entity death
    */
+  @Override
   public void updateVisualization() {
     if (haveMovement) {
       physics.update(this);

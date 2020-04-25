@@ -1,0 +1,5 @@
+<package javafx.scene.layout>
+<package javafx.scene.control>
+
+(Label text=title, prefWidth=50, style=testingLabel)
+(HBox prefWidth=50)
