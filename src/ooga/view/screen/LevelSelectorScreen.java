@@ -1,10 +1,7 @@
 package ooga.view.screen;
 
 import java.util.ArrayList;
-import javafx.animation.FadeTransition;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
-import javafx.util.Duration;
 import ooga.controller.ScreenController;
 import ooga.controller.levels.BasicLevelList;
 import ooga.controller.users.User;
@@ -58,7 +55,7 @@ public class LevelSelectorScreen extends Screen {
   /**
    * Called via REFLECTION, loads new level, passing selected level to controller.
    */
-  public void loadLevel() {
+  protected void loadLevel() {
     controller.initializeNewLevel(lst.getSelected());
   }
 
