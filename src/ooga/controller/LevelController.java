@@ -13,7 +13,7 @@ import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 import ooga.view.screen.GameScreen;
 
-public class LevelController implements GameLevel, Loopable, Handleable {
+public class LevelController implements GameLevel, Handleable {
 
   private User myUser;
   private int myLivesRemaining;
