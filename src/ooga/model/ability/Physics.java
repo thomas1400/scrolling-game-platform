@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 import ooga.exceptions.ExceptionFeedback;
+import ooga.model.ability.physicshelpers.PhysicsInitializer;
 import ooga.model.entity.Entity;
 
 public class Physics extends Ability {
@@ -51,6 +52,12 @@ public class Physics extends Ability {
     myAcceleration = new double[]{myConstants.get(INIT_X_ACCEL), myConstants.get(INIT_Y_ACCEL)};
   }
 
+  /**
+   * Used to update the visual position of an entity based on change in time (and physics
+   * constants) as well as the User's input since the last game tick.
+   *
+   * @param myEntity the entity to have it's physics based position updated
+   */
   public void update(Entity myEntity) {
     setPositionFromImageView(myEntity);
     adjustPositionFromUserInput();
@@ -99,13 +106,25 @@ public class Physics extends Ability {
     myVelocity[Y] = getLimitedVelocity(myVelocity[Y], myConstants.get(MAX_VERT_VELOCITY));
   }
 
+  private double getLimitedVelocity(double velocity, double maxVelocity) {
+    if (velocity > 0){
+      return Math.min(velocity, maxVelocity);
+    } else {
+      return Math.max(velocity, -1 * maxVelocity);
+    }
+  }
+
   private void adjustForFriction() {
     if (myAcceleration[Y] == 0) {
       myVelocity[X] = myVelocity[X] / (1 + myConstants.get(FRICTION) * myConstants.get(DT));
     }
   }
 
-  //USED FOR REFLECTION
+  /**
+   * Preforms the appropriate adjustments to the entity when a bounceX command is activated with
+   * reflection from the Entity class
+   * I.e. makes the entity bounce horizontally or vertically
+   */
   private void bounce(){
     if(Math.abs(getYVelocity()) >= Math.abs(getXVelocity())){
       bounceY();
@@ -122,26 +141,32 @@ public class Physics extends Ability {
     myVelocity[Y]*=-1;
   }
 
-  private double getLimitedVelocity(double velocity, double maxVelocity) {
-    if (velocity > 0){
-      return Math.min(velocity, maxVelocity);
-    } else {
-      return Math.max(velocity, -1 * maxVelocity);
-    }
-  }
-
+  /**
+   * @return the current YVelocity of the entity
+   */
   public double getYVelocity(){
     return myVelocity[Y];
   }
 
+  /**
+   * @return the current XVelocity of the entity
+   */
   public double getXVelocity(){
     return myVelocity[X];
   }
 
+  /**
+   * Preforms the appropriate adjustments to the entity when a supportX command is activated
+   * I.e. makes the not run through the sides of solid entities
+   */
   public void supportX() {
     stopDirectionalMotion(X);
   }
 
+  /**
+   * Preforms the appropriate adjustments to the entity when a supportY command is activated.
+   * I.e. makes the entity not fall through the entity
+   */
   public void supportY() {
     stopDirectionalMotion(Y);
   }
@@ -151,11 +176,20 @@ public class Physics extends Ability {
     myVelocity[axis] = 0;
   }
 
+  /**
+   * Preforms the appropriate adjustments to the entity when a jump command is activated
+   * I.e. makes the entity jump
+   */
   public void jump() {
     myInputAdjust[Y] -= myConstants.get(TINY_DISTANCE);
     myVelocity[Y] += myConstants.get(INIT_JUMP_VELOCITY);
   }
 
+  /**
+   * Preforms the appropriate adjustments to the entity when a jumpUp command is activated with
+   * use of Reflection
+   * I.e. makes the entity jump only if already falling
+   */
   public void jumpUp(){
     if(myVelocity[Y]>0){
       System.out.println("hi");
@@ -163,14 +197,22 @@ public class Physics extends Ability {
     }
   }
 
+  /**
+   * Preforms the appropriate adjustments to the entity when a moveLeft command is activated
+   * I.e. makes the entity move to the left
+   */
   public void moveLeft() {
     if (myVelocity[X] < 0) {
-      myVelocity[X] = myVelocity[X] - myConstants.get(RUN_ACCELERATION)* myConstants.get(DT);
+      myVelocity[X] = myVelocity[X] - myConstants.get(RUN_ACCELERATION)  * myConstants.get(DT);
     } else {
       myVelocity[X] = myVelocity[X] - (myConstants.get(RUN_ACCELERATION) * myConstants.get(REACTIVITY_PERCENT)) * myConstants.get(DT);
     }
   }
 
+  /**
+   * Preforms the appropriate adjustments to the entity when a moveRight command is activated
+   * I.e. makes the entity move to the right
+   */
   public void moveRight() {
     if (myVelocity[X] > 0) {
       myVelocity[X] = myVelocity[X] + myConstants.get(RUN_ACCELERATION) * myConstants.get(DT);
@@ -179,6 +221,10 @@ public class Physics extends Ability {
     }
   }
 
+  /**
+   * Calls associated method in the physics class
+   * @param methodName string associated with the method to call, derived from resource file
+   */
   public void reflectMethod(String methodName){
     try {
       Method method = Physics.class.getDeclaredMethod(methodName);

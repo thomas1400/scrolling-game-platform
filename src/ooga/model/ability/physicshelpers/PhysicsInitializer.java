@@ -1,4 +1,4 @@
-package ooga.model.ability;
+package ooga.model.ability.physicshelpers;
 
 import java.util.HashMap;
 import java.util.Map;
