@@ -48,7 +48,7 @@ public class LevelLoop implements Loopable, Handleable {
     myEntityManager = new EntityManager(initialEntities);
     myCameraManager = new CameraManager(screenHeight, screenWidth, level.getScrollType(), initialEntities);
     myInputManager = new InputManager(mainEntity, level.getGameType());
-    myCollisionManager = new CollisionManager();
+    myCollisionManager = new CollisionManager(mainEntity);
     myVisibleEntities = myCameraManager.initializeActiveEntities(initialEntities);
     myEntityManager.initializeEntityLists();
     createTimeline();

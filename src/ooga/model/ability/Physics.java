@@ -122,6 +122,7 @@ public class Physics extends Ability {
   }
 
   public boolean canJumpAgain() {
+    //Git fix
     /*
     if (jumpsSinceLand >= myConstants.get(MAX_NUM_JUMPS)){
       return false;
@@ -139,7 +140,6 @@ public class Physics extends Ability {
     if(myState.getVelocity(Y) > 0){
       jump();
       jump();
-      System.out.println("Reached");
     }
 
   }
