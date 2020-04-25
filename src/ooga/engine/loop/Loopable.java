@@ -1,7 +1,5 @@
 package ooga.engine.loop;
 
-import ooga.model.entity.EntityList;
-
 public interface Loopable {
 
   void begin();
@@ -9,6 +7,8 @@ public interface Loopable {
   void resume();
 
   void pause();
+
+  void end();
 
 
 

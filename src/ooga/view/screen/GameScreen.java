@@ -131,15 +131,15 @@ public class GameScreen extends Screen {
   protected void reset() {
     controller.restartLevel();
   }
-
-  /**
-   * Used by REFLECTION and settings button to open the settings menu.
-   */
-  protected void openSettings() {
-    pause();
-    SettingsScreen settings = new SettingsScreen(controller, this);
-    this.getChildren().add(settings);
-  }
+//
+//  /**
+//   * Used by REFLECTION and settings button to open the settings menu.
+//   */
+//  protected void openSettings() {
+//    pause();
+//    SettingsScreen settings = new SettingsScreen(controller, this);
+//    this.getChildren().add(settings);
+//  }
 
   /**
    * Gets the width of the game background.

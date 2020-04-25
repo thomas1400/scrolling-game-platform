@@ -27,19 +27,20 @@ import ooga.view.screen.UserSelectorScreen;
 
 public class ScreenController{
 
-  public static final String ARTWORK_GOOMBA_PNG = "resources/applicationIcon.png";
-  public static final String SCREEN_CLASS_PATH = "ooga.view.screen.";
-  public static final String GAMEDATA_PATH = "data/gamedata/";
-  public static final String GAME_STYLE_CSS = "/gameStyle.css";
+  private static final String ARTWORK_GOOMBA_PNG = "resources/applicationIcon.png";
+  private static final String SCREEN_CLASS_PATH = "ooga.view.screen.";
+  private static final String GAMEDATA_PATH = "data/gamedata/";
+  private static final String GAME_STYLE_CSS = "/gameStyle.css";
 
-  public static final String HOME_SCREEN = "HomeScreen";
-  public static final String USER_SELECTOR_SCREEN = "UserSelectorScreen";
-  public static final String GAME_SELECTION_SCREEN = "GameSelectionScreen";
-  public static final String LEVEL_SELECTOR_SCREEN = "LevelSelectorScreen";
+  private static final String HOME_SCREEN = "HomeScreen";
+  private static final String USER_SELECTOR_SCREEN = "UserSelectorScreen";
+  private static final String GAME_SELECTION_SCREEN = "GameSelectionScreen";
+  private static final String LEVEL_SELECTOR_SCREEN = "LevelSelectorScreen";
 
   private static final int INITIAL_WINDOW_WIDTH = 800;
   private static final int INITIAL_WINDOW_HEIGHT = 600;
-  public static final File MAIN_STYLESHEET = new File("data/stylesheet.css");
+  private static final File MAIN_STYLESHEET = new File("data/stylesheet.css");
+  private static final File DARK_STYLESHEET = new File("data/dark.css");
 
   private Stage myStage;
   private Screen myCurrentScreen;
@@ -51,6 +52,7 @@ public class ScreenController{
 
   private GameScreen myGameScreen;
   private LevelController myLevelController;
+  private boolean darkMode;
 
   /**
    * Creates the singular ScreenController for the game. Handles switching between different
@@ -110,6 +112,9 @@ public class ScreenController{
     this.myCurrentScreen = nextScreen;
     Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
     nextScene.getStylesheets().add(MAIN_STYLESHEET.toURI().toString());
+    if (darkMode) {
+      nextScene.getStylesheets().add(DARK_STYLESHEET.toURI().toString());
+    }
     if (myGameType != null) {
       File gameSpecificStyle = new File(GAMEDATA_PATH + myGameType + GAME_STYLE_CSS);
       if (nextScreen instanceof GameSelectionScreen) {
@@ -213,21 +218,8 @@ public class ScreenController{
     return myUsers;
   }
 
-  public ObservableList<String> getCameraManagerOptions() {
-    // TODO : get camera manager options
-    return FXCollections.observableArrayList("Right-Direction", "Left-Direction", "Centered");
-  }
-
-  public void setCameraManagerOption(String selected) {
-    // TODO : set camera manager
-  }
-
-  public ObservableList<String> getPhysicsOptions() {
-    // TODO : get physics options
-    return FXCollections.observableArrayList("Land", "Water", "Floating", "Flying");
-  }
-
-  public void setPhysicsOption(String selected) {
-    // TODO : set physics option
+  public void toggleDarkMode() {
+    darkMode = !darkMode;
+    switchToScreen(myCurrentScreen.getClass().getSimpleName());
   }
 }
