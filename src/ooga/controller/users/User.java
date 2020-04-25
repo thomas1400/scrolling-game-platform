@@ -8,7 +8,6 @@ import java.util.Set;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.Image;
-import ooga.controller.UserSaver;
 
 public class User {
 

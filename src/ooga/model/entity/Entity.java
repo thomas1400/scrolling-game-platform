@@ -17,10 +17,10 @@ import ooga.model.behavior.Collidible;
 import ooga.model.ability.Physics;
 import ooga.utility.event.CollisionEvent;
 
-
 public class Entity extends ImageView implements Collidible, Manageable, Renderable {
 
   private static final String HARMLESS = "Harmless";
+  private static final String METHOD_HOSTS = "entitymethods/MethodHosts";
   private static final String DEFAULT_PACKAGE_CONTENT = "empty 0";
   private static final String ADD = "add";
   private static final String SCORE = "score";
@@ -115,27 +115,20 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     }
   }
 
-  //used for reflection DO NOT DELETE
   private void addHealth(Ability h){
     health = (Health) h;
     health(DEAD);
     setInfo(HEALTH, DEAD); //THIS IS INTENTIONAL. THIS STORES THE DELTA HEALTH
   }
 
-  //used for reflection DO NOT DELETE
   public void addCollectiblePackage(Ability p){
     myPackage = (CollectiblePackage) p;
   }
 
+  //used for reflection DO NOT DELETE
   private void addPhysics(Ability p){
     physics = (Physics) p;
     haveMovement = true;
-  }
-
-  private void callPhysics(String methodName){
-    if(haveMovement) {
-      physics.reflectMethod(methodName);
-    }
   }
 
   @Override
@@ -175,40 +168,50 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   public Entity handleCollision(CollisionEvent ce) {
     String myAttack = this.getAttack(ce.getCollisionLocation());
     Collidible otherEntity = ce.getOther();
-    boolean done = false;
-    String debug = "";
     try {
-      String gameSpecificFilePath = "gamedata/"+myGameType+"/entities/";
-      ResourceBundle response = ResourceBundle.getBundle(gameSpecificFilePath + "collisions/" + ce.getAttackType());
-      String[] methodsToCall = response.getString(myAttack).split(" ");
-      for (String s : methodsToCall) {
-        debug=s;
-        ResourceBundle methodHolder = ResourceBundle.getBundle("entitymethods/MethodHosts");
-        for(String key : Collections.list(methodHolder.getKeys())) {
-          if (key.contains(s) && methodHolder.getString(key).toLowerCase().equals(PHYSICS)) {
-            done = true;
-            callPhysics(s);
-          }
-        }
-        if(!done){
-          Method method = Entity.class.getDeclaredMethod(s, Collidible.class);
-          method.invoke(Entity.this, otherEntity);
-        }
-      }
+      createAndInvokeResponse(ce, myAttack, otherEntity);
     } catch (MissingResourceException e) {
       ExceptionFeedback.throwBreakingException(e,"Couldn't find key"+myAttack+" in "+ce.getAttackType()+".properties");
     } catch (NoSuchMethodException e) {
       ExceptionFeedback
-          .throwHandledException(e, "Method name"+debug+" was incorrect in trying to handle the collision, check "+ce.getAttackType()+".properties");
+          .throwHandledException(e, "Method name was incorrect in collision behavior, check "+ce.getAttackType()+".properties");
     } catch (IllegalAccessException e) {
-      ExceptionFeedback
-          .throwHandledException(e, "You don't have access to that method, try again");
+      ExceptionFeedback.throwHandledException(e, "You don't have access to that method");
     } catch (InvocationTargetException e) {
-      ExceptionFeedback
-          .throwHandledException(e, "Couldn't invoke the method when handling the collision");
+      ExceptionFeedback.throwHandledException(e, "Couldn't invoke method; handling the collision");
     }
     return this;
   }
+
+  private void createAndInvokeResponse(CollisionEvent ce, String myAttack, Collidible otherEntity)
+      throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    String gameSpecificFilePath = "gamedata/"+myGameType+"/entities/";
+    ResourceBundle response = ResourceBundle.getBundle(gameSpecificFilePath + "collisions/" + ce.getAttackType());
+    String[] methodsToCall = response.getString(myAttack).split(" ");
+    for (String s : methodsToCall) {
+      checkForHostAndCall(otherEntity, s);
+    }
+  }
+
+  private void checkForHostAndCall(Collidible otherEntity, String methodName)
+      throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    ResourceBundle methodHolder = ResourceBundle.getBundle(METHOD_HOSTS); //this holds list of allowed methods
+    for(String key : Collections.list(methodHolder.getKeys())) {
+      if (key.contains(methodName) && methodHolder.getString(key).equalsIgnoreCase(PHYSICS)) {
+        callPhysics(methodName);
+        return;
+      }
+    }
+    Method method = Entity.class.getDeclaredMethod(methodName, Collidible.class);
+    method.invoke(Entity.this, otherEntity);
+  }
+
+  private void callPhysics(String methodName){
+    if(haveMovement) {
+      physics.reflectMethod(methodName);
+    }
+  }
+
 
   private void updateMeAfterCollecting(Collidible other){
     this.setInfo(SCORE, other.getData(SCORE));
@@ -247,6 +250,10 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
   }
 
   @Override
+  /**
+   * Reset the stats back to the defaults, but dead
+   * assumes will only be called after an entity is collected
+   */
   public void otherResetAfterCollect(){
     resetScore();
     health(DEAD);
@@ -257,24 +264,21 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     myInformation.put(SCORE, value);
   }
 
-  //used for reflection DO NOT DELETE
   private void health(Double value){
     myInformation.put(HEALTH, value);
   }
 
   @Override
-  //used for reflection DO NOT DELETE
   public void size(Double value){
     myInformation.put(SCALE, value);
   }
 
-  //used for reflection DO NOT DELETE
   private void levelEnd(Double value){
     myInformation.put(LEVEL_ENDED, value);
     levelEnded = (value!=PLAYING);
   }
 
-  //used for reflection DO NOT DELETE
+  //used for internal reflection DO NOT DELETE
   private void collect(Collidible otherEntity){
     otherEntity.size(myInformation.get(SCALE)); //stops the overwriting of scale back to 1 when reading from the other guy
     otherEntity.otherCollectMe();
@@ -303,7 +307,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     levelEnd(health.isDead()?1.0:0.0); //convert boolean to a double
   }
 
-  //used for reflection DO NOT DELETE
   /**
    * return is a level is over for the specific entity
    * @return levelEnded
@@ -319,7 +322,6 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     myInformation.put(SCORE, INITIAL_SCORE);
   }
 
-  //used for reflection DO NOT DELETE
   /**
    * return the score of a collected entity
    * @return score
@@ -329,8 +331,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     return myInformation.get(SCORE);
   }
 
-  //used for reflection DO NOT DELETE
-  /**
+  /** used for reflection DO NOT DELETE
    * Move the entity to the right if it can do so
    */
   public void moveRight(){
@@ -338,8 +339,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     physics.moveRight();
   }
 
-  //used for reflection DO NOT DELETE
-  /**
+  /** used for reflection DO NOT DELETE
    * Move the entity to the left if it can do so
    */
   public void moveLeft(){
@@ -347,8 +347,7 @@ public class Entity extends ImageView implements Collidible, Manageable, Rendera
     physics.moveLeft();
   }
 
-  //used for reflection DO NOT DELETE
-  /**
+  /** used with reflection DO NOT DELETE
    * Move the entity up if it can do so
    */
   public void jump(){
