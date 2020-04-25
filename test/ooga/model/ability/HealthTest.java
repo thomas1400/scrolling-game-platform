@@ -144,9 +144,4 @@ class HealthTest extends ApplicationTest { //so that error throwing can be seen
     h = immortal();
     assertEquals(0, h.getLives());
   }
-
-  @Test
-  void checkVitality(){
-    Health h = badHealth();
-  }
 }
