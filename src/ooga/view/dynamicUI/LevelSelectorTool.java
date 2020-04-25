@@ -12,6 +12,7 @@ import javafx.scene.shape.Line;
 import ooga.controller.levels.BasicLevel;
 import ooga.controller.levels.BasicLevelList;
 import ooga.exceptions.ExceptionFeedback;
+import org.assertj.core.util.VisibleForTesting;
 
 /**
  * A custom-built UI control for selecting a level from a level map.
