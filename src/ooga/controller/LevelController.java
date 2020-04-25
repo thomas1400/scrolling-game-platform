@@ -176,7 +176,7 @@ public class LevelController implements GameLevel, Loopable, Handleable {
    * handles the game's win by unlocking the next level and prompting the end of the current level
    */
   public void handleWin() {
-    myUser.unlockNextLevel(myGameType, myLevelNumber);
+    myUser.unlockNextLevel(myGameType, myLevelNumber-1);
     endLevel(true);
   }
 
