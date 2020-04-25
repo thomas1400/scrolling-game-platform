@@ -116,16 +116,19 @@ public class Physics extends Ability {
    * I.e. makes the entity jump only if already falling
    */
   public void jumpUp(){
-    if(myState.getVelocity(Y)>0){
-      System.out.println("hi");
+    if(myVelocity[Y]>0){
       jump();
     }
   }
 
-  /**
-   * Preforms the appropriate adjustments to the entity when a moveLeft command is activated
-   * I.e. makes the entity move to the left
-   */
+  public void jumpHigh(){
+    if(myVelocity[Y]>0){
+      jump();
+      jump();
+      System.out.println("Reached");
+    }
+
+  }
   public void moveLeft() {
     if (myState.getVelocity(X) < 0) {
       myState.setVelocity(X,
