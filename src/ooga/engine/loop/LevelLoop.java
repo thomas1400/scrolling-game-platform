@@ -6,6 +6,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 import ooga.controller.GameLevel;
 import ooga.controller.levels.CompleteLevel;
+import ooga.controller.users.Handleable;
 import ooga.engine.manager.CameraManager.CameraManager;
 import ooga.engine.manager.CollisionManager;
 import ooga.engine.manager.EntityManager;
@@ -19,7 +20,7 @@ import ooga.model.entity.EntityList;
  * This class depends on receiving initial entities from the LevelController and depends on the entities to update properly to understand when points or lives should be altered and when the level should end
  * @author Cayla Schuval
  */
-public class LevelLoop implements Loopable {
+public class LevelLoop implements Loopable, Handleable {
 
   private GameLevel myLevelController;
   private EntityManager myEntityManager;
@@ -90,7 +91,7 @@ public class LevelLoop implements Loopable {
    * Processes when a key is pressed that impacts the main entity
    * @param keyEvent event containing information regarding which key was pressed
    */
-  public void processKeyPress(KeyEvent keyEvent) {
+  public void handleKeyPressed(KeyEvent keyEvent) {
     myInputManager.handleKeyPress(keyEvent);
   }
 
@@ -98,7 +99,8 @@ public class LevelLoop implements Loopable {
    * Processes when a key is released that impacts the main entity
    * @param keyEvent event containing information regarding which key was released
    */
-  public void processKeyRelease(KeyEvent keyEvent) { myInputManager.handleKeyRelease(keyEvent);
+  public void handleKeyReleased(KeyEvent keyEvent) {
+    myInputManager.handleKeyRelease(keyEvent);
   }
 
   private void updateCamera() {

@@ -14,6 +14,7 @@ public class PhysicsState {
   private static final String INIT_Y_VEL = "INIT_Y_VEL";
   private static final String INIT_X_ACCEL = "INIT_X_ACCEL";
   private static final String INIT_Y_ACCEL = "INIT_Y_ACCEL";
+  public static final double ZERO = 0.0;
 
   private Map<String, Double> myConstants;
 
@@ -41,10 +42,10 @@ public class PhysicsState {
   }
 
   private void setInitialVelocityAndAcceleration() {
-    myConstants.putIfAbsent(INIT_X_VEL, 0.0);
-    myConstants.putIfAbsent(INIT_Y_VEL, 0.0);
-    myConstants.putIfAbsent(INIT_X_ACCEL, 0.0);
-    myConstants.putIfAbsent(INIT_Y_ACCEL, 0.0);
+    myConstants.putIfAbsent(INIT_X_VEL, ZERO);
+    myConstants.putIfAbsent(INIT_Y_VEL, ZERO);
+    myConstants.putIfAbsent(INIT_X_ACCEL, ZERO);
+    myConstants.putIfAbsent(INIT_Y_ACCEL, ZERO);
 
     myVelocity = new double[]{myConstants.get(INIT_X_VEL), myConstants.get(INIT_Y_VEL)};
     myAcceleration = new double[]{myConstants.get(INIT_X_ACCEL), myConstants.get(INIT_Y_ACCEL)};

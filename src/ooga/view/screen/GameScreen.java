@@ -1,6 +1,5 @@
 package ooga.view.screen;
 
-import java.io.File;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -57,13 +56,13 @@ public class GameScreen extends Screen {
   }
 
   public void pause() {
-    levelController.pauseLevel();
+    levelController.pause();
     pause.setDisable(true);
     resume.setDisable(false);
   }
 
   public void resume() {
-    levelController.resumeLevel();
+    levelController.resume();
     pause.setDisable(false);
     resume.setDisable(true);
   }
