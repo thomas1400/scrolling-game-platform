@@ -1,8 +1,6 @@
 package ooga.utility.event;
 
-import ooga.model.ability.attacktypes.Attack;
 import ooga.model.behavior.Collidible;
-import ooga.model.entity.Entity;
 
 public class CollisionEvent{
 
