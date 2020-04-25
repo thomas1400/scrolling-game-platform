@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import javafx.stage.Stage;
 import ooga.exceptions.FeedbackRuntimeException;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
