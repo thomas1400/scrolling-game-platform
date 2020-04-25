@@ -9,7 +9,7 @@ import ooga.model.entity.EntityList;
  * @author Cayla Schuval
  */
 public class UpHorizontalDirectionController extends VerticalDirectionController {
-  private static final int BOUNDARY_EXTENSION = 150;
+  private static final int OFFSET = 150;
 
   /**
    * @param entities EntityList containing all of the entities in the game whose positions update as the main entity moves
@@ -19,14 +19,16 @@ public class UpHorizontalDirectionController extends VerticalDirectionController
    */
   public void updateCameraPosition(EntityList entities, double myScreenHeight, double myScreenWidth) {
     Entity mainEntity = entities.getMainEntity();
-    double yCenter = myScreenHeight / 2 - mainEntity.getBoundsInLocal().getHeight() / 2-BOUNDARY_EXTENSION;
-    if (mainEntity.getY() < 0) {
-      setToCenter(entities, 0);
+    double yCenter = myScreenHeight / 2 - mainEntity.getBoundsInLocal().getHeight() / 2;
+    if (mainEntity.getY() < yCenter - OFFSET) {
+      setToCenter(entities, -OFFSET);
+      //mainEntity.setY(0.01);
     }
-    else if(mainEntity.getY()>=myScreenHeight){
+    if(mainEntity.getY()>=myScreenHeight){
       mainEntity.setLives(0);
+      System.out.println("died");
     }
-    if (mainEntity.getBoundsInLocal().getMinX() > myScreenWidth) {
+    if (mainEntity.getBoundsInLocal().getMinX() >= myScreenWidth) {
       mainEntity.setX(0);
     } else if (mainEntity.getBoundsInLocal().getMaxX() < 0) {
       mainEntity.setX(myScreenWidth-mainEntity.getBoundsInLocal().getWidth());
@@ -37,6 +39,6 @@ public class UpHorizontalDirectionController extends VerticalDirectionController
    * @return int value associated with the offset from the center which should cause the screen to shift
    */
   public int getOffset() {
-    return 0;
+    return OFFSET;
   }
 }

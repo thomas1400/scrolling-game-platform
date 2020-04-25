@@ -3,6 +3,7 @@ package ooga.controller;
 import javafx.scene.Group;
 import javafx.scene.input.KeyEvent;
 import ooga.engine.loop.LevelLoop;
+import ooga.engine.loop.Loopable;
 import ooga.exceptions.ExceptionFeedback;
 import ooga.controller.levels.BasicLevel;
 import ooga.controller.levels.CompleteLevel;
@@ -11,7 +12,7 @@ import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 import ooga.view.screen.GameScreen;
 
-public class LevelController implements GameLevel{
+public class LevelController implements GameLevel, Loopable, Handleable {
 
   private User myUser;
   private int myLivesRemaining;
@@ -20,10 +21,17 @@ public class LevelController implements GameLevel{
   private boolean levelLifeGainAllowed;
 
   private GameScreen myGS;
-
   private LevelLoop myLevelLoop;
   private Group myVisualGroup = new Group();
 
+  /**
+   * Class used to control everything related to a single level. Coordinated with the created
+   * level loop to adjust visuals, user stats, and coordinate related screens appropriately.
+   *
+   * @param gs GameScreen to be updated with visual entities
+   * @param user User to have stats updated though the level
+   * @param basicLevel BasicLevel used to load in initial entities and set level parameters
+   */
   public LevelController(GameScreen gs, User user, BasicLevel basicLevel) {
     myGS = gs;
 
@@ -66,37 +74,71 @@ public class LevelController implements GameLevel{
   }
 
   //Entity Visualization Handling
-  @Override
+  /**
+   * @param entity to be added to the visual group
+   */
   public void addEntity(Entity entity) {
     myVisualGroup.getChildren().add(entity);
   }
-  @Override
+
+  /**
+   * @param entity to be removed from the visual group
+   */
   public void removeEntity(Entity entity) {
     myVisualGroup.getChildren().remove(entity);
   }
-  @Override
+
+  /**
+   * @param entities to be added to the visual group
+   */
   public void addAllEntities(EntityList entities) {
-    myVisualGroup.getChildren().addAll(entities.getAsList()); }
-  @Override
+    myVisualGroup.getChildren().addAll(entities.getAsList());
+  }
+
+  /**
+   * @param entities to be removed from the visual group
+   */
   public void removeAllEntities(EntityList entities) {
     myVisualGroup.getChildren().removeAll(entities.getAsList());  }
 
   //KeyPress Handling
+  /**
+   * @param keyEvent to handle the pressing of key presses to the LevelLoop
+   */
   public void handleKeyPressed(KeyEvent keyEvent){
-    myLevelLoop.processKeyPress(keyEvent);
+    myLevelLoop.handleKeyPressed(keyEvent);
   }
-  public void handleKeyReleased(KeyEvent keyEvent) { myLevelLoop.processKeyRelease(keyEvent); }
+
+  /**
+   * @param keyEvent to handle the releasing of key presses to the LevelLoop
+   */
+  public void handleKeyReleased(KeyEvent keyEvent) { myLevelLoop.handleKeyReleased(keyEvent); }
 
   //LevelLoop State Handling
-  public void beginLevel() {
+  /**
+   * begins the level loop
+   */
+  public void begin() {
     myLevelLoop.begin();
   }
-  public void pauseLevel() {
+
+  /**
+   * pauses the level loop
+   */
+  public void pause() {
     myLevelLoop.pause();
   }
-  public void resumeLevel() {
+
+  /**
+   * resumes the level loop
+   */
+  public void resume() {
     myLevelLoop.resume();
   }
+
+  /**
+   * ends the level loop, saves users, and switches back to the level selector screen
+   */
   public void endLevel(boolean winState){
     myLevelLoop.end();
     UserSaver.saveUser(myUser);
@@ -105,11 +147,31 @@ public class LevelController implements GameLevel{
   }
 
   //In Game Adjustments
+  /**
+   * Adjusts lives accordingly and checks for the end of a game
+   * @param lifeAdjustment to be made to the lives per level and user lives
+   */
   public void adjustLives(int lifeAdjustment) {
-    //System.out.println("LIFE ADJUST: " + lifeAdjustment);
     myLivesRemaining += lifeAdjustment;
     myUser.adjustLives(lifeAdjustment);
     checkEndLevel();
+  }
+
+  /**
+   * Adjusts points accordingly and checks for point to life conversion
+   * @param pointsAdjustment to be made to the points in the level
+   */
+  public void adjustPoints(int pointsAdjustment) {
+    myUser.adjustPoints(pointsAdjustment);
+    checkNewLife();
+  }
+
+  /**
+   * handles the game's win by unlocking the next level and prompting the end of the current level
+   */
+  public void handleWin() {
+    myUser.unlockNextLevel(myGameType, myLevelNumber);
+    endLevel(true);
   }
 
   private void checkEndLevel() {
@@ -118,19 +180,6 @@ public class LevelController implements GameLevel{
     } else if (myLivesRemaining < 0){
       ExceptionFeedback.throwHandledException(new RuntimeException(), "Negative Lives Left in Level");
     }
-  }
-
-  public void adjustPoints(int pointsAdjustment) {
-    //System.out.println("POINTS: " + pointsAdjustment);
-    myUser.adjustPoints(pointsAdjustment);
-    checkNewLife();
-  }
-
-  //User & Level Effect Handling
-  public void handleWin() {
-    //TODO: display some cool win screen?
-    myUser.unlockNextLevel(myGameType, myLevelNumber);
-    endLevel(true);
   }
 
   private void deleteLevelLoop() {

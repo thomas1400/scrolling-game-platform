@@ -1,4 +1,4 @@
-package ooga.model.ability;
+package ooga.model.ability.physicshelpers;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +16,10 @@ public final class PhysicsInitializer {
   private static final String INIT_JUMP_VELOCITY = "INIT_JUMP_VELOCITY";
   private static final String TINY_DISTANCE = "TINY_DISTANCE";
 
+  /**
+   * @param gameType used to choose the correct directory for the physics constants properties file
+   * @return map of all of the physics constants
+   */
   public static Map<String, Double> getConstantsMap(String gameType){
     Map<String, Double> myConstants = new HashMap<>();
     setDefaultConstants(myConstants);
