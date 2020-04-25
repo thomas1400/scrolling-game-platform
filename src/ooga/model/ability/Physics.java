@@ -10,6 +10,7 @@ import ooga.model.entity.Entity;
 public class Physics extends Ability {
 
   private static final String DT = "DT";
+  private static final String MAX_NUM_JUMPS = "MAX_NUM_JUMPS";
   private static final String REACTIVITY_PERCENT = "REACTIVITY_PERCENT";
   private static final String RUN_ACCELERATION = "RUN_ACCELERATION";
   private static final String INIT_JUMP_VELOCITY = "INIT_JUMP_VELOCITY";
@@ -17,6 +18,7 @@ public class Physics extends Ability {
 
   PhysicsState myState;
   private Map<String, Double> myConstants;
+  private int jumpsSinceLand = 0;
 
   private static final int X = 0;
   private static final int Y = 1;
@@ -92,6 +94,7 @@ public class Physics extends Ability {
    */
   public void supportY() {
     stopDirectionalMotion(Y);
+    jumpsSinceLand = 0;
   }
 
   private void stopDirectionalMotion(int axis){
@@ -104,10 +107,13 @@ public class Physics extends Ability {
    * I.e. makes the entity jump
    */
   public void jump() {
-    myState.setInputAdjust(Y,
-        myState.getInputAdjust(Y) - myConstants.get(TINY_DISTANCE));
-    myState.setVelocity(Y,
-        myState.getVelocity(Y) + myConstants.get(INIT_JUMP_VELOCITY));
+    if (canJumpAgain()) {
+      myState.setInputAdjust(Y,
+          myState.getInputAdjust(Y) - myConstants.get(TINY_DISTANCE));
+      myState.setVelocity(Y,
+          myState.getVelocity(Y) + myConstants.get(INIT_JUMP_VELOCITY));
+      jumpsSinceLand += 1;
+    }
   }
 
   /**
@@ -116,19 +122,13 @@ public class Physics extends Ability {
    * I.e. makes the entity jump only if already falling
    */
   public void jumpUp(){
-    if (canJumpAgain() && myState.getVelocity(Y) > 0){
+    if (myState.getVelocity(Y) > 0){
       jump();
     }
   }
 
-  public boolean canJumpAgain() {
-    //Git fix
-    /*
-    if (jumpsSinceLand >= myConstants.get(MAX_NUM_JUMPS)){
-      return false;
-    }
-     */
-    return true;
+  private boolean canJumpAgain() {
+    return jumpsSinceLand < myConstants.get(MAX_NUM_JUMPS);
   }
 
   /**
