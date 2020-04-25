@@ -86,6 +86,10 @@ public class InputManager {
     }
   }
 
+  /**
+   * Gets a set containing strings associated with the keys currently being pressed
+   * used for testing
+   */
   public Set<String> getKeysCurrentlyPressed(){
     return keysCurrentlyPressed;
   }
