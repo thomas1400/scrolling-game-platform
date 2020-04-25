@@ -91,7 +91,6 @@ public class EntityBuilder {
   }
 
   private static String[] getEntityInfo(String entityCode){
-    System.out.println(entityCode);
     return myEntityResources.getString(entityCode).split(",");
   }
 }
