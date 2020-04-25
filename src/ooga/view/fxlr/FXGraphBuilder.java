@@ -2,6 +2,7 @@ package ooga.view.fxlr;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import ooga.exceptions.ExceptionFeedback;
 import ooga.view.screen.Screen;
 
 /**
@@ -17,8 +18,8 @@ class FXGraphBuilder {
       ObservableList<Node> children = (ObservableList<Node>) parent.getClass().getMethod("getChildren").invoke(parent);
       children.add(node);
     } catch (Throwable e) {
-      //FIXME
-      e.printStackTrace();
+      ExceptionFeedback.throwBreakingException((Exception) e, "Child " + node.toString() + " unable to be "
+          + "correctly added");
     }
   }
 
