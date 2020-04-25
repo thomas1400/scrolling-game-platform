@@ -41,21 +41,7 @@ public class LevelSelectorScreen extends Screen {
   }
 
   public void loadLevel() {
-
-    Pane loadingPane = new LoadingScreen(controller, this, lst.getSelected());
-    this.getChildren().add(loadingPane);
-
-    FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), loadingPane);
-    fadeIn.setFromValue(0);
-    fadeIn.setToValue(1);
-    fadeIn.setCycleCount(1);
-
-    fadeIn.play();
-
-    fadeIn.setOnFinished((e) -> {
-      controller.initializeNewLevel(lst.getSelected());
-      this.getChildren().remove(loadingPane);
-    });
+    controller.initializeNewLevel(lst.getSelected());
   }
 
 }

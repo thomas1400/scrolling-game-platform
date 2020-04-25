@@ -1,11 +1,13 @@
 package ooga.view.screen;
 
+import javafx.animation.FadeTransition;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import ooga.controller.LevelController;
 import ooga.controller.ScreenController;
 import ooga.controller.levels.BasicLevel;
@@ -68,7 +70,25 @@ public class GameScreen extends Screen {
   }
 
   public void exit(boolean winState) {
-    handleButtonPress("exit");
+    SplashScreen splash;
+    if (winState) {
+      splash = new LevelSuccessSplash(controller, this);
+    } else {
+      splash = new LevelFailedSplash(controller, this);
+    }
+    this.getChildren().add(splash);
+
+    FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), splash);
+    fadeIn.setFromValue(0);
+    fadeIn.setToValue(1);
+    FadeTransition fadeHold = new FadeTransition(Duration.seconds(2), splash);
+    fadeHold.setFromValue(1);
+    fadeHold.setToValue(1);
+
+    fadeIn.setOnFinished(e->fadeHold.play());
+    fadeHold.setOnFinished(e->handleButtonPress("exit"));
+
+    fadeIn.play();
   }
 
   //NEEDED FOR REFLECTION, DON'T DELETE
