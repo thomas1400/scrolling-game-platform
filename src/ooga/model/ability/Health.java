@@ -66,8 +66,6 @@ public class Health extends Ability {
    */
   public void setLives(double newLivesNum){
     myLives=newLivesNum;
-    System.out.println(myLives);
-    System.out.println(isDead());
   }
 
   /**
@@ -76,7 +74,6 @@ public class Health extends Ability {
   public void damage(){
     if(!immortal && !this.isDead()) {
       myLives -= SINGLE_LIFE;
-      //System.out.println("ouchie");
     }
   }
 
