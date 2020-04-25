@@ -2,67 +2,51 @@ package ooga.controller.users;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
 class UserTest {
 
-  @Test
-  void saveUser() {
-  }
-
-  @Test
-  void asEntity() {
-  }
-
-  @Test
-  void setName() {
-  }
-
-  @Test
-  void setImage() {
-  }
 
   @Test
   void unlockNextLevel() {
-  }
+    User myUser = UserFactory.getDefaultUser();
 
-  @Test
-  void addLife() {
-  }
+    ArrayList<Integer> unlockedLevels = new ArrayList<>();
+    unlockedLevels.add(0);
 
-  @Test
-  void adjustLives() {
+    myUser.unlockNextLevel("mario", 4);
+    unlockedLevels.add(4);
+    assertTrue(myUser.getLevelsCompleted("mario").containsAll(unlockedLevels));
+    assertFalse(myUser.getLevelsCompleted("dinorun").containsAll(unlockedLevels));
+
+    myUser.unlockNextLevel("mario", 7);
+    unlockedLevels.add(7);
+    assertTrue(myUser.getLevelsCompleted("mario").containsAll(unlockedLevels));
+    assertFalse(myUser.getLevelsCompleted("flappy").containsAll(unlockedLevels));
   }
 
   @Test
   void adjustPoints() {
-  }
+    User myUser = UserFactory.getDefaultUser();
 
-  @Test
-  void setPower() {
-  }
+    myUser.adjustPoints(57);
+    assertEquals(myUser.getPoints(), 57);
+    assertEquals(myUser.getPointsProperty().getValue(), 57);
 
-  @Test
-  void setSize() {
+    myUser.adjustPoints(-32);
+    assertEquals(myUser.getPoints(), 57-32);
+    assertEquals(myUser.getPointsProperty().getValue(), 57-32);
   }
 
   @Test
   void canConvertPointsToLife() {
-  }
+    User myUser = UserFactory.getDefaultUser();
 
-  @Test
-  void setGameLevels() {
-  }
+    myUser.adjustPoints(57);
+    assertFalse(myUser.canConvertPointsToLife());
 
-  @Test
-  void setAllGameLevels() {
-  }
-
-  @Test
-  void setLives() {
-  }
-
-  @Test
-  void addGame() {
+    myUser.adjustPoints(76);
+    assertTrue(myUser.canConvertPointsToLife());
   }
 }

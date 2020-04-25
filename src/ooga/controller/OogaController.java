@@ -3,6 +3,7 @@ package ooga.controller;
 import java.io.File;
 import java.io.FilenameFilter;
 import javafx.stage.Stage;
+import ooga.controller.users.UserFactory;
 import ooga.controller.users.UserList;
 
 public class OogaController {

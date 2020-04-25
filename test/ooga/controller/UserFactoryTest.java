@@ -6,20 +6,19 @@ import java.io.File;
 import java.util.HashSet;
 import javafx.stage.Stage;
 import ooga.controller.users.User;
+import ooga.controller.users.UserFactory;
+import ooga.controller.users.UserSaver;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
-class UserFactoryTest extends ApplicationTest {
-
-  @Override
-  public void start(Stage stage) throws Exception {
-    super.start(stage);
-  }
+class UserFactoryTest {
 
   @Test
   void getUser() {
     User testUser = UserFactory.getUser(new File("data/userdata/ALL UNLOCKED.user"));
 
+    assert testUser != null;
+    assertEquals(testUser.getName(), "ALL UNLOCKED");
   }
 
   @Test
