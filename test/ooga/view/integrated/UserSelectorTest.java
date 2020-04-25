@@ -53,7 +53,7 @@ public class UserSelectorTest extends ApplicationTest {
   }
 
   private void navigateToUserSelect() {
-    clickOn(400, 570);
+    clickOn(370, 570);
   }
 
   private void navigateToLevelSelect() {
