@@ -3,6 +3,7 @@ package ooga.controller.users;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class UserTest {
@@ -12,7 +13,7 @@ class UserTest {
   void unlockNextLevel() {
     User myUser = UserFactory.getDefaultUser();
 
-    ArrayList<Integer> unlockedLevels = new ArrayList<>();
+    List<Integer> unlockedLevels = new ArrayList<>();
     unlockedLevels.add(0);
 
     myUser.unlockNextLevel("mario", 4);

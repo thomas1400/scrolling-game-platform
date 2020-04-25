@@ -13,6 +13,7 @@
     (Button text=user-select, prefWidth=25%, actionTag=user-select)
     (Button text=help, prefWidth=15%, actionTag=help)
     (Button text=back, prefWidth=15%, actionTag=game-select)
+    (Button text=dark, prefWidth=15%, actionTag=dark)
   }
 }
 
