@@ -13,11 +13,11 @@ import ooga.exceptions.ExceptionFeedback;
 import ooga.model.ability.Ability;
 import ooga.model.ability.CollectiblePackage;
 import ooga.model.ability.Health;
-import ooga.model.behavior.Collidible;
+import ooga.model.behavior.Collidable;
 import ooga.model.ability.Physics;
 import ooga.utility.event.CollisionEvent;
 
-public class Entity extends ImageView implements Collidible, Renderable {
+public class Entity extends ImageView implements Collidable, Renderable {
 
   private static final String HARMLESS = "Harmless";
   private static final String METHOD_HOSTS = "entitymethods/MethodHosts";
@@ -37,6 +37,27 @@ public class Entity extends ImageView implements Collidible, Renderable {
   private static final double DEAD = 0;
   private static final double PLAYING = 0;
   private static final double TINY_DISTANCE = 5;
+  public static final String CHECK_LOCATION_MESSAGE = " attack, but this entity doesn't seem to have one. Check that you're looking for either \"side\", \"top\", or \"bottom\"";
+  public static final String ILLEGAL_ACCESS_COLLSION = "You don't have access to that method";
+  public static final String FAILED_INVOKE_COLLISION = "Couldn't invoke method; handling the collision";
+  public static final String PROPERTIES = ".properties";
+  public static final String GAMEDATA = "gamedata/";
+  public static final String ENTITIES = "/entities/";
+  public static final String COLLISIONS = "collisions/";
+  public static final String REGEX = " ";
+  public static final String METHOD = "Method ";
+  public static final String TRYING_TO_COLLECT_MESSAGE = " when trying to collect the entity";
+  public static final String NO_ACCESS = "No access to";
+  public static final String WAS_INCORRECT = " was incorrect";
+  public static final String NO_INVOKE = "can't be invoked when used";
+  public static final String NO_KEY = "Couldn't find key";
+  public static final String IN = " in ";
+  public static final String ABILITY = "ability";
+  public static final String NO_METHOD = "No method to create the ";
+  public static final String DATA_MAP_MESSAGE_B = "\" in the data map that isn't there";
+  public static final String DATA_MAP_MESSAGE_A = "You're looking for information (\"";
+  public static final String IN_COLLISION_BEHAVIOR = " in collision behavior, check ";
+  public static final String CHECK_LOCATION_MESSAGE_A = "We're looking for the ";
 
   private String myGameType;
   private Health health;
@@ -90,8 +111,7 @@ public class Entity extends ImageView implements Collidible, Renderable {
       return myAttacks.get(location.toLowerCase());
     } else {
       ExceptionFeedback.throwBreakingException(new NullPointerException(),
-          "We're looking for the "+location.toLowerCase()+" attack, but this entity doesn't seem to have one. "
-              + "Check that you're looking for either \"side\", \"top\", or \"bottom\"");
+          CHECK_LOCATION_MESSAGE_A +location.toLowerCase()+CHECK_LOCATION_MESSAGE);
     }
     return HARMLESS;
   }
@@ -107,11 +127,11 @@ public class Entity extends ImageView implements Collidible, Renderable {
       Method method = Entity.class.getDeclaredMethod(ADD+abilityType, Ability.class);
       method.invoke(Entity.this, ability);
     } catch (NoSuchMethodException e) {
-      ExceptionFeedback.throwHandledException(e, "No method to create the "+abilityType+" ability for the entity");
+      ExceptionFeedback.throwHandledException(e, NO_METHOD +abilityType+ABILITY);
     } catch (IllegalAccessException e) {
-      ExceptionFeedback.throwHandledException(e, "Can't make that "+abilityType+"ability");
+      ExceptionFeedback.throwHandledException(e, NO_ACCESS+abilityType+ ABILITY);
     } catch (InvocationTargetException e) {
-      ExceptionFeedback.throwHandledException(e, "Can't invoke method to make "+abilityType);
+      ExceptionFeedback.throwHandledException(e, NO_INVOKE+abilityType);
     }
   }
 
@@ -136,7 +156,8 @@ public class Entity extends ImageView implements Collidible, Renderable {
     if(myInformation.containsKey(informationType))
       return myInformation.get(informationType);
     else{
-      ExceptionFeedback.throwHandledException(new NullPointerException(), "You're looking for information (\""+informationType+"\" in the data map that isn't there");
+      ExceptionFeedback.throwHandledException(new NullPointerException(), DATA_MAP_MESSAGE_A
+          +informationType+ DATA_MAP_MESSAGE_B);
       return PLAYING;
     }
   }
@@ -167,33 +188,34 @@ public class Entity extends ImageView implements Collidible, Renderable {
    */
   public Entity handleCollision(CollisionEvent ce) {
     String myAttack = this.getAttack(ce.getCollisionLocation());
-    Collidible otherEntity = ce.getOther();
+    Collidable otherEntity = ce.getOther();
     try {
       createAndInvokeResponse(ce, myAttack, otherEntity);
     } catch (MissingResourceException e) {
-      ExceptionFeedback.throwBreakingException(e,"Couldn't find key"+myAttack+" in "+ce.getAttackType()+".properties");
+      ExceptionFeedback.throwBreakingException(e,
+          NO_KEY +myAttack+ IN +ce.getAttackType()+ PROPERTIES);
     } catch (NoSuchMethodException e) {
       ExceptionFeedback
-          .throwHandledException(e, "Method name was incorrect in collision behavior, check "+ce.getAttackType()+".properties");
+          .throwHandledException(e, METHOD+WAS_INCORRECT+ IN_COLLISION_BEHAVIOR +ce.getAttackType()+PROPERTIES);
     } catch (IllegalAccessException e) {
-      ExceptionFeedback.throwHandledException(e, "You don't have access to that method");
+      ExceptionFeedback.throwHandledException(e, ILLEGAL_ACCESS_COLLSION);
     } catch (InvocationTargetException e) {
-      ExceptionFeedback.throwHandledException(e, "Couldn't invoke method; handling the collision");
+      ExceptionFeedback.throwHandledException(e, FAILED_INVOKE_COLLISION);
     }
     return this;
   }
 
-  private void createAndInvokeResponse(CollisionEvent ce, String myAttack, Collidible otherEntity)
+  private void createAndInvokeResponse(CollisionEvent ce, String myAttack, Collidable otherEntity)
       throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-    String gameSpecificFilePath = "gamedata/"+myGameType+"/entities/";
-    ResourceBundle response = ResourceBundle.getBundle(gameSpecificFilePath + "collisions/" + ce.getAttackType());
-    String[] methodsToCall = response.getString(myAttack).split(" ");
+    String gameSpecificFilePath = GAMEDATA +myGameType+ ENTITIES;
+    ResourceBundle response = ResourceBundle.getBundle(gameSpecificFilePath + COLLISIONS + ce.getAttackType());
+    String[] methodsToCall = response.getString(myAttack).split(REGEX);
     for (String s : methodsToCall) {
       checkForHostAndCall(otherEntity, s);
     }
   }
 
-  private void checkForHostAndCall(Collidible otherEntity, String methodName)
+  private void checkForHostAndCall(Collidable otherEntity, String methodName)
       throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
     ResourceBundle methodHolder = ResourceBundle.getBundle(METHOD_HOSTS); //this holds list of allowed methods
     for(String key : Collections.list(methodHolder.getKeys())) {
@@ -202,7 +224,7 @@ public class Entity extends ImageView implements Collidible, Renderable {
         return;
       }
     }
-    Method method = Entity.class.getDeclaredMethod(methodName, Collidible.class);
+    Method method = Entity.class.getDeclaredMethod(methodName, Collidable.class);
     method.invoke(Entity.this, otherEntity);
   }
 
@@ -212,8 +234,7 @@ public class Entity extends ImageView implements Collidible, Renderable {
     }
   }
 
-
-  private void updateMeAfterCollecting(Collidible other){
+  private void updateMeAfterCollecting(Collidable other){
     this.setInfo(SCORE, other.getData(SCORE));
     this.setInfo(HEALTH, other.getData(HEALTH));
     health.addLives(getData(HEALTH));
@@ -222,7 +243,7 @@ public class Entity extends ImageView implements Collidible, Renderable {
   }
 
   //used for reflection DO NOT DELETE
-  private void damage(Collidible otherEntity){
+  private void damage(Collidable otherEntity){
     health.damage();
   }
 
@@ -240,11 +261,11 @@ public class Entity extends ImageView implements Collidible, Renderable {
         Method method = Entity.class.getDeclaredMethod(methodToCall, Double.class);
         method.invoke(Entity.this, value);
       } catch (NoSuchMethodException e) {
-        ExceptionFeedback.throwBreakingException(e, "Method "+methodToCall+" was incorrect when trying to collect the entity");
+        ExceptionFeedback.throwBreakingException(e, METHOD+methodToCall+ WAS_INCORRECT + TRYING_TO_COLLECT_MESSAGE);
       } catch (IllegalAccessException e) {
-        ExceptionFeedback.throwBreakingException(e, "No access to method"+methodToCall+" used when trying to collect the entity");
+        ExceptionFeedback.throwBreakingException(e, NO_ACCESS + methodToCall+TRYING_TO_COLLECT_MESSAGE);
       } catch (InvocationTargetException e) {
-        ExceptionFeedback.throwBreakingException(e, "Method "+methodToCall+"can't be invoked when used when trying to collect the entity");
+        ExceptionFeedback.throwBreakingException(e, METHOD +methodToCall+ NO_INVOKE +TRYING_TO_COLLECT_MESSAGE);
       }
     }
   }
@@ -279,7 +300,7 @@ public class Entity extends ImageView implements Collidible, Renderable {
   }
 
   //used for internal reflection DO NOT DELETE
-  private void collect(Collidible otherEntity){
+  private void collect(Collidable otherEntity){
     otherEntity.size(myInformation.get(SCALE)); //stops the overwriting of scale back to 1 when reading from the other guy
     otherEntity.otherCollectMe();
     updateMeAfterCollecting(otherEntity);
@@ -287,7 +308,7 @@ public class Entity extends ImageView implements Collidible, Renderable {
   }
 
   //used for reflection DO NOT DELETE
-  private void nothing(Collidible collidible){
+  private void nothing(Collidable collidable){
     //do nothing, intentionally empty
   }
 
@@ -312,7 +333,7 @@ public class Entity extends ImageView implements Collidible, Renderable {
    * @return levelEnded
    */
   public boolean endedLevel(){
-    return getData(LEVEL_ENDED)!=0;
+    return getData(LEVEL_ENDED)!=PLAYING;
   }
 
   /**

@@ -111,6 +111,7 @@ Four different game types; different css, images, and rules between them. Users 
 - That the main player of Mario should be Mario. 
 - That if a person wants to create a new game, they understand how the data files should be formatted
 - Error messages will always being in English, as they are often formed with information relevant to the error (could cause grammatical errors!)
+- TestFX UI tests only work correctly in Windows, since layouts are different between Mac and Windows and the tests were designed on a Windows machine.
 
 #### Interesting data files:
 - gamedata/mario/levels/TopOfTheWorld.level

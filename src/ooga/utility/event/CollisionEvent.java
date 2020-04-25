@@ -1,13 +1,13 @@
 package ooga.utility.event;
 
-import ooga.model.behavior.Collidible;
+import ooga.model.behavior.Collidable;
 
 public class CollisionEvent{
 
   private String typeOfCollision, attackType;
-  private Collidible other;
+  private Collidable other;
 
-  public CollisionEvent(String whereCollisionOccurred, String attack, Collidible otherEntity){
+  public CollisionEvent(String whereCollisionOccurred, String attack, Collidable otherEntity){
     typeOfCollision = whereCollisionOccurred;
     attackType = attack;
     other = otherEntity;
@@ -21,7 +21,7 @@ public class CollisionEvent{
     return attackType;
   }
 
-  public Collidible getOther(){
+  public Collidable getOther(){
     return other;
   }
 }
