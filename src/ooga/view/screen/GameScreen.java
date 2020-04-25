@@ -20,6 +20,11 @@ public class GameScreen extends Screen {
   private Rectangle gameBackground;
   private Button pause, resume;
 
+  /**
+   * Initializes a GameScreen to display a game level.
+   * @param controller ScreenController
+   * @param level level to load
+   */
   public GameScreen(ScreenController controller, BasicLevel level) {
     super(controller);
     User user = controller.getUsers().getSelectedUser();
@@ -48,27 +53,44 @@ public class GameScreen extends Screen {
     loadLayout();
   }
 
+  /**
+   * Assigns a level controller to the GameScreen
+   * @param lc LevelController
+   */
   public void setLevelController(LevelController lc) {
     levelController = lc;
   }
 
+  /**
+   * Sets the visible group of game Nodes
+   * @param visibleGroup Group of Nodes
+   */
   public void setVisibleGroup(Group visibleGroup){
     gameGroup.getChildren().clear();
     gameGroup.getChildren().addAll(visibleGroup);
   }
 
+  /**
+   * Used by REFLECTION and pause button to pause the game.
+   */
   public void pause() {
     levelController.pause();
     pause.setDisable(true);
     resume.setDisable(false);
   }
 
+  /**
+   * Used by REFLECTION and resume button to resume the game.
+   */
   public void resume() {
     levelController.resume();
     pause.setDisable(false);
     resume.setDisable(true);
   }
 
+  /**
+   * Used by LevelController to exit the game and fade in splash screens.
+   */
   public void exit(boolean winState) {
     SplashScreen splash;
     if (winState) {
@@ -99,27 +121,41 @@ public class GameScreen extends Screen {
     fadePause.play();
   }
 
-  //NEEDED FOR REFLECTION, DON'T DELETE
+  /**
+   * Used by REFLECTION and quit button to quit the game.
+   */
   public void quit() {
     levelController.endLevel(false);
   }
 
-  //NEEDED FOR REFLECTION, DON'T DELETE
+  /**
+   * Used by REFLECTION and reset button to reset the game.
+   */
   public void reset() {
     controller.restartLevel();
   }
 
-  //NEEDED FOR REFLECTION, DON'T DELETE
+  /**
+   * Used by REFLECTION and settings button to open the settings menu.
+   */
   public void openSettings() {
     pause();
     SettingsScreen settings = new SettingsScreen(controller, this);
     this.getChildren().add(settings);
   }
 
+  /**
+   * Gets the width of the game background.
+   * @return visible width
+   */
   public double getGameWidth() {
     return gameBackground.getWidth();
   }
 
+  /**
+   * Gets the height of the game background.
+   * @return visible height
+   */
   public double getGameHeight() {
     return gameBackground.getHeight();
   }

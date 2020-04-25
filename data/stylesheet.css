@@ -142,6 +142,10 @@
   -fx-border-radius: 10px;
 }
 
+.level-selector-tool .radio-button {
+  -fx-focus-traversable: false;
+}
+
 .level-selector-tool .radio-button .text {
   -fx-font-size: 15pt;
   -fx-font-weight: bolder;
