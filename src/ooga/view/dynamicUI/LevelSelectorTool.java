@@ -13,6 +13,15 @@ import ooga.controller.levels.BasicLevel;
 import ooga.controller.levels.BasicLevelList;
 import ooga.exceptions.ExceptionFeedback;
 
+/**
+ * A custom-built UI control for selecting a level from a level map.
+ *
+ * Displays a map of levels in a SMB-esque fashion, where levels form an undirected graph and
+ * users unlock new levels based on completion of levels and graph connections.
+ *
+ * To use in a layout, add the dynamicUI package and put an instance in the Screen's
+ * dynamicNodes map. Layout in FXLR using the dynamicNodes tag.
+ */
 public class LevelSelectorTool extends Pane {
 
   private static final double STROKE_WIDTH = 5.0;
@@ -26,6 +35,13 @@ public class LevelSelectorTool extends Pane {
   double[][] locations;
   private int numLevels;
 
+  /**
+   * Create a LevelSelectorTool with the given list of levels, level graph, level map, and progress.
+   * @param levels list of available levels
+   * @param levelGraphFile graph of level connections
+   * @param levelMapFile map of level positions
+   * @param levelProgress list of levels completed
+   */
   public LevelSelectorTool(BasicLevelList levels, String levelGraphFile, String levelMapFile,
       List<Integer> levelProgress) {
 
@@ -148,6 +164,10 @@ public class LevelSelectorTool extends Pane {
     }
   }
 
+  /**
+   * Get the selected Level.
+   * @return selected
+   */
   public BasicLevel getSelected() {
     return myLevels.getBasicLevel(Integer.parseInt(((RadioButton) levelToggles.getSelectedToggle()).getId()));
   }
