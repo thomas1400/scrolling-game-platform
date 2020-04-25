@@ -92,7 +92,8 @@ public class LevelLoop implements Loopable, Handleable {
    * @param keyEvent event containing information regarding which key was pressed
    */
   public void handleKeyPressed(KeyEvent keyEvent) {
-    myInputManager.handleKeyPress(keyEvent);
+    String keyCode = keyEvent.getCode().toString();
+    myInputManager.handleKeyPress(keyCode);
   }
 
   /**
@@ -100,7 +101,8 @@ public class LevelLoop implements Loopable, Handleable {
    * @param keyEvent event containing information regarding which key was released
    */
   public void handleKeyReleased(KeyEvent keyEvent) {
-    myInputManager.handleKeyRelease(keyEvent);
+    String keyCode = keyEvent.getCode().toString();
+    myInputManager.handleKeyRelease(keyCode);
   }
 
   private void updateCamera() {
