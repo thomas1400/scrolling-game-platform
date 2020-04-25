@@ -24,9 +24,8 @@ public class UpHorizontalDirectionController extends VerticalDirectionController
       setToCenter(entities, -OFFSET);
       //mainEntity.setY(0.01);
     }
-    if(mainEntity.getY()>=myScreenHeight){
+    if(mainEntity.getBoundsInLocal().getMaxY()>=myScreenHeight){
       mainEntity.setLives(0);
-      System.out.println("died");
     }
     if (mainEntity.getBoundsInLocal().getMinX() >= myScreenWidth) {
       mainEntity.setX(0);

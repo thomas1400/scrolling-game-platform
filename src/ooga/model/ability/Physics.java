@@ -166,7 +166,6 @@ public class Physics extends Ability {
     if(myVelocity[Y]>0){
       jump();
       jump();
-      System.out.println("Reached");
     }
 
   }

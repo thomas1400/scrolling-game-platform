@@ -85,4 +85,14 @@ public class InputManager {
     } catch (SecurityException ignored) {
     }
   }
+
+
+
+  /**
+   * Gets the keyCurrentlyPressed Set
+   * Used for testing
+   */
+  public Set<String> getKeysCurrentlyPressed(){
+    return keysCurrentlyPressed;
+  }
 }
