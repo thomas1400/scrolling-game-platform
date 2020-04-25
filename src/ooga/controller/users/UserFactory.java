@@ -1,4 +1,4 @@
-package ooga.controller;
+package ooga.controller.users;
 
 import java.io.File;
 import java.io.FileInputStream;

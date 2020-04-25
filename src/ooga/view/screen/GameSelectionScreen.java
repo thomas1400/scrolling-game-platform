@@ -12,12 +12,18 @@ import ooga.controller.ScreenController;
 import ooga.exceptions.ExceptionFeedback;
 import ooga.view.dynamicUI.GameSelector;
 
+/**
+ * A Screen that presents Game options to the user and lets them select a game.
+ */
 public class GameSelectionScreen extends Screen {
 
   private static final String RESOURCES_PATH = "games";
   private GameSelector gs;
 
-  //CALLED WITH REFLECTION
+  /**
+   * Initializes a GameSelectionScreen, called with REFLECTION.
+   * @param controller ScreenController
+   */
   public GameSelectionScreen(ScreenController controller) {
     super(controller);
 
@@ -45,7 +51,10 @@ public class GameSelectionScreen extends Screen {
     return pairs;
   }
 
-  public void select() throws FileNotFoundException {
+  /**
+   * Passes the selected game to the ScreenController, called by REFLECTION.
+   */
+  public void select() {
     controller.setGame(gs.getSelected());
   }
 

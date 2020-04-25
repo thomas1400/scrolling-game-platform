@@ -22,7 +22,7 @@ public class ExceptionFeedback {
     JOptionPane.showConfirmDialog(new JFrame(),
         message,
         e.getClass().getSimpleName(), JOptionPane.DEFAULT_OPTION);
-    System.exit(0);
+    throw new FeedbackRuntimeException(e);
   }
 
   public static void throwHandledException(Exception e, String message) {

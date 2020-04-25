@@ -17,23 +17,30 @@ import ooga.controller.ScreenController;
 import ooga.exceptions.ExceptionFeedback;
 import ooga.view.fxlr.FXLRParser;
 
+/**
+ * Abstract Screen for all Screens in the project to extend. Holds basic functionality.
+ */
 public abstract class Screen extends Pane {
 
   private static final int PREF_WIDTH = 800, PREF_HEIGHT = 600;
 
   private static final String DATA_PATH_PREFIX = "data/";
   private static final String GAME_DATA_PATH = "gamedata/";
-  public static final String VIEW_PATH = "view/";
+  private static final String VIEW_PATH = "view/";
   private static final String RESOURCES_PATH = "resources/";
   private static final String RESOURCES_SUFFIX = "Text";
   private static final String BUTTON_ACTIONS_SUFFIX = "Buttons";
-  public static final String FXLR_SUFFIX = ".fxlr";
+  private static final String FXLR_SUFFIX = ".fxlr";
 
   protected ScreenController controller;
   private ResourceBundle buttonActions;
-  protected ResourceBundle resources;
+  ResourceBundle resources;
   Map<String, Node> dynamicNodes;
 
+  /**
+   * Initializes backend for a Screen, including dynamicNodes map and resources.
+   * @param controller ScreenController
+   */
   public Screen(ScreenController controller) {
     this.controller = controller;
     this.dynamicNodes = new HashMap<>();
@@ -113,6 +120,10 @@ public abstract class Screen extends Pane {
     }
   }
 
+  /**
+   * Handle a button press with the given actionTag. Public for REFLECTION.
+   * @param tag actionTag
+   */
   public void handleButtonPress(String tag) {
     try {
       String action = buttonActions.getString(tag);
@@ -125,18 +136,28 @@ public abstract class Screen extends Pane {
             // invoke named method with null parameters for button action
             this.getClass().getDeclaredMethod(method).invoke(this);
           } catch (Exception e) {
-            // FIXME : remove printStackTrace()
-            e.printStackTrace();
+            ExceptionFeedback.throwBreakingException(e,
+                "Unable to handle button press for button tag: " + tag);
           }
         }
       }
     } catch (MissingResourceException ignored) { }
   }
 
+  /**
+   * Gets a resource from the text resource bundle for the given tag. Public for REFLECTION.
+   * @param tag resource tag
+   * @return String resource
+   */
   public String getResource(String tag) {
     return resources.getString(tag);
   }
 
+  /**
+   * Gets a dynamically instantiated UI element from dynamicNodes map. Public for REFLECTION.
+   * @param tag dynamic node tag
+   * @return DynamicUI member
+   */
   public Node getDynamicUIElement(String tag) {
     return dynamicNodes.get(tag);
   }

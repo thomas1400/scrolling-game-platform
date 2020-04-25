@@ -4,12 +4,13 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import ooga.view.screen.Screen;
 
+/**
+ * Builds a JavaFX graph, handles children and branching for FXLRParser.
+ */
 class FXGraphBuilder {
 
   private Screen root;
   private Node parent;
-
-  FXGraphBuilder() { }
 
   void addChild(Node node) {
     try {

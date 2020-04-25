@@ -22,8 +22,6 @@ class CameraManagerTest extends ApplicationTest {
     super.start(stage);
   }
 
-
-
   @BeforeEach
   void setUp () {
     entities = new EntityList();
@@ -31,13 +29,17 @@ class CameraManagerTest extends ApplicationTest {
     entities.addEntity(mainEntity);
     entity = EntityBuilder.getEntity("Brick", "mario");
     entities.addEntity(entity);
-    cm = new CameraManager(400, 600, "right", entities);
+  }
+
+  private void setUpCameraManager(String dc){
+    cm = new CameraManager(400, 600, dc, entities);
     cm.initializeActivationStorage();
     cm.initializeActiveEntities(entities);
   }
 
     @Test
   void updateCamera() {
+    setUpCameraManager("right");
     mainEntity.setX(150);
     mainEntity.setY(150);
     entity.setX(100);
@@ -47,44 +49,5 @@ class CameraManagerTest extends ApplicationTest {
     assertEquals(250 - mainEntity.getBoundsInLocal().getWidth() / 2, entity.getX());
     assertEquals(150, mainEntity.getY());
     assertEquals(100, entity.getY());
-  }
-
-  @Test
-  void initializeActivationStorage() {
-    cm.initializeActivationStorage();
-    assertEquals(0, cm.getActivatedEntities().size());
-    assertEquals(0, cm.getDeactivatedEntities().size());
-  }
-
-  @Test
-  void initializeActiveEntities() {
-    mainEntity.setX(300);
-    mainEntity.setY(50);
-    entity.setX(100);
-    entity.setY(100);
-    EntityList activated= cm.initializeActiveEntities(entities);
-    assertTrue(activated.contains(mainEntity));
-    assertFalse(activated.contains(entity));
-  }
-
-  @Test
-  void determineEntitiesOnScreen() {
-
-  }
-
-  @Test
-  void determinedead() {
-  }
-
-  @Test
-  void getActivatedEntities() {
-  }
-
-  @Test
-  void getDeactivatedEntities() {
-  }
-
-  @Test
-  void getOnScreenEntities() {
   }
 }

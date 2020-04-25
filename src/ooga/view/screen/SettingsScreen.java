@@ -7,6 +7,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import ooga.controller.ScreenController;
 
+/**
+ * Settings screen for in-game settings changes.
+ */
 public class SettingsScreen extends Screen {
 
   private ComboBox<String> cameraManagerSelector;
@@ -14,7 +17,12 @@ public class SettingsScreen extends Screen {
   private EventHandler<? super MouseEvent> oldParentHandler;
   private GameScreen parent;
 
-  public SettingsScreen(ScreenController controller, GameScreen parent) {
+  /**
+   * Initializes a settings screen with a controller and GameScreen parent
+   * @param controller ScreenController
+   * @param parent GameScreen of game
+   */
+  SettingsScreen(ScreenController controller, GameScreen parent) {
     super(controller);
     this.parent = parent;
 
@@ -33,12 +41,18 @@ public class SettingsScreen extends Screen {
     loadLayout();
   }
 
+  /**
+   * Go back to the GameScreen. Public for REFLECTION.
+   */
   public void back() {
     parent.getChildren().remove(this);
     parent.setOnMouseClicked(oldParentHandler);
     parent.resume();
   }
 
+  /**
+   * Apply settings. Public for REFLECTION.
+   */
   public void apply() {
     controller.setCameraManagerOption(cameraManagerSelector.getValue());
     controller.setPhysicsOption(physicsSelector.getValue());
