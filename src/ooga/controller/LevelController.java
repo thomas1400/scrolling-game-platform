@@ -12,6 +12,7 @@ import ooga.controller.users.User;
 import ooga.model.entity.Entity;
 import ooga.model.entity.EntityList;
 import ooga.view.screen.GameScreen;
+import org.assertj.core.util.VisibleForTesting;
 
 public class LevelController implements GameLevel, Loopable, Handleable {
 
