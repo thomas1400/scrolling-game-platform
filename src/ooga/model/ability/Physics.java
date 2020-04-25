@@ -116,9 +116,18 @@ public class Physics extends Ability {
    * I.e. makes the entity jump only if already falling
    */
   public void jumpUp(){
-    if(myState.getVelocity(Y) > 0){
+    if (canJumpAgain() && myState.getVelocity(Y) > 0){
       jump();
     }
+  }
+
+  public boolean canJumpAgain() {
+    /*
+    if (jumpsSinceLand >= myConstants.get(MAX_NUM_JUMPS)){
+      return false;
+    }
+     */
+    return true;
   }
 
   /**
