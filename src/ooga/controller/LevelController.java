@@ -90,6 +90,7 @@ public class LevelController implements GameLevel{
   //LevelLoop State Handling
   public void beginLevel() {
     myLevelLoop.begin();
+    myLevelLoop.pause();
   }
   public void pauseLevel() {
     myLevelLoop.pause();
