@@ -39,6 +39,7 @@ public class LevelSelectorScreen extends Screen {
       User user = controller.getUsers().getSelectedUser();
 
       Label username = new Label(resources.getString("user") + " : " + user.getName());
+      username.setId("usernameLabel");
       LevelProgressBar lpb = new LevelProgressBar(resources.getString("progress"),
           user.getLevelsCompleted(gameType).size(), levels.size());
       lst = new LevelSelectorTool(levels, myLevelGraphFile, myLevelMapFile,
