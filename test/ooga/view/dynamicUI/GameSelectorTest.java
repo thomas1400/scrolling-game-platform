@@ -2,6 +2,9 @@ package ooga.view.dynamicUI;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import javafx.geometry.HorizontalDirection;
+import javafx.geometry.VerticalDirection;
+import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import ooga.controller.ScreenController;
 import ooga.controller.users.UserList;
@@ -22,6 +25,7 @@ public class GameSelectorTest extends ApplicationTest {
   @Test
   void gameSelectionNullPreLaunch() {
     assertNull(sc.getGameType());
+    clickOn(100, 300);
     clickOn(450, 550);
     assertNotNull(sc.getGameType());
   }
@@ -42,6 +46,16 @@ public class GameSelectorTest extends ApplicationTest {
 
   @Test
   void gameSelection3() {
+    clickOn(600, 300);
+    clickOn(450, 550);
+    assertEquals("dinorun", sc.getGameType());
+  }
+
+  @Test
+  void gameScrolling() {
+    drag(100, 490, MouseButton.PRIMARY);
+    moveTo(500, 490);
+    clickOn(600, 300);
     clickOn(600, 300);
     clickOn(450, 550);
     assertEquals("doodlejump", sc.getGameType());
