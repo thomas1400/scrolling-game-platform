@@ -106,13 +106,19 @@ public class LevelController implements GameLevel, Loopable, Handleable {
    * @param keyEvent to handle the pressing of key presses to the LevelLoop
    */
   public void handleKeyPressed(KeyEvent keyEvent){
-    myLevelLoop.handleKeyPressed(keyEvent);
+    if (myLevelLoop != null) {
+      myLevelLoop.handleKeyPressed(keyEvent);
+    }
   }
 
   /**
    * @param keyEvent to handle the releasing of key presses to the LevelLoop
    */
-  public void handleKeyReleased(KeyEvent keyEvent) { myLevelLoop.handleKeyReleased(keyEvent); }
+  public void handleKeyReleased(KeyEvent keyEvent) {
+    if (myLevelLoop != null) {
+      myLevelLoop.handleKeyReleased(keyEvent);
+    }
+  }
 
   //LevelLoop State Handling
   /**

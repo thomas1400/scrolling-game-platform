@@ -1,0 +1,9 @@
+### Win Screen FXLR
+
+<package javafx.scene.control>
+<package javafx.scene.layout>
+
+(VBox alignment=CENTER, prefWidth=100%, prefHeight=100%, spacing=5%) {
+  (Label text=success, style=subtitle prefHeight=25%, prefWidth=100%)
+}
+
