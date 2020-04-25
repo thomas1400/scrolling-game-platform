@@ -139,7 +139,7 @@ public class ScreenController{
     nextScene.setOnKeyReleased(myLevelController::handleKeyReleased);
 
     showScene(nextScene);
-    myLevelController.beginLevel();
+    myLevelController.begin();
   }
 
   /**

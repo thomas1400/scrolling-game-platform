@@ -26,7 +26,7 @@ class InputManagerTest extends ApplicationTest {
   void handleKeyPress() {
     InputManager im = new InputManager(mainEntity, "mario");
     press(KeyCode.RIGHT);
-    //im.handleKeyPress(press(KeyCode.RIGHT));
+    //im.handleKeyPressed(press(KeyCode.RIGHT));
   }
 
   @Test
