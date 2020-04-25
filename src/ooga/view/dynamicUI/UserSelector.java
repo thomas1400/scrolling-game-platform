@@ -18,27 +18,23 @@ import javafx.scene.layout.VBox;
 import ooga.controller.users.User;
 import ooga.controller.users.UserList;
 
-public class UserSelector extends Pane {
+/**
+ * A custom-built UI control for selecting a user from a list of options.
+ *
+ * Shows user ToggleButtons with a graphic and name, enables getting the selected user.
+ *
+ * To use in a layout, add the dynamicUI package and put an instance in the Screen's
+ * dynamicNodes map. Layout in FXLR using the dynamicNodes tag.
+ */
+public class UserSelector extends Selector {
 
-  private static final double SPACING = 10;
-  private static final double TILES_PER_PAGE = 3;
-  private static final double SCROLL_BAR_OFFSET = 50.0;
-  private ToggleGroup userToggles;
   private List<User> users;
-  private ScrollPane scrollPane;
-  private HBox usersPane;
-  private double tileSize;
 
+  /**
+   * Create a new UserSelector with the given list of users.
+   * @param userList list of users
+   */
   public UserSelector(UserList userList) {
-    userToggles = new ToggleGroup();
-    scrollPane = new ScrollPane();
-    usersPane = new HBox();
-    usersPane.setAlignment(CENTER_LEFT);
-    usersPane.setSpacing(SPACING);
-    scrollPane.setContent(usersPane);
-    scrollPane.setFitToHeight(true);
-    scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
-    scrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
 
     users = new ArrayList<>();
     if (userList != null) {
@@ -48,64 +44,36 @@ public class UserSelector extends Pane {
     }
 
     initializeButtons();
-    this.getChildren().add(scrollPane);
     this.getStyleClass().add("user-selector");
-    usersPane.getStyleClass().add("users");
+    selectionPane.getStyleClass().add("users");
   }
 
-  private void initializeButtons() {
-    int numUsers = users.size();
-    tileSize = this.getPrefWidth()/(TILES_PER_PAGE) - SPACING;
+  @Override
+  protected void initializeButtons() {
 
-    for (int i = 0; i < numUsers; i++) {
+    for (int i = 0; i < users.size(); i++) {
 
-      ImageView image = new ImageView(users.get(i).getImage());
-      image.setFitHeight(tileSize);
-      image.setFitWidth(tileSize);
+      ImageView image = makeToggleGraphic(users.get(i).getImage());
+      ToggleButton button = makeToggleButton(Integer.toString(i), image);
 
-      ToggleButton button = new ToggleButton();
-      button.setGraphic(image);
-      button.setId(Integer.toString(i));
-      button.setToggleGroup(userToggles);
-      button.setPrefSize(tileSize, tileSize);
-
-      Label username = new Label(users.get(i).getName());
-      username.setPrefWidth(button.getPrefWidth());
-      username.setAlignment(Pos.TOP_CENTER);
+      Label username = makeToggleLabel(users.get(i).getName(), button);
       username.getStyleClass().add("user-select-toggle");
-      username.setMinHeight(SCROLL_BAR_OFFSET);
 
-      VBox buttonBox = new VBox();
-      buttonBox.setAlignment(Pos.CENTER);
-      buttonBox.getChildren().add(button);
-      buttonBox.getChildren().add(username);
-      usersPane.getChildren().add(buttonBox);
+      makeButtonBox(button, username);
     }
   }
 
+  /**
+   * Gets the selected user.
+   * @return selected
+   */
   public User getSelected() {
-    Toggle selected = userToggles.getSelectedToggle();
+    Toggle selected = toggles.getSelectedToggle();
     if (selected != null) {
       return users.get(Integer.parseInt(((ToggleButton) selected).getId()));
     } else {
       return null;
     }
-  }
-
-  public void setPaneWidth(double width) {
-    setPrefWidth(width);
-    reinitializeButtons();
-    scrollPane.setPrefWidth(width);
-  }
-
-  public void setPaneHeight(double height) {
-    setPrefHeight(height);
-    reinitializeButtons();
-  }
-
-  private void reinitializeButtons() {
-    usersPane.getChildren().clear();
-    initializeButtons();
   }
 
 }

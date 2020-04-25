@@ -10,12 +10,19 @@ import ooga.controller.users.UserSaver;
 import ooga.controller.users.User;
 import ooga.exceptions.ExceptionFeedback;
 
+/**
+ * Screen that enables new User creation.
+ */
 public class UserCreationScreen extends Screen {
 
   private TextField nameField;
   private FileChooser imageChooser;
   private File imageFile;
 
+  /**
+   * Initializes a UserCreationScreen. Called via REFLECTION.
+   * @param controller ScreenController
+   */
   public UserCreationScreen(ScreenController controller) {
     super(controller);
     this.getStyleClass().add("user-creation-screen");
@@ -28,10 +35,16 @@ public class UserCreationScreen extends Screen {
     loadLayout();
   }
 
+  /**
+   * Choose an image for a new user. Public for REFLECTION.
+   */
   public void chooseImage() {
     imageFile = imageChooser.showOpenDialog(new Stage());
   }
 
+  /**
+   * Save the newly created user to the ScreenController, checking for field completion.
+   */
   public void save() {
     if (imageFile != null && !nameField.getText().equals("")) {
       User newUser = new User(nameField.getText(), imageFile.toURI().toString());

@@ -48,7 +48,7 @@ public class CollisionManager {
           double d = calculateDistances(entity, entity2);
           min = map.get(d);
           collisionLocation = myCollisionLocationResources.getString(min).split(",");
-          adjustImpactFromGravityAndMultipleDetections(entity, d);
+          adjustImpactFromGravityAndMultipleDetections(entity, entity2, d);
           createAndSendCollision(collisionLocation[0], entity2.getAttack(collisionLocation[1]), entity, entity2);
           createAndSendCollision(collisionLocation[1], entity.getAttack(collisionLocation[0]), entity2, entity);
         }
@@ -93,7 +93,7 @@ public class CollisionManager {
     return min;
   }
 
-  private void adjustImpactFromGravityAndMultipleDetections(Entity entity, double d) {
+  private void adjustImpactFromGravityAndMultipleDetections(Entity entity,Entity entity2, double d) {
     if (collisionLocation[0].equals(BOTTOM_COLLISION) && entity.equals(myMainEntity)){
       entity.setY(entity.getY() - d);
     }

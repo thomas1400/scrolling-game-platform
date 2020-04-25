@@ -6,8 +6,17 @@ import javafx.scene.paint.Color;
 import ooga.controller.ScreenController;
 import ooga.controller.levels.BasicLevel;
 
+/**
+ * Loading splash screen to show on level load.
+ */
 public class LoadingSplash extends SplashScreen {
 
+  /**
+   * Initializes a LoadingSplash for a given level.
+   * @param controller ScreenController
+   * @param parent screen to overlay
+   * @param level level being loaded
+   */
   public LoadingSplash(ScreenController controller, Node parent, BasicLevel level) {
     super(controller, parent);
 
@@ -16,10 +25,6 @@ public class LoadingSplash extends SplashScreen {
     dynamicNodes.put("level-label", new Label(level.getMainTitle()));
 
     loadLayout();
-  }
-
-  private void initializeLayout(BasicLevel level) {
-
   }
 
 }
