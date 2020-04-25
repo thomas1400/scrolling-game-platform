@@ -21,7 +21,7 @@ import ooga.exceptions.ExceptionFeedback;
 import ooga.view.screen.GameScreen;
 import ooga.view.screen.GameSelectionScreen;
 import ooga.view.screen.LevelSelectorScreen;
-import ooga.view.screen.LoadingScreen;
+import ooga.view.screen.LoadingSplash;
 import ooga.view.screen.Screen;
 import ooga.view.screen.UserSelectorScreen;
 
@@ -42,6 +42,7 @@ public class ScreenController{
   public static final File MAIN_STYLESHEET = new File("data/stylesheet.css");
 
   private Stage myStage;
+  private Screen myCurrentScreen;
   private UserList myUsers;
   private User mySelectedUser;
   private BasicLevelList myBasicLevels;
@@ -106,6 +107,7 @@ public class ScreenController{
   }
 
   private Scene getScene(Screen nextScreen) {
+    this.myCurrentScreen = nextScreen;
     Scene nextScene = new Scene(nextScreen, INITIAL_WINDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
     nextScene.getStylesheets().add(MAIN_STYLESHEET.toURI().toString());
     if (myGameType != null) {
@@ -133,18 +135,28 @@ public class ScreenController{
    * @param basicLevel The basic level information needed to begin the creation of a new level
    */
   public void initializeNewLevel(BasicLevel basicLevel){
-    myCurrentLevel = basicLevel;
-    myGameScreen = new GameScreen(this, myCurrentLevel);
+    Pane loadingPane = new LoadingSplash(this, myCurrentScreen, basicLevel);
+    myCurrentScreen.getChildren().add(loadingPane);
 
-    myLevelController = new LevelController(myGameScreen, mySelectedUser, basicLevel);
-    myGameScreen.setLevelController(myLevelController);
+    FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), loadingPane);
 
-    Scene nextScene = getScene(myGameScreen);
-    nextScene.setOnKeyPressed(myLevelController::handleKeyPressed);
-    nextScene.setOnKeyReleased(myLevelController::handleKeyReleased);
+    fadeIn.setOnFinished((e) -> {
+      myCurrentLevel = basicLevel;
 
-    showScene(nextScene);
-    myLevelController.begin();
+      myGameScreen = new GameScreen(this, myCurrentLevel);
+
+      myLevelController = new LevelController(myGameScreen, mySelectedUser, basicLevel);
+      myGameScreen.setLevelController(myLevelController);
+
+      Scene nextScene = getScene(myGameScreen);
+      nextScene.setOnKeyPressed(myLevelController::handleKeyPressed);
+      nextScene.setOnKeyReleased(myLevelController::handleKeyReleased);
+
+      showScene(nextScene);
+      myLevelController.begin();
+    });
+
+    doFade(fadeIn);
   }
 
   /**
@@ -161,13 +173,7 @@ public class ScreenController{
   public void restartLevel(){
     myLevelController.endLevel(false);
 
-    Pane loadingPane = new LoadingScreen(this, myGameScreen, myCurrentLevel);
-    myGameScreen.getChildren().add(loadingPane);
-
-    FadeTransition fade = new FadeTransition(Duration.seconds(0.5), loadingPane);
-    doFade(fade);
-    fade.setOnFinished((e) -> initializeNewLevel(myCurrentLevel));
-
+    initializeNewLevel(myCurrentLevel);
   }
 
   private void doFade(FadeTransition fadeIn) {

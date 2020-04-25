@@ -1,6 +1,8 @@
 package ooga.model.ability;
 
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import ooga.exceptions.ExceptionFeedback;
 
 /**
  * Exists to keep track of the lives of an Entity. Handles being hit, and dying.
@@ -22,7 +24,12 @@ public class Health extends Ability {
   public Health(String vitality){
     ResourceBundle resources = ResourceBundle.getBundle(RESOURCE_PACKAGE);
     //look in the health properties file, and get the number of lives associated with that vitality
-    myLives = Integer.parseInt(resources.getString(vitality));
+    try{
+      String key = resources.getString(vitality);
+      myLives = Integer.parseInt(key);
+    } catch(MissingResourceException e) {
+      ExceptionFeedback.throwBreakingException(e, "Bad vitality! check you've picked \"Weak\", \"Average\", or \"Strong\" in the entity file");
+    }
     immortal = false;
   }
 
@@ -59,8 +66,6 @@ public class Health extends Ability {
    */
   public void setLives(double newLivesNum){
     myLives=newLivesNum;
-    System.out.println(myLives);
-    System.out.println(isDead());
   }
 
   /**
@@ -69,7 +74,6 @@ public class Health extends Ability {
   public void damage(){
     if(!immortal && !this.isDead()) {
       myLives -= SINGLE_LIFE;
-      //System.out.println("ouchie");
     }
   }
 

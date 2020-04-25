@@ -87,7 +87,7 @@ class EntityTest extends ApplicationTest {
   }
 
   @Test
-  void testCollectionPoints(){
+  void testCollectionPointsMario(){
     Entity player = EntityBuilder.getEntity("Player", "mario");
     Entity coin = EntityBuilder.getEntity("Coin", "mario");
 
@@ -115,6 +115,21 @@ class EntityTest extends ApplicationTest {
     player.handleCollision(coinBottomCE);
     coin.handleCollision(playerTopCE);
     assertEquals(10, player.getScore());
+    assertEquals(0, coin.getScore());
+  }
+
+  @Test
+  void testCollectionPointsFlappy(){
+    Entity flappy = EntityBuilder.getEntity("Birdie", "flappy");
+    Entity coin = EntityBuilder.getEntity("Coin", "flappy");
+
+    CollisionEvent coinCE = new CollisionEvent("Side", coin.getAttack("Side"), coin);
+    CollisionEvent flappyCE = new CollisionEvent("Side", flappy.getAttack("Side"), flappy);
+
+    flappy.handleCollision(coinCE);
+    coin.handleCollision(flappyCE);
+
+    assertEquals(10, flappy.getScore());
     assertEquals(0, coin.getScore());
   }
 

@@ -127,7 +127,7 @@ public class Physics extends Ability {
     }
   }
 
-  public boolean canJumpAgain() {
+  private boolean canJumpAgain() {
     return jumpsSinceLand < myConstants.get(MAX_NUM_JUMPS);
   }
 
