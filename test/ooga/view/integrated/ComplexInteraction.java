@@ -55,7 +55,7 @@ public class ComplexInteraction extends ApplicationTest{
   }
 
   private void navigateToUserSelect() {
-    clickOn(400, 570);
+    clickOn(370, 570);
   }
 
   private void navigateToLevelSelect() {
@@ -63,7 +63,7 @@ public class ComplexInteraction extends ApplicationTest{
   }
 
   private void navigateToGameSelect() {
-    clickOn(650, 570);
+    clickOn(600, 570);
   }
 
 }
