@@ -25,6 +25,7 @@ import ooga.view.screen.LevelSelectorScreen;
 import ooga.view.screen.LoadingSplash;
 import ooga.view.screen.Screen;
 import ooga.view.screen.UserSelectorScreen;
+import org.assertj.core.util.VisibleForTesting;
 
 public class ScreenController{
 
@@ -222,5 +223,10 @@ public class ScreenController{
   public void toggleDarkMode() {
     darkMode = !darkMode;
     switchToScreen(myCurrentScreen.getClass().getSimpleName());
+  }
+
+  @VisibleForTesting
+  String getCurrentScreen() {
+    return myCurrentScreen.getClass().getSimpleName();
   }
 }

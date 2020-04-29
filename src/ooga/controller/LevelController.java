@@ -67,7 +67,7 @@ public class LevelController implements GameLevel, Handleable {
 
   private CompleteLevel getCompleteLevel(BasicLevel basicLevel) {
     return LevelBuilder.buildCompleteLevel(basicLevel, myGS.getGameHeight(),
-          myGS.getGameWidth());
+        myGS.getGameWidth());
   }
 
   private void setLivesRemaining(int deathsAllowed) {
