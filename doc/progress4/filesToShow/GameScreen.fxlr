@@ -1,0 +1,29 @@
+### GameScreen layout FXLR
+
+<package ooga.view>
+<package ooga.view.dynamicUI>
+<package javafx.scene.control>
+<package javafx.scene.layout>
+
+(VBox alignment=CENTER, layoutY=1%, spacing=1%, maxWidth=100%) {
+  (HBox alignment=CENTER, prefHeight=10%, spacing=1%) {
+    (HBox alignment=CENTER_LEFT, prefWidth=49%) {
+      (lives-label prefHeight=10%)
+    }
+    (HBox alignment=CENTER_RIGHT, prefWidth=49%) {
+      (score-label prefHeight=10%)
+    }
+  }
+  (game-background width=100%, height=76%)
+  (HBox alignment=CENTER, prefHeight=10%, spacing=1%) {
+    (Button text=settings, prefWidth=20%, actionTag=settings)
+    (Separator)
+    (pause graphic=pause, prefWidth=10%, actionTag=pause)
+    (resume graphic=resume, prefWidth=10%, actionTag=resume)
+    (Button graphic=reset, prefWidth=10%, actionTag=reset)
+    (Separator)
+    (Button text=quit, prefWidth=20%, actionTag=quit)
+  }
+}
+
+(game-group translateY=12%)
