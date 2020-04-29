@@ -67,7 +67,7 @@ public class LevelController implements GameLevel, Handleable {
 
   private CompleteLevel getCompleteLevel(BasicLevel basicLevel) {
     return LevelBuilder.buildCompleteLevel(basicLevel, myGS.getGameHeight(),
-          myGS.getGameWidth());
+        myGS.getGameWidth());
   }
 
   private void setLivesRemaining(int deathsAllowed) {
@@ -150,7 +150,7 @@ public class LevelController implements GameLevel, Handleable {
     myLevelLoop.end();
     UserSaver.saveUser(myUser);
     deleteLevelLoop();
-//    myGS.exit(winState);
+    myGS.exit(winState);
   }
 
   //In Game Adjustments
@@ -179,13 +179,11 @@ public class LevelController implements GameLevel, Handleable {
   public void handleWin() {
     myUser.unlockNextLevel(myGameType, myLevelNumber-1);
     endLevel(true);
-    myGS.exit(true);
   }
 
   private void checkEndLevel() {
     if (myLivesRemaining == 0){
       endLevel(false);
-      myGS.exit(false);
     } else if (myLivesRemaining < 0){
       ExceptionFeedback.throwHandledException(new RuntimeException(), "Negative Lives Left in Level");
     }
