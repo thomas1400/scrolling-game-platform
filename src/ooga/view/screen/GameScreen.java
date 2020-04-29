@@ -1,6 +1,8 @@
 package ooga.view.screen;
 
 import javafx.animation.FadeTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.Transition;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -89,6 +91,12 @@ public class GameScreen extends Screen {
    * Used by LevelController to exit the game and fade in splash screens.
    */
   public void exit(boolean winState) {
+    Transition st = makeEndSplash(winState);
+    st.setOnFinished(e->handleButtonPress("exit"));
+    st.play();
+  }
+
+  private Transition makeEndSplash(boolean winState) {
     SplashScreen splash;
     if (winState) {
       splash = new LevelSuccessSplash(controller, this);
@@ -108,14 +116,12 @@ public class GameScreen extends Screen {
     fadeHold.setFromValue(1);
     fadeHold.setToValue(1);
 
-    fadePause.setOnFinished(e-> {
-      splash.setOpacity(1.0);
-      fadeIn.play();
-    });
-    fadeIn.setOnFinished(e->fadeHold.play());
-    fadeHold.setOnFinished(e->handleButtonPress("exit"));
+    fadePause.setOnFinished(e-> splash.setOpacity(1.0));
 
-    fadePause.play();
+    SequentialTransition st = new SequentialTransition();
+    st.getChildren().addAll(fadePause, fadeIn, fadeHold);
+
+    return st;
   }
 
   /**
@@ -123,13 +129,16 @@ public class GameScreen extends Screen {
    */
   protected void quit() {
     levelController.endLevel(false);
+    exit(false);
   }
 
   /**
    * Used by REFLECTION and reset button to reset the game.
    */
   protected void reset() {
-    controller.restartLevel();
+    Transition t = makeEndSplash(false);
+    t.play();
+    t.setOnFinished(e->controller.restartLevel());
   }
 //
 //  /**
