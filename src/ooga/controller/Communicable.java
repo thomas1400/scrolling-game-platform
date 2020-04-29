@@ -12,6 +12,4 @@ public interface Communicable {
   void addAllEntities(EntityList entities);
 
   void removeAllEntities(EntityList entities);
-
-
 }
