@@ -1,0 +1,61 @@
+#HEADER
+mainTitle:DoodleJump
+subTitle:Level 0-1
+gameType:doodlejump
+scrollType:upHorizontal
+deathsAllowed:1
+backgroundImage:levelBackground.png
+levelWidth:16
+levelHeight:40
+#ENTITIES
+X:DoodleBoi
+E:Enemy
+S:Spring
+L:BreakableStepLeft
+R:BreakableStepRight
+1:UnbreakableStepLeft
+2:UnbreakableStepRight
+T:Trampoline
+D:EndLevelLine
+#LEVEL
+D D D D D D D D D D D D D D D D
+. . . . . . . . . . . . . . . .
+. . . . . . . . . . . . . . . .
+. . . . 1 2 . . . . . . . . . .
+. . . . . . . . T . L R . . . .
+. . L R . . . . 1 2 . . . . L R
+1 2 . . . . . . . . . . . . . .
+. . . . . L R . . . . 1 2 . . .
+. . . . . . . . . . . . . . . .
+. S . . . . . . . . . . . . L R
+1 2 . . . . . L R . . T . . . .
+. . . . . . . . . . . 1 2 . . .
+. . 1 2 . . . . . . . . . . . .
+. . . . E . . . . L R . . . . .
+L R . . . . . . . . . . . . T .
+. . . . . . 1 2 . . . . . . 1 2
+. . . . . . . . . . . . . . . .
+. . . . . . . . . L R . . . . .
+. . . . L R . . . . . . . . . .
+. . . . . . . . . . . . 1 2 . .
+. L R . . . . . . . T . . . . .
+. . . . . . . . . . 1 2 . . . .
+. . . . 1 2 . . . . . . . . 1 2
+. . . . . . . . . . . . . . . .
+. . L R . . . . E . . . . . . .
+. S . . . . . . . . . . . . . .
+1 2 . . . S . . . . . . . . . .
+. . . . L R . . . . . . . . . .
+. . . . . . . . . . 1 2 . . . .
+. 1 2 . . . . . . . . . . . 1 2
+. . . . . . . . . . . . T . . .
+L R . . T . . . . . . L R . . .
+. . . 1 2 . . . 1 2 . . . . . .
+. . . . . . . . . . . . . . 1 2
+. . . . . . L R . . . . . . . .
+. . L R . . . . X . . . . . . .
+. . . . S . . . . . . 1 2 . . .
+. . . . 1 2 . . . . . . . . . .
+L R . . . . . . . S . . . . L R
+. . . . . . . . 1 2 . . . . . .
+#END

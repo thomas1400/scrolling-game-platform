@@ -1,8 +1,8 @@
 #HEADER
-mainTitle:Testing Level
+mainTitle:Level 0-1
 subTitle:Tutorial
 gameType:mario
-scrollType:horizontal
+scrollType:right
 deathsAllowed:1
 backgroundImage:levelBackground.png
 levelWidth:50

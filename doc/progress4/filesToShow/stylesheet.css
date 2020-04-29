@@ -5,12 +5,32 @@
  ********************************************************/
 
 .root {
-  -fx-base: #4f4e4e;
-  -fx-background: #222222;
-  -fx-accent: #aa22ff;
-  -fx-dark-fill: #3b1057;
+  -fx-base: #bbd1ea;
+  -fx-background: #dae3e5;
+  -fx-accent: #507dbc;
+  -fx-dark-fill: #04080f;
 }
 
+
+/********************************************************
+ *                                                      *
+ *                  Text/Label Styling                  *
+ *                                                      *
+ ********************************************************/
+
+.title {
+  -fx-font-size: 60pt;
+}
+
+.title .text {
+  -fx-font-weight: bold;
+  -fx-stroke: white;
+  -fx-stroke-width: 2px;
+}
+
+.subtitle {
+  -fx-font-size: 30pt;
+}
 
 /********************************************************
  *                                                      *
@@ -18,10 +38,48 @@
  *                                                      *
  ********************************************************/
 
+.button {
+  -fx-focus-traversable: false;
+  -fx-font-size: 20pt;
+  -fx-background-radius: 20px;
+  -fx-border-radius: 20px;
+  -fx-border-color: derive(-fx-accent, 25%);
+}
+
 .button .text {
-  -fx-stroke: -fx-base;
-  -fx-stroke-weight: 0.01;
+  -fx-stroke: white;
+  -fx-stroke-weight: 0.75;
   -fx-font-weight: bolder;
+}
+
+/********************************************************
+ *                                                      *
+ *                    Layout Styling                    *
+ *                                                      *
+ ********************************************************/
+
+ .opaque {
+  -fx-background-color: -fx-background;
+  -fx-background-radius: 20;
+  -fx-border-color: -fx-accent;
+  -fx-border-radius: 20;
+ }
+
+ .translucent {
+  -fx-background-color: rgba(218, 227, 229, 0.5);
+ }
+
+/********************************************************
+ *                                                      *
+ *                 Home Screen Styling                  *
+ *                                                      *
+ ********************************************************/
+
+.home-screen-splash {
+  -fx-background-image: url(/gamedata/mario/gameBackground.png);
+  -fx-background-size: cover;
+  -fx-border-color: -fx-accent;
+  -fx-border-width: 2px;
 }
 
 /********************************************************
@@ -84,20 +142,36 @@
   -fx-border-radius: 10px;
 }
 
+.level-selector-tool .radio-button {
+  -fx-focus-traversable: false;
+}
+
 .level-selector-tool .radio-button .text {
   -fx-font-size: 15pt;
   -fx-font-weight: bolder;
-  -fx-stroke: -fx-base;
-  -fx-stroke-weight: 0.01;
+  -fx-stroke: white;
+  -fx-stroke-width: 1px;
 }
 
-.level-selector-tool .radio-button {
-   -fx-text-fill: white;
+.level-selector-tool .radio-button .radio {
+  -fx-border-width: 2px;
+  -fx-border-color: -fx-dark-fill;
+  -fx-background-color: white;
+  -fx-background-radius: 100px;
+  -fx-border-radius: 100px;
+  -fx-padding: 5px;
+}
+
+.level-selector-tool .radio-button .radio .dot {
+  -fx-padding: 10px;
+  -fx-background-insets: 0;
+}
+
+.level-selector-tool .radio-button:selected .radio .dot {
+  -fx-background-color: -fx-dark-fill;
 }
 
 .level-selector-tool > .level-connection {
-  -fx-stroke: white;
-  -fx-stroke-weight: 0.5px;
 }
 
 

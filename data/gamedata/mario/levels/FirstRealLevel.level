@@ -1,8 +1,8 @@
 #HEADER
-mainTitle:Level 0-1
+mainTitle:Level 0-2
 subTitle:Tutorial
 gameType:mario
-scrollType:right
+scrollType:horizontal
 deathsAllowed:1
 backgroundImage:levelBackground.png
 levelWidth:50
@@ -29,7 +29,7 @@ S:MiniMushroom
 . . . . . . . . 1 . . . . . . . . . . . . . . . . . . . . . . . . . ? B B B . . . . . . . . . . . .
 . . . . . . . . B B B ? . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1 . . . . . . . C C . . . . . . .
-. . . . . M . . . . . . C . . 0 . . . . . . . G . . G . . . . B B B B . . . . . . . . . . . . . . .
+. . . . . L . . M . . . C . . 0 . . . . . . . G . . G . . . . B B B B . . . . . . . . . . . . . . .
 . . . . . B ? B B . . . B B B B . . . . . . G 6 . . 6 G . . . . . . . . . . . . . . . . . . . . . .
 . . . . . . . . . . . . . . . . . . . . . G 6 6 . . 6 6 G . . . . . . . . . . . . . . . . F . . . .
 . . . . . . . . C . . . C . . . C . . . G 6 6 6 C C 6 6 6 G . . C . . C . . . C . . . . B B B . . .
