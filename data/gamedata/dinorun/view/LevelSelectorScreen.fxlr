@@ -1,0 +1,20 @@
+### Level Selector Screen FXLR
+
+<package ooga.view>
+<package ooga.view.dynamicUI>
+<package javafx.scene.control>
+<package javafx.scene.layout>
+
+(VBox alignment=TOP_CENTER, layoutX=2%, layoutY=1%, spacing=1%, maxWidth=96%) {
+  (HBox alignment=CENTER, spacing=1%) {
+    (VBox alignment=CENTER, prefWidth=70%, spacing=1%) {
+      (username-label prefHeight=10%, style=subtitle, alignment=CENTER)
+      (level-selector-tool prefHeight=87%)
+    }
+    (VBox alignment=CENTER, prefWidth=25%, spacing=2%) {
+      (Button text=back, prefHeight=10%, actionTag=back)
+      (Button text=begin, prefHeight=10%, actionTag=begin)
+    }
+  }
+}
+

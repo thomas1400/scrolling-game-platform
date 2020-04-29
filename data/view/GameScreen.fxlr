@@ -16,8 +16,6 @@
   }
   (game-background width=100%, height=76%)
   (HBox alignment=CENTER, prefHeight=10%, spacing=1%) {
-    (Button text=settings, prefWidth=20%, actionTag=settings)
-    (Separator)
     (pause graphic=pause, prefWidth=10%, actionTag=pause)
     (resume graphic=resume, prefWidth=10%, actionTag=resume)
     (Button graphic=reset, prefWidth=10%, actionTag=reset)
